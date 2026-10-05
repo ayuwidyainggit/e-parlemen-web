@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Proses Surat Keluar &middot; Admin e-Parlemen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --green-dark:#0f2318; --green:#1b3a2b; --green-mid:#234a37; --green-light:#2f5a44;
+  --gold:#c9a24a; --gold-light:#e4c976; --cream:#f7f6f1; --card:#ffffff;
+  --ink:#182a20; --muted:#707b73; --border:#e7e4dc;
+  --success-bg:#e6f4ea; --success:#1f8a4c;
+  --warn-bg:#fff2df; --warn:#c8791a;
+  --danger-bg:#fbe7e7; --danger:#d64545;
+  --info-bg:#e7f0fb; --info:#2f6fb0;
+  --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef0ea;}
+a{color:inherit;}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+
+.admin-shell{display:flex;min-height:100vh;}
+.sidebar{width:232px;background:linear-gradient(180deg,var(--green-dark),var(--green));color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:60;}
+.sidebar-brand{display:flex;gap:10px;align-items:center;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.12);}
+.sidebar-brand .emblem{width:38px;height:38px;flex-shrink:0;}
+.sidebar-brand h1{font-family:Georgia,'Times New Roman',serif;font-size:15.5px;margin:0;}
+.sidebar-brand .sub{font-size:8.8px;color:var(--gold-light);font-weight:700;letter-spacing:.4px;margin-top:1px;}
+.sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.snav-label{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;padding:14px 10px 6px;}
+.snav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:12.6px;font-weight:700;}
+.snav-item .ic-svg{width:17px;height:17px;}
+.snav-item:hover{background:rgba(255,255,255,.08);}
+.snav-item.active{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 var(--gold);}
+.snav-item .count{margin-left:auto;background:var(--danger);color:#fff;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;}
+.sidebar-foot{padding:14px;border-top:1px solid rgba(255,255,255,.12);}
+.sidebar-user{display:flex;gap:10px;align-items:center;}
+.sidebar-user .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dark);font-size:12px;flex-shrink:0;}
+.sidebar-user .name{font-size:12px;font-weight:800;color:#fff;}
+.sidebar-user .role{font-size:10px;color:rgba(255,255,255,.6);}
+.logout-link{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.65);text-decoration:none;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;}
+.topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
+.topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
+.topbar .crumb a{color:var(--green);text-decoration:none;font-weight:700;}
+.topbar-actions{display:flex;gap:14px;align-items:center;}
+.tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
+.tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.tb-user{display:flex;align-items:center;gap:8px;}
+.tb-user .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:800;font-size:12px;}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
+.menu-toggle .ic-svg{width:22px;height:22px;}
+
+.content{padding:24px 26px 60px;max-width:1100px;width:100%;}
+
+.card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
+.section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;}
+.two-col-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;}
+.muted{color:var(--muted);}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
+.badge-success{background:var(--success-bg);color:var(--success);}
+.badge-warn{background:var(--warn-bg);color:var(--warn);}
+.badge-danger{background:var(--danger-bg);color:var(--danger);}
+.badge-info{background:var(--info-bg);color:var(--info);}
+.badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
+.badge-gold{background:#fbf1dc;color:#9a7b1f;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-ghost{background:transparent;color:var(--green);border:1.5px dashed #c9c4b4;}
+.btn-sm{padding:8px 13px;font-size:11.5px;}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
+.btn:disabled{opacity:.5;cursor:not-allowed;}
+
+.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:26px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
+.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
+.upload-box:hover{border-color:var(--gold);}
+.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
+
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--border);}
+.t-item{position:relative;margin-bottom:18px;}
+.t-item:last-child{margin-bottom:0;}
+.t-item::before{content:"";position:absolute;left:-22px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 1px var(--border);}
+.t-item.done::before{background:var(--success);}
+.t-item.pending::before{background:#d8d4c6;}
+.t-item .t-title{font-weight:800;font-size:13px;}
+.t-item .t-time{font-size:10.8px;color:var(--muted);margin-top:1px;}
+.t-item .t-desc{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.5;}
+
+.info-box{background:var(--info-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#2a5583;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
+.success-box{background:var(--success-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#1c6b3d;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
+.warn-box{background:var(--warn-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#96590f;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
+
+.kv-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:12.5px;}
+.kv-row:last-child{border-bottom:none;}
+.kv-row .k{color:var(--muted);flex-shrink:0;}
+.kv-row .v{font-weight:700;text-align:right;}
+
+.namecell{display:flex;align-items:center;gap:10px;}
+.namecell .av{width:40px;height:40px;border-radius:50%;background:var(--neutral-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
+.namecell .n{font-weight:800;font-size:13.5px;}
+.namecell .s{font-size:11px;color:var(--muted);}
+
+.toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
+
+@media (max-width:960px){
+  .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
+  .sidebar.open{left:0;}
+  .menu-toggle{display:block;}
+  .two-col-layout{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></span>
+      <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-label">Menu Utama</div>
+      <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
+      <a class="snav-item active" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
+      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Absensi Rapat</a>
+      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna Mobile <span class="count">2</span></a>
+      <div class="snav-label">Reses &amp; Pokir</div>
+      <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
+      <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
+      <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
+      <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
+      <a class="snav-item" href="laporan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil &amp; Reses</a>
+      <div class="snav-label">Lainnya</div>
+      <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user"><span class="av">AS</span><div><div class="name">Admin Sekretariat</div><div class="role">Sekretariat DPRD</div></div></div>
+      <a class="logout-link" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+        <div><h2>Proses Surat Keluar</h2><div class="crumb"><a href="surat-keluar.html">Surat Keluar</a> &rsaquo; Proses Permintaan</div></div>
+      </div>
+      <div class="topbar-actions">
+        <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
+        <div class="tb-user"><span class="av">AS</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <div class="card">
+        <div class="section-title">
+          <div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">Anggota Komisi I &middot; Fraksi Golkar</div></div></div>
+          <span class="badge badge-warn" id="statusBadge">Permintaan Baru</span>
+        </div>
+        <div class="kv-row"><span class="k">Jenis Surat</span><span class="v">Surat Keterangan Tugas</span></div>
+        <div class="kv-row"><span class="k">Perihal / Keperluan</span><span class="v">Penugasan menghadiri Rapat Koordinasi Provinsi Jawa Tengah</span></div>
+        <div class="kv-row"><span class="k">Tanggal Digunakan</span><span class="v">27 Mei 2025</span></div>
+        <div class="kv-row"><span class="k">Diajukan</span><span class="v">Hari ini, 09.12 WIB</span></div>
+        <div class="kv-row"><span class="k">Catatan Pemohon</span><span class="v">Mohon diproses sebelum tanggal 26 Mei untuk keperluan administrasi perjalanan dinas.</span></div>
+      </div>
+
+      <div class="two-col-layout">
+        <div>
+          <div class="card" id="uploadCard">
+            <div class="section-title">1. Unggah Draf &amp; Kirim ke Aplikasi Mobile</div>
+            <div class="hint" style="margin-bottom:12px;">Unggah draf surat dalam format PDF. Setelah dikirim, Anggota Dewan akan menerima notifikasi untuk meninjau &amp; menyetujui surat melalui aplikasi mobile.</div>
+            <label class="upload-box" id="uploadBox" for="pdfInput">
+              <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+              <span id="uploadLabel">Klik untuk memilih berkas PDF draf surat, atau seret berkas ke sini</span>
+            </label>
+            <input type="file" id="pdfInput" accept="application/pdf" style="display:none;" onchange="onFileChosen(this)">
+            <div class="btn-row" style="margin-top:14px;">
+              <button class="btn btn-primary" id="sendBtn" onclick="sendDraft()" disabled><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Draf ke Anggota</button>
+            </div>
+          </div>
+
+          <div class="card" id="waitingCard" style="display:none;">
+            <div class="section-title">2. Menunggu Persetujuan Anggota</div>
+            <div class="info-box">
+              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
+              <span>Draf PDF telah terkirim ke aplikasi mobile Ir. Budi Santoso, M.T. Admin akan menerima notifikasi otomatis segera setelah surat disetujui.</span>
+            </div>
+            <div class="hint" style="margin-top:10px;">Mode prototipe &mdash; simulasikan tanggapan Anggota Dewan pada aplikasi mobile:</div>
+            <div class="btn-row" style="margin-top:8px;">
+              <button class="btn btn-outline btn-sm" onclick="simulateApproval()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Simulasikan: Disetujui Anggota</button>
+            </div>
+          </div>
+
+          <div class="card" id="approvedCard" style="display:none;">
+            <div class="section-title">3. Disetujui &middot; Siap Dikirim/Dicetak</div>
+            <div class="success-box" id="approvalNotif">
+              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
+              <span><strong>Surat disetujui oleh Ir. Budi Santoso, M.T.</strong><br>Disetujui melalui aplikasi mobile, hari ini pukul 10.24 WIB. Surat siap dicetak &amp; dikirim ke pemohon.</span>
+            </div>
+            <div class="hint" style="margin:12px 0;">Setelah surat fisik/PDF final dikirimkan kepada pemohon, tandai permintaan ini sebagai selesai.</div>
+            <div class="btn-row">
+              <button class="btn btn-primary" onclick="markDone()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Tandai Sudah Dikirim (Selesai)</button>
+            </div>
+          </div>
+
+          <div class="card" id="doneCard" style="display:none;">
+            <div class="success-box">
+              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
+              <span><strong>Permintaan selesai.</strong> Surat telah dikirim kepada pemohon &amp; status diperbarui menjadi Selesai.</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="card">
+            <div class="section-title">Riwayat Status</div>
+            <div class="timeline" id="statusTimeline">
+              <div class="t-item done">
+                <div class="t-title">Permintaan diterima</div>
+                <div class="t-time">Hari ini, 09.12 WIB</div>
+                <div class="t-desc">Diajukan oleh Ir. Budi Santoso, M.T. melalui aplikasi mobile.</div>
+              </div>
+              <div class="t-item pending" id="tl-kirim">
+                <div class="t-title">Draf dikirim untuk persetujuan</div>
+                <div class="t-time">&mdash;</div>
+              </div>
+              <div class="t-item pending" id="tl-setuju">
+                <div class="t-title">Disetujui Anggota</div>
+                <div class="t-time">&mdash;</div>
+              </div>
+              <div class="t-item pending" id="tl-selesai">
+                <div class="t-title">Selesai &amp; dikirim ke pemohon</div>
+                <div class="t-time">&mdash;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+function toast(msg){
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 2400);
+}
+function onFileChosen(input){
+  if(input.files && input.files[0]){
+    document.getElementById('uploadLabel').textContent = 'Berkas dipilih: ' + input.files[0].name;
+    document.getElementById('uploadBox').classList.add('filled');
+    document.getElementById('sendBtn').disabled = false;
+  }
+}
+function sendDraft(){
+  document.getElementById('uploadCard').style.display = 'none';
+  document.getElementById('waitingCard').style.display = 'block';
+  document.getElementById('statusBadge').textContent = 'Menunggu Persetujuan';
+  document.getElementById('statusBadge').className = 'badge badge-info';
+  var tl = document.getElementById('tl-kirim');
+  tl.classList.remove('pending'); tl.classList.add('done');
+  tl.querySelector('.t-time').textContent = 'Hari ini, 09.40 WIB';
+  toast('Draf PDF terkirim ke aplikasi mobile anggota');
+}
+function simulateApproval(){
+  document.getElementById('waitingCard').style.display = 'none';
+  document.getElementById('approvedCard').style.display = 'block';
+  document.getElementById('statusBadge').textContent = 'Disetujui';
+  document.getElementById('statusBadge').className = 'badge badge-success';
+  var tl = document.getElementById('tl-setuju');
+  tl.classList.remove('pending'); tl.classList.add('done');
+  tl.querySelector('.t-time').textContent = 'Hari ini, 10.24 WIB';
+  toast('Notifikasi diterima: surat disetujui anggota');
+}
+function markDone(){
+  document.getElementById('approvedCard').style.display = 'none';
+  document.getElementById('doneCard').style.display = 'block';
+  document.getElementById('statusBadge').textContent = 'Selesai';
+  document.getElementById('statusBadge').className = 'badge badge-neutral';
+  var tl = document.getElementById('tl-selesai');
+  tl.classList.remove('pending'); tl.classList.add('done');
+  tl.querySelector('.t-time').textContent = 'Hari ini, 10.35 WIB';
+  toast('Status diperbarui menjadi Selesai');
+}
+</script>
+</body>
+</html>

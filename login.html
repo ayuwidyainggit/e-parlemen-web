@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Masuk Admin &middot; e-Parlemen DPRD Kota Magelang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --green-dark:#0f2318; --green:#1b3a2b; --green-mid:#234a37;
+  --gold:#c9a24a; --gold-light:#e4c976; --cream:#f7f6f1;
+  --ink:#182a20; --muted:#707b73; --border:#e7e4dc; --danger:#d64545; --danger-bg:#fbe7e7;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  min-height:100vh; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,var(--green-dark),var(--green) 55%,var(--green-mid));
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  color:var(--ink); padding:20px;
+}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+.login-card{background:#fff;border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:34px 30px;width:100%;max-width:380px;}
+.login-emblem{width:60px;height:60px;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;}
+.login-card h1{font-family:Georgia,'Times New Roman',serif;font-size:20px;text-align:center;margin:0 0 2px;}
+.login-card .sub{text-align:center;font-size:11.5px;color:var(--gold);font-weight:800;letter-spacing:.4px;margin-bottom:4px;}
+.login-card .desc{text-align:center;font-size:11.5px;color:var(--muted);margin-bottom:24px;line-height:1.5;}
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field input{width:100%;padding:12px 13px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field input:focus{outline:2px solid var(--gold);outline-offset:1px;}
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 16px;border-radius:11px;font-size:13.5px;font-weight:800;text-decoration:none;border:none;cursor:pointer;width:100%;font-family:inherit;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.hint-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--muted);margin:2px 0 18px;}
+.hint-row a{color:var(--green);font-weight:700;text-decoration:none;}
+.demo-box{background:var(--cream);border:1px dashed var(--border);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.demo-box strong{color:var(--ink);}
+.error-box{display:none;background:var(--danger-bg);color:#a12f2f;border-radius:10px;padding:10px 12px;font-size:11.5px;margin-bottom:16px;}
+.footer-note{text-align:center;font-size:10.5px;color:rgba(255,255,255,.75);margin-top:18px;}
+.footer-note a{color:#fff;text-decoration:underline;}
+</style>
+</head>
+<body>
+  <div>
+    <div class="login-card">
+      <div class="login-emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><text x="24" y="15" text-anchor="middle" font-family="Georgia, serif" font-size="7" fill="#f3e6bb" font-weight="700">DPRD</text></svg></div>
+      <h1>e-Parlemen Admin</h1>
+      <div class="sub">SEKRETARIAT DPRD KOTA MAGELANG</div>
+      <div class="desc">Portal Admin Sekretariat untuk pengelolaan surat, jadwal rapat &amp; presensi kehadiran.</div>
+
+      <div class="demo-box"><strong>Mode prototipe:</strong> kredensial contoh sudah terisi otomatis &mdash; email <strong>admin@dprdmagelang.go.id</strong> / kata sandi <strong>admin</strong> &mdash; klik Masuk untuk membuka dashboard.</div>
+
+      <div class="error-box" id="errBox">Email atau kata sandi tidak sesuai. Gunakan kredensial contoh pada catatan di atas.</div>
+
+      <form id="loginForm" onsubmit="return doLogin(event)">
+        <div class="field">
+          <label for="email">Email Admin</label>
+          <input type="email" id="email" value="admin@dprdmagelang.go.id" required>
+        </div>
+        <div class="field">
+          <label for="pass">Kata Sandi</label>
+          <input type="password" id="pass" placeholder="Masukkan kata sandi" value="admin" required>
+        </div>
+        <div class="hint-row"><label><input type="checkbox" checked style="width:auto;margin-right:5px;">Ingat saya</label><a href="#">Lupa kata sandi?</a></div>
+        <button type="submit" class="btn btn-primary"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Masuk</button>
+      </form>
+    </div>
+    <div class="footer-note">Kembali ke <a href="index.html">Beranda Admin</a></div>
+  </div>
+<script>
+function doLogin(e){
+  e.preventDefault();
+  document.getElementById('errBox').style.display = 'none';
+  window.location.href = 'dashboard.html';
+  return false;
+}
+</script>
+</body>
+</html>

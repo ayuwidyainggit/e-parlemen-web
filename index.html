@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Admin Sekretariat &middot; e-Parlemen DPRD Kota Magelang</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --green-dark:#0f2318;
+  --green:#1b3a2b;
+  --green-mid:#234a37;
+  --green-light:#2f5a44;
+  --gold:#c9a24a;
+  --gold-light:#e4c976;
+  --cream:#f7f6f1;
+  --card:#ffffff;
+  --ink:#182a20;
+  --muted:#707b73;
+  --border:#e7e4dc;
+  --success-bg:#e6f4ea; --success:#1f8a4c;
+  --warn-bg:#fff2df; --warn:#c8791a;
+  --danger-bg:#fbe7e7; --danger:#d64545;
+  --info-bg:#e7f0fb; --info:#2f6fb0;
+  --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef0ea;}
+a{color:inherit;}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+
+.idx-hero{background:linear-gradient(135deg,var(--green-dark),var(--green) 60%,var(--green-mid));color:#fff;padding:44px 20px 64px;text-align:center;position:relative;overflow:hidden;}
+.idx-hero::after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(201,162,74,.22),transparent 70%);}
+.idx-emblem{width:76px;height:76px;border-radius:50%;margin:0 auto 14px;padding:9px;background:radial-gradient(circle,rgba(255,255,255,.08),transparent 70%);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;}
+.idx-hero h1{font-family:Georgia,'Times New Roman',serif;font-size:30px;margin:0 0 4px;position:relative;z-index:2;}
+.idx-hero .sub{color:var(--gold-light);font-weight:800;font-size:13px;letter-spacing:.5px;position:relative;z-index:2;}
+.idx-hero p{max-width:560px;margin:14px auto 0;font-size:13px;opacity:.92;line-height:1.6;position:relative;z-index:2;}
+.idx-hero .cta{position:relative;z-index:2;margin-top:20px;}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 22px;border-radius:11px;font-size:13.5px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-dark);}
+.idx-wrap{max-width:1080px;margin:-34px auto 60px;padding:0 20px;}
+.idx-panel{background:#fff;border-radius:20px;padding:26px 24px;box-shadow:0 14px 40px rgba(0,0,0,.1);border:1px solid var(--border);}
+.idx-group{margin-bottom:30px;}
+.idx-group:last-child{margin-bottom:0;}
+.idx-group-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+.idx-group-head h2{font-family:Georgia,'Times New Roman',serif;color:var(--green-dark);font-size:18px;margin:0;}
+.idx-group-head .tag{font-size:10.5px;font-weight:800;color:var(--gold);background:#fbf1dc;padding:3px 10px;border-radius:20px;}
+.idx-group .gdesc{font-size:12px;color:var(--muted);margin:4px 0 14px;line-height:1.5;}
+.idx-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px,1fr));gap:12px;}
+.idx-card{display:flex;gap:12px;align-items:flex-start;text-decoration:none;color:inherit;background:var(--cream);border:1px solid var(--border);border-radius:14px;padding:14px;transition:transform .15s, box-shadow .15s;}
+.idx-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,0,0,.08);border-color:var(--gold);}
+.idx-card .ic{width:38px;height:38px;border-radius:10px;background:#fff;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;color:var(--green);}
+.idx-card .t{font-size:12.8px;font-weight:800;color:var(--ink);margin-bottom:2px;}
+.idx-card .d{font-size:10.9px;color:var(--muted);line-height:1.4;}
+.idx-note{background:var(--info-bg);color:#2a5583;border-radius:14px;padding:14px 16px;font-size:12px;line-height:1.6;margin-top:26px;}
+.idx-footer{text-align:center;font-size:11px;color:var(--muted);margin-top:30px;}
+@media (max-width:640px){ .idx-panel{padding:20px 16px;} }
+</style>
+</head>
+<body>
+  <div class="idx-hero">
+    <div class="idx-emblem"><span style="display:inline-flex;width:58px;height:58px;"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><text x="24" y="15" text-anchor="middle" font-family="Georgia, serif" font-size="7" fill="#f3e6bb" font-weight="700">DPRD</text></svg></span></div>
+    <h1>e-Parlemen &middot; Admin</h1>
+    <div class="sub">DPRD KOTA MAGELANG &middot; PROTOTIPE APLIKASI WEB SEKRETARIAT</div>
+    <p>Aplikasi web untuk Admin Sekretariat: kelola dashboard surat &amp; agenda, proses permintaan surat keluar dari Anggota Dewan hingga terkirim, serta buat jadwal rapat dan kelola presensi kehadiran via QR/barcode.</p>
+    <div class="cta"><a class="btn btn-gold" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Masuk sebagai Admin</a></div>
+  </div>
+  <div class="idx-wrap">
+    <div class="idx-panel">
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Ringkasan</h2><span class="tag">Dashboard</span></div>
+        <div class="gdesc">Ikhtisar surat masuk/keluar, agenda &amp; jadwal rapat mendatang dalam satu layar.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="dashboard.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg></div><div><div class="t">Dashboard</div><div class="d">Statistik surat, agenda, surat keluar &amp; ringkasan Pokir</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Surat Keluar</h2><span class="tag">Permintaan &amp; Pengiriman</span></div>
+        <div class="gdesc">Terima notifikasi permintaan surat keluar dari aplikasi mobile Anggota Dewan, unggah &amp; kirim draf PDF, pantau persetujuan, hingga tandai selesai.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="surat-keluar.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg></div><div><div class="t">Daftar Surat Keluar</div><div class="d">Permintaan baru &middot; menunggu persetujuan &middot; selesai</div></div></a>
+          <a class="idx-card" href="surat-keluar-proses.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div><div><div class="t">Proses Permintaan Surat</div><div class="d">Kirim PDF &rarr; menunggu persetujuan &rarr; selesai</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Rapat &amp; Presensi</h2><span class="tag">Jadwal &amp; QR/Barcode</span></div>
+        <div class="gdesc">Buat jadwal rapat Fraksi/Komisi/Paripurna, lalu kelola presensi kehadiran melalui pemindaian QR anggota atau QR sesi rapat.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="jadwal-rapat.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></div><div><div class="t">Jadwal Rapat</div><div class="d">Daftar &amp; buat jadwal rapat baru</div></div></a>
+          <a class="idx-card" href="jadwal-rapat-buat.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg></div><div><div class="t">Buat Jadwal Rapat</div><div class="d">Formulir penjadwalan rapat</div></div></a>
+          <a class="idx-card" href="absensi.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg></div><div><div class="t">Absensi Rapat (QR/Barcode)</div><div class="d">Scan QR anggota &amp; generate QR sesi rapat</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Akun Pengguna</h2><span class="tag">Onboarding Mobile</span></div>
+        <div class="gdesc">Buat akun aplikasi mobile untuk Anggota Dewan &amp; kirim tautan aktivasi ke email mereka.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="pengguna.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg></div><div><div class="t">Akun Pengguna Mobile</div><div class="d">Daftar akun &amp; status aktivasi</div></div></a>
+          <a class="idx-card" href="pengguna-buat.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg></div><div><div class="t">Buat Akun Baru</div><div class="d">Kirim tautan aktivasi ke email anggota</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Reses &amp; Pokir</h2><span class="tag">Master Data &amp; Laporan</span></div>
+        <div class="gdesc">Kelola data referensi Dapil, Periode Reses &amp; Jenis Kegiatan, serta pantau rekap kegiatan reses/kunjungan dan usulan pokok pikiran (pokir) seluruh Anggota DPRD.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="master-dapil.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg></div><div><div class="t">Master Dapil</div><div class="d">Data Daerah Pemilihan &amp; wilayah cakupan</div></div></a>
+          <a class="idx-card" href="master-reses.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg></div><div><div class="t">Master Reses</div><div class="d">Referensi kode &amp; nama jenis Reses</div></div></a>
+          <a class="idx-card" href="master-periode-reses.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg></div><div><div class="t">Master Periode Reses</div><div class="d">Jadwal Reses I/II/III per tahun sidang</div></div></a>
+          <a class="idx-card" href="master-jenis-kegiatan.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg></div><div><div class="t">Master Jenis Kegiatan</div><div class="d">Referensi jenis kegiatan reses &amp; kunjungan</div></div></a>
+          <a class="idx-card" href="laporan-dapil-reses.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12" y="8" width="3" height="10"/><rect x="17" y="5" width="3" height="13"/></svg></div><div><div class="t">Laporan Dapil &amp; Reses</div><div class="d">Rekap kegiatan reses/kunjungan per dapil</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-group">
+        <div class="idx-group-head"><h2>Umum</h2><span class="tag">Notifikasi</span></div>
+        <div class="gdesc">Pusat notifikasi Admin: permintaan surat baru, persetujuan surat oleh Anggota, dan pengingat rapat.</div>
+        <div class="idx-grid">
+          <a class="idx-card" href="notifikasi.html"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div><div><div class="t">Notifikasi</div><div class="d">Permintaan surat, persetujuan, pengingat rapat</div></div></a>
+        </div>
+      </div>
+
+      <div class="idx-note">
+        <strong>Catatan prototipe:</strong> seluruh data pada layar bersifat contoh (dummy) dan berjalan sepenuhnya di sisi klien (tanpa backend). Aplikasi ini melengkapi prototipe aplikasi mobile Anggota Dewan pada direktori induk &mdash; alur <strong>surat keluar</strong> dan <strong>presensi QR</strong> di kedua aplikasi dirancang saling terhubung secara konsep.
+      </div>
+      <div class="idx-footer">e-Parlemen DPRD Kota Magelang &middot; Prototipe Web Admin Sekretariat &middot; 1 halaman = 1 file</div>
+    </div>
+  </div>
+</body>
+</html>
