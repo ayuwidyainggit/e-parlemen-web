@@ -1,0 +1,458 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Laporan Pokir &middot; Admin e-Parlemen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --green-dark:#0f2318; --green:#1b3a2b; --green-mid:#234a37; --green-light:#2f5a44;
+  --gold:#c9a24a; --gold-light:#e4c976; --cream:#f7f6f1; --card:#ffffff;
+  --ink:#182a20; --muted:#707b73; --border:#e7e4dc;
+  --success-bg:#e6f4ea; --success:#1f8a4c;
+  --warn-bg:#fff2df; --warn:#c8791a;
+  --danger-bg:#fbe7e7; --danger:#d64545;
+  --info-bg:#e7f0fb; --info:#2f6fb0;
+  --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef0ea;}
+a{color:inherit;}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+
+.admin-shell{display:flex;min-height:100vh;}
+.sidebar{width:232px;background:linear-gradient(180deg,var(--green-dark),var(--green));color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:60;}
+.sidebar-brand{display:flex;gap:10px;align-items:center;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.12);}
+.sidebar-brand .emblem{width:38px;height:38px;flex-shrink:0;}
+.sidebar-brand h1{font-family:Georgia,'Times New Roman',serif;font-size:15.5px;margin:0;}
+.sidebar-brand .sub{font-size:8.8px;color:var(--gold-light);font-weight:700;letter-spacing:.4px;margin-top:1px;}
+.sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.snav-label{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;padding:14px 10px 6px;}
+.snav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:12.6px;font-weight:700;}
+.snav-item .ic-svg{width:17px;height:17px;}
+.snav-item:hover{background:rgba(255,255,255,.08);}
+.snav-item.active{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 var(--gold);}
+.snav-item .count{margin-left:auto;background:var(--danger);color:#fff;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;}
+.sidebar-foot{padding:14px;border-top:1px solid rgba(255,255,255,.12);}
+.sidebar-user{display:flex;gap:10px;align-items:center;}
+.sidebar-user .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dark);font-size:12px;flex-shrink:0;}
+.sidebar-user .name{font-size:12px;font-weight:800;color:#fff;}
+.sidebar-user .role{font-size:10px;color:rgba(255,255,255,.6);}
+.logout-link{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.65);text-decoration:none;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;}
+.topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
+.topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
+.topbar-actions{display:flex;gap:14px;align-items:center;}
+.tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
+.tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.tb-user{display:flex;align-items:center;gap:8px;}
+.tb-user .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:800;font-size:12px;}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
+.menu-toggle .ic-svg{width:22px;height:22px;}
+
+.content{padding:24px 26px 60px;max-width:1280px;width:100%;}
+
+.card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
+.section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
+.divider{height:1px;background:var(--border);margin:14px 0;}
+
+.filter-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;}
+.filter-field{display:flex;flex-direction:column;gap:6px;}
+.filter-field label{font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.filter-field select{padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:12.5px;min-width:180px;background:#fff;font-family:inherit;color:var(--ink);}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:22px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--neutral-bg);color:var(--green);}
+.stat-card.neutral .ic{background:var(--neutral-bg);color:var(--neutral);}
+.stat-card.warn .ic{background:var(--warn-bg);color:var(--warn);}
+.stat-card.success .ic{background:var(--success-bg);color:var(--success);}
+.stat-card.gold .ic{background:#fbf1dc;color:#9a7b1f;}
+.stat-card .num{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1;}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
+.badge-success{background:var(--success-bg);color:var(--success);}
+.badge-warn{background:var(--warn-bg);color:var(--warn);}
+.badge-danger{background:var(--danger-bg);color:var(--danger);}
+.badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
+.badge-info{background:var(--info-bg);color:var(--info);}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-sm{padding:8px 13px;font-size:11.5px;}
+
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:920px;}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
+td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf7;}
+.namecell .n{font-weight:800;font-size:12.6px;}
+.namecell .s{font-size:10.5px;color:var(--muted);}
+.actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
+
+.bar-track{height:8px;background:#eceee7;border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));}
+.progress-cell{display:flex;flex-direction:column;gap:5px;min-width:130px;}
+.progress-cell .pc-top{display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;}
+
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-box.wide{max-width:540px;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;}
+.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
+.modal-close .ic-svg{width:15px;height:15px;}
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field textarea{resize:vertical;min-height:72px;}
+.range-row{display:flex;align-items:center;gap:12px;}
+.range-row input[type=range]{flex:1;accent-color:var(--green);}
+.range-row .range-val{font-size:16px;font-weight:800;color:var(--green);min-width:46px;text-align:right;}
+.modal-foot{display:flex;gap:10px;margin-top:18px;}
+.modal-foot .btn{flex:1;}
+
+.timeline{display:flex;flex-direction:column;}
+.timeline-item{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--border);}
+.timeline-item:last-child{border-left-color:transparent;padding-bottom:0;}
+.timeline-item::before{content:'';position:absolute;left:-5px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 0 0 1px var(--green);}
+.timeline-item .tl-head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+.timeline-item .tl-pct{font-size:13.5px;font-weight:800;color:var(--ink);}
+.timeline-item .tl-date{font-size:10.5px;color:var(--muted);margin-top:2px;}
+.timeline-item .tl-note{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.5;}
+.timeline-item .tl-by{font-size:10.5px;color:var(--muted);margin-top:4px;}
+
+.toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
+
+@media (max-width:960px){
+  .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
+  .sidebar.open{left:0;}
+  .menu-toggle{display:block;}
+}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg></span>
+      <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-label">Menu Utama</div>
+      <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
+      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
+      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Absensi Rapat</a>
+      <div class="snav-label">Management User</div>
+      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna Mobile <span class="count">2</span></a>
+      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
+      <div class="snav-label">Reses &amp; Pokir</div>
+      <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
+      <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
+      <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
+      <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
+      <a class="snav-item" href="laporan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil &amp; Reses</a>
+      <a class="snav-item active" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
+      <div class="snav-label">Lainnya</div>
+      <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user"><span class="av">AS</span><div><div class="name">Admin Sekretariat</div><div class="role">Sekretariat DPRD</div></div></div>
+      <a class="logout-link" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+        <div><h2>Laporan Pokir</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Laporan Pokir</div></div>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-outline btn-sm" onclick="toast('Laporan diunduh sebagai PDF (prototipe)')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M5 21h14"/></svg> Unduh Laporan</button>
+        <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
+        <div class="tb-user"><span class="av">AS</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="hint" style="margin-bottom:16px;">Rekap usulan Pokok Pikiran (Pokir) hasil reses &amp; kunjungan dapil, beserta progres realisasi dan riwayat pemutakhiran persentase tindak lanjut oleh OPD/Sekretariat.</div>
+
+      <div class="filter-bar">
+        <div class="filter-field"><label>Status</label>
+          <select id="filterStatus" onchange="applyFilter()">
+            <option value="">Semua Status</option>
+            <option value="Diajukan">Diajukan</option>
+            <option value="Diproses">Diproses</option>
+            <option value="Selesai">Selesai</option>
+          </select>
+        </div>
+        <div class="filter-field"><label>Dapil</label>
+          <select id="filterDapil" onchange="applyFilter()">
+            <option value="">Semua Dapil</option>
+            <option value="Dapil 1">Dapil 1</option>
+            <option value="Dapil 2">Dapil 2</option>
+            <option value="Dapil 3">Dapil 3</option>
+          </select>
+        </div>
+        <div class="filter-field"><label>Kategori</label>
+          <select id="filterKategori" onchange="applyFilter()">
+            <option value="">Semua Kategori</option>
+            <option value="Infrastruktur">Infrastruktur</option>
+            <option value="Ekonomi &amp; UMKM">Ekonomi &amp; UMKM</option>
+            <option value="Pendidikan">Pendidikan</option>
+          </select>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="resetFilter()">Reset Filter</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg></div>
+          <div><div class="num" id="statTotal">0</div><div class="lbl">Total Usulan Pokir</div></div>
+        </div>
+        <div class="stat-card neutral">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <div><div class="num" id="statDiajukan">0</div><div class="lbl">Diajukan</div></div>
+        </div>
+        <div class="stat-card warn">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2v4"/><path d="M12 18v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/></svg></div>
+          <div><div class="num" id="statDiproses">0</div><div class="lbl">Diproses</div></div>
+        </div>
+        <div class="stat-card success">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
+          <div><div class="num" id="statSelesai">0</div><div class="lbl">Selesai</div></div>
+        </div>
+        <div class="stat-card gold">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg></div>
+          <div><div class="num" id="statAvg">0%</div><div class="lbl">Rata-rata Progres</div></div>
+        </div>
+      </div>
+
+      <div class="section-title">Daftar Usulan Pokir</div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Usulan Pokir</th><th>Asal Kegiatan</th><th>Dapil</th><th>Kategori</th><th>Status</th><th>Progres Realisasi</th><th>Terakhir Update</th><th>Aksi</th></tr></thead>
+          <tbody id="tbodyPokir"></tbody>
+        </table>
+      </div>
+      <div id="emptyState" class="hint" style="display:none;text-align:center;padding:18px;">Tidak ada usulan pokir yang sesuai dengan filter.</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalUpdate">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Update Progres Realisasi</h3><button class="modal-close" onclick="closeModal('modalUpdate')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="updateJudulText" style="margin-bottom:14px;font-weight:700;color:var(--ink);"></div>
+    <form onsubmit="return submitUpdate(event)">
+      <div class="field">
+        <label>Persentase Realisasi</label>
+        <div class="range-row">
+          <input type="range" id="fRange" min="0" max="100" step="5" oninput="document.getElementById('fRangeVal').textContent = this.value + '%'">
+          <span class="range-val" id="fRangeVal">0%</span>
+        </div>
+      </div>
+      <div class="field"><label>Catatan Update</label><textarea id="fCatatan" placeholder="Jelaskan progres tindak lanjut usulan pokir ini..." required></textarea></div>
+      <div class="field"><label>Diperbarui Oleh</label><input type="text" id="fOleh" placeholder="Contoh: Dinas Pekerjaan Umum" required></div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-outline" onclick="closeModal('modalUpdate')">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan Update</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="modalHistory">
+  <div class="modal-box wide">
+    <div class="modal-head"><h3>Riwayat Update Progres</h3><button class="modal-close" onclick="closeModal('modalHistory')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="historyJudulText" style="margin-bottom:14px;font-weight:700;color:var(--ink);"></div>
+    <div class="timeline" id="historyListEl"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+function toast(msg){
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 2400);
+}
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+
+var statusClass = { 'Diajukan':'badge-neutral', 'Diproses':'badge-warn', 'Selesai':'badge-success' };
+
+var pokirData = [
+  { id:1, judul:'Perbaikan Jalan Dusun Krasak', asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'30 Agu 2026',
+    history:[ {tgl:'30 Agu 2026', persen:0, catatan:'Usulan pokir diajukan berdasarkan hasil reses di Dusun Krasak.', oleh:'Admin Sekretariat'} ] },
+  { id:2, judul:'Bantuan Bibit Pertanian', asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:45, updated:'15 Sep 2026',
+    history:[
+      {tgl:'30 Agu 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses.', oleh:'Admin Sekretariat'},
+      {tgl:'10 Sep 2026', persen:20, catatan:'Verifikasi kebutuhan bibit oleh OPD terkait.', oleh:'Dinas Pertanian'},
+      {tgl:'15 Sep 2026', persen:45, catatan:'Proses pengadaan bibit sedang berjalan, menunggu distribusi ke kelompok tani.', oleh:'Dinas Pertanian'}
+    ] },
+  { id:3, judul:'Perbaikan Atap Pasar Rejowinangun', asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Infrastruktur', status:'Selesai', progres:100, updated:'20 Sep 2026',
+    history:[
+      {tgl:'28 Agu 2026', persen:0, catatan:'Usulan pokir diajukan setelah kunjungan ke Pasar Rejowinangun.', oleh:'Admin Sekretariat'},
+      {tgl:'5 Sep 2026', persen:35, catatan:'Survei lapangan dan penyusunan RAB oleh Dinas Perdagangan.', oleh:'Dinas Perdagangan'},
+      {tgl:'12 Sep 2026', persen:75, catatan:'Pengerjaan perbaikan atap sedang berlangsung.', oleh:'Dinas Perdagangan'},
+      {tgl:'20 Sep 2026', persen:100, catatan:'Perbaikan atap pasar selesai dikerjakan dan diserahterimakan.', oleh:'Dinas Perdagangan'}
+    ] },
+  { id:4, judul:'Penataan Lapak PKL', asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:60, updated:'18 Sep 2026',
+    history:[
+      {tgl:'28 Agu 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
+      {tgl:'8 Sep 2026', persen:30, catatan:'Koordinasi dengan Satpol PP dan perwakilan PKL.', oleh:'Dinas Perdagangan'},
+      {tgl:'18 Sep 2026', persen:60, catatan:'Penataan lapak tahap 1 selesai, tahap 2 menyusul bulan depan.', oleh:'Dinas Perdagangan'}
+    ] },
+  { id:5, judul:'Pembangunan Talud Penahan Longsor', asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diproses', progres:30, updated:'22 Sep 2026',
+    history:[
+      {tgl:'27 Agu 2026', persen:0, catatan:'Usulan pokir diajukan terkait risiko longsor di Jurangombo.', oleh:'Admin Sekretariat'},
+      {tgl:'22 Sep 2026', persen:30, catatan:'Perencanaan teknis & pengukuran lokasi oleh Dinas PUPR.', oleh:'Dinas PUPR'}
+    ] },
+  { id:6, judul:'Rehabilitasi Saluran Irigasi Sawah', asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'27 Agu 2026',
+    history:[ {tgl:'27 Agu 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses di Jurangombo.', oleh:'Admin Sekretariat'} ] },
+  { id:7, judul:'Bantuan Alat Pertanian Kelompok Tani', asal:'RES-2026-039', anggota:'Drs. Ahmad Fauzi, M.Si.', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:55, updated:'14 Sep 2026',
+    history:[
+      {tgl:'25 Agu 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
+      {tgl:'14 Sep 2026', persen:55, catatan:'Proses pengadaan alat pertanian berjalan sesuai RAB.', oleh:'Dinas Pertanian'}
+    ] },
+  { id:8, judul:'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Diproses', progres:70, updated:'19 Sep 2026',
+    history:[
+      {tgl:'16 Mei 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses di Sukamaju.', oleh:'Admin Sekretariat'},
+      {tgl:'10 Agu 2026', persen:40, catatan:'Verifikasi kondisi ruang kelas oleh Dinas Pendidikan.', oleh:'Dinas Pendidikan'},
+      {tgl:'19 Sep 2026', persen:70, catatan:'Rehabilitasi ruang kelas tahap konstruksi sedang berjalan.', oleh:'Dinas Pendidikan'}
+    ] },
+  { id:9, judul:'Pengadaan Buku Perpustakaan Desa', asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Selesai', progres:100, updated:'1 Sep 2026',
+    history:[
+      {tgl:'16 Mei 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
+      {tgl:'20 Jul 2026', persen:50, catatan:'Daftar judul buku disusun bersama Dinas Pendidikan.', oleh:'Dinas Pendidikan'},
+      {tgl:'1 Sep 2026', persen:100, catatan:'Buku perpustakaan desa telah diserahkan dan diterima.', oleh:'Dinas Pendidikan'}
+    ] },
+  { id:10, judul:'Normalisasi Saluran Drainase', asal:'KJD-2026-011', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'10 Mei 2026',
+    history:[ {tgl:'10 Mei 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil kunjungan lapangan Kel. Wates.', oleh:'Admin Sekretariat'} ] }
+];
+
+var activeUpdateId = null;
+
+function statusFromProgres(p){
+  if(p >= 100) return 'Selesai';
+  if(p > 0) return 'Diproses';
+  return 'Diajukan';
+}
+
+function renderTable(){
+  var status = document.getElementById('filterStatus').value;
+  var dapil = document.getElementById('filterDapil').value;
+  var kategori = document.getElementById('filterKategori').value;
+
+  var rows = pokirData.filter(function(p){
+    return (!status || p.status === status) && (!dapil || p.dapil === dapil) && (!kategori || p.kategori === kategori);
+  });
+
+  document.getElementById('tbodyPokir').innerHTML = rows.map(function(p){
+    return '<tr>'
+      + '<td><div class="namecell"><div class="n">' + p.judul + '</div><div class="s">' + p.anggota + '</div></div></td>'
+      + '<td>' + p.asal + '</td>'
+      + '<td>' + p.dapil + '</td>'
+      + '<td><span class="badge badge-info">' + p.kategori + '</span></td>'
+      + '<td><span class="badge ' + statusClass[p.status] + '">' + p.status + '</span></td>'
+      + '<td><div class="progress-cell"><div class="pc-top"><span>' + p.progres + '%</span></div><div class="bar-track"><div class="bar-fill" style="width:' + p.progres + '%;"></div></div></div></td>'
+      + '<td>' + p.updated + '</td>'
+      + '<td><div class="actions-cell">'
+      + '<button class="btn btn-outline btn-sm" onclick="openHistory(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg> Riwayat</button>'
+      + '<button class="btn btn-primary btn-sm" onclick="openUpdate(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Update Progres</button>'
+      + '</div></td>'
+      + '</tr>';
+  }).join('');
+
+  document.getElementById('emptyState').style.display = rows.length === 0 ? 'block' : 'none';
+  updateStats();
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = pokirData.length;
+  var diajukan = 0, diproses = 0, selesai = 0, totalProgres = 0;
+  pokirData.forEach(function(p){
+    if(p.status === 'Diajukan') diajukan++;
+    else if(p.status === 'Diproses') diproses++;
+    else selesai++;
+    totalProgres += p.progres;
+  });
+  document.getElementById('statDiajukan').textContent = diajukan;
+  document.getElementById('statDiproses').textContent = diproses;
+  document.getElementById('statSelesai').textContent = selesai;
+  document.getElementById('statAvg').textContent = Math.round(totalProgres / pokirData.length) + '%';
+}
+
+function applyFilter(){
+  renderTable();
+  toast('Filter diterapkan');
+}
+function resetFilter(){
+  document.getElementById('filterStatus').selectedIndex = 0;
+  document.getElementById('filterDapil').selectedIndex = 0;
+  document.getElementById('filterKategori').selectedIndex = 0;
+  renderTable();
+}
+
+function openUpdate(id){
+  activeUpdateId = id;
+  var p = pokirData.find(function(x){ return x.id === id; });
+  document.getElementById('updateJudulText').textContent = p.judul;
+  document.getElementById('fRange').value = p.progres;
+  document.getElementById('fRangeVal').textContent = p.progres + '%';
+  document.getElementById('fCatatan').value = '';
+  document.getElementById('fOleh').value = '';
+  document.getElementById('modalUpdate').classList.add('open');
+}
+
+function submitUpdate(e){
+  e.preventDefault();
+  var p = pokirData.find(function(x){ return x.id === activeUpdateId; });
+  var persen = parseInt(document.getElementById('fRange').value, 10);
+  var catatan = document.getElementById('fCatatan').value.trim();
+  var oleh = document.getElementById('fOleh').value.trim();
+  var tgl = new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
+
+  p.history.push({ tgl:tgl, persen:persen, catatan:catatan, oleh:oleh });
+  p.progres = persen;
+  p.status = statusFromProgres(persen);
+  p.updated = tgl;
+
+  renderTable();
+  closeModal('modalUpdate');
+  toast('Progres "' + p.judul + '" diperbarui menjadi ' + persen + '% (prototipe)');
+  return false;
+}
+
+function openHistory(id){
+  var p = pokirData.find(function(x){ return x.id === id; });
+  document.getElementById('historyJudulText').textContent = p.judul;
+  var sorted = p.history.slice().reverse();
+  document.getElementById('historyListEl').innerHTML = sorted.map(function(h){
+    return '<div class="timeline-item">'
+      + '<div class="tl-head"><span class="tl-pct">' + h.persen + '%</span><span class="badge ' + statusClass[statusFromProgres(h.persen)] + '">' + statusFromProgres(h.persen) + '</span></div>'
+      + '<div class="tl-date">' + h.tgl + '</div>'
+      + '<div class="tl-note">' + h.catatan + '</div>'
+      + '<div class="tl-by">Oleh: ' + h.oleh + '</div>'
+      + '</div>';
+  }).join('');
+  document.getElementById('modalHistory').classList.add('open');
+}
+
+renderTable();
+</script>
+</body>
+</html>
