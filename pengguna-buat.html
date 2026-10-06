@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Buat Akun Pengguna Mobile &middot; Admin e-Parlemen</title>
+<title>Buat Akun Pengguna &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -110,7 +110,9 @@ a{color:inherit;}
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
       <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
       <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Absensi Rapat</a>
+      <div class="snav-label">Management User</div>
       <a class="snav-item active" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna Mobile <span class="count">2</span></a>
+      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
       <div class="snav-label">Reses &amp; Pokir</div>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
@@ -130,7 +132,7 @@ a{color:inherit;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Buat Akun Pengguna Mobile</h2><div class="crumb"><a href="pengguna.html">Akun Pengguna Mobile</a> &rsaquo; Buat Baru</div></div>
+        <div><h2>Buat Akun Pengguna</h2><div class="crumb"><a href="pengguna.html">Akun Pengguna</a> &rsaquo; Buat Baru</div></div>
       </div>
       <div class="topbar-actions">
         <div class="tb-user"><span class="av">AS</span></div>
@@ -142,53 +144,58 @@ a{color:inherit;}
       <div id="formSection">
         <div class="info-box">
           <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-          <span>Setelah akun dibuat, sistem mengirimkan email berisi tautan aktivasi ke Anggota Dewan. Anggota harus membuka tautan tersebut &amp; mengganti kata sandi sebelum dapat masuk (login) ke aplikasi mobile e-Parlemen.</span>
+          <span>Setelah akun dibuat, sistem mengirimkan email berisi tautan aktivasi ke pengguna. Pengguna harus membuka tautan tersebut &amp; mengganti kata sandi sebelum dapat masuk (login) ke aplikasi &mdash; <strong>Ketua</strong> &amp; <strong>Administrator</strong> melalui aplikasi web, <strong>Anggota</strong> melalui aplikasi mobile e-Parlemen.</span>
         </div>
 
         <form onsubmit="return submitForm(event)">
           <div class="card">
-            <div class="section-title">Data Anggota</div>
-            <div class="hint">Data ini akan ditampilkan pada profil akun aplikasi mobile.</div>
+            <div class="section-title">Data Pengguna</div>
+            <div class="hint">Data ini akan ditampilkan pada profil akun pengguna.</div>
 
             <div class="field">
-              <label>Nama Lengkap &amp; Gelar</label>
+              <label>Nama Lengkap</label>
               <input type="text" id="fNama" value="M. Yusuf Ridwan, S.E." required>
             </div>
 
             <div class="field-row">
-              <div class="field"><label>NIP / Kode Anggota <span class="opt">(user_id)</span></label><input type="text" id="fUserId" value="DPRD-AGT-0044" required></div>
-              <div class="field"><label>No. HP / WhatsApp</label><input type="text" id="fHp" value="0812-2500-XXXX" required></div>
+              <div class="field"><label>NIP</label><input type="text" id="fUserId" value="DPRD-AGT-0044" required></div>
+              <div class="field"><label>No. HP</label><input type="text" id="fHp" value="0812-2500-XXXX" required></div>
+            </div>
+
+            <div class="field">
+              <label>Jabatan <span class="opt">(mengacu pada Master Jabatan)</span></label>
+              <select id="fJabatan" onchange="handleJabatanChange()">
+                <option value="Ketua DPRD">Ketua DPRD</option>
+                <option value="Wakil Ketua DPRD">Wakil Ketua DPRD</option>
+                <option value="Anggota DPRD" selected>Anggota DPRD</option>
+                <option value="Sekretaris DPRD / Sekwan">Sekretaris DPRD / Sekwan</option>
+                <option value="Operator Sekretariat">Operator Sekretariat</option>
+              </select>
             </div>
 
             <div class="field-row">
-              <div class="field">
-                <label>Jabatan</label>
-                <select id="fJabatan">
-                  <option>Anggota Komisi I</option>
-                  <option>Anggota Komisi II</option>
-                  <option>Anggota Komisi III</option>
-                  <option>Anggota Komisi IV</option>
-                  <option>Pimpinan DPRD</option>
-                </select>
-              </div>
-              <div class="field">
-                <label>Fraksi</label>
-                <select id="fFraksi">
-                  <option>Fraksi Golkar</option>
-                  <option>Fraksi PDI Perjuangan</option>
-                  <option>Fraksi Gerindra</option>
-                  <option>Fraksi PKB</option>
-                  <option>Fraksi PKS</option>
-                </select>
-              </div>
+              <div class="field"><label>Role POC <span class="opt">(otomatis)</span></label><input type="text" id="fRoleDisplay" readonly disabled style="background:var(--neutral-bg);color:var(--muted);font-weight:800;"></div>
+              <div class="field"><label>Platform Akses <span class="opt">(otomatis)</span></label><input type="text" id="fPlatformDisplay" readonly disabled style="background:var(--neutral-bg);color:var(--muted);font-weight:800;"></div>
+            </div>
+            <div class="field"><label>Fraksi Diperlukan? <span class="opt">(otomatis)</span></label><input type="text" id="fFraksiNeeded" readonly disabled style="background:var(--neutral-bg);color:var(--muted);font-weight:800;"></div>
+
+            <div class="field" id="fraksiField">
+              <label>Fraksi</label>
+              <select id="fFraksi">
+                <option>Fraksi Golkar</option>
+                <option>Fraksi PDI Perjuangan</option>
+                <option>Fraksi Gerindra</option>
+                <option>Fraksi PKB</option>
+                <option>Fraksi PKS</option>
+              </select>
             </div>
           </div>
 
           <div class="card">
-            <div class="section-title">Akun &amp; Aktivasi</div>
-            <div class="hint">Email digunakan sebagai tujuan pengiriman tautan aktivasi sekaligus alamat login pada aplikasi mobile.</div>
+            <div class="section-title">Akun Aktivasi</div>
+            <div class="hint" id="emailHint">Email digunakan sebagai tujuan pengiriman tautan aktivasi sekaligus alamat login pada aplikasi mobile.</div>
             <div class="field">
-              <label>Email Aktif</label>
+              <label>Akun Aktivasi (Email)</label>
               <input type="email" id="fEmail" value="yusuf.ridwan@dprd-magelangkota.go.id" required>
             </div>
           </div>
@@ -203,7 +210,7 @@ a{color:inherit;}
       <div id="resultSection" style="display:none;">
         <div class="success-box">
           <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-          <span><strong>Akun berhasil dibuat.</strong> Email aktivasi telah dikirim ke <strong id="sentEmail"></strong>. Anggota perlu membuka tautan pada email tersebut untuk mengatur kata sandi sebelum bisa masuk ke aplikasi mobile.</span>
+          <span><strong>Akun berhasil dibuat.</strong> Email aktivasi telah dikirim ke <strong id="sentEmail"></strong>. Pengguna perlu membuka tautan pada email tersebut untuk mengatur kata sandi sebelum bisa masuk ke aplikasi <span id="sentPlatform"></span>.</span>
         </div>
 
         <div class="card">
@@ -212,12 +219,12 @@ a{color:inherit;}
             <div class="em-head">
               <div class="em-row"><b>Dari:</b> noreply@dprd-magelangkota.go.id</div>
               <div class="em-row"><b>Kepada:</b> <span id="emTo"></span></div>
-              <div class="em-row"><b>Subjek:</b> Aktivasi Akun Aplikasi Mobile e-Parlemen</div>
+              <div class="em-row"><b>Subjek:</b> Aktivasi Akun Aplikasi <span id="emSubjectPlatform"></span> e-Parlemen</div>
             </div>
             <div class="em-body">
               <div class="em-logo"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></div>
               <h3>Selamat Datang, <span id="emNama"></span></h3>
-              <p>Akun aplikasi mobile e-Parlemen DPRD Kota Magelang Anda telah dibuat oleh Admin Sekretariat. Klik tombol di bawah ini untuk mengaktifkan akun &amp; membuat kata sandi baru sebelum masuk ke aplikasi.</p>
+              <p>Akun aplikasi <span id="emPlatform"></span> e-Parlemen DPRD Kota Magelang Anda telah dibuat oleh Admin Sekretariat dengan role <strong id="emRole"></strong>. Klik tombol di bawah ini untuk mengaktifkan akun &amp; membuat kata sandi baru sebelum masuk ke aplikasi.</p>
               <a class="btn btn-gold" id="activationLink" href="#" target="_blank" style="width:auto;display:inline-flex;">Aktivasi Akun Saya</a>
               <div class="em-link-note">Atau salin tautan berikut: <br><code id="activationLinkText"></code></div>
             </div>
@@ -235,21 +242,53 @@ a{color:inherit;}
   </div>
 </div>
 <script>
+var JABATAN_ROLE_MAP = {
+  'Ketua DPRD': 'Ketua',
+  'Wakil Ketua DPRD': 'Ketua',
+  'Anggota DPRD': 'Anggota',
+  'Sekretaris DPRD / Sekwan': 'Administrator',
+  'Operator Sekretariat': 'Administrator'
+};
+var ROLE_PLATFORM_MAP = { 'Ketua': 'Web', 'Administrator': 'Web', 'Anggota': 'Mobile' };
+var ROLE_FRAKSI_MAP = { 'Ketua': 'Ya', 'Administrator': 'Tidak', 'Anggota': 'Ya' };
+
+function handleJabatanChange(){
+  var jabatan = document.getElementById('fJabatan').value;
+  var role = JABATAN_ROLE_MAP[jabatan];
+  var platform = ROLE_PLATFORM_MAP[role];
+  var fraksiNeeded = ROLE_FRAKSI_MAP[role] === 'Ya';
+  document.getElementById('fRoleDisplay').value = role;
+  document.getElementById('fPlatformDisplay').value = platform;
+  document.getElementById('fFraksiNeeded').value = ROLE_FRAKSI_MAP[role];
+  document.getElementById('fraksiField').style.display = fraksiNeeded ? 'block' : 'none';
+  document.getElementById('emailHint').textContent = 'Email digunakan sebagai tujuan pengiriman tautan aktivasi sekaligus alamat login pada aplikasi ' + platform.toLowerCase() + '.';
+}
+handleJabatanChange();
+
 function submitForm(e){
   e.preventDefault();
   var nama = document.getElementById('fNama').value;
   var email = document.getElementById('fEmail').value;
   var userId = document.getElementById('fUserId').value;
+  var jabatan = document.getElementById('fJabatan').value;
+  var role = JABATAN_ROLE_MAP[jabatan];
+  var platform = ROLE_PLATFORM_MAP[role].toLowerCase();
   var token = 'tok-' + Math.random().toString(36).slice(2, 10);
 
   document.getElementById('sentEmail').textContent = email;
+  document.getElementById('sentPlatform').textContent = platform;
   document.getElementById('emTo').textContent = email;
   document.getElementById('emNama').textContent = nama;
+  document.getElementById('emRole').textContent = role;
+  document.getElementById('emPlatform').textContent = platform;
+  document.getElementById('emSubjectPlatform').textContent = platform.charAt(0).toUpperCase() + platform.slice(1);
 
   var url = new URL('../aktivasi-akun.html', window.location.href);
   url.searchParams.set('nama', nama);
   url.searchParams.set('email', email);
   url.searchParams.set('user_id', userId);
+  url.searchParams.set('jabatan', jabatan);
+  url.searchParams.set('role', role);
   url.searchParams.set('token', token);
 
   document.getElementById('activationLink').href = url.toString();
