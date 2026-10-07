@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Master Periode Reses &middot; Admin e-Parlemen</title>
+<title>Master Periode &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -63,21 +63,19 @@ a{color:inherit;}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px;}
 .stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .stat-card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--neutral-bg);color:var(--green);}
-.stat-card.warn .ic{background:var(--warn-bg);color:var(--warn);}
-.stat-card.info .ic{background:var(--info-bg);color:var(--info);}
+.stat-card.success .ic{background:var(--success-bg);color:var(--success);}
+.stat-card.neutral .ic{background:var(--neutral-bg);color:var(--neutral);}
 .stat-card .num{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1;}
 .stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
 
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
 .badge-success{background:var(--success-bg);color:var(--success);}
-.badge-warn{background:var(--warn-bg);color:var(--warn);}
-.badge-danger{background:var(--danger-bg);color:var(--danger);}
 .badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
-.badge-info{background:var(--info-bg);color:var(--info);}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-danger-outline{background:#fff;color:var(--danger);border:1.5px solid var(--danger);}
 .btn-sm{padding:8px 13px;font-size:11.5px;}
 
 .table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
@@ -87,6 +85,7 @@ td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#fafaf7;}
 .namecell .n{font-weight:800;font-size:12.6px;}
+.namecell .s{font-size:10.5px;color:var(--muted);margin-top:1px;}
 .actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
@@ -94,6 +93,7 @@ tr:hover td{background:#fafaf7;}
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
 .modal-backdrop.open{display:flex;}
 .modal-box{background:#fff;border-radius:16px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-box.sm{max-width:380px;}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
 .modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
@@ -124,7 +124,7 @@ tr:hover td{background:#fafaf7;}
       <div class="snav-label">Menu Utama</div>
       <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
       <div class="snav-label">Master Data</div>
-      <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
+      <a class="snav-item active" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
       <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
       <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Config Fraksi</a>
       <a class="snav-item" href="master-role.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l7 3v6c0 5-3.5 7.5-7 9-3.5-1.5-7-4-7-9V6l7-3z"/></svg> Role</a>
@@ -134,7 +134,7 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
-      <a class="snav-item active" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
+      <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Reses &amp; Dapil</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0C5 14.5 12 21 12 21z"/><path d="M9.3 10.2l1.8 1.8L15 8.3"/></svg> Assignment Dapil <span class="count" style="background:var(--neutral);">Segera</span></a>
@@ -164,7 +164,7 @@ tr:hover td{background:#fafaf7;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Master Periode Reses</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Master Periode Reses</div></div>
+        <div><h2>Master Periode</h2><div class="crumb">Admin &middot; Master Data &middot; Master Periode</div></div>
       </div>
       <div class="topbar-actions">
         <button class="btn btn-primary btn-sm" onclick="openAdd()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Periode</button>
@@ -174,60 +174,27 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi Periode Reses yang tampil pada pilihan &ldquo;Periode Reses&rdquo; saat Anggota DPRD mencatat kegiatan reses di aplikasi mobile.</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi Periode (masa jabatan) DPRD &mdash; dipakai sebagai rujukan Periode pada Config Fraksi &amp; data master lain yang terikat periode keanggotaan DPRD. Hanya satu Periode yang dapat berstatus Aktif &mdash; mengaktifkan satu Periode akan otomatis menonaktifkan Periode lain.</div>
 
       <div class="stats-grid">
         <div class="stat-card">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></div>
-          <div><div class="num" id="statTotal">4</div><div class="lbl">Total Periode</div></div>
+          <div><div class="num" id="statTotal">0</div><div class="lbl">Total Periode</div></div>
         </div>
-        <div class="stat-card warn">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
-          <div><div class="num" id="statBerjalan">1</div><div class="lbl">Sedang Berjalan</div></div>
+        <div class="stat-card success">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
+          <div><div class="num" id="statAktif">0</div><div class="lbl">Aktif</div></div>
         </div>
-        <div class="stat-card info">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg></div>
-          <div><div class="num" id="statDatang">1</div><div class="lbl">Akan Datang</div></div>
+        <div class="stat-card neutral">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
+          <div><div class="num" id="statNonaktif">0</div><div class="lbl">Nonaktif</div></div>
         </div>
       </div>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Nama Periode</th><th>Tahun Sidang</th><th>Tanggal Mulai</th><th>Tanggal Selesai</th><th>Status</th><th></th></tr></thead>
-          <tbody id="tbodyPeriode">
-            <tr data-nama="Reses I" data-tahun="2026" data-mulai="2026-01-12" data-selesai="2026-01-19" data-status="Selesai">
-              <td><div class="namecell"><div class="n">Reses I Tahun 2026</div></div></td>
-              <td>2026</td>
-              <td>12 Jan 2026</td>
-              <td>19 Jan 2026</td>
-              <td><span class="badge badge-neutral">Selesai</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-nama="Reses II" data-tahun="2026" data-mulai="2026-05-11" data-selesai="2026-05-18" data-status="Selesai">
-              <td><div class="namecell"><div class="n">Reses II Tahun 2026</div></div></td>
-              <td>2026</td>
-              <td>11 Mei 2026</td>
-              <td>18 Mei 2026</td>
-              <td><span class="badge badge-neutral">Selesai</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-nama="Reses III" data-tahun="2026" data-mulai="2026-08-26" data-selesai="2026-09-02" data-status="Berjalan">
-              <td><div class="namecell"><div class="n">Reses III Tahun 2026</div></div></td>
-              <td>2026</td>
-              <td>26 Agu 2026</td>
-              <td>2 Sep 2026</td>
-              <td><span class="badge badge-warn">Berjalan</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-nama="Reses I" data-tahun="2027" data-mulai="2027-01-11" data-selesai="2027-01-18" data-status="Akan Datang">
-              <td><div class="namecell"><div class="n">Reses I Tahun 2027</div></div></td>
-              <td>2027</td>
-              <td>11 Jan 2027</td>
-              <td>18 Jan 2027</td>
-              <td><span class="badge badge-info">Akan Datang</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-          </tbody>
+          <thead><tr><th>Kode Periode</th><th>Nama Periode</th><th>Tanggal Mulai</th><th>Tanggal Selesai</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyPeriode"></tbody>
         </table>
       </div>
       <div class="hint" style="margin-top:12px;">Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
@@ -237,27 +204,18 @@ tr:hover td{background:#fafaf7;}
 
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal-box">
-    <div class="modal-head"><h3 id="modalTitle">Tambah Periode Reses</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="modal-head"><h3 id="modalTitle">Tambah Periode</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
     <form onsubmit="return savePeriode(event)">
-      <div class="two-col">
-        <div class="field"><label>Nama Periode</label>
-          <select id="fNama" required>
-            <option>Reses I</option>
-            <option>Reses II</option>
-            <option>Reses III</option>
-          </select>
-        </div>
-        <div class="field"><label>Tahun Sidang</label><input type="number" id="fTahun" min="2020" max="2100" placeholder="2026" required></div>
-      </div>
+      <div class="field"><label>Kode Periode</label><input type="text" id="fKode" placeholder="Contoh: PRD-2024" required></div>
+      <div class="field"><label>Nama Periode</label><input type="text" id="fNama" placeholder="Contoh: Periode 2024 - 2029" required></div>
       <div class="two-col">
         <div class="field"><label>Tanggal Mulai</label><input type="date" id="fMulai" required></div>
         <div class="field"><label>Tanggal Selesai</label><input type="date" id="fSelesai" required></div>
       </div>
       <div class="field"><label>Status</label>
         <select id="fStatus" required>
-          <option>Akan Datang</option>
-          <option>Berjalan</option>
-          <option>Selesai</option>
+          <option>Aktif</option>
+          <option>Nonaktif</option>
         </select>
       </div>
       <div class="modal-foot">
@@ -268,94 +226,152 @@ tr:hover td{background:#fafaf7;}
   </div>
 </div>
 
+<div class="modal-backdrop" id="deleteModalBackdrop">
+  <div class="modal-box sm">
+    <div class="modal-head"><h3>Hapus Periode</h3><button class="modal-close" onclick="closeDeleteModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="deleteModalText" style="margin-bottom:4px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmDelete()">Hapus</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+<script src="periode-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-var editingRow = null;
-var bulanNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+
+var PERIODE_LIST = periodeLoadList();
+
+var MONTHS = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
 function fmtTanggal(iso){
-  if(!iso) return '';
+  if(!iso) return '—';
   var p = iso.split('-');
-  return parseInt(p[2],10) + ' ' + bulanNames[parseInt(p[1],10)-1] + ' ' + p[0];
+  return parseInt(p[2],10) + ' ' + MONTHS[parseInt(p[1],10)-1] + ' ' + p[0];
 }
+
+function renderTable(){
+  var tbody = document.getElementById('tbodyPeriode');
+  tbody.innerHTML = PERIODE_LIST.map(function(p){
+    var statusBadge = p.status === 'Aktif' ? 'badge-success' : 'badge-neutral';
+    return '<tr data-id="' + p.id + '">'
+      + '<td><div class="namecell"><div class="n">' + p.kode + '</div></div></td>'
+      + '<td><div class="namecell"><div class="n">' + p.nama + '</div></div></td>'
+      + '<td>' + fmtTanggal(p.mulai) + '</td>'
+      + '<td>' + fmtTanggal(p.selesai) + '</td>'
+      + '<td><span class="badge ' + statusBadge + '">' + p.status + '</span></td>'
+      + '<td><div class="actions-cell">'
+      +   '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + p.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + p.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
+      + '</div></td>'
+    + '</tr>';
+  }).join('');
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = PERIODE_LIST.length;
+  document.getElementById('statAktif').textContent = PERIODE_LIST.filter(function(p){ return p.status === 'Aktif'; }).length;
+  document.getElementById('statNonaktif').textContent = PERIODE_LIST.filter(function(p){ return p.status === 'Nonaktif'; }).length;
+}
+
+var editingId = null;
 function resetForm(){
-  document.getElementById('fNama').selectedIndex = 0;
-  document.getElementById('fTahun').value = '';
+  document.getElementById('fKode').value = '';
+  document.getElementById('fNama').value = '';
   document.getElementById('fMulai').value = '';
   document.getElementById('fSelesai').value = '';
   document.getElementById('fStatus').selectedIndex = 0;
 }
 function openAdd(){
-  editingRow = null;
+  editingId = null;
   resetForm();
-  document.getElementById('modalTitle').textContent = 'Tambah Periode Reses';
+  document.getElementById('modalTitle').textContent = 'Tambah Periode';
   document.getElementById('modalBackdrop').classList.add('open');
 }
-function openEdit(btn){
-  editingRow = btn.closest('tr');
+function openEdit(id){
+  var p = PERIODE_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  editingId = id;
   resetForm();
-  document.getElementById('modalTitle').textContent = 'Edit Periode Reses';
-  document.getElementById('fNama').value = editingRow.dataset.nama;
-  document.getElementById('fTahun').value = editingRow.dataset.tahun;
-  document.getElementById('fMulai').value = editingRow.dataset.mulai;
-  document.getElementById('fSelesai').value = editingRow.dataset.selesai;
-  document.getElementById('fStatus').value = editingRow.dataset.status;
+  document.getElementById('modalTitle').textContent = 'Edit Periode';
+  document.getElementById('fKode').value = p.kode;
+  document.getElementById('fNama').value = p.nama;
+  document.getElementById('fMulai').value = p.mulai;
+  document.getElementById('fSelesai').value = p.selesai;
+  document.getElementById('fStatus').value = p.status;
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function closeModal(){
   document.getElementById('modalBackdrop').classList.remove('open');
 }
-function badgeClassFor(status){
-  if(status === 'Berjalan') return 'badge-warn';
-  if(status === 'Akan Datang') return 'badge-info';
-  return 'badge-neutral';
-}
 function savePeriode(e){
   e.preventDefault();
-  var nama = document.getElementById('fNama').value;
-  var tahun = document.getElementById('fTahun').value;
+  var kode = document.getElementById('fKode').value.trim();
+  var nama = document.getElementById('fNama').value.trim();
   var mulai = document.getElementById('fMulai').value;
   var selesai = document.getElementById('fSelesai').value;
   var status = document.getElementById('fStatus').value;
 
-  var row = editingRow;
-  if(!row){
-    row = document.createElement('tr');
-    row.innerHTML = '<td><div class="namecell"><div class="n"></div></div></td><td></td><td></td><td></td><td></td>'
-      + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>';
-    document.getElementById('tbodyPeriode').appendChild(row);
-  }
-  row.dataset.nama = nama;
-  row.dataset.tahun = tahun;
-  row.dataset.mulai = mulai;
-  row.dataset.selesai = selesai;
-  row.dataset.status = status;
-  row.children[0].querySelector('.n').textContent = nama + ' Tahun ' + tahun;
-  row.children[1].textContent = tahun;
-  row.children[2].textContent = fmtTanggal(mulai);
-  row.children[3].textContent = fmtTanggal(selesai);
-  row.children[4].innerHTML = '<span class="badge ' + badgeClassFor(status) + '">' + status + '</span>';
+  var dupe = PERIODE_LIST.some(function(p){ return p.kode.toLowerCase() === kode.toLowerCase() && p.id !== editingId; });
+  if(dupe){ toast('Kode Periode "' + kode + '" sudah digunakan'); return false; }
 
+  var now = new Date().toISOString();
+  var savedId;
+  if(editingId){
+    var p = PERIODE_LIST.find(function(p){ return p.id === editingId; });
+    p.kode = kode; p.nama = nama; p.mulai = mulai; p.selesai = selesai; p.status = status;
+    p.updatedAt = now;
+    savedId = editingId;
+    toast('Periode "' + nama + '" diperbarui (prototipe)');
+  } else {
+    savedId = periodeNextId(PERIODE_LIST);
+    PERIODE_LIST.push({ id: savedId, kode: kode, nama: nama, mulai: mulai, selesai: selesai, status: status, createdAt: now, updatedAt: now });
+    toast('Periode "' + nama + '" ditambahkan (prototipe)');
+  }
+  if(status === 'Aktif'){
+    PERIODE_LIST.forEach(function(p){
+      if(p.id !== savedId && p.status === 'Aktif'){ p.status = 'Nonaktif'; p.updatedAt = now; }
+    });
+  }
+  periodeSaveList(PERIODE_LIST);
+  renderTable();
   updateStats();
   closeModal();
-  toast('Periode "' + nama + ' Tahun ' + tahun + '" disimpan (prototipe)');
   return false;
 }
-function updateStats(){
-  var rows = document.querySelectorAll('#tbodyPeriode tr');
-  document.getElementById('statTotal').textContent = rows.length;
-  var berjalan = 0, datang = 0;
-  rows.forEach(function(r){
-    if(r.dataset.status === 'Berjalan') berjalan++;
-    if(r.dataset.status === 'Akan Datang') datang++;
-  });
-  document.getElementById('statBerjalan').textContent = berjalan;
-  document.getElementById('statDatang').textContent = datang;
+
+var deletingId = null;
+function openDelete(id){
+  var p = PERIODE_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  deletingId = id;
+  document.getElementById('deleteModalText').textContent = 'Hapus periode "' + p.nama + '" (' + p.kode + ')? Tindakan ini tidak dapat dibatalkan.';
+  document.getElementById('deleteModalBackdrop').classList.add('open');
 }
+function closeDeleteModal(){
+  document.getElementById('deleteModalBackdrop').classList.remove('open');
+  deletingId = null;
+}
+function confirmDelete(){
+  if(deletingId == null) return;
+  var idx = PERIODE_LIST.findIndex(function(p){ return p.id === deletingId; });
+  if(idx > -1){
+    var removed = PERIODE_LIST.splice(idx, 1)[0];
+    periodeSaveList(PERIODE_LIST);
+    renderTable();
+    updateStats();
+    toast('Periode "' + removed.nama + '" dihapus (prototipe)');
+  }
+  closeDeleteModal();
+}
+
+renderTable();
+updateStats();
 </script>
 </body>
 </html>
