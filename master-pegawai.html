@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Master Reses &middot; Admin e-Parlemen</title>
+<title>Pegawai &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -63,34 +63,36 @@ a{color:inherit;}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px;}
 .stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
 .stat-card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--neutral-bg);color:var(--green);}
-.stat-card.info .ic{background:var(--info-bg);color:var(--info);}
-.stat-card.gold .ic{background:#fbf1dc;color:#9a7b1f;}
 .stat-card .num{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1;}
 .stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
 
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
-.badge-success{background:var(--success-bg);color:var(--success);}
+.badge-info{background:var(--info-bg);color:var(--info);}
+.badge-gold{background:#fbf1dc;color:#9a7b1f;}
 .badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-danger-outline{background:#fff;color:var(--danger);border:1.5px solid var(--danger);}
 .btn-sm{padding:8px 13px;font-size:11.5px;}
 
 .table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:480px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:920px;}
 th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
 td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#fafaf7;}
 .namecell .n{font-weight:800;font-size:12.6px;}
+.namecell .s{font-size:10.5px;color:var(--muted);margin-top:1px;}
 .actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
 
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
 .modal-backdrop.open{display:flex;}
-.modal-box{background:#fff;border-radius:16px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-box.sm{max-width:380px;}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
 .modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
@@ -98,7 +100,9 @@ tr:hover td{background:#fafaf7;}
 .field{margin-bottom:14px;}
 .field:last-child{margin-bottom:0;}
 .field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
-.field input,.field select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field textarea{resize:vertical;min-height:60px;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .modal-foot{display:flex;gap:10px;margin-top:18px;}
 .modal-foot .btn{flex:1;}
 
@@ -106,6 +110,7 @@ tr:hover td{background:#fafaf7;}
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
   .sidebar.open{left:0;}
   .menu-toggle{display:block;}
+  .two-col{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -123,12 +128,12 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
       <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
       <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Config Fraksi</a>
-      <a class="snav-item" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
+      <a class="snav-item active" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
       <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> RBAC</a>
       <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna Mobile <span class="count">2</span></a>
       <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
-      <a class="snav-item active" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
+      <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
       <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Reses &amp; Dapil</div>
@@ -159,56 +164,29 @@ tr:hover td{background:#fafaf7;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Master Reses</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Master Reses</div></div>
+        <div><h2>Pegawai</h2><div class="crumb">Admin &middot; Master Data &middot; Pegawai</div></div>
       </div>
       <div class="topbar-actions">
-        <button class="btn btn-primary btn-sm" onclick="openAdd()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Reses</button>
+        <button class="btn btn-primary btn-sm" onclick="openAdd()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Pegawai</button>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
         <div class="tb-user"><span class="av">AS</span></div>
       </div>
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi jenis/nomor Reses (mis. Reses I, Reses II, Reses III) yang digunakan sebagai acuan nama pada Master Periode Reses.</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi Pegawai (Politisi &amp; Sekretariat) &mdash; Jabatan, Role, dan Fraksi mengacu pada Master Jabatan, RBAC, dan Config Fraksi. Fraksi bersifat opsional untuk Role yang tidak memerlukan afiliasi fraksi (misal Administrator).</div>
 
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg></div>
-          <div><div class="num" id="statTotal">3</div><div class="lbl">Total Reses</div></div>
-        </div>
-        <div class="stat-card info">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-          <div><div class="num" id="statAktif">3</div><div class="lbl">Aktif</div></div>
-        </div>
-        <div class="stat-card gold">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
-          <div><div class="num" id="statNonaktif">0</div><div class="lbl">Nonaktif</div></div>
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg></div>
+          <div><div class="num" id="statTotal">0</div><div class="lbl">Total Pegawai</div></div>
         </div>
       </div>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Kode Reses</th><th>Nama Reses</th><th>Status</th><th></th></tr></thead>
-          <tbody id="tbodyReses">
-            <tr data-kode="RES-I" data-nama="Reses I" data-status="Aktif">
-              <td><div class="namecell"><div class="n">RES-I</div></div></td>
-              <td><div class="namecell"><div class="n">Reses I</div></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-kode="RES-II" data-nama="Reses II" data-status="Aktif">
-              <td><div class="namecell"><div class="n">RES-II</div></div></td>
-              <td><div class="namecell"><div class="n">Reses II</div></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-kode="RES-III" data-nama="Reses III" data-status="Aktif">
-              <td><div class="namecell"><div class="n">RES-III</div></div></td>
-              <td><div class="namecell"><div class="n">Reses III</div></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-          </tbody>
+          <thead><tr><th>Nama</th><th>NIK</th><th>No. HP</th><th>Jabatan</th><th>Role</th><th>Fraksi</th><th></th></tr></thead>
+          <tbody id="tbodyPegawai"></tbody>
         </table>
       </div>
       <div class="hint" style="margin-top:12px;">Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
@@ -218,15 +196,23 @@ tr:hover td{background:#fafaf7;}
 
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal-box">
-    <div class="modal-head"><h3 id="modalTitle">Tambah Reses</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <form onsubmit="return saveReses(event)">
-      <div class="field"><label>Kode Reses</label><input type="text" id="fKode" placeholder="Contoh: RES-I" required></div>
-      <div class="field"><label>Nama Reses</label><input type="text" id="fNama" placeholder="Contoh: Reses I" required></div>
-      <div class="field"><label>Status</label>
-        <select id="fStatus" required>
-          <option>Aktif</option>
-          <option>Nonaktif</option>
-        </select>
+    <div class="modal-head"><h3 id="modalTitle">Tambah Pegawai</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <form onsubmit="return savePegawai(event)">
+      <div class="field"><label>Nama Lengkap</label><input type="text" id="fNama" placeholder="Contoh: M. Yusuf Ridwan, S.E." required></div>
+      <div class="two-col">
+        <div class="field"><label>NIK</label><input type="text" id="fNik" inputmode="numeric" maxlength="16" placeholder="16 digit NIK" required></div>
+        <div class="field"><label>NIP</label><input type="text" id="fNip" placeholder="Contoh: DPRD-AGT-0044" required></div>
+      </div>
+      <div class="field"><label>Alamat</label><textarea id="fAlamat" placeholder="Alamat lengkap" required></textarea></div>
+      <div class="field"><label>No. HP</label><input type="text" id="fHp" placeholder="0812-xxxx-xxxx" required></div>
+      <div class="field"><label>Jabatan</label>
+        <select id="fJabatan" required></select>
+      </div>
+      <div class="field"><label>Role</label>
+        <select id="fRole" required></select>
+      </div>
+      <div class="field"><label>Fraksi <span style="font-weight:600;color:var(--muted);font-size:10.5px;">(opsional)</span></label>
+        <select id="fFraksi"></select>
       </div>
       <div class="modal-foot">
         <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
@@ -236,75 +222,202 @@ tr:hover td{background:#fafaf7;}
   </div>
 </div>
 
+<div class="modal-backdrop" id="deleteModalBackdrop">
+  <div class="modal-box sm">
+    <div class="modal-head"><h3>Hapus Pegawai</h3><button class="modal-close" onclick="closeDeleteModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="deleteModalText" style="margin-bottom:4px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmDelete()">Hapus</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+<script src="jabatan-data.js"></script>
+<script src="rbac-data.js"></script>
+<script src="fraksi-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-var editingRow = null;
+
+var PEGAWAI_STORAGE_KEY = 'ep_master_pegawai_list';
+var PEGAWAI_DEFAULT_LIST = [
+  { id: 1, nama: 'M. Yusuf Ridwan, S.E.', nik: '3371012203880001', nip: 'DPRD-AGT-0044', alamat: 'Jl. Pahlawan No. 12, Magelang Selatan', hp: '0812-2500-1044', jabatanId: 'jab-3', roleId: 3, fraksiId: 1 },
+  { id: 2, nama: 'R. Hendra Wijaya, S.H.', nik: '3371011508850002', nip: 'DPRD-AGT-0031', alamat: 'Jl. Diponegoro No. 5, Magelang Tengah', hp: '0813-2700-2031', jabatanId: 'jab-3', roleId: 3, fraksiId: 2 },
+  { id: 3, nama: 'Hj. Siti Rahmawati', nik: '3371014507800003', nip: 'DPRD-SEK-0002', alamat: 'Jl. Pemuda No. 20, Magelang Utara', hp: '0811-2900-3002', jabatanId: 'jab-4', roleId: 2, fraksiId: null },
+  { id: 4, nama: 'Ir. Budi Santoso, M.T.', nik: '3371010906820004', nip: 'DPRD-OPS-0007', alamat: 'Jl. Mertoyudan No. 8, Magelang Selatan', hp: '0812-3100-4007', jabatanId: 'jab-5', roleId: 2, fraksiId: null }
+];
+
+function pegawaiLoadList(){
+  try{
+    var raw = localStorage.getItem(PEGAWAI_STORAGE_KEY);
+    if(raw){
+      var parsed = JSON.parse(raw);
+      if(Array.isArray(parsed) && parsed.length) return parsed;
+    }
+  } catch(e){}
+  var seed = JSON.parse(JSON.stringify(PEGAWAI_DEFAULT_LIST));
+  pegawaiSaveList(seed);
+  return seed;
+}
+function pegawaiSaveList(list){
+  try{ localStorage.setItem(PEGAWAI_STORAGE_KEY, JSON.stringify(list)); } catch(e){}
+}
+function pegawaiNextId(list){
+  var max = 0;
+  list.forEach(function(p){ if(p.id > max) max = p.id; });
+  return max + 1;
+}
+
+var PEGAWAI_LIST = pegawaiLoadList();
+
+function roleNama(id){
+  var r = rbacLoadRoles().find(function(r){ return r.id === id; });
+  return r ? r.nama : '—';
+}
+function fraksiNamaById(id){
+  if(!id) return null;
+  var f = fraksiLoadList().find(function(f){ return f.id === id; });
+  return f ? f.nama : null;
+}
+
+function populateSelectOptions(){
+  var selJabatan = document.getElementById('fJabatan');
+  selJabatan.innerHTML = JABATAN_LIST.map(function(j){ return '<option value="' + j.id + '">' + j.nama + '</option>'; }).join('');
+
+  var selRole = document.getElementById('fRole');
+  selRole.innerHTML = rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
+
+  var selFraksi = document.getElementById('fFraksi');
+  selFraksi.innerHTML = '<option value="">&mdash; Tidak Ada &mdash;</option>'
+    + fraksiLoadList().map(function(f){ return '<option value="' + f.id + '">' + f.nama + '</option>'; }).join('');
+}
+
+function renderTable(){
+  var tbody = document.getElementById('tbodyPegawai');
+  tbody.innerHTML = PEGAWAI_LIST.map(function(p){
+    var fraksiNama = fraksiNamaById(p.fraksiId);
+    return '<tr data-id="' + p.id + '">'
+      + '<td><div class="namecell"><div class="n">' + p.nama + '</div><div class="s">' + p.nip + '</div></div></td>'
+      + '<td>' + p.nik + '</td>'
+      + '<td>' + p.hp + '</td>'
+      + '<td>' + jabatanNama(p.jabatanId) + '</td>'
+      + '<td><span class="badge badge-info">' + roleNama(p.roleId) + '</span></td>'
+      + '<td>' + (fraksiNama ? '<span class="badge badge-gold">' + fraksiNama + '</span>' : '<span class="badge badge-neutral">&mdash;</span>') + '</td>'
+      + '<td><div class="actions-cell">'
+      +   '<button class="btn btn-outline btn-sm" onclick="openEdit(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
+      + '</div></td>'
+    + '</tr>';
+  }).join('');
+}
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = PEGAWAI_LIST.length;
+}
+
+var editingId = null;
 function resetForm(){
-  document.getElementById('fKode').value = '';
   document.getElementById('fNama').value = '';
-  document.getElementById('fStatus').selectedIndex = 0;
+  document.getElementById('fNik').value = '';
+  document.getElementById('fNip').value = '';
+  document.getElementById('fAlamat').value = '';
+  document.getElementById('fHp').value = '';
+  populateSelectOptions();
+  document.getElementById('fJabatan').selectedIndex = 0;
+  document.getElementById('fRole').selectedIndex = 0;
+  document.getElementById('fFraksi').selectedIndex = 0;
 }
 function openAdd(){
-  editingRow = null;
+  editingId = null;
   resetForm();
-  document.getElementById('modalTitle').textContent = 'Tambah Reses';
+  document.getElementById('modalTitle').textContent = 'Tambah Pegawai';
   document.getElementById('modalBackdrop').classList.add('open');
 }
-function openEdit(btn){
-  editingRow = btn.closest('tr');
+function openEdit(id){
+  var p = PEGAWAI_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  editingId = id;
   resetForm();
-  document.getElementById('modalTitle').textContent = 'Edit Reses';
-  document.getElementById('fKode').value = editingRow.dataset.kode;
-  document.getElementById('fNama').value = editingRow.dataset.nama;
-  document.getElementById('fStatus').value = editingRow.dataset.status;
+  document.getElementById('modalTitle').textContent = 'Edit Pegawai';
+  document.getElementById('fNama').value = p.nama;
+  document.getElementById('fNik').value = p.nik;
+  document.getElementById('fNip').value = p.nip;
+  document.getElementById('fAlamat').value = p.alamat;
+  document.getElementById('fHp').value = p.hp;
+  document.getElementById('fJabatan').value = p.jabatanId;
+  document.getElementById('fRole').value = String(p.roleId);
+  document.getElementById('fFraksi').value = p.fraksiId ? String(p.fraksiId) : '';
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function closeModal(){
   document.getElementById('modalBackdrop').classList.remove('open');
 }
-function saveReses(e){
+function savePegawai(e){
   e.preventDefault();
-  var kode = document.getElementById('fKode').value.trim();
   var nama = document.getElementById('fNama').value.trim();
-  var status = document.getElementById('fStatus').value;
-  var statusBadge = status === 'Aktif' ? 'badge-success' : 'badge-neutral';
+  var nik = document.getElementById('fNik').value.trim();
+  var nip = document.getElementById('fNip').value.trim();
+  var alamat = document.getElementById('fAlamat').value.trim();
+  var hp = document.getElementById('fHp').value.trim();
+  var jabatanId = document.getElementById('fJabatan').value;
+  var roleId = parseInt(document.getElementById('fRole').value, 10);
+  var fraksiVal = document.getElementById('fFraksi').value;
+  var fraksiId = fraksiVal ? parseInt(fraksiVal, 10) : null;
 
-  var row = editingRow;
-  if(!row){
-    row = document.createElement('tr');
-    row.innerHTML = '<td><div class="namecell"><div class="n"></div></div></td>'
-      + '<td><div class="namecell"><div class="n"></div></div></td>'
-      + '<td></td>'
-      + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>';
-    document.getElementById('tbodyReses').appendChild(row);
+  if(!/^\d{16}$/.test(nik)){ toast('NIK harus 16 digit angka'); return false; }
+  var dupeNik = PEGAWAI_LIST.some(function(p){ return p.nik === nik && p.id !== editingId; });
+  if(dupeNik){ toast('NIK "' + nik + '" sudah digunakan'); return false; }
+  var dupeNip = PEGAWAI_LIST.some(function(p){ return p.nip.toLowerCase() === nip.toLowerCase() && p.id !== editingId; });
+  if(dupeNip){ toast('NIP "' + nip + '" sudah digunakan'); return false; }
+
+  if(editingId){
+    var p = PEGAWAI_LIST.find(function(p){ return p.id === editingId; });
+    p.nama = nama; p.nik = nik; p.nip = nip; p.alamat = alamat; p.hp = hp;
+    p.jabatanId = jabatanId; p.roleId = roleId; p.fraksiId = fraksiId;
+    toast('Data pegawai "' + nama + '" diperbarui (prototipe)');
+  } else {
+    PEGAWAI_LIST.push({ id: pegawaiNextId(PEGAWAI_LIST), nama: nama, nik: nik, nip: nip, alamat: alamat, hp: hp, jabatanId: jabatanId, roleId: roleId, fraksiId: fraksiId });
+    toast('Pegawai "' + nama + '" ditambahkan (prototipe)');
   }
-  row.dataset.kode = kode;
-  row.dataset.nama = nama;
-  row.dataset.status = status;
-  row.children[0].querySelector('.n').textContent = kode;
-  row.children[1].querySelector('.n').textContent = nama;
-  row.children[2].innerHTML = '<span class="badge ' + statusBadge + '">' + status + '</span>';
-
+  pegawaiSaveList(PEGAWAI_LIST);
+  renderTable();
   updateStats();
   closeModal();
-  toast('Data reses "' + nama + '" disimpan (prototipe)');
   return false;
 }
-function updateStats(){
-  var rows = document.querySelectorAll('#tbodyReses tr');
-  document.getElementById('statTotal').textContent = rows.length;
-  var aktif = 0, nonaktif = 0;
-  rows.forEach(function(r){
-    if(r.dataset.status === 'Aktif') aktif++; else nonaktif++;
-  });
-  document.getElementById('statAktif').textContent = aktif;
-  document.getElementById('statNonaktif').textContent = nonaktif;
+
+var deletingId = null;
+function openDelete(id){
+  var p = PEGAWAI_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  deletingId = id;
+  document.getElementById('deleteModalText').textContent = 'Hapus data pegawai "' + p.nama + '" (' + p.nip + ')? Tindakan ini tidak dapat dibatalkan.';
+  document.getElementById('deleteModalBackdrop').classList.add('open');
 }
+function closeDeleteModal(){
+  document.getElementById('deleteModalBackdrop').classList.remove('open');
+  deletingId = null;
+}
+function confirmDelete(){
+  if(deletingId == null) return;
+  var idx = PEGAWAI_LIST.findIndex(function(p){ return p.id === deletingId; });
+  if(idx > -1){
+    var removed = PEGAWAI_LIST.splice(idx, 1)[0];
+    pegawaiSaveList(PEGAWAI_LIST);
+    renderTable();
+    updateStats();
+    toast('Pegawai "' + removed.nama + '" dihapus (prototipe)');
+  }
+  closeDeleteModal();
+}
+
+renderTable();
+updateStats();
 </script>
 </body>
 </html>
