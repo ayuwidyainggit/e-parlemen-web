@@ -103,6 +103,7 @@ tr:hover td{background:#fafaf7;}
 .field{margin-bottom:14px;}
 .field:last-child{margin-bottom:0;}
 .field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
 .field input,.field select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
 .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
 .chip{padding:7px 13px;border-radius:20px;background:#eceee7;font-size:11.5px;font-weight:700;color:var(--ink);border:1px solid transparent;cursor:pointer;font-family:inherit;}
@@ -136,7 +137,6 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna <span class="count">2</span></a>
       <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
-      <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
       <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item active" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Reses &amp; Dapil</div>
@@ -198,45 +198,45 @@ tr:hover td{background:#fafaf7;}
         <table>
           <thead><tr><th>Nama Jenis Kegiatan</th><th>Berlaku Untuk</th><th>Status</th><th></th></tr></thead>
           <tbody id="tbodyJenis">
-            <tr data-nama="Pertemuan Masyarakat" data-berlaku="Reses, Kunjungan Dapil" data-status="Aktif">
+            <tr data-nama="Pertemuan Masyarakat" data-berlaku="Reses" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg></span><div class="n">Pertemuan Masyarakat</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-info">Reses</span><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-info">Reses</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
             <tr data-nama="Kunjungan Lapangan" data-berlaku="Kunjungan Dapil" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg></span><div class="n">Kunjungan Lapangan</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-neutral">Kunjungan Dapil</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
-            <tr data-nama="Dialog Masyarakat" data-berlaku="Reses, Kunjungan Dapil" data-status="Aktif">
+            <tr data-nama="Dialog Masyarakat" data-berlaku="Reses" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-4-1L3 20l1.1-4.9A8.4 8.4 0 1 1 21 11.5z"/></svg></span><div class="n">Dialog Masyarakat</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-info">Reses</span><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-info">Reses</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
-            <tr data-nama="Sosialisasi" data-berlaku="Reses, Kunjungan Dapil" data-status="Aktif">
+            <tr data-nama="Sosialisasi" data-berlaku="Kunjungan Dapil" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></span><div class="n">Sosialisasi</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-info">Reses</span><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-neutral">Kunjungan Dapil</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
             <tr data-nama="Penyerapan Aspirasi" data-berlaku="Reses" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg></span><div class="n">Penyerapan Aspirasi</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-info">Reses</span></div></td>
+              <td><span class="badge badge-info">Reses</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
             <tr data-nama="Kunjungan Fasilitas Publik" data-berlaku="Kunjungan Dapil" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M9 21v-5h6v5"/><path d="M3 9l9-6 9 6"/></svg></span><div class="n">Kunjungan Fasilitas Publik</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-neutral">Kunjungan Dapil</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
-            <tr data-nama="Lainnya" data-berlaku="Reses, Kunjungan Dapil" data-status="Aktif">
+            <tr data-nama="Lainnya" data-berlaku="Reses" data-status="Aktif">
               <td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span><div class="n">Lainnya</div></div></td>
-              <td><div class="tag-row"><span class="badge badge-info">Reses</span><span class="badge badge-neutral">Kunjungan Dapil</span></div></td>
+              <td><span class="badge badge-info">Reses</span></td>
               <td><span class="badge badge-success">Aktif</span></td>
               <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
             </tr>
@@ -254,11 +254,11 @@ tr:hover td{background:#fafaf7;}
     <form onsubmit="return saveJenis(event)">
       <div class="field"><label>Nama Jenis Kegiatan</label><input type="text" id="fNama" placeholder="Contoh: Bakti Sosial" required></div>
       <div class="field">
-        <label>Berlaku Untuk</label>
-        <div class="chip-row" id="fBerlakuChips">
-          <button type="button" class="chip" onclick="toggleChip(this)">Reses</button>
-          <button type="button" class="chip" onclick="toggleChip(this)">Kunjungan Dapil</button>
-        </div>
+        <label>Berlaku Untuk <span class="opt">(pilih salah satu)</span></label>
+        <select id="fBerlaku" required>
+          <option value="Reses">Reses</option>
+          <option value="Kunjungan Dapil">Kunjungan Dapil</option>
+        </select>
       </div>
       <div class="field"><label>Status</label>
         <select id="fStatus" required>
@@ -282,11 +282,10 @@ function toast(msg){
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
 var editingRow = null;
-function toggleChip(el){ el.classList.toggle('active'); }
 function resetForm(){
   document.getElementById('fNama').value = '';
   document.getElementById('fStatus').selectedIndex = 0;
-  document.querySelectorAll('#fBerlakuChips .chip').forEach(function(c){ c.classList.remove('active'); });
+  document.getElementById('fBerlaku').selectedIndex = 0;
 }
 function openAdd(){
   editingRow = null;
@@ -300,10 +299,7 @@ function openEdit(btn){
   document.getElementById('modalTitle').textContent = 'Edit Jenis Kegiatan';
   document.getElementById('fNama').value = editingRow.dataset.nama;
   document.getElementById('fStatus').value = editingRow.dataset.status;
-  var berlakuList = editingRow.dataset.berlaku.split(', ');
-  document.querySelectorAll('#fBerlakuChips .chip').forEach(function(c){
-    if(berlakuList.indexOf(c.textContent) !== -1){ c.classList.add('active'); }
-  });
+  document.getElementById('fBerlaku').value = editingRow.dataset.berlaku;
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function closeModal(){
@@ -313,24 +309,23 @@ function saveJenis(e){
   e.preventDefault();
   var nama = document.getElementById('fNama').value.trim();
   var status = document.getElementById('fStatus').value;
-  var berlaku = Array.prototype.map.call(document.querySelectorAll('#fBerlakuChips .chip.active'), function(c){ return c.textContent; });
-  if(!berlaku.length){ toast('Pilih minimal satu jenis penggunaan'); return false; }
+  var berlaku = document.getElementById('fBerlaku').value;
   var statusBadge = status === 'Aktif' ? 'badge-success' : 'badge-neutral';
-  var berlakuHtml = berlaku.map(function(b){ return '<span class="badge ' + (b === 'Reses' ? 'badge-info' : 'badge-neutral') + '">' + b + '</span>'; }).join('');
+  var berlakuBadge = berlaku === 'Reses' ? 'badge-info' : 'badge-neutral';
 
   var row = editingRow;
   if(!row){
     row = document.createElement('tr');
     row.innerHTML = '<td><div class="namecell"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.2" fill="currentColor" stroke="none"/><circle cx="5" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span><div class="n"></div></div></td>'
-      + '<td><div class="tag-row"></div></td><td></td>'
+      + '<td></td><td></td>'
       + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>';
     document.getElementById('tbodyJenis').appendChild(row);
   }
   row.dataset.nama = nama;
-  row.dataset.berlaku = berlaku.join(', ');
+  row.dataset.berlaku = berlaku;
   row.dataset.status = status;
   row.children[0].querySelector('.n').textContent = nama;
-  row.children[1].querySelector('.tag-row').innerHTML = berlakuHtml;
+  row.children[1].innerHTML = '<span class="badge ' + berlakuBadge + '">' + berlaku + '</span>';
   row.children[2].innerHTML = '<span class="badge ' + statusBadge + '">' + status + '</span>';
 
   updateStats();
@@ -348,6 +343,7 @@ function updateStats(){
   document.getElementById('statAktif').textContent = aktif;
   document.getElementById('statNonaktif').textContent = nonaktif;
 }
+
 </script>
 </body>
 </html>
