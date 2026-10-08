@@ -130,7 +130,7 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Config Fraksi</a>
       <a class="snav-item active" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
       <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> RBAC</a>
-      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna Mobile <span class="count">2</span></a>
+      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna <span class="count">2</span></a>
       <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.6-2.5h4.8L16 7"/><circle cx="12" cy="13.5" r="3.4"/></svg> Master Reses</a>
@@ -237,40 +237,12 @@ tr:hover td{background:#fafaf7;}
 <script src="jabatan-data.js"></script>
 <script src="rbac-data.js"></script>
 <script src="fraksi-data.js"></script>
+<script src="pegawai-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
-}
-
-var PEGAWAI_STORAGE_KEY = 'ep_master_pegawai_list';
-var PEGAWAI_DEFAULT_LIST = [
-  { id: 1, nama: 'M. Yusuf Ridwan, S.E.', nik: '3371012203880001', nip: 'DPRD-AGT-0044', alamat: 'Jl. Pahlawan No. 12, Magelang Selatan', hp: '0812-2500-1044', jabatanId: 'jab-3', roleId: 3, fraksiId: 1 },
-  { id: 2, nama: 'R. Hendra Wijaya, S.H.', nik: '3371011508850002', nip: 'DPRD-AGT-0031', alamat: 'Jl. Diponegoro No. 5, Magelang Tengah', hp: '0813-2700-2031', jabatanId: 'jab-3', roleId: 3, fraksiId: 2 },
-  { id: 3, nama: 'Hj. Siti Rahmawati', nik: '3371014507800003', nip: 'DPRD-SEK-0002', alamat: 'Jl. Pemuda No. 20, Magelang Utara', hp: '0811-2900-3002', jabatanId: 'jab-4', roleId: 2, fraksiId: null },
-  { id: 4, nama: 'Ir. Budi Santoso, M.T.', nik: '3371010906820004', nip: 'DPRD-OPS-0007', alamat: 'Jl. Mertoyudan No. 8, Magelang Selatan', hp: '0812-3100-4007', jabatanId: 'jab-5', roleId: 2, fraksiId: null }
-];
-
-function pegawaiLoadList(){
-  try{
-    var raw = localStorage.getItem(PEGAWAI_STORAGE_KEY);
-    if(raw){
-      var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch(e){}
-  var seed = JSON.parse(JSON.stringify(PEGAWAI_DEFAULT_LIST));
-  pegawaiSaveList(seed);
-  return seed;
-}
-function pegawaiSaveList(list){
-  try{ localStorage.setItem(PEGAWAI_STORAGE_KEY, JSON.stringify(list)); } catch(e){}
-}
-function pegawaiNextId(list){
-  var max = 0;
-  list.forEach(function(p){ if(p.id > max) max = p.id; });
-  return max + 1;
 }
 
 var PEGAWAI_LIST = pegawaiLoadList();
