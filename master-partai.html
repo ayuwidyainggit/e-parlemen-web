@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Proses Surat Keluar &middot; Admin e-Parlemen</title>
+<title>Master Partai &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -47,7 +47,6 @@ a{color:inherit;}
 .topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;}
 .topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
 .topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
-.topbar .crumb a{color:var(--green);text-decoration:none;font-weight:700;}
 .topbar-actions{display:flex;gap:14px;align-items:center;}
 .tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
 .tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
@@ -56,67 +55,64 @@ a{color:inherit;}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
 .menu-toggle .ic-svg{width:22px;height:22px;}
 
-.content{padding:24px 26px 60px;max-width:1100px;width:100%;}
+.content{padding:24px 26px 60px;max-width:1180px;width:100%;}
 
 .card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
-.section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;}
-.two-col-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;}
-.muted{color:var(--muted);}
 .hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--neutral-bg);color:var(--green);}
+.stat-card.info .ic{background:var(--info-bg);color:var(--info);}
+.stat-card.gold .ic{background:#fbf1dc;color:#9a7b1f;}
+.stat-card .num{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1;}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
 
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
 .badge-success{background:var(--success-bg);color:var(--success);}
-.badge-warn{background:var(--warn-bg);color:var(--warn);}
-.badge-danger{background:var(--danger-bg);color:var(--danger);}
-.badge-info{background:var(--info-bg);color:var(--info);}
 .badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
-.badge-gold{background:#fbf1dc;color:#9a7b1f;}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
-.btn-ghost{background:transparent;color:var(--green);border:1.5px dashed #c9c4b4;}
+.btn-danger-outline{background:#fff;color:var(--danger);border:1.5px solid var(--danger);}
 .btn-sm{padding:8px 13px;font-size:11.5px;}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;}
-.btn:disabled{opacity:.5;cursor:not-allowed;}
 
-.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:26px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
-.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
-.upload-box:hover{border-color:var(--gold);}
-.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
-
-.timeline{position:relative;padding-left:22px;}
-.timeline::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--border);}
-.t-item{position:relative;margin-bottom:18px;}
-.t-item:last-child{margin-bottom:0;}
-.t-item::before{content:"";position:absolute;left:-22px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--green);border:3px solid #fff;box-shadow:0 0 0 1px var(--border);}
-.t-item.done::before{background:var(--success);}
-.t-item.pending::before{background:#d8d4c6;}
-.t-item .t-title{font-weight:800;font-size:13px;}
-.t-item .t-time{font-size:10.8px;color:var(--muted);margin-top:1px;}
-.t-item .t-desc{font-size:12px;color:var(--ink);margin-top:4px;line-height:1.5;}
-
-.info-box{background:var(--info-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#2a5583;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
-.success-box{background:var(--success-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#1c6b3d;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
-.warn-box{background:var(--warn-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#96590f;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
-
-.kv-row{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);font-size:12.5px;}
-.kv-row:last-child{border-bottom:none;}
-.kv-row .k{color:var(--muted);flex-shrink:0;}
-.kv-row .v{font-weight:700;text-align:right;}
-
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:720px;}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
+td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf7;}
 .namecell{display:flex;align-items:center;gap:10px;}
-.namecell .av{width:40px;height:40px;border-radius:50%;background:var(--neutral-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
-.namecell .n{font-weight:800;font-size:13.5px;}
-.namecell .s{font-size:11px;color:var(--muted);}
+.namecell .logo{width:34px;height:34px;border-radius:9px;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-weight:800;font-size:11px;color:var(--green);}
+.namecell .logo img{width:100%;height:100%;object-fit:cover;}
+.namecell .n{font-weight:800;font-size:12.6px;}
+.namecell .s{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
+
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:440px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-box.sm{max-width:380px;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
+.modal-close .ic-svg{width:15px;height:15px;}
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
+.field input,.field select{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.modal-foot{display:flex;gap:10px;margin-top:18px;}
+.modal-foot .btn{flex:1;}
 
 @media (max-width:960px){
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
   .sidebar.open{left:0;}
   .menu-toggle{display:block;}
-  .two-col-layout{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -124,7 +120,7 @@ a{color:inherit;}
 <div class="admin-shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></span>
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg></span>
       <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
     </div>
     <nav class="sidebar-nav">
@@ -148,7 +144,7 @@ a{color:inherit;}
       <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
       <div class="snav-label">Persuratan</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item active" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
       <div class="snav-label">Rapat</div>
       <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
       <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
@@ -167,148 +163,202 @@ a{color:inherit;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Proses Surat Keluar</h2><div class="crumb"><a href="surat-keluar.html">Surat Keluar</a> &rsaquo; Proses Permintaan</div></div>
+        <div><h2>Master Partai</h2><div class="crumb">Admin &middot; Master Data &middot; Master Partai</div></div>
       </div>
       <div class="topbar-actions">
+        <button class="btn btn-primary btn-sm" onclick="openAdd()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Partai</button>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
         <div class="tb-user"><span class="av">AS</span></div>
       </div>
     </div>
 
     <div class="content">
+      <div class="hint" style="margin-bottom:16px;">Data referensi Partai Politik nasional. Kode Partai bersifat unik dan dipakai sebagai rujukan pada Config Fraksi &mdash; Logo Partai yang diisi di sini akan tampil pada halaman Fraksi.</div>
 
-      <div class="card">
-        <div class="section-title">
-          <div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">Anggota Komisi I &middot; Fraksi Golkar</div></div></div>
-          <span class="badge badge-warn" id="statusBadge">Permintaan Baru</span>
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 21V10"/><path d="M4 10l8-6 8 6"/><path d="M9 21v-6h6v6"/></svg></div>
+          <div><div class="num" id="statTotal">0</div><div class="lbl">Total Partai</div></div>
         </div>
-        <div class="kv-row"><span class="k">Jenis Surat</span><span class="v">Surat Keterangan Tugas</span></div>
-        <div class="kv-row"><span class="k">Perihal / Keperluan</span><span class="v">Penugasan menghadiri Rapat Koordinasi Provinsi Jawa Tengah</span></div>
-        <div class="kv-row"><span class="k">Tanggal Digunakan</span><span class="v">27 Mei 2025</span></div>
-        <div class="kv-row"><span class="k">Diajukan</span><span class="v">Hari ini, 09.12 WIB</span></div>
-        <div class="kv-row"><span class="k">Catatan Pemohon</span><span class="v">Mohon diproses sebelum tanggal 26 Mei untuk keperluan administrasi perjalanan dinas.</span></div>
-      </div>
-
-      <div class="two-col-layout">
-        <div>
-          <div class="card" id="uploadCard">
-            <div class="section-title">1. Unggah Draf &amp; Kirim ke Aplikasi Mobile</div>
-            <div class="hint" style="margin-bottom:12px;">Unggah draf surat dalam format PDF. Setelah dikirim, Anggota Dewan akan menerima notifikasi untuk meninjau &amp; menyetujui surat melalui aplikasi mobile.</div>
-            <label class="upload-box" id="uploadBox" for="pdfInput">
-              <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
-              <span id="uploadLabel">Klik untuk memilih berkas PDF draf surat, atau seret berkas ke sini</span>
-            </label>
-            <input type="file" id="pdfInput" accept="application/pdf" style="display:none;" onchange="onFileChosen(this)">
-            <div class="btn-row" style="margin-top:14px;">
-              <button class="btn btn-primary" id="sendBtn" onclick="sendDraft()" disabled><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Draf ke Anggota</button>
-            </div>
-          </div>
-
-          <div class="card" id="waitingCard" style="display:none;">
-            <div class="section-title">2. Menunggu Persetujuan Anggota</div>
-            <div class="info-box">
-              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-              <span>Draf PDF telah terkirim ke aplikasi mobile Ir. Budi Santoso, M.T. Admin akan menerima notifikasi otomatis segera setelah surat disetujui.</span>
-            </div>
-            <div class="hint" style="margin-top:10px;">Mode prototipe &mdash; simulasikan tanggapan Anggota Dewan pada aplikasi mobile:</div>
-            <div class="btn-row" style="margin-top:8px;">
-              <button class="btn btn-outline btn-sm" onclick="simulateApproval()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Simulasikan: Disetujui Anggota</button>
-            </div>
-          </div>
-
-          <div class="card" id="approvedCard" style="display:none;">
-            <div class="section-title">3. Disetujui &middot; Siap Dikirim/Dicetak</div>
-            <div class="success-box" id="approvalNotif">
-              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-              <span><strong>Surat disetujui oleh Ir. Budi Santoso, M.T.</strong><br>Disetujui melalui aplikasi mobile, hari ini pukul 10.24 WIB. Surat siap dicetak &amp; dikirim ke pemohon.</span>
-            </div>
-            <div class="hint" style="margin:12px 0;">Setelah surat fisik/PDF final dikirimkan kepada pemohon, tandai permintaan ini sebagai selesai.</div>
-            <div class="btn-row">
-              <button class="btn btn-primary" onclick="markDone()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Tandai Sudah Dikirim (Selesai)</button>
-            </div>
-          </div>
-
-          <div class="card" id="doneCard" style="display:none;">
-            <div class="success-box">
-              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-              <span><strong>Permintaan selesai.</strong> Surat telah dikirim kepada pemohon &amp; status diperbarui menjadi Selesai.</span>
-            </div>
-          </div>
+        <div class="stat-card info">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
+          <div><div class="num" id="statAktif">0</div><div class="lbl">Partai Aktif</div></div>
         </div>
-
-        <div>
-          <div class="card">
-            <div class="section-title">Riwayat Status</div>
-            <div class="timeline" id="statusTimeline">
-              <div class="t-item done">
-                <div class="t-title">Permintaan diterima</div>
-                <div class="t-time">Hari ini, 09.12 WIB</div>
-                <div class="t-desc">Diajukan oleh Ir. Budi Santoso, M.T. melalui aplikasi mobile.</div>
-              </div>
-              <div class="t-item pending" id="tl-kirim">
-                <div class="t-title">Draf dikirim untuk persetujuan</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-              <div class="t-item pending" id="tl-setuju">
-                <div class="t-title">Disetujui Anggota</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-              <div class="t-item pending" id="tl-selesai">
-                <div class="t-title">Selesai &amp; dikirim ke pemohon</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-            </div>
-          </div>
+        <div class="stat-card gold">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
+          <div><div class="num" id="statNonaktif">0</div><div class="lbl">Partai Nonaktif</div></div>
         </div>
       </div>
 
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Kode</th><th>Nama &amp; Singkatan</th><th>Logo</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyPartai"></tbody>
+        </table>
+      </div>
+      <div class="hint" style="margin-top:12px;">Perubahan pada halaman ini bersifat contoh (prototipe) dan tersimpan di localStorage browser.</div>
     </div>
   </div>
 </div>
+
+<div class="modal-backdrop" id="modalBackdrop">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="modalTitle">Tambah Partai</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <form onsubmit="return savePartai(event)">
+      <div class="field"><label>Kode Partai</label><input type="text" id="fKode" placeholder="Contoh: PDIP" maxlength="20" required></div>
+      <div class="field"><label>Nama Resmi Partai</label><input type="text" id="fNama" placeholder="Contoh: Partai Demokrasi Indonesia Perjuangan" maxlength="150" required></div>
+      <div class="field"><label>Singkatan</label><input type="text" id="fSingkatan" placeholder="Contoh: PDI-P" maxlength="30" required></div>
+      <div class="field"><label>Logo URL <span class="opt">(opsional &mdash; tampil di halaman Fraksi)</span></label><input type="text" id="fLogoUrl" placeholder="https://..."></div>
+      <div class="field"><label>Status</label>
+        <select id="fIsAktif" required>
+          <option value="true">Aktif</option>
+          <option value="false">Nonaktif</option>
+        </select>
+      </div>
+      <div class="modal-foot">
+        <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
+        <button type="submit" class="btn btn-primary">Simpan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="deleteModalBackdrop">
+  <div class="modal-box sm">
+    <div class="modal-head"><h3>Hapus Partai</h3><button class="modal-close" onclick="closeDeleteModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="deleteModalText" style="margin-bottom:4px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeDeleteModal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmDelete()">Hapus</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
+<script src="partai-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-function onFileChosen(input){
-  if(input.files && input.files[0]){
-    document.getElementById('uploadLabel').textContent = 'Berkas dipilih: ' + input.files[0].name;
-    document.getElementById('uploadBox').classList.add('filled');
-    document.getElementById('sendBtn').disabled = false;
+
+var PARTAI_LIST = partaiLoadList();
+
+function logoCellHtml(p){
+  if(p.logo_url){
+    return '<div class="logo"><img src="' + p.logo_url + '" alt="' + p.singkatan + '"></div>';
   }
+  return '<div class="logo">' + p.singkatan.slice(0, 3).toUpperCase() + '</div>';
 }
-function sendDraft(){
-  document.getElementById('uploadCard').style.display = 'none';
-  document.getElementById('waitingCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Menunggu Persetujuan';
-  document.getElementById('statusBadge').className = 'badge badge-info';
-  var tl = document.getElementById('tl-kirim');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 09.40 WIB';
-  toast('Draf PDF terkirim ke aplikasi mobile anggota');
+
+function renderTable(){
+  var tbody = document.getElementById('tbodyPartai');
+  tbody.innerHTML = PARTAI_LIST.map(function(p){
+    var statusBadge = p.is_aktif ? 'badge-success' : 'badge-neutral';
+    return '<tr data-id="' + p.id + '">'
+      + '<td><span class="badge badge-neutral">' + p.kode + '</span></td>'
+      + '<td><div class="namecell"><div><div class="n">' + p.nama + '</div><div class="s">' + p.singkatan + '</div></div></div></td>'
+      + '<td><div class="namecell">' + logoCellHtml(p) + '</div></td>'
+      + '<td><span class="badge ' + statusBadge + '">' + (p.is_aktif ? 'Aktif' : 'Nonaktif') + '</span></td>'
+      + '<td><div class="actions-cell">'
+      +   '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + p.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + p.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
+      + '</div></td>'
+    + '</tr>';
+  }).join('');
 }
-function simulateApproval(){
-  document.getElementById('waitingCard').style.display = 'none';
-  document.getElementById('approvedCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Disetujui';
-  document.getElementById('statusBadge').className = 'badge badge-success';
-  var tl = document.getElementById('tl-setuju');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 10.24 WIB';
-  toast('Notifikasi diterima: surat disetujui anggota');
+
+function updateStats(){
+  document.getElementById('statTotal').textContent = PARTAI_LIST.length;
+  var aktif = PARTAI_LIST.filter(function(p){ return p.is_aktif; }).length;
+  document.getElementById('statAktif').textContent = aktif;
+  document.getElementById('statNonaktif').textContent = PARTAI_LIST.length - aktif;
 }
-function markDone(){
-  document.getElementById('approvedCard').style.display = 'none';
-  document.getElementById('doneCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Selesai';
-  document.getElementById('statusBadge').className = 'badge badge-neutral';
-  var tl = document.getElementById('tl-selesai');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 10.35 WIB';
-  toast('Status diperbarui menjadi Selesai');
+
+var editingId = null;
+function resetForm(){
+  document.getElementById('fKode').value = '';
+  document.getElementById('fNama').value = '';
+  document.getElementById('fSingkatan').value = '';
+  document.getElementById('fLogoUrl').value = '';
+  document.getElementById('fIsAktif').value = 'true';
 }
+function openAdd(){
+  editingId = null;
+  resetForm();
+  document.getElementById('modalTitle').textContent = 'Tambah Partai';
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function openEdit(id){
+  var p = PARTAI_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  editingId = id;
+  resetForm();
+  document.getElementById('modalTitle').textContent = 'Edit Partai';
+  document.getElementById('fKode').value = p.kode;
+  document.getElementById('fNama').value = p.nama;
+  document.getElementById('fSingkatan').value = p.singkatan;
+  document.getElementById('fLogoUrl').value = p.logo_url || '';
+  document.getElementById('fIsAktif').value = p.is_aktif ? 'true' : 'false';
+  document.getElementById('modalBackdrop').classList.add('open');
+}
+function closeModal(){
+  document.getElementById('modalBackdrop').classList.remove('open');
+}
+function savePartai(e){
+  e.preventDefault();
+  var kode = document.getElementById('fKode').value.trim().toUpperCase();
+  var nama = document.getElementById('fNama').value.trim();
+  var singkatan = document.getElementById('fSingkatan').value.trim();
+  var logo_url = document.getElementById('fLogoUrl').value.trim() || null;
+  var is_aktif = document.getElementById('fIsAktif').value === 'true';
+
+  var dupe = PARTAI_LIST.some(function(p){ return p.kode.toUpperCase() === kode && p.id !== editingId; });
+  if(dupe){ toast('Kode Partai "' + kode + '" sudah digunakan'); return false; }
+
+  if(editingId){
+    var p = PARTAI_LIST.find(function(p){ return p.id === editingId; });
+    p.kode = kode; p.nama = nama; p.singkatan = singkatan; p.logo_url = logo_url; p.is_aktif = is_aktif;
+    toast('Data partai "' + nama + '" diperbarui (prototipe)');
+  } else {
+    PARTAI_LIST.push({ id: partaiGenerateUuid(), kode: kode, nama: nama, singkatan: singkatan, logo_url: logo_url, is_aktif: is_aktif });
+    toast('Partai "' + nama + '" ditambahkan (prototipe)');
+  }
+  partaiSaveList(PARTAI_LIST);
+  renderTable();
+  updateStats();
+  closeModal();
+  return false;
+}
+
+var deletingId = null;
+function openDelete(id){
+  var p = PARTAI_LIST.find(function(p){ return p.id === id; });
+  if(!p) return;
+  deletingId = id;
+  document.getElementById('deleteModalText').textContent = 'Hapus data partai "' + p.nama + '" (' + p.kode + ')? Tindakan ini tidak dapat dibatalkan.';
+  document.getElementById('deleteModalBackdrop').classList.add('open');
+}
+function closeDeleteModal(){
+  document.getElementById('deleteModalBackdrop').classList.remove('open');
+  deletingId = null;
+}
+function confirmDelete(){
+  if(deletingId == null) return;
+  var idx = PARTAI_LIST.findIndex(function(p){ return p.id === deletingId; });
+  if(idx > -1){
+    var removed = PARTAI_LIST.splice(idx, 1)[0];
+    partaiSaveList(PARTAI_LIST);
+    renderTable();
+    updateStats();
+    toast('Partai "' + removed.nama + '" dihapus (prototipe)');
+  }
+  closeDeleteModal();
+}
+
+renderTable();
+updateStats();
 </script>
 </body>
 </html>

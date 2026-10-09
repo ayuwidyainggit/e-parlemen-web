@@ -93,36 +93,17 @@ tr:hover td{background:#fafaf7;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
 
-.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
-.modal-backdrop.open{display:flex;}
-.modal-box{background:#fff;border-radius:16px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
-.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
-.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
-.modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
-.modal-close .ic-svg{width:15px;height:15px;}
-.field{margin-bottom:14px;}
-.field:last-child{margin-bottom:0;}
-.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
-.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
-.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
-.field textarea{resize:vertical;min-height:70px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;}
-.modal-foot{display:flex;gap:10px;margin-top:18px;}
-.modal-foot .btn{flex:1;}
-
 .chip-list{display:flex;flex-wrap:wrap;gap:5px;max-width:260px;}
-.wilayah-picker-row{display:grid;grid-template-columns:1fr;gap:10px;margin-bottom:10px;}
-.btn-add-wilayah{width:100%;}
-.staging-list{display:flex;flex-wrap:wrap;gap:6px;min-height:34px;padding:8px;border:1px dashed var(--border);border-radius:10px;margin-bottom:14px;}
-.staging-list:empty::before{content:'Belum ada wilayah ditambahkan';font-size:11px;color:var(--muted);}
-.staging-chip{display:inline-flex;align-items:center;gap:6px;background:var(--neutral-bg);color:var(--ink);padding:5px 5px 5px 10px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap;}
-.staging-chip button{background:none;border:none;cursor:pointer;color:var(--danger);display:flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;padding:0;flex-shrink:0;}
-.staging-chip button:hover{background:var(--danger-bg);}
-.staging-chip button .ic-svg{width:11px;height:11px;}
-.anggota-check-list{display:flex;flex-direction:column;gap:10px;max-height:320px;overflow-y:auto;}
-.anggota-check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;}
-.anggota-check-row input{width:auto;margin-top:2px;}
-.anggota-check-row .ac-n{font-weight:800;font-size:12.6px;}
-.anggota-check-row .ac-s{font-size:10.5px;color:var(--muted);margin-top:1px;}
+
+.btn-expand .ic-svg{transition:transform .15s;}
+.btn-expand.is-open .ic-svg{transform:rotate(180deg);}
+.dapil-detail-row td{padding:0 16px 16px;border-bottom:1px solid var(--border);}
+.anggota-detail-list{display:flex;flex-direction:column;gap:8px;padding:4px 0;}
+.anggota-detail-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fbfbf9;}
+.anggota-detail-item .adi-num{width:22px;height:22px;border-radius:50%;background:var(--neutral-bg);color:var(--green);font-size:10.5px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.anggota-detail-item .adi-n{font-weight:800;font-size:12.6px;}
+.anggota-detail-item .adi-s{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.anggota-detail-empty{font-size:11.5px;color:var(--muted);padding:10px 2px;}
 
 @media (max-width:960px){
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
@@ -143,17 +124,15 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
       <div class="snav-label">Master Data</div>
       <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
-      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
-      <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Config Fraksi</a>
       <a class="snav-item" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
-      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> RBAC</a>
-      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna <span class="count">2</span></a>
-      <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
+      <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Fraksi</a>
+      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
+      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
       <a class="snav-item active" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0C5 14.5 12 21 12 21z"/><path d="M9.3 10.2l1.8 1.8L15 8.3"/></svg> Assignment Dapil <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
@@ -183,14 +162,14 @@ tr:hover td{background:#fafaf7;}
         <div><h2>Master Dapil</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Master Dapil</div></div>
       </div>
       <div class="topbar-actions">
-        <button class="btn btn-primary btn-sm" onclick="openAdd()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Dapil</button>
+        <span class="badge badge-neutral"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Readonly &middot; Dapil tetap (3)</span>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
         <div class="tb-user"><span class="av">AS</span></div>
       </div>
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi Daerah Pemilihan (Dapil) berikut struktur wilayah (Kecamatan &amp; Kelurahan/Desa) dan pemetaan Anggota DPRD. Satu Dapil dapat memiliki banyak Anggota, namun satu Anggota hanya dapat terdaftar pada satu Dapil.</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi Daerah Pemilihan (Dapil) berikut struktur wilayah (Kecamatan &amp; Kelurahan/Desa) dan pemetaan Pegawai. Satu Dapil dapat memiliki banyak Pegawai, namun satu Pegawai hanya dapat terdaftar pada satu Dapil.</div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -207,116 +186,24 @@ tr:hover td{background:#fafaf7;}
         </div>
         <div class="stat-card info">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg></div>
-          <div><div class="num" id="statAnggotaMapped">5/5</div><div class="lbl">Anggota Ter-mapping</div></div>
+          <div><div class="num" id="statPegawaiMapped">0/0</div><div class="lbl">Pegawai Ter-mapping</div></div>
         </div>
       </div>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Kode Dapil</th><th>Nama Dapil</th><th>Kecamatan</th><th>Anggota DPRD</th><th>Status</th><th></th></tr></thead>
-          <tbody id="tbodyDapil">
-            <tr data-kode="DAPIL-1" data-nama="Dapil 1" data-status="Aktif" data-kecamatan='[{"nama":"Magelang Selatan","kelurahan":["Jurangombo Utara","Jurangombo Selatan","Magersari","Tidar Selatan","Rejowinangun Selatan"]}]'>
-              <td><div class="namecell"><div class="n">DAPIL-1</div></div></td>
-              <td><div class="namecell"><div class="n">Dapil 1</div></div></td>
-              <td><div class="chip-list kec-cell"></div></td>
-              <td><div class="chip-list anggota-cell"></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>
-                  <button class="btn btn-outline btn-sm" onclick="openKelolaAnggota(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Kelola Anggota</button>
-                </div>
-              </td>
-            </tr>
-            <tr data-kode="DAPIL-2" data-nama="Dapil 2" data-status="Aktif" data-kecamatan='[{"nama":"Magelang Tengah","kelurahan":["Kemirirejo","Cacaban","Magelang","Panjang","Gelangan"]}]'>
-              <td><div class="namecell"><div class="n">DAPIL-2</div></div></td>
-              <td><div class="namecell"><div class="n">Dapil 2</div></div></td>
-              <td><div class="chip-list kec-cell"></div></td>
-              <td><div class="chip-list anggota-cell"></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>
-                  <button class="btn btn-outline btn-sm" onclick="openKelolaAnggota(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Kelola Anggota</button>
-                </div>
-              </td>
-            </tr>
-            <tr data-kode="DAPIL-3" data-nama="Dapil 3" data-status="Aktif" data-kecamatan='[{"nama":"Magelang Utara","kelurahan":["Kedungsari","Potrobangsan","Wates","Kramat Selatan","Kramat Utara"]}]'>
-              <td><div class="namecell"><div class="n">DAPIL-3</div></div></td>
-              <td><div class="namecell"><div class="n">Dapil 3</div></div></td>
-              <td><div class="chip-list kec-cell"></div></td>
-              <td><div class="chip-list anggota-cell"></div></td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td>
-                <div class="actions-cell">
-                  <button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>
-                  <button class="btn btn-outline btn-sm" onclick="openKelolaAnggota(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Kelola Anggota</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
+          <thead><tr><th>Kode Dapil</th><th>Nama Dapil</th><th>Kecamatan</th><th>Pegawai</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyDapil"></tbody>
         </table>
       </div>
-      <div class="hint" style="margin-top:12px;">Relasi: 1 Dapil &rarr; banyak Anggota, 1 Anggota &rarr; hanya 1 Dapil (memilih Anggota pada Dapil lain akan memindahkannya). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+      <div class="hint" style="margin-top:12px;">Dapil bersifat tetap (3 Dapil, mengikuti pembagian Kecamatan Kota Magelang) sehingga halaman ini readonly &mdash; tidak ada Tambah/Edit Dapil. Relasi: 1 Dapil &rarr; banyak Pegawai, 1 Pegawai &rarr; hanya 1 Dapil.</div>
     </div>
   </div>
 </div>
 
-<div class="modal-backdrop" id="modalBackdrop">
-  <div class="modal-box">
-    <div class="modal-head"><h3 id="modalTitle">Tambah Dapil</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <form onsubmit="return saveDapil(event)">
-      <div class="field"><label>Kode Dapil</label><input type="text" id="fKode" placeholder="Contoh: DAPIL-1" required></div>
-      <div class="field"><label>Nama Dapil</label><input type="text" id="fNama" placeholder="Contoh: Dapil 1" required></div>
-      <div class="field">
-        <label>Wilayah Dapil <span class="opt">(isi bertahap: Provinsi &rarr; Kecamatan &rarr; Kelurahan/Desa)</span></label>
-      </div>
-      <div class="field"><label>1. Provinsi</label>
-        <select id="fProvinsi" onchange="handleProvinsiChange()"></select>
-      </div>
-      <div class="field"><label>2. Kecamatan</label>
-        <select id="fKecamatanSelect" onchange="handleKecamatanChange()" disabled>
-          <option value="">&mdash; Pilih Provinsi dahulu &mdash;</option>
-        </select>
-      </div>
-      <div class="field"><label>3. Kelurahan / Desa</label>
-        <select id="fKelurahanSelect" disabled>
-          <option value="">&mdash; Pilih Kecamatan dahulu &mdash;</option>
-        </select>
-      </div>
-      <div class="field">
-        <button type="button" class="btn btn-outline btn-sm btn-add-wilayah" onclick="addWilayah()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Wilayah</button>
-        <div class="staging-list" id="wilayahStagingList"></div>
-      </div>
-      <div class="field"><label>Status</label>
-        <select id="fStatus" required>
-          <option>Aktif</option>
-          <option>Nonaktif</option>
-        </select>
-      </div>
-      <div class="modal-foot">
-        <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="anggotaModalBackdrop">
-  <div class="modal-box">
-    <div class="modal-head"><h3 id="anggotaModalTitle">Kelola Anggota &middot; Dapil</h3><button class="modal-close" onclick="closeAnggotaModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <div class="hint" style="margin-bottom:14px;">Centang Anggota yang termasuk dapil ini. Anggota yang sudah terdaftar di dapil lain akan otomatis dipindahkan.</div>
-    <form onsubmit="return saveAnggotaMapping(event)">
-      <div class="anggota-check-list" id="anggotaCheckList"></div>
-      <div class="modal-foot">
-        <button type="button" class="btn btn-outline" onclick="closeAnggotaModal()">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
-      </div>
-    </form>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
+<script src="dapil-data.js"></script>
+<script src="pegawai-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -324,205 +211,62 @@ function toast(msg){
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
 
-var ANGGOTA_LIST = [
-  { id:'agt-1', nama:'M. Yusuf Ridwan, S.E.', nip:'DPRD-AGT-0044', dapilId:'DAPIL-1' },
-  { id:'agt-2', nama:'R. Hendra Wijaya, S.H.', nip:'DPRD-AGT-0031', dapilId:'DAPIL-2' },
-  { id:'agt-3', nama:'Ir. Budi Santoso, M.T.', nip:'DPRD-AGT-0017', dapilId:'DAPIL-1' },
-  { id:'agt-4', nama:'Hj. Siti Rahmawati', nip:'DPRD-AGT-0022', dapilId:'DAPIL-3' },
-  { id:'agt-5', nama:'Drs. Ahmad Fauzi', nip:'DPRD-AGT-0008', dapilId:'DAPIL-2' }
-];
+var DAPIL_LIST = dapilLoadList();
+var PEGAWAI_LIST = pegawaiLoadList();
 
-var WILAYAH_DATA = {
-  'Jawa Tengah': {
-    'Magelang Selatan': ['Jurangombo Utara','Jurangombo Selatan','Magersari','Tidar Selatan','Rejowinangun Selatan'],
-    'Magelang Tengah': ['Kemirirejo','Cacaban','Magelang','Panjang','Gelangan'],
-    'Magelang Utara': ['Kedungsari','Potrobangsan','Wates','Kramat Selatan','Kramat Utara']
-  }
-};
-var wilayahStaging = [];
-
-function populateProvinsiOptions(){
-  var select = document.getElementById('fProvinsi');
-  select.innerHTML = Object.keys(WILAYAH_DATA).map(function(p){ return '<option value="' + p + '">' + p + '</option>'; }).join('');
-  handleProvinsiChange();
-}
-function handleProvinsiChange(){
-  var provinsi = document.getElementById('fProvinsi').value;
-  var kecList = Object.keys(WILAYAH_DATA[provinsi] || {});
-  document.getElementById('fKecamatanSelect').innerHTML = kecList.map(function(k){ return '<option value="' + k + '">' + k + '</option>'; }).join('');
-  handleKecamatanChange();
-}
-function handleKecamatanChange(){
-  var provinsi = document.getElementById('fProvinsi').value;
-  var kecamatan = document.getElementById('fKecamatanSelect').value;
-  var kelList = (WILAYAH_DATA[provinsi] || {})[kecamatan] || [];
-  document.getElementById('fKelurahanSelect').innerHTML = kelList.map(function(k){ return '<option value="' + k + '">' + k + '</option>'; }).join('');
-}
-function addWilayah(){
-  var kecamatan = document.getElementById('fKecamatanSelect').value;
-  var kelurahan = document.getElementById('fKelurahanSelect').value;
-  if(!kecamatan || !kelurahan) return;
-  var exists = wilayahStaging.some(function(w){ return w.kecamatan === kecamatan && w.kelurahan === kelurahan; });
-  if(exists){ toast('Wilayah tersebut sudah ditambahkan'); return; }
-  wilayahStaging.push({ kecamatan: kecamatan, kelurahan: kelurahan });
-  renderStagingList();
-}
-function removeWilayah(idx){
-  wilayahStaging.splice(idx, 1);
-  renderStagingList();
-}
-function renderStagingList(){
-  var el = document.getElementById('wilayahStagingList');
-  el.innerHTML = wilayahStaging.map(function(w, idx){
-    return '<span class="staging-chip">' + w.kecamatan + ' &mdash; ' + w.kelurahan
-      + '<button type="button" onclick="removeWilayah(' + idx + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></span>';
-  }).join('');
-}
-function stagingToKecamatanList(){
-  var grouped = {};
-  var order = [];
-  wilayahStaging.forEach(function(w){
-    if(!grouped[w.kecamatan]){ grouped[w.kecamatan] = []; order.push(w.kecamatan); }
-    grouped[w.kecamatan].push(w.kelurahan);
-  });
-  return order.map(function(nama){ return { nama: nama, kelurahan: grouped[nama] }; });
-}
-function renderRow(row){
-  var kecamatan = JSON.parse(row.dataset.kecamatan || '[]');
-  var kecHtml = kecamatan.map(function(k){
-    return '<span class="badge badge-neutral" title="' + k.kelurahan.join(', ') + '">' + k.nama + ' (' + k.kelurahan.length + ' kel.)</span>';
-  }).join('');
-  row.querySelector('.kec-cell').innerHTML = kecHtml || '<span class="badge badge-neutral">&mdash;</span>';
-
-  var anggota = ANGGOTA_LIST.filter(function(a){ return a.dapilId === row.dataset.kode; });
-  var agtHtml = anggota.map(function(a){ return '<span class="badge badge-info">' + a.nama + '</span>'; }).join('');
-  row.querySelector('.anggota-cell').innerHTML = agtHtml || '<span class="badge badge-neutral">Belum ada</span>';
-}
 function renderAllRows(){
-  document.querySelectorAll('#tbodyDapil tr').forEach(renderRow);
-}
+  var tbody = document.getElementById('tbodyDapil');
+  tbody.innerHTML = DAPIL_LIST.map(function(d){
+    var kecHtml = (d.kecamatan || []).map(function(k){
+      return '<span class="badge badge-neutral" title="' + k.kelurahan.join(', ') + '">' + k.nama + ' (' + k.kelurahan.length + ' kel.)</span>';
+    }).join('') || '<span class="badge badge-neutral">&mdash;</span>';
 
-var editingRow = null;
-function resetForm(){
-  document.getElementById('fKode').value = '';
-  document.getElementById('fNama').value = '';
-  document.getElementById('fStatus').selectedIndex = 0;
-  wilayahStaging = [];
-  populateProvinsiOptions();
-  renderStagingList();
-}
-function openAdd(){
-  editingRow = null;
-  resetForm();
-  document.getElementById('modalTitle').textContent = 'Tambah Dapil';
-  document.getElementById('modalBackdrop').classList.add('open');
-}
-function openEdit(btn){
-  editingRow = btn.closest('tr');
-  resetForm();
-  document.getElementById('modalTitle').textContent = 'Edit Dapil';
-  document.getElementById('fKode').value = editingRow.dataset.kode;
-  document.getElementById('fNama').value = editingRow.dataset.nama;
-  document.getElementById('fStatus').value = editingRow.dataset.status;
-  var kecamatanList = JSON.parse(editingRow.dataset.kecamatan || '[]');
-  kecamatanList.forEach(function(k){
-    k.kelurahan.forEach(function(kel){ wilayahStaging.push({ kecamatan: k.nama, kelurahan: kel }); });
-  });
-  renderStagingList();
-  document.getElementById('modalBackdrop').classList.add('open');
-}
-function closeModal(){
-  document.getElementById('modalBackdrop').classList.remove('open');
-}
-function saveDapil(e){
-  e.preventDefault();
-  if(!wilayahStaging.length){ toast('Tambahkan minimal satu wilayah (kecamatan & kelurahan)'); return false; }
-  var kode = document.getElementById('fKode').value.trim();
-  var nama = document.getElementById('fNama').value.trim();
-  var kecamatan = stagingToKecamatanList();
-  var status = document.getElementById('fStatus').value;
-  var statusBadge = status === 'Aktif' ? 'badge-success' : 'badge-neutral';
-  var oldKode = editingRow ? editingRow.dataset.kode : null;
+    var pegawaiDapil = PEGAWAI_LIST.filter(function(p){ return p.tipePegawai === 'Politisi' && p.dapilId === d.kode; });
+    var pegHtml = '<span class="badge badge-info">' + pegawaiDapil.length + ' Anggota</span>';
+    if(!pegawaiDapil.length) pegHtml = '<span class="badge badge-neutral">Belum ada</span>';
 
-  var row = editingRow;
-  if(!row){
-    row = document.createElement('tr');
-    row.innerHTML = '<td><div class="namecell"><div class="n"></div></div></td>'
-      + '<td><div class="namecell"><div class="n"></div></div></td>'
-      + '<td><div class="chip-list kec-cell"></div></td>'
-      + '<td><div class="chip-list anggota-cell"></div></td>'
-      + '<td></td>'
-      + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
-      + '<button class="btn btn-outline btn-sm" onclick="openKelolaAnggota(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Kelola Anggota</button></div></td>';
-    document.getElementById('tbodyDapil').appendChild(row);
-  }
-  row.dataset.kode = kode;
-  row.dataset.nama = nama;
-  row.dataset.status = status;
-  row.dataset.kecamatan = JSON.stringify(kecamatan);
-  row.children[0].querySelector('.n').textContent = kode;
-  row.children[1].querySelector('.n').textContent = nama;
-  row.children[4].innerHTML = '<span class="badge ' + statusBadge + '">' + status + '</span>';
+    var statusBadge = d.status === 'Aktif' ? 'badge-success' : 'badge-neutral';
 
-  if(oldKode && oldKode !== kode){
-    ANGGOTA_LIST.forEach(function(a){ if(a.dapilId === oldKode){ a.dapilId = kode; } });
-  }
+    var detailHtml = pegawaiDapil.length
+      ? pegawaiDapil.map(function(p, idx){
+          return '<div class="anggota-detail-item">'
+            + '<span class="adi-num">' + (idx + 1) + '</span>'
+            + '<span><div class="adi-n">' + p.nama + '</div><div class="adi-s">' + (p.nip || '&mdash;') + '</div></span>'
+          + '</div>';
+        }).join('')
+      : '<div class="anggota-detail-empty">Belum ada anggota terdaftar pada dapil ini.</div>';
 
-  renderAllRows();
-  updateStats();
-  closeModal();
-  toast('Data dapil "' + nama + '" disimpan (prototipe)');
-  return false;
-}
-
-var kelolaDapilKode = null;
-function openKelolaAnggota(btn){
-  var row = btn.closest('tr');
-  kelolaDapilKode = row.dataset.kode;
-  document.getElementById('anggotaModalTitle').textContent = 'Kelola Anggota · ' + row.dataset.nama;
-  var list = document.getElementById('anggotaCheckList');
-  list.innerHTML = ANGGOTA_LIST.map(function(a){
-    var checked = a.dapilId === kelolaDapilKode ? 'checked' : '';
-    var note = (a.dapilId && a.dapilId !== kelolaDapilKode) ? ' <span class="opt">(saat ini: ' + a.dapilId + ')</span>' : (!a.dapilId ? ' <span class="opt">(belum dipetakan)</span>' : '');
-    return '<label class="anggota-check-row"><input type="checkbox" data-agt-id="' + a.id + '" ' + checked + '>'
-      + '<span><div class="ac-n">' + a.nama + note + '</div><div class="ac-s">' + a.nip + '</div></span></label>';
+    return '<tr data-kode="' + d.kode + '">'
+      + '<td><div class="namecell"><div class="n">' + d.kode + '</div></div></td>'
+      + '<td><div class="namecell"><div class="n">' + d.nama + '</div></div></td>'
+      + '<td><div class="chip-list kec-cell">' + kecHtml + '</div></td>'
+      + '<td><div class="chip-list anggota-cell">' + pegHtml + '</div></td>'
+      + '<td><span class="badge ' + statusBadge + '">' + d.status + '</span></td>'
+      + '<td><button type="button" class="btn btn-outline btn-sm btn-expand" id="toggle-' + d.kode + '" onclick="toggleDapilDetail(\'' + d.kode + '\')">'
+      +   '<svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6"/></svg> Lihat Anggota'
+      + '</button></td>'
+    + '</tr>'
+    + '<tr class="dapil-detail-row" id="detail-' + d.kode + '" style="display:none;">'
+      + '<td colspan="6"><div class="anggota-detail-list">' + detailHtml + '</div></td>'
+    + '</tr>';
   }).join('');
-  document.getElementById('anggotaModalBackdrop').classList.add('open');
 }
-function closeAnggotaModal(){
-  document.getElementById('anggotaModalBackdrop').classList.remove('open');
-}
-function saveAnggotaMapping(e){
-  e.preventDefault();
-  var moved = 0, removed = 0;
-  document.querySelectorAll('#anggotaCheckList input[type="checkbox"]').forEach(function(cb){
-    var agt = ANGGOTA_LIST.find(function(a){ return a.id === cb.dataset.agtId; });
-    if(cb.checked && agt.dapilId !== kelolaDapilKode){
-      agt.dapilId = kelolaDapilKode;
-      moved++;
-    } else if(!cb.checked && agt.dapilId === kelolaDapilKode){
-      agt.dapilId = null;
-      removed++;
-    }
-  });
-  renderAllRows();
-  updateStats();
-  closeAnggotaModal();
-  toast('Pemetaan anggota disimpan (prototipe)' + (moved ? ' — ' + moved + ' dipindahkan' : '') + (removed ? ', ' + removed + ' dihapus dari dapil' : ''));
-  return false;
+function toggleDapilDetail(kode){
+  var row = document.getElementById('detail-' + kode);
+  var btn = document.getElementById('toggle-' + kode);
+  var isOpen = row.style.display !== 'none';
+  row.style.display = isOpen ? 'none' : 'table-row';
+  btn.classList.toggle('is-open', !isOpen);
 }
 
 function updateStats(){
-  var rows = document.querySelectorAll('#tbodyDapil tr');
-  document.getElementById('statTotalDapil').textContent = rows.length;
-  var aktif = 0, nonaktif = 0;
-  rows.forEach(function(r){
-    if(r.dataset.status === 'Aktif') aktif++; else nonaktif++;
-  });
+  document.getElementById('statTotalDapil').textContent = DAPIL_LIST.length;
+  var aktif = DAPIL_LIST.filter(function(d){ return d.status === 'Aktif'; }).length;
   document.getElementById('statAktif').textContent = aktif;
-  document.getElementById('statNonaktif').textContent = nonaktif;
-  var mapped = ANGGOTA_LIST.filter(function(a){ return !!a.dapilId; }).length;
-  document.getElementById('statAnggotaMapped').textContent = mapped + '/' + ANGGOTA_LIST.length;
+  document.getElementById('statNonaktif').textContent = DAPIL_LIST.length - aktif;
+  var politisiList = PEGAWAI_LIST.filter(function(p){ return p.tipePegawai === 'Politisi'; });
+  var mapped = politisiList.filter(function(p){ return !!p.dapilId; }).length;
+  document.getElementById('statPegawaiMapped').textContent = mapped + '/' + politisiList.length;
 }
 
 renderAllRows();

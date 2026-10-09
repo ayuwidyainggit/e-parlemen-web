@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Buat Jadwal Rapat &middot; Admin e-Parlemen</title>
+<title>Struktur Organisasi &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -15,6 +15,12 @@
   --danger-bg:#fbe7e7; --danger:#d64545;
   --info-bg:#e7f0fb; --info:#2f6fb0;
   --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+  --org-line:#9aa39c;
+  --org-red:#d64545; --org-red-bg:#fbe7e7;
+  --org-blue:#2f6fb0; --org-blue-bg:#e7f0fb;
+  --org-green:#3f8a4c; --org-green-bg:#e6f4ea;
+  --org-warm-bg:#fdf3e0; --org-warm-border:#e9cf98;
+  --org-cool-bg:#f1f2f0; --org-cool-border:#d8dbd5;
 }
 *{box-sizing:border-box;}
 html,body{margin:0;padding:0;}
@@ -47,7 +53,6 @@ a{color:inherit;}
 .topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;}
 .topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
 .topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
-.topbar .crumb a{color:var(--green);text-decoration:none;font-weight:700;}
 .topbar-actions{display:flex;gap:14px;align-items:center;}
 .tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
 .tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
@@ -56,38 +61,60 @@ a{color:inherit;}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
 .menu-toggle .ic-svg{width:22px;height:22px;}
 
-.content{padding:24px 26px 60px;max-width:900px;width:100%;}
+.content{padding:24px 26px 60px;max-width:100%;width:100%;}
 
-.card{background:var(--card);border-radius:14px;padding:22px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
-.section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 4px;}
-.hint{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:16px;}
 
-.field{margin-bottom:16px;}
-.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
-.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
-.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
-.field textarea{min-height:90px;resize:vertical;}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.field-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
-.chip-row{display:flex;flex-wrap:wrap;gap:8px;}
-.chip{padding:7px 14px;border-radius:20px;background:#eceee7;font-size:11.8px;font-weight:700;color:var(--ink);border:1px solid transparent;cursor:pointer;font-family:inherit;}
-.chip.active{background:var(--green);color:#fff;}
-.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:22px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
-.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
-.upload-box:hover{border-color:var(--gold);}
-
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
-.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
-.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+.btn-sm{padding:8px 13px;font-size:11.5px;}
 
-.info-box{background:var(--info-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#2a5583;display:flex;gap:9px;align-items:flex-start;line-height:1.55;margin-bottom:18px;}
+.chart-scroll{overflow-x:auto;padding:10px 10px 40px;}
+.chart-title{text-align:center;margin-bottom:22px;}
+.chart-title h1{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0 0 2px;color:var(--ink);letter-spacing:.3px;}
+.chart-title h2{font-family:Georgia,'Times New Roman',serif;font-size:14px;margin:0;color:var(--ink);font-weight:700;}
+
+/* --- Tree connector pattern (leadership levels only) --- */
+.org-tree{display:flex;justify-content:center;min-width:1300px;}
+.org-tree ul{padding-top:22px;position:relative;display:flex;justify-content:center;margin:0;}
+.org-tree li{display:flex;flex-direction:column;align-items:center;list-style:none;position:relative;padding:22px 14px 0 14px;margin:0;}
+.org-tree li::before,.org-tree li::after{content:'';position:absolute;top:0;right:50%;border-top:2px solid var(--org-line);width:50%;height:22px;}
+.org-tree li::after{right:auto;left:50%;border-left:2px solid var(--org-line);}
+.org-tree li:only-child::after,.org-tree li:only-child::before{display:none;}
+.org-tree li:only-child{padding-top:0;}
+.org-tree li:first-child::before{border:0 none;}
+.org-tree li:last-child::after{border:0 none;}
+.org-tree li:last-child::before{border-right:2px solid var(--org-line);border-radius:0 6px 0 0;}
+.org-tree li:first-child::after{border-radius:6px 0 0 0;}
+.org-tree > ul > li{padding-top:0;}
+.org-tree > ul > li::before,.org-tree > ul > li::after{display:none;}
+.org-tree ul ul::before{content:'';position:absolute;top:0;left:50%;border-left:2px solid var(--org-line);width:0;height:22px;}
+
+.org-box{border-radius:6px;border:2px solid rgba(0,0,0,.15);padding:9px 14px;min-width:260px;max-width:300px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+.org-box .t{font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.2px;}
+.org-box .n{font-weight:800;font-size:12.5px;margin-top:4px;}
+.org-box .p{font-size:10.5px;font-weight:700;margin-top:3px;opacity:.9;}
+.org-box.sekretaris{background:var(--org-red-bg);border-color:var(--org-red);color:#7a1f1f;}
+.org-box.bagian{background:var(--org-blue-bg);border-color:var(--org-blue);color:#1d4a76;}
+.org-box.subbagian{background:var(--org-green-bg);border-color:var(--org-green);color:#245c2d;}
+
+.staff-col{display:flex;flex-direction:column;gap:5px;margin-top:14px;width:280px;}
+.staff-row{display:grid;grid-template-columns:1fr 1fr;border-radius:4px;overflow:hidden;border:1px solid;font-size:10.5px;}
+.staff-row .pos{padding:6px 9px;font-weight:700;display:flex;align-items:center;}
+.staff-row .person{padding:6px 9px;display:flex;flex-direction:column;justify-content:center;text-align:right;}
+.staff-row .person .pn{font-weight:800;}
+.staff-row .person .pnip{font-size:9px;opacity:.75;margin-top:1px;}
+.staff-row.warm{background:var(--org-warm-bg);border-color:var(--org-warm-border);}
+.staff-row.cool{background:var(--org-cool-bg);border-color:var(--org-cool-border);}
 
 @media (max-width:960px){
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
   .sidebar.open{left:0;}
   .menu-toggle{display:block;}
-  .field-row,.field-row-3{grid-template-columns:1fr;}
+}
+@media print{
+  .sidebar,.topbar-actions,.menu-toggle{display:none;}
+  .chart-scroll{overflow:visible;}
 }
 </style>
 </head>
@@ -95,7 +122,7 @@ a{color:inherit;}
 <div class="admin-shell">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></span>
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg></span>
       <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
     </div>
     <nav class="sidebar-nav">
@@ -105,7 +132,7 @@ a{color:inherit;}
       <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
       <a class="snav-item" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
       <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Fraksi</a>
-      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item active" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
@@ -122,7 +149,7 @@ a{color:inherit;}
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
       <div class="snav-label">Rapat</div>
       <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
-      <a class="snav-item active" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
+      <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
       <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <div class="snav-label">Lainnya</div>
@@ -138,119 +165,67 @@ a{color:inherit;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Buat Jadwal Rapat</h2><div class="crumb"><a href="jadwal-rapat.html">Jadwal Rapat</a> &rsaquo; Buat Baru</div></div>
+        <div><h2>Struktur Organisasi</h2><div class="crumb">Admin &middot; Master Data &middot; Struktur Organisasi</div></div>
       </div>
       <div class="topbar-actions">
+        <button class="btn btn-outline btn-sm" onclick="window.print()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9V3h12v6"/><rect x="4" y="9" width="16" height="7" rx="1"/><path d="M6 16h12v6H6z"/></svg> Cetak</button>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
         <div class="tb-user"><span class="av">AS</span></div>
       </div>
     </div>
 
     <div class="content">
-      <div class="info-box">
-        <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-        <span>Setelah jadwal diterbitkan, undangan &amp; notifikasi akan otomatis dikirim ke aplikasi mobile peserta yang dipilih. Presensi kehadiran dikelola melalui menu <strong>Absensi Rapat</strong>.</span>
+      <div class="hint">Struktur Organisasi Sekretariat DPRD Kota Magelang &mdash; <strong>view-only</strong>, bersumber dari data seeder Backend (org_units, positions, assignments, persons). Kotak kosong pada kolom nama berarti posisi tersebut masih lowong.</div>
+
+      <div class="chart-scroll">
+        <div class="chart-title">
+          <h1>STRUKTUR ORGANISASI</h1>
+          <h2>SEKRETARIAT DEWAN PERWAKILAN RAKYAT DAERAH KOTA MAGELANG</h2>
+        </div>
+        <div class="org-tree" id="orgTree"></div>
       </div>
-
-      <form onsubmit="return submitForm(event)">
-        <div class="card">
-          <div class="section-title">Informasi Rapat</div>
-          <div class="hint">Detail dasar mengenai rapat yang akan diselenggarakan.</div>
-
-          <div class="field">
-            <label>Judul Rapat</label>
-            <input type="text" placeholder="Contoh: Rapat Komisi II" required>
-          </div>
-
-          <div class="field">
-            <label>Tingkat Rapat</label>
-            <div class="chip-row" id="tingkatChips">
-              <button type="button" class="chip active" onclick="selectChip(this,'tingkatChips')">Fraksi</button>
-              <button type="button" class="chip" onclick="selectChip(this,'tingkatChips')">Komisi</button>
-              <button type="button" class="chip" onclick="selectChip(this,'tingkatChips')">Banggar</button>
-              <button type="button" class="chip" onclick="selectChip(this,'tingkatChips')">Paripurna</button>
-            </div>
-          </div>
-
-          <div class="field">
-            <label>Agenda / Catatan Rapat</label>
-            <textarea placeholder="Contoh: Pembahasan Rancangan Perda tentang Retribusi Daerah"></textarea>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Waktu &amp; Lokasi</div>
-          <div class="hint">Jam mulai &amp; selesai digunakan sebagai jendela validasi presensi QR pada hari rapat.</div>
-
-          <div class="field-row-3">
-            <div class="field"><label>Tanggal</label><input type="date" required></div>
-            <div class="field"><label>Jam Mulai</label><input type="time" value="10:00" required></div>
-            <div class="field"><label>Jam Selesai</label><input type="time" value="12:00" required></div>
-          </div>
-          <div class="field">
-            <label>Ruang / Lokasi</label>
-            <input type="text" placeholder="Contoh: Ruang Rapat Komisi II" required>
-          </div>
-          <div class="field">
-            <label>Toleransi Presensi <span class="opt">(menit sebelum &amp; sesudah jadwal)</span></label>
-            <input type="number" value="15" min="0" max="60">
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Peserta</div>
-          <div class="hint">Pilih cakupan peserta yang akan menerima undangan pada aplikasi mobile.</div>
-          <div class="chip-row" id="pesertaChips">
-            <button type="button" class="chip active" onclick="togglePeserta(this)">Semua Anggota</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Komisi I</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Komisi II</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Komisi III</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Komisi IV</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Fraksi Golkar</button>
-            <button type="button" class="chip" onclick="togglePeserta(this)">Fraksi PDIP</button>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Undangan (Opsional)</div>
-          <div class="hint">Unggah berkas undangan resmi (PDF) untuk dilampirkan pada notifikasi.</div>
-          <label class="upload-box" for="undanganInput">
-            <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
-            <span id="undanganLabel">Klik untuk memilih berkas PDF undangan</span>
-          </label>
-          <input type="file" id="undanganInput" accept="application/pdf" style="display:none;" onchange="if(this.files[0]) document.getElementById('undanganLabel').textContent = 'Berkas dipilih: ' + this.files[0].name;">
-        </div>
-
-        <div class="btn-row">
-          <button type="submit" class="btn btn-primary"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Simpan &amp; Terbitkan Jadwal</button>
-          <a class="btn btn-outline" href="jadwal-rapat.html">Batal</a>
-        </div>
-      </form>
     </div>
   </div>
 </div>
+
+<script src="struktur-organisasi-data.js"></script>
 <script>
-function selectChip(el, groupId){
-  document.querySelectorAll('#' + groupId + ' .chip').forEach(function(c){ c.classList.remove('active'); });
-  el.classList.add('active');
+function staffRowHtml(row, tone){
+  var personHtml = row.nama
+    ? '<div class="pn">' + row.nama + '</div><div class="pnip">NIP. ' + row.nip + '</div>'
+    : '';
+  return '<div class="staff-row ' + tone + '"><div class="pos">' + row.posisi + '</div><div class="person">' + personHtml + '</div></div>';
 }
-function togglePeserta(el){
-  var all = document.querySelectorAll('#pesertaChips .chip');
-  if(el === all[0]){
-    all.forEach(function(c){ c.classList.remove('active'); });
-    el.classList.add('active');
-    return;
-  }
-  all[0].classList.remove('active');
-  el.classList.toggle('active');
-  var anyActive = Array.prototype.some.call(all, function(c){ return c.classList.contains('active'); });
-  if(!anyActive){ all[0].classList.add('active'); }
+function staffColHtml(staf, tone){
+  if(!staf || !staf.length) return '';
+  return '<div class="staff-col">' + staf.map(function(r){ return staffRowHtml(r, tone); }).join('') + '</div>';
 }
-function submitForm(e){
-  e.preventDefault();
-  window.location.href = 'jadwal-rapat.html';
-  return false;
+function boxHtml(cls, title, pejabat){
+  var nama = pejabat && pejabat.nama ? '<div class="n">' + pejabat.nama + '</div>' : '<div class="n">&mdash;</div>';
+  var nip = pejabat && pejabat.nip ? '<div class="p">NIP. ' + pejabat.nip + '</div>' : '';
+  return '<div class="org-box ' + cls + '"><div class="t">' + title + '</div>' + nama + nip + '</div>';
 }
+
+function renderOrgChart(){
+  var data = strukturOrganisasi();
+  var bagianHtml = data.bagian.map(function(b){
+    var tone = b.kode === 'BAG-UMUM' ? 'warm' : 'cool';
+    var inner = boxHtml('bagian', b.nama, b.pejabat);
+    if(b.subBagian && b.subBagian.length){
+      inner += '<ul>' + b.subBagian.map(function(sb){
+        return '<li>' + boxHtml('subbagian', sb.nama, sb.pejabat) + staffColHtml(sb.staf, tone) + '</li>';
+      }).join('') + '</ul>';
+    } else {
+      inner += staffColHtml(b.staf, tone);
+    }
+    return '<li>' + inner + '</li>';
+  }).join('');
+
+  var html = '<ul><li>' + boxHtml('sekretaris', data.sekretaris.posisi, data.sekretaris) + '<ul>' + bagianHtml + '</ul></li></ul>';
+  document.getElementById('orgTree').innerHTML = html;
+}
+
+renderOrgChart();
 </script>
 </body>
 </html>

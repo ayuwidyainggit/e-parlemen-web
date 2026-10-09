@@ -22,7 +22,6 @@ var WEB_MENU_CATALOG = [
     { id: 'web-jenis-kegiatan', label: 'Jenis Kegiatan' }
   ]},
   { group: 'Reses & Dapil', items: [
-    { id: 'web-assignment-dapil', label: 'Assignment Dapil' },
     { id: 'web-penugasan-dapil-reses', label: 'Penugasan Dapil & Reses' },
     { id: 'web-laporan-reses', label: 'Laporan Reses' },
     { id: 'web-laporan-dapil', label: 'Laporan Dapil' },

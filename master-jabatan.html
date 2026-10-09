@@ -79,6 +79,9 @@ a{color:inherit;}
 .badge-platform-mobile{background:var(--info-bg);color:var(--info);}
 .badge-fraksi-ya{background:var(--success-bg);color:var(--success);}
 .badge-fraksi-tidak{background:var(--neutral-bg);color:var(--neutral);}
+.badge-jenis-politik{background:var(--info-bg);color:var(--info);}
+.badge-jenis-struktural{background:#fbf1dc;color:#9a7b1f;}
+.badge-jenis-fungsional{background:var(--success-bg);color:var(--success);}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
@@ -137,17 +140,15 @@ td.n{font-weight:800;font-size:12.6px;}
       <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
       <div class="snav-label">Master Data</div>
       <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
-      <a class="snav-item active" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
-      <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Config Fraksi</a>
       <a class="snav-item" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
-      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> RBAC</a>
-      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna <span class="count">2</span></a>
-      <a class="snav-item" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M18 8v5"/><path d="M15.5 10.5h5"/></svg> Create New Account</a>
+      <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Fraksi</a>
+      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
+      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0C5 14.5 12 21 12 21z"/><path d="M9.3 10.2l1.8 1.8L15 8.3"/></svg> Assignment Dapil <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
@@ -184,7 +185,7 @@ td.n{font-weight:800;font-size:12.6px;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi tingkatan &amp; jenis Jabatan Anggota DPRD, dipetakan ke <strong>Role POC</strong> (Ketua / Administrator / Anggota) &amp; <strong>Platform</strong> akses (WEB / Mobile) yang digunakan pada formulir pembuatan akun pengguna (pengguna-buat.html) dan pengaturan hak akses.</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi Jabatan mencakup 3 jalur: <strong>Politik</strong> (Pimpinan &amp; Anggota DPRD, dipetakan ke Role POC/Platform/Fraksi), <strong>Struktural</strong> (Sekretariat DPRD &mdash; Eselon &amp; Unit Kerja/Bagian), dan <strong>Fungsional</strong> (jalur karier ASN non-struktural &mdash; rumpun &amp; jenjang Ahli/Terampil).</div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -203,64 +204,8 @@ td.n{font-weight:800;font-size:12.6px;}
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th style="width:64px;">Level</th><th>Jenjang / Jabatan DPRD</th><th>Role POC</th><th>Platform</th><th>Fraksi</th><th>Parent</th><th>Keterangan</th><th>Status</th><th></th></tr></thead>
-          <tbody id="tbodyJabatan">
-            <tr data-id="jab-1" data-parent="" data-level="1" data-jabatan="Ketua DPRD" data-posisi="Pimpinan utama DPRD, memiliki akses sebagai Ketua" data-role="Ketua" data-platform="WEB" data-fraksi="Ya" data-status="Aktif">
-              <td><span class="badge badge-neutral">Level 1</span></td>
-              <td class="n">Ketua DPRD</td>
-              <td><span class="badge badge-role-ketua">Ketua</span></td>
-              <td><span class="badge badge-platform-web">WEB</span></td>
-              <td><span class="badge badge-fraksi-ya">Ya</span></td>
-              <td style="color:var(--muted);">&mdash;</td>
-              <td style="color:var(--muted);">Pimpinan utama DPRD, memiliki akses sebagai Ketua</td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-id="jab-2" data-parent="jab-1" data-level="2" data-jabatan="Wakil Ketua DPRD" data-posisi="Masuk dalam kelompok pimpinan DPRD" data-role="Ketua" data-platform="WEB" data-fraksi="Ya" data-status="Aktif">
-              <td><span class="badge badge-neutral">Level 2</span></td>
-              <td class="n">Wakil Ketua DPRD</td>
-              <td><span class="badge badge-role-ketua">Ketua</span></td>
-              <td><span class="badge badge-platform-web">WEB</span></td>
-              <td><span class="badge badge-fraksi-ya">Ya</span></td>
-              <td style="color:var(--muted);">Ketua DPRD</td>
-              <td style="color:var(--muted);">Masuk dalam kelompok pimpinan DPRD</td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-id="jab-3" data-parent="jab-2" data-level="3" data-jabatan="Anggota DPRD" data-posisi="Anggota legislatif DPRD, user aplikasi mobile" data-role="Anggota" data-platform="Mobile" data-fraksi="Ya" data-status="Aktif">
-              <td><span class="badge badge-neutral">Level 3</span></td>
-              <td class="n">Anggota DPRD</td>
-              <td><span class="badge badge-role-anggota">Anggota</span></td>
-              <td><span class="badge badge-platform-mobile">Mobile</span></td>
-              <td><span class="badge badge-fraksi-ya">Ya</span></td>
-              <td style="color:var(--muted);">Wakil Ketua DPRD</td>
-              <td style="color:var(--muted);">Anggota legislatif DPRD, user aplikasi mobile</td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-id="jab-4" data-parent="jab-1" data-level="2" data-jabatan="Sekretaris DPRD / Sekwan" data-posisi="Mengelola administrasi dan operasional sistem" data-role="Administrator" data-platform="WEB" data-fraksi="Tidak" data-status="Aktif">
-              <td><span class="badge badge-neutral">Level 2</span></td>
-              <td class="n">Sekretaris DPRD / Sekwan</td>
-              <td><span class="badge badge-role-admin">Administrator</span></td>
-              <td><span class="badge badge-platform-web">WEB</span></td>
-              <td><span class="badge badge-fraksi-tidak">Tidak</span></td>
-              <td style="color:var(--muted);">Ketua DPRD</td>
-              <td style="color:var(--muted);">Mengelola administrasi dan operasional sistem</td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-            <tr data-id="jab-5" data-parent="jab-4" data-level="3" data-jabatan="Operator Sekretariat" data-posisi="Pengelolaan data dan operasional aplikasi" data-role="Administrator" data-platform="WEB" data-fraksi="Tidak" data-status="Aktif">
-              <td><span class="badge badge-neutral">Level 3</span></td>
-              <td class="n">Operator Sekretariat</td>
-              <td><span class="badge badge-role-admin">Administrator</span></td>
-              <td><span class="badge badge-platform-web">WEB</span></td>
-              <td><span class="badge badge-fraksi-tidak">Tidak</span></td>
-              <td style="color:var(--muted);">Sekretaris DPRD / Sekwan</td>
-              <td style="color:var(--muted);">Pengelolaan data dan operasional aplikasi</td>
-              <td><span class="badge badge-success">Aktif</span></td>
-              <td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>
-            </tr>
-          </tbody>
+          <thead><tr><th style="width:56px;">Level</th><th style="width:64px;">Jenis</th><th>Nama Jabatan</th><th>Detail</th><th>Role POC</th><th>Platform</th><th>Fraksi</th><th>Parent</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyJabatan"></tbody>
         </table>
       </div>
       <div class="hint" style="margin-top:12px;">Hirarki mengikuti struktur <strong>Politisi/Anggota DPRD</strong> (Ketua DPRD, Wakil Ketua DPRD, Anggota DPRD) dan <strong>Sekretariat DPRD</strong> (Sekretaris DPRD/Sekwan, Operator Sekretariat). Role POC, Platform, &amp; Fraksi mengikuti mapping jenjang jabatan: <strong>Ketua</strong> &amp; <strong>Anggota</strong> &rarr; wajib <strong>Fraksi</strong>, <strong>Administrator</strong> &rarr; tidak perlu Fraksi (ASN/non-politisi). Ketua &amp; Administrator &rarr; akses <strong>WEB</strong>, Anggota &rarr; akses <strong>Mobile</strong>. Level dihitung otomatis dari Parent yang dipilih. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
@@ -272,23 +217,60 @@ td.n{font-weight:800;font-size:12.6px;}
   <div class="modal-box">
     <div class="modal-head"><h3 id="modalTitle">Tambah Jabatan</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
     <form onsubmit="return saveJabatan(event)">
+      <div class="field"><label>Jenis Jabatan</label>
+        <select id="fJenisJabatan" onchange="handleJenisChange()" required>
+          <option value="Politik">Politik (Pimpinan &amp; Anggota DPRD)</option>
+          <option value="Struktural">Struktural (Eselon Sekretariat)</option>
+          <option value="Fungsional">Fungsional (Jabatan Fungsional ASN)</option>
+        </select>
+      </div>
       <div class="field"><label>Nama Jabatan</label><input type="text" id="fJabatan" placeholder="Contoh: Ketua Badan Kehormatan" required></div>
       <div class="field"><label>Keterangan</label><input type="text" id="fPosisi" placeholder="Contoh: User DPRD" required></div>
-      <div class="field"><label>Role POC</label>
-        <select id="fRole" onchange="handleRoleChange()" required>
-          <option value="Ketua">Ketua</option>
-          <option value="Administrator">Administrator</option>
-          <option value="Anggota" selected>Anggota</option>
-        </select>
+
+      <div id="groupPolitik">
+        <div class="field"><label>Role POC</label>
+          <select id="fRole" onchange="handleRoleChange()" required>
+            <option value="Ketua">Ketua</option>
+            <option value="Administrator">Administrator</option>
+            <option value="Anggota" selected>Anggota</option>
+          </select>
+        </div>
+        <div class="field"><label>Platform <span style="font-weight:600;color:var(--muted);">(terisi otomatis dari Role POC)</span></label><input type="text" id="fPlatform" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
+        <div class="field"><label>Fraksi <span style="font-weight:600;color:var(--muted);">(terisi otomatis dari Role POC)</span></label><input type="text" id="fFraksi" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
+        <div class="field"><label>Parent <span style="font-weight:600;color:var(--muted);">(opsional)</span></label>
+          <select id="fParent" onchange="handleParentChange()">
+            <option value="">Tidak Ada (Level 1)</option>
+          </select>
+        </div>
+        <div class="field"><label>Level <span style="font-weight:600;color:var(--muted);">(terisi otomatis)</span></label><input type="number" id="fLevel" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
       </div>
-      <div class="field"><label>Platform <span style="font-weight:600;color:var(--muted);">(terisi otomatis dari Role POC)</span></label><input type="text" id="fPlatform" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
-      <div class="field"><label>Fraksi <span style="font-weight:600;color:var(--muted);">(terisi otomatis dari Role POC)</span></label><input type="text" id="fFraksi" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
-      <div class="field"><label>Parent <span style="font-weight:600;color:var(--muted);">(opsional)</span></label>
-        <select id="fParent" onchange="handleParentChange()">
-          <option value="">Tidak Ada (Level 1)</option>
-        </select>
+
+      <div id="groupStruktural">
+        <div class="field"><label>Eselon</label>
+          <select id="fEselon"></select>
+        </div>
+        <div class="field"><label>Unit Kerja</label>
+          <select id="fUnitKerja"></select>
+        </div>
+        <div class="field"><label>Parent <span style="font-weight:600;color:var(--muted);">(opsional, sesama Struktural)</span></label>
+          <select id="fParentStruktural" onchange="handleParentStrukturalChange()">
+            <option value="">Tidak Ada (Level 1)</option>
+          </select>
+        </div>
+        <div class="field"><label>Level <span style="font-weight:600;color:var(--muted);">(terisi otomatis)</span></label><input type="number" id="fLevelStruktural" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
       </div>
-      <div class="field"><label>Level <span style="font-weight:600;color:var(--muted);">(terisi otomatis)</span></label><input type="number" id="fLevel" readonly disabled style="background:var(--neutral-bg);color:var(--muted);"></div>
+
+      <div id="groupFungsional">
+        <div class="field"><label>Rumpun Fungsional</label><input type="text" id="fRumpun" placeholder="Contoh: Analis Kebijakan"></div>
+        <div class="field"><label>Jenjang</label>
+          <select id="fJenjangTrack" onchange="handleJenjangTrackChange()">
+            <option value="Ahli">Ahli (Pertama/Muda/Madya/Utama)</option>
+            <option value="Terampil">Terampil (Pemula/Terampil/Mahir/Penyelia)</option>
+          </select>
+          <select id="fJenjang" style="margin-top:8px;"></select>
+        </div>
+      </div>
+
       <div class="field"><label>Status</label>
         <select id="fStatus" required>
           <option>Aktif</option>
@@ -304,23 +286,69 @@ td.n{font-weight:800;font-size:12.6px;}
 </div>
 
 <div class="toast" id="toast"></div>
+<script src="jabatan-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-var editingRow = null;
-var nextJabatanId = 15;
+
+var JABATAN_LIST = jabatanLoadList();
+
 var ROLE_PLATFORM = { 'Ketua': 'WEB', 'Administrator': 'WEB', 'Anggota': 'Mobile' };
 var ROLE_FRAKSI = { 'Ketua': 'Ya', 'Administrator': 'Tidak', 'Anggota': 'Ya' };
 var ROLE_BADGE = { 'Ketua': 'badge-role-ketua', 'Administrator': 'badge-role-admin', 'Anggota': 'badge-role-anggota' };
-function resetForm(){
-  document.getElementById('fJabatan').value = '';
-  document.getElementById('fPosisi').value = '';
-  document.getElementById('fRole').value = 'Anggota';
-  document.getElementById('fStatus').selectedIndex = 0;
-  handleRoleChange();
+var JENIS_BADGE = { 'Politik': 'badge-jenis-politik', 'Struktural': 'badge-jenis-struktural', 'Fungsional': 'badge-jenis-fungsional' };
+var ESELON_LIST = ['II.b', 'III.a', 'III.b', 'IV.a', 'IV.b'];
+var JENJANG_AHLI_LIST = ['Ahli Pertama', 'Ahli Muda', 'Ahli Madya', 'Ahli Utama'];
+var JENJANG_TERAMPIL_LIST = ['Pemula', 'Terampil', 'Mahir', 'Penyelia'];
+
+function renderTable(){
+  var tbody = document.getElementById('tbodyJabatan');
+  tbody.innerHTML = JABATAN_LIST.map(function(j){
+    var statusBadge = j.status === 'Aktif' ? 'badge-success' : 'badge-neutral';
+    var platformBadge = j.platform === 'WEB' ? 'badge-platform-web' : 'badge-platform-mobile';
+    var fraksiBadge = j.fraksiWajib === 'Ya' ? 'badge-fraksi-ya' : 'badge-fraksi-tidak';
+    var parentJab = j.parentId ? JABATAN_LIST.find(function(p){ return p.id === j.parentId; }) : null;
+    var parentLabel = parentJab ? parentJab.nama : '&mdash;';
+
+    var detail;
+    if(j.jenisJabatan === 'Struktural'){
+      detail = 'Eselon ' + (j.eselon || '&mdash;') + ' &middot; ' + (unitKerjaNama(j.unitKerjaId) || '&mdash;');
+    } else if(j.jenisJabatan === 'Fungsional'){
+      detail = (j.rumpunFungsional || '&mdash;') + ' &middot; ' + (j.jenjangFungsional || '&mdash;');
+    } else {
+      detail = j.keterangan || '&mdash;';
+    }
+
+    return '<tr>'
+      + '<td>' + (j.level != null ? '<span class="badge badge-neutral">Level ' + j.level + '</span>' : '&mdash;') + '</td>'
+      + '<td><span class="badge ' + JENIS_BADGE[j.jenisJabatan] + '">' + j.jenisJabatan + '</span></td>'
+      + '<td class="n">' + j.nama + '</td>'
+      + '<td style="color:var(--muted);">' + detail + '</td>'
+      + '<td><span class="badge ' + ROLE_BADGE[j.role] + '">' + j.role + '</span></td>'
+      + '<td><span class="badge ' + platformBadge + '">' + j.platform + '</span></td>'
+      + '<td><span class="badge ' + fraksiBadge + '">' + j.fraksiWajib + '</span></td>'
+      + '<td style="color:var(--muted);">' + parentLabel + '</td>'
+      + '<td><span class="badge ' + statusBadge + '">' + j.status + '</span></td>'
+      + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(\'' + j.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>'
+    + '</tr>';
+  }).join('');
+}
+
+function handleJenisChange(){
+  var jenis = document.getElementById('fJenisJabatan').value;
+  document.getElementById('groupPolitik').style.display = jenis === 'Politik' ? 'block' : 'none';
+  document.getElementById('groupStruktural').style.display = jenis === 'Struktural' ? 'block' : 'none';
+  document.getElementById('groupFungsional').style.display = jenis === 'Fungsional' ? 'block' : 'none';
+  if(jenis === 'Struktural'){
+    populateEselonOptions();
+    populateUnitKerjaOptions();
+    populateParentStrukturalOptions(editingId);
+  } else if(jenis === 'Fungsional'){
+    handleJenjangTrackChange();
+  }
 }
 function handleRoleChange(){
   var role = document.getElementById('fRole').value;
@@ -330,11 +358,11 @@ function handleRoleChange(){
 function populateParentOptions(excludeId){
   var select = document.getElementById('fParent');
   select.innerHTML = '<option value="">Tidak Ada (Level 1)</option>';
-  document.querySelectorAll('#tbodyJabatan tr').forEach(function(r){
-    if(r.dataset.id === excludeId) return;
+  JABATAN_LIST.filter(function(j){ return j.jenisJabatan === 'Politik'; }).forEach(function(j){
+    if(j.id === excludeId) return;
     var opt = document.createElement('option');
-    opt.value = r.dataset.id;
-    opt.textContent = r.dataset.jabatan + ' (Level ' + r.dataset.level + ')';
+    opt.value = j.id;
+    opt.textContent = j.nama + ' (Level ' + j.level + ')';
     select.appendChild(opt);
   });
 }
@@ -342,32 +370,102 @@ function handleParentChange(){
   var parentId = document.getElementById('fParent').value;
   var level = 1;
   if(parentId){
-    var parentRow = document.querySelector('#tbodyJabatan tr[data-id="' + parentId + '"]');
-    if(parentRow){ level = parseInt(parentRow.dataset.level, 10) + 1; }
+    var parent = JABATAN_LIST.find(function(j){ return j.id === parentId; });
+    if(parent){ level = parent.level + 1; }
   }
   document.getElementById('fLevel').value = level;
 }
+function populateEselonOptions(){
+  document.getElementById('fEselon').innerHTML = ESELON_LIST.map(function(e){ return '<option value="' + e + '">' + e + '</option>'; }).join('');
+}
+function populateUnitKerjaOptions(){
+  document.getElementById('fUnitKerja').innerHTML = UNIT_KERJA_LIST.map(function(u){ return '<option value="' + u.id + '">' + u.nama + '</option>'; }).join('');
+}
+function populateParentStrukturalOptions(excludeId){
+  var select = document.getElementById('fParentStruktural');
+  select.innerHTML = '<option value="">Tidak Ada (Level 1)</option>';
+  JABATAN_LIST.filter(function(j){ return j.jenisJabatan === 'Struktural'; }).forEach(function(j){
+    if(j.id === excludeId) return;
+    var opt = document.createElement('option');
+    opt.value = j.id;
+    opt.textContent = j.nama + ' (Level ' + j.level + ')';
+    select.appendChild(opt);
+  });
+}
+function handleParentStrukturalChange(){
+  var parentId = document.getElementById('fParentStruktural').value;
+  var level = 1;
+  if(parentId){
+    var parent = JABATAN_LIST.find(function(j){ return j.id === parentId; });
+    if(parent){ level = parent.level + 1; }
+  }
+  document.getElementById('fLevelStruktural').value = level;
+}
+function handleJenjangTrackChange(){
+  var track = document.getElementById('fJenjangTrack').value;
+  var list = track === 'Terampil' ? JENJANG_TERAMPIL_LIST : JENJANG_AHLI_LIST;
+  document.getElementById('fJenjang').innerHTML = list.map(function(j){ return '<option value="' + j + '">' + j + '</option>'; }).join('');
+}
+
+var editingId = null;
+function resetForm(){
+  document.getElementById('fJenisJabatan').value = 'Politik';
+  document.getElementById('fJabatan').value = '';
+  document.getElementById('fPosisi').value = '';
+  document.getElementById('fRole').value = 'Anggota';
+  document.getElementById('fStatus').selectedIndex = 0;
+  handleRoleChange();
+  populateEselonOptions();
+  populateUnitKerjaOptions();
+  document.getElementById('fRumpun').value = '';
+  document.getElementById('fJenjangTrack').value = 'Ahli';
+  handleJenjangTrackChange();
+  handleJenisChange();
+}
 function openAdd(){
-  editingRow = null;
+  editingId = null;
   resetForm();
   populateParentOptions(null);
   document.getElementById('fParent').value = '';
   handleParentChange();
+  populateParentStrukturalOptions(null);
+  document.getElementById('fParentStruktural').value = '';
+  handleParentStrukturalChange();
   document.getElementById('modalTitle').textContent = 'Tambah Jabatan';
   document.getElementById('modalBackdrop').classList.add('open');
 }
-function openEdit(btn){
-  editingRow = btn.closest('tr');
+function openEdit(id){
+  var j = JABATAN_LIST.find(function(j){ return j.id === id; });
+  if(!j) return;
+  editingId = id;
   resetForm();
-  populateParentOptions(editingRow.dataset.id);
+  document.getElementById('fJenisJabatan').value = j.jenisJabatan;
+  document.getElementById('fJabatan').value = j.nama;
+  document.getElementById('fPosisi').value = j.keterangan || '';
+  document.getElementById('fStatus').value = j.status;
+
+  if(j.jenisJabatan === 'Politik'){
+    populateParentOptions(j.id);
+    document.getElementById('fRole').value = j.role;
+    handleRoleChange();
+    document.getElementById('fParent').value = j.parentId || '';
+    handleParentChange();
+  } else if(j.jenisJabatan === 'Struktural'){
+    populateParentStrukturalOptions(j.id);
+    document.getElementById('fEselon').value = j.eselon || '';
+    document.getElementById('fUnitKerja').value = j.unitKerjaId || '';
+    document.getElementById('fParentStruktural').value = j.parentId || '';
+    handleParentStrukturalChange();
+  } else if(j.jenisJabatan === 'Fungsional'){
+    document.getElementById('fRumpun').value = j.rumpunFungsional || '';
+    var isTerampil = JENJANG_TERAMPIL_LIST.indexOf(j.jenjangFungsional) > -1;
+    document.getElementById('fJenjangTrack').value = isTerampil ? 'Terampil' : 'Ahli';
+    handleJenjangTrackChange();
+    document.getElementById('fJenjang').value = j.jenjangFungsional || '';
+  }
+
+  handleJenisChange();
   document.getElementById('modalTitle').textContent = 'Edit Jabatan';
-  document.getElementById('fJabatan').value = editingRow.dataset.jabatan;
-  document.getElementById('fPosisi').value = editingRow.dataset.posisi;
-  document.getElementById('fRole').value = editingRow.dataset.role;
-  handleRoleChange();
-  document.getElementById('fParent').value = editingRow.dataset.parent || '';
-  handleParentChange();
-  document.getElementById('fStatus').value = editingRow.dataset.status;
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function closeModal(){
@@ -375,67 +473,64 @@ function closeModal(){
 }
 function saveJabatan(e){
   e.preventDefault();
-  var jabatan = document.getElementById('fJabatan').value.trim();
-  var posisi = document.getElementById('fPosisi').value.trim();
-  var role = document.getElementById('fRole').value;
-  var platform = document.getElementById('fPlatform').value;
-  var fraksi = document.getElementById('fFraksi').value;
-  var parentId = document.getElementById('fParent').value;
-  var level = document.getElementById('fLevel').value;
+  var jenisJabatan = document.getElementById('fJenisJabatan').value;
+  var nama = document.getElementById('fJabatan').value.trim();
+  var keterangan = document.getElementById('fPosisi').value.trim();
   var status = document.getElementById('fStatus').value;
-  var statusBadge = status === 'Aktif' ? 'badge-success' : 'badge-neutral';
-  var platformBadge = platform === 'WEB' ? 'badge-platform-web' : 'badge-platform-mobile';
-  var fraksiBadge = fraksi === 'Ya' ? 'badge-fraksi-ya' : 'badge-fraksi-tidak';
-  var parentRow = parentId ? document.querySelector('#tbodyJabatan tr[data-id="' + parentId + '"]') : null;
-  var parentLabel = parentRow ? parentRow.dataset.jabatan : '&mdash;';
 
-  var row = editingRow;
-  if(!row){
-    row = document.createElement('tr');
-    row.dataset.id = 'jab-' + (nextJabatanId++);
-    row.innerHTML = '<td></td><td class="n"></td><td></td><td></td><td></td><td style="color:var(--muted);"></td><td style="color:var(--muted);"></td><td></td>'
-      + '<td><div class="actions-cell"><button class="btn btn-outline btn-sm" onclick="openEdit(this)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button></div></td>';
-    document.getElementById('tbodyJabatan').appendChild(row);
+  var role, platform, fraksiWajib, parentId, level, eselon, unitKerjaId, rumpunFungsional, jenjangFungsional;
+  if(jenisJabatan === 'Politik'){
+    role = document.getElementById('fRole').value;
+    platform = document.getElementById('fPlatform').value;
+    fraksiWajib = document.getElementById('fFraksi').value;
+    parentId = document.getElementById('fParent').value || null;
+    level = parseInt(document.getElementById('fLevel').value, 10);
+    eselon = null; unitKerjaId = null; rumpunFungsional = null; jenjangFungsional = null;
+  } else if(jenisJabatan === 'Struktural'){
+    role = 'Administrator'; platform = 'WEB'; fraksiWajib = 'Tidak';
+    parentId = document.getElementById('fParentStruktural').value || null;
+    level = parseInt(document.getElementById('fLevelStruktural').value, 10);
+    eselon = document.getElementById('fEselon').value;
+    unitKerjaId = document.getElementById('fUnitKerja').value;
+    rumpunFungsional = null; jenjangFungsional = null;
+  } else {
+    role = 'Administrator'; platform = 'WEB'; fraksiWajib = 'Tidak';
+    parentId = null; level = null;
+    eselon = null; unitKerjaId = null;
+    rumpunFungsional = document.getElementById('fRumpun').value.trim();
+    jenjangFungsional = document.getElementById('fJenjang').value;
   }
-  row.dataset.level = level;
-  row.dataset.jabatan = jabatan;
-  row.dataset.posisi = posisi;
-  row.dataset.role = role;
-  row.dataset.platform = platform;
-  row.dataset.fraksi = fraksi;
-  row.dataset.parent = parentId;
-  row.dataset.status = status;
-  row.children[0].innerHTML = '<span class="badge badge-neutral">Level ' + level + '</span>';
-  row.children[1].textContent = jabatan;
-  row.children[2].innerHTML = '<span class="badge ' + ROLE_BADGE[role] + '">' + role + '</span>';
-  row.children[3].innerHTML = '<span class="badge ' + platformBadge + '">' + platform + '</span>';
-  row.children[4].innerHTML = '<span class="badge ' + fraksiBadge + '">' + fraksi + '</span>';
-  row.children[5].innerHTML = parentLabel;
-  row.children[6].textContent = posisi;
-  row.children[7].innerHTML = '<span class="badge ' + statusBadge + '">' + status + '</span>';
 
-  sortRows();
+  if(editingId){
+    var j = JABATAN_LIST.find(function(j){ return j.id === editingId; });
+    j.jenisJabatan = jenisJabatan; j.nama = nama; j.keterangan = keterangan; j.status = status;
+    j.role = role; j.platform = platform; j.fraksiWajib = fraksiWajib; j.parentId = parentId; j.level = level;
+    j.eselon = eselon; j.unitKerjaId = unitKerjaId; j.rumpunFungsional = rumpunFungsional; j.jenjangFungsional = jenjangFungsional;
+    toast('Jabatan "' + nama + '" diperbarui (prototipe)');
+  } else {
+    JABATAN_LIST.push({
+      id: jabatanNextId(JABATAN_LIST), jenisJabatan: jenisJabatan, nama: nama, keterangan: keterangan, status: status,
+      role: role, platform: platform, fraksiWajib: fraksiWajib, parentId: parentId, level: level,
+      eselon: eselon, unitKerjaId: unitKerjaId, rumpunFungsional: rumpunFungsional, jenjangFungsional: jenjangFungsional
+    });
+    toast('Jabatan "' + nama + '" ditambahkan (prototipe)');
+  }
+
+  jabatanSaveList(JABATAN_LIST);
+  renderTable();
   updateStats();
   closeModal();
-  toast('Jabatan "' + jabatan + '" disimpan (prototipe)');
   return false;
 }
-function sortRows(){
-  var tbody = document.getElementById('tbodyJabatan');
-  var rows = Array.prototype.slice.call(tbody.querySelectorAll('tr'));
-  rows.sort(function(a,b){ return parseInt(a.dataset.level, 10) - parseInt(b.dataset.level, 10); });
-  rows.forEach(function(r){ tbody.appendChild(r); });
-}
 function updateStats(){
-  var rows = document.querySelectorAll('#tbodyJabatan tr');
-  document.getElementById('statTotal').textContent = rows.length;
-  var aktif = 0, nonaktif = 0;
-  rows.forEach(function(r){
-    if(r.dataset.status === 'Aktif') aktif++; else nonaktif++;
-  });
+  document.getElementById('statTotal').textContent = JABATAN_LIST.length;
+  var aktif = JABATAN_LIST.filter(function(j){ return j.status === 'Aktif'; }).length;
   document.getElementById('statAktif').textContent = aktif;
-  document.getElementById('statNonaktif').textContent = nonaktif;
+  document.getElementById('statNonaktif').textContent = JABATAN_LIST.length - aktif;
 }
+
+renderTable();
+updateStats();
 </script>
 </body>
 </html>

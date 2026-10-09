@@ -1,0 +1,74 @@
+[
+  {
+    "id": "80fd0bac-7dc1-5a7b-9e86-cbac3ca1d75a",
+    "code": "PIMPINAN",
+    "name": "Pimpinan DPRD",
+    "domain": "DEWAN",
+    "max_per_member": 1,
+    "allows_vacancy": false,
+    "sort_order": 1
+  },
+  {
+    "id": "a11b278e-e93f-584d-914c-04d207e1b1ca",
+    "code": "FRAKSI",
+    "name": "Fraksi",
+    "domain": "DEWAN",
+    "max_per_member": 1,
+    "allows_vacancy": false,
+    "sort_order": 2
+  },
+  {
+    "id": "617dff00-2101-51d9-8c78-6b39ebc42f7d",
+    "code": "KOMISI",
+    "name": "Komisi",
+    "domain": "DEWAN",
+    "max_per_member": 1,
+    "allows_vacancy": false,
+    "sort_order": 3
+  },
+  {
+    "id": "ab89d114-ecf4-5207-b49d-239e83acccf9",
+    "code": "AKD",
+    "name": "Alat Kelengkapan DPRD (Badan)",
+    "domain": "DEWAN",
+    "max_per_member": null,
+    "allows_vacancy": false,
+    "sort_order": 4
+  },
+  {
+    "id": "3e426352-23a8-5f11-b313-9802998aaf38",
+    "code": "PANSUS",
+    "name": "Panitia Khusus",
+    "domain": "DEWAN",
+    "max_per_member": null,
+    "allows_vacancy": false,
+    "sort_order": 5
+  },
+  {
+    "id": "b0259834-de2f-5648-be44-bd576db6d9a4",
+    "code": "SEKRETARIAT",
+    "name": "Sekretariat",
+    "domain": "SETWAN",
+    "max_per_member": 1,
+    "allows_vacancy": true,
+    "sort_order": 6
+  },
+  {
+    "id": "2af29419-1d46-589a-84db-c53456b4fdbc",
+    "code": "BAGIAN",
+    "name": "Bagian",
+    "domain": "SETWAN",
+    "max_per_member": 1,
+    "allows_vacancy": true,
+    "sort_order": 7
+  },
+  {
+    "id": "5cd44512-1caa-55b3-a101-f1ec4484add0",
+    "code": "SUBBAGIAN",
+    "name": "Sub Bagian",
+    "domain": "SETWAN",
+    "max_per_member": 1,
+    "allows_vacancy": true,
+    "sort_order": 8
+  }
+]

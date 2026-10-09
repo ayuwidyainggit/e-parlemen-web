@@ -1,0 +1,50 @@
+[
+  {
+    "id": "256a77ab-4e74-59ec-bd71-a779f956b9e7",
+    "code": "PDIP",
+    "name": "Partai Demokrasi Indonesia Perjuangan",
+    "abbreviation": "PDI-P",
+    "logo_url": null,
+    "is_active": true
+  },
+  {
+    "id": "1f4dfb9d-ad84-51fd-b3ff-115b1e1ad778",
+    "code": "GOLKAR",
+    "name": "Partai Golongan Karya",
+    "abbreviation": "Golkar",
+    "logo_url": null,
+    "is_active": true
+  },
+  {
+    "id": "e4cb34f8-0ca2-535f-a848-b4dad9013327",
+    "code": "PKB",
+    "name": "Partai Kebangkitan Bangsa",
+    "abbreviation": "PKB",
+    "logo_url": null,
+    "is_active": true
+  },
+  {
+    "id": "7f14241f-1ee0-57bf-b547-3abc4e0f0c76",
+    "code": "PKS",
+    "name": "Partai Keadilan Sejahtera",
+    "abbreviation": "PKS",
+    "logo_url": null,
+    "is_active": true
+  },
+  {
+    "id": "d7e1f80b-0df6-5db5-aa4b-3d28abb0676f",
+    "code": "DEMOKRAT",
+    "name": "Partai Demokrat",
+    "abbreviation": "Demokrat",
+    "logo_url": null,
+    "is_active": true
+  },
+  {
+    "id": "52f05101-4af3-52aa-9eeb-eeb4ca1d8adc",
+    "code": "GERINDRA",
+    "name": "Partai Gerakan Indonesia Raya",
+    "abbreviation": "Gerindra",
+    "logo_url": null,
+    "is_active": true
+  }
+]
