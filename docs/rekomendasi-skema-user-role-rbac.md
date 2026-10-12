@@ -183,10 +183,7 @@ ALTER TABLE persons
 CREATE INDEX ix_persons_user_id ON persons (user_id) WHERE user_id IS NOT NULL;
 
 -- Lengkapi FK audit (created_by/updated_by) di SEMUA 8 tabel yang sudah ada + 4 tabel baru
-ALTER TABLE periods              ADD CONSTRAINT periods_created_by_fkey  FOREIGN KEY (created_by) REFERENCES users(id),
-                                  ADD CONSTRAINT periods_updated_by_fkey  FOREIGN KEY (updated_by) REFERENCES users(id);
-ALTER TABLE parties               ADD CONSTRAINT parties_created_by_fkey FOREIGN KEY (created_by) REFERENCES users(id),
-                                  ADD CONSTRAINT parties_updated_by_fkey FOREIGN KEY (updated_by) REFERENCES users(id);
+1
 -- ...ulangi pola yang sama utk unit_types, org_units, positions, unit_type_positions, persons, assignments
 ```
 
