@@ -308,7 +308,29 @@ Trigger ini berjalan **hanya saat INSERT/UPDATE** (bukan di jalur baca), jadi ti
 
 Skema **tidak menyimpan hierarki "siapa atasan siapa" secara langsung** — itu diturunkan di query time dari kombinasi `org_units.parent_id` (hierarki unit) + `positions.hierarchy_level` (siapa "pemimpin" di dalam satu unit, yaitu baris dengan `hierarchy_level` terkecil pada unit tersebut). Pola ini sudah dipakai di `docs/query-struktur-pimpinan-dprd.sql` dan `docs/query-struktur-setwan.sql` (recursive CTE + window function `ROW_NUMBER() OVER (PARTITION BY org_unit_id ORDER BY hierarchy_level)`), dan didokumentasikan sbg kontrak API di `docs/api-kontrak-struktur-organisasi-setwan.md`.
 
-## 7. Riwayat Perubahan Skema yang Relevan
+## 7. Periode DPRD dan Keterkaitannya dengan `assignments`
+
+`periods` merepresentasikan satu periode keanggotaan DPRD (mis. `"2024–2029"`), dengan `is_active` menandai periode yang sedang berjalan (`ux_periods_one_active` menjamin cuma 1 periode aktif di satu waktu — lihat Bagian 4.1).
+
+**Keterikatan ke periode ada di `org_units.period_id`, bukan di `assignments` langsung** — tabel `assignments` sama sekali tidak punya kolom `period_id`. `period_id` di `org_units` juga **hanya diisi untuk unit domain DEWAN** (Pimpinan, Fraksi, Komisi, AKD); unit domain SETWAN (Sekretariat, Bagian, Sub Bagian) selalu `period_id IS NULL`, karena staf kepegawaian tidak terikat periode DPRD — mereka tetap menjabat lepas dari pergantian periode.
+
+Konsekuensinya: untuk tahu apakah sebuah `assignment` DEWAN masih berlaku di periode yang sekarang, query **tidak cukup** cuma cek `assignments.end_date IS NULL` — itu hanya menandai "belum ditutup secara administratif", bukan "termasuk periode yang sedang aktif". Perlu tambahan cek, lewat `org_units.period_id` dari assignment tersebut:
+
+```sql
+-- dalam kondisi JOIN/WHERE assignments, bukan ditempel belakangan:
+EXISTS (
+  SELECT 1 FROM org_units ou
+  WHERE ou.id = a.org_unit_id
+    AND (ou.period_id IS NULL OR ou.period_id = (SELECT id FROM periods WHERE is_active))
+)
+```
+`period_id IS NULL` meloloskan unit SETWAN tanpa pengecekan (tidak terikat periode apa pun); `period_id = periode aktif` meloloskan unit DEWAN hanya kalau periodenya sedang berjalan.
+
+**Kenapa ini baru kelihatan sebagai gap sekarang, bukan sebagai bug yang sudah terjadi**: di database saat ini baru ada **1 baris `periods`** (lihat Bagian 4.1), jadi `end_date IS NULL` dan "termasuk periode aktif" kebetulan selalu menghasilkan jawaban yang sama. Begitu periode kedua dibuat dan assignment DEWAN dari periode lama tidak ditutup (`end_date` dibiarkan `NULL`), query yang hanya cek `end_date` akan ikut menampilkan jabatan dari periode yang sudah tidak aktif berbarengan dengan periode yang baru — untuk satu orang yang sama.
+
+Pola perbaikan ini sudah diterapkan di `docs/api-kontrak-roster-pegawai.md` (kondisi `JOIN assignments`-nya). Query/endpoint lain yang membaca `assignments` untuk data DEWAN (mis. `docs/query-struktur-pimpinan-dprd.sql`, `docs/query-dan-kontrak-api-fraksi.md`) **belum** ikut diperbaiki dengan cek yang sama — saat ini aman karena cuma ada 1 periode, tapi perlu ditambahkan sebelum periode kedua benar-benar dibuat.
+
+## 8. Riwayat Perubahan Skema yang Relevan
 
 | Perubahan | Alasan |
 |---|---|
@@ -318,9 +340,10 @@ Skema **tidak menyimpan hierarki "siapa atasan siapa" secara langsung** — itu 
 
 Skrip migrasi lengkap: `docs/migration-rename-persons-to-users.sql`.
 
-## 8. Yang Belum Diterapkan / Pertanyaan Terbuka
+## 9. Yang Belum Diterapkan / Pertanyaan Terbuka
 
 1. **`users.electoral_district_id`** belum punya FK constraint (kolom ada, tapi tabel referensinya — Dapil — di luar lingkup 13 tabel dokumen ini).
 2. **Trigger `role_menu_permissions_validate`** (menu_id harus child, bukan grup) direkomendasikan di `rekomendasi-skema-user-role-rbac.md` tapi belum dibuat.
 3. **`roles`, `menus`, `role_menu_permissions`, `user_role`, `user_auth_tokens` masih 0 baris** — skema sudah siap tapi belum ada data seed maupun alur "Create New Account" yang benar-benar menulis ke tabel-tabel ini dari sisi aplikasi.
 4. Siapa `created_by` untuk baris pertama yang dibuat sebelum ada akun admin sama sekali (bootstrap) — belum ada keputusan resmi, lihat poin ini juga di `rekomendasi-skema-user-role-rbac.md`.
+5. **Filter periode aktif belum konsisten di semua query DEWAN** — lihat Bagian 7. Baru diterapkan di `docs/api-kontrak-roster-pegawai.md`; query/endpoint lain yang membaca `assignments` untuk data DEWAN masih perlu ditambahkan cek yang sama sebelum periode kedua dibuat.
