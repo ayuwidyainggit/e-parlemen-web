@@ -74,9 +74,6 @@ a{color:inherit;}
 .badge-warn{background:var(--warn-bg);color:var(--warn);}
 .badge-danger{background:var(--danger-bg);color:var(--danger);}
 .badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
-.badge-role-ketua{background:var(--info-bg);color:var(--info);}
-.badge-role-admin{background:var(--warn-bg);color:var(--warn);}
-.badge-role-anggota{background:var(--success-bg);color:var(--success);}
 
 .filter-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;}
 .filter-row .field-inline{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ink);}
@@ -95,7 +92,7 @@ a{color:inherit;}
 .tab.active .count{background:var(--gold);color:#fff;}
 
 .table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:760px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:900px;}
 th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
 td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
@@ -105,6 +102,7 @@ tr:hover td{background:#fafaf7;}
 .namecell .n{font-weight:800;font-size:12.6px;}
 .namecell .s{font-size:10.5px;color:var(--muted);}
 .actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
+.empty-row td{text-align:center;color:var(--muted);padding:30px 16px;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
 
@@ -128,15 +126,16 @@ tr:hover td{background:#fafaf7;}
       <div class="snav-label">Master Data</div>
       <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
       <a class="snav-item" href="master-pegawai.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8" cy="11" r="2"/><path d="M5 17c.5-2 2-3 3-3s2.5 1 3 3"/><path d="M14 9h5"/><path d="M14 13h5"/></svg> Pegawai</a>
-      <a class="snav-item" href="master-fraksi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 3v18"/><path d="M5 4h13l-3 4 3 4H5z"/></svg> Fraksi</a>
-      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
-      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
       <a class="snav-item" href="master-unit-type.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M16.5 13v7"/><path d="M13 16.5h7"/></svg> Master Unit Type</a>
       <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
+      <a class="snav-item active" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> Akun Pengguna</a>
       <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
       <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
       <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
+      <div class="snav-label">Report</div>
+      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
@@ -174,250 +173,165 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Akun aplikasi mobile untuk Anggota Dewan dibuat oleh Admin Sekretariat. Setelah dibuat, tautan aktivasi otomatis dikirim ke email anggota untuk mengatur kata sandi sebelum dapat masuk (login) ke aplikasi mobile.</div>
+      <div class="hint" style="margin-bottom:16px;">Akun dibuat lewat <strong>Buat Akun Baru</strong> (membuat data Pegawai + Role + Unit Type + Jabatan sekaligus, serta Dapil jika DEWAN). Setelah dibuat, tautan aktivasi dikirim ke email untuk mengatur kata sandi. Gunakan <strong>Aktivasi / Reset Password</strong> untuk mengirim ulang tautan (termasuk mengaktifkan kembali akun Nonaktif), &amp; <strong>Nonaktifkan</strong> untuk mencabut akses login.</div>
 
       <div class="stats-grid">
         <div class="stat-card success">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-          <div><div class="num">26</div><div class="lbl">Akun Aktif</div></div>
+          <div><div class="num" id="statAktif">0</div><div class="lbl">Akun Aktif</div></div>
         </div>
         <div class="stat-card warn">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
-          <div><div class="num">2</div><div class="lbl">Menunggu Aktivasi</div></div>
+          <div><div class="num" id="statMenunggu">0</div><div class="lbl">Menunggu Aktivasi</div></div>
         </div>
         <div class="stat-card neutral">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
-          <div><div class="num">1</div><div class="lbl">Nonaktif</div></div>
+          <div><div class="num" id="statNonaktif">0</div><div class="lbl">Nonaktif</div></div>
         </div>
       </div>
 
       <div class="filter-row">
-        <div class="tabs" style="margin-bottom:0;">
-          <button class="tab active" data-tabgroup="pg" onclick="showTab('pg','semua',this)">Semua</button>
-          <button class="tab" data-tabgroup="pg" onclick="showTab('pg','menunggu',this)">Menunggu Aktivasi <span class="count">2</span></button>
-          <button class="tab" data-tabgroup="pg" onclick="showTab('pg','aktif',this)">Aktif</button>
-        </div>
+        <div class="tabs" id="tabBar"></div>
         <div class="field-inline">
           Role:
-          <select id="roleFilter" onchange="filterByRole()">
-            <option value="">Semua Role</option>
-            <option value="Ketua">Ketua</option>
-            <option value="Administrator">Administrator</option>
-            <option value="Anggota">Anggota</option>
-          </select>
+          <select id="roleFilter" onchange="renderTable()"></select>
         </div>
       </div>
 
-      <div id="pg-semua" data-panel-group="pg" style="display:block;">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Nama</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Dibuat</th><th>Status</th><th></th></tr></thead>
-            <tbody id="tbodySemua">
-              <tr data-status="aktif" data-role="Ketua">
-                <td><div class="namecell"><span class="av">AS</span><div><div class="n">H. Agus Salim, S.H.</div><div class="s">DPRD-KET-0001</div></div></div></td>
-                <td><span class="badge badge-role-ketua">Ketua</span></td>
-                <td>agus.salim@dprd-magelangkota.go.id</td>
-                <td>Ketua DPRD</td>
-                <td>15 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="aktif" data-role="Administrator">
-                <td><div class="namecell"><span class="av">DK</span><div><div class="n">Dewi Kartika</div><div class="s">DPRD-ADM-0002</div></div></div></td>
-                <td><span class="badge badge-role-admin">Administrator</span></td>
-                <td>dewi.kartika@dprd-magelangkota.go.id</td>
-                <td>Staf Sekretariat</td>
-                <td>10 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="menunggu" data-role="Anggota">
-                <td><div class="namecell"><span class="av">MY</span><div><div class="n">M. Yusuf Ridwan</div><div class="s">DPRD-AGT-0044</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>yusuf.ridwan@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi I</td>
-                <td>Hari ini, 09.05 WIB</td>
-                <td><span class="badge badge-warn">Menunggu Aktivasi</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-outline btn-sm" onclick="resendActivation(this,'M. Yusuf Ridwan')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Ulang</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="menunggu" data-role="Anggota">
-                <td><div class="namecell"><span class="av">RH</span><div><div class="n">R. Hendra Wijaya, S.H.</div><div class="s">DPRD-AGT-0031</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>hendra.wijaya@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi II</td>
-                <td>Kemarin, 15.40 WIB</td>
-                <td><span class="badge badge-warn">Menunggu Aktivasi</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-outline btn-sm" onclick="resendActivation(this,'R. Hendra Wijaya, S.H.')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Ulang</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="aktif" data-role="Anggota">
-                <td><div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">DPRD-AGT-0017</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>budi.santoso@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi I</td>
-                <td>2 Mei 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="aktif" data-role="Anggota">
-                <td><div class="namecell"><span class="av">SR</span><div><div class="n">Hj. Siti Rahmawati</div><div class="s">DPRD-AGT-0022</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>siti.rahmawati@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi IV</td>
-                <td>28 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button>
-                  </div>
-                </td>
-              </tr>
-              <tr data-status="aktif" data-role="Anggota">
-                <td><div class="namecell"><span class="av">AF</span><div><div class="n">Drs. Ahmad Fauzi</div><div class="s">DPRD-AGT-0008</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>ahmad.fauzi@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi III</td>
-                <td>20 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td>
-                  <div class="actions-cell">
-                    <button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button>
-                  </div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Nama</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Unit Type</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyAkun"></tbody>
+        </table>
       </div>
-
-      <div id="pg-menunggu" data-panel-group="pg" style="display:none;">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Nama</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Dibuat</th><th>Status</th><th></th></tr></thead>
-            <tbody>
-              <tr data-role="Anggota">
-                <td><div class="namecell"><span class="av">MY</span><div><div class="n">M. Yusuf Ridwan</div><div class="s">DPRD-AGT-0044</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>yusuf.ridwan@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi I</td>
-                <td>Hari ini, 09.05 WIB</td>
-                <td><span class="badge badge-warn">Menunggu Aktivasi</span></td>
-                <td><button class="btn btn-outline btn-sm" onclick="resendActivation(this,'M. Yusuf Ridwan')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Ulang</button></td>
-              </tr>
-              <tr data-role="Anggota">
-                <td><div class="namecell"><span class="av">RH</span><div><div class="n">R. Hendra Wijaya, S.H.</div><div class="s">DPRD-AGT-0031</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>hendra.wijaya@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi II</td>
-                <td>Kemarin, 15.40 WIB</td>
-                <td><span class="badge badge-warn">Menunggu Aktivasi</span></td>
-                <td><button class="btn btn-outline btn-sm" onclick="resendActivation(this,'R. Hendra Wijaya, S.H.')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Ulang</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="pg-aktif" data-panel-group="pg" style="display:none;">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Nama</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Aktif Sejak</th><th>Status</th><th></th></tr></thead>
-            <tbody>
-              <tr data-role="Ketua">
-                <td><div class="namecell"><span class="av">AS</span><div><div class="n">H. Agus Salim, S.H.</div><div class="s">DPRD-KET-0001</div></div></div></td>
-                <td><span class="badge badge-role-ketua">Ketua</span></td>
-                <td>agus.salim@dprd-magelangkota.go.id</td>
-                <td>Ketua DPRD</td>
-                <td>15 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td><button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button></td>
-              </tr>
-              <tr data-role="Administrator">
-                <td><div class="namecell"><span class="av">DK</span><div><div class="n">Dewi Kartika</div><div class="s">DPRD-ADM-0002</div></div></div></td>
-                <td><span class="badge badge-role-admin">Administrator</span></td>
-                <td>dewi.kartika@dprd-magelangkota.go.id</td>
-                <td>Staf Sekretariat</td>
-                <td>10 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td><button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button></td>
-              </tr>
-              <tr data-role="Anggota">
-                <td><div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">DPRD-AGT-0017</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>budi.santoso@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi I</td>
-                <td>2 Mei 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td><button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button></td>
-              </tr>
-              <tr data-role="Anggota">
-                <td><div class="namecell"><span class="av">SR</span><div><div class="n">Hj. Siti Rahmawati</div><div class="s">DPRD-AGT-0022</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>siti.rahmawati@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi IV</td>
-                <td>28 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td><button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button></td>
-              </tr>
-              <tr data-role="Anggota">
-                <td><div class="namecell"><span class="av">AF</span><div><div class="n">Drs. Ahmad Fauzi</div><div class="s">DPRD-AGT-0008</div></div></div></td>
-                <td><span class="badge badge-role-anggota">Anggota</span></td>
-                <td>ahmad.fauzi@dprd-magelangkota.go.id</td>
-                <td>Anggota Komisi III</td>
-                <td>20 April 2025</td>
-                <td><span class="badge badge-success">Aktif</span></td>
-                <td><button class="btn btn-danger-outline btn-sm" onclick="toast('Akun dinonaktifkan (prototipe)')">Nonaktifkan</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<script src="jabatan-data.js"></script>
+<script src="unit-type-data.js"></script>
+<script src="rbac-data.js"></script>
+<script src="pegawai-data.js"></script>
 <script>
-function showTab(group, name, btn){
-  document.querySelectorAll('[data-panel-group="' + group + '"]').forEach(function(p){ p.style.display = 'none'; });
-  var target = document.getElementById(group + '-' + name);
-  if(target){ target.style.display = 'block'; }
-  document.querySelectorAll('[data-tabgroup="' + group + '"]').forEach(function(t){ t.classList.remove('active'); });
-  if(btn){ btn.classList.add('active'); }
-}
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-function resendActivation(btn, nama){
-  toast('Email aktivasi dikirim ulang kepada ' + nama);
+
+var STATUS_LABEL = { PENDING_ACTIVATION: 'Menunggu Aktivasi', ACTIVE: 'Aktif', SUSPENDED: 'Ditangguhkan', DEACTIVATED: 'Nonaktif' };
+var STATUS_BADGE = { PENDING_ACTIVATION: 'badge-warn', ACTIVE: 'badge-success', SUSPENDED: 'badge-neutral', DEACTIVATED: 'badge-neutral' };
+
+var PEGAWAI_LIST = pegawaiLoadList();
+var UNIT_TYPE_LIST = unitTypeLoadList();
+var activeTab = 'semua';
+
+function accounts(){
+  return PEGAWAI_LIST.filter(function(p){ return !!p.loginStatus; });
 }
-function filterByRole(){
-  var role = document.getElementById('roleFilter').value;
-  document.querySelectorAll('[data-panel-group="pg"] tbody tr').forEach(function(row){
-    row.style.display = (!role || row.getAttribute('data-role') === role) ? '' : 'none';
-  });
+function initials(nama){
+  return nama.split(/[\s,]+/).filter(Boolean).slice(0, 2).map(function(w){ return w[0]; }).join('').toUpperCase();
 }
+function roleNamaOf(roleId){
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  return role ? role.nama : '—';
+}
+function unitTypeNamaOf(unitTypeId){
+  if(!unitTypeId) return '—';
+  var u = unitTypeFindById(UNIT_TYPE_LIST, unitTypeId);
+  return u ? unitTypeLabel(u) : '—';
+}
+
+function renderTabBar(){
+  var list = accounts();
+  var tabs = [
+    { key: 'semua', label: 'Semua', filter: function(){ return true; } },
+    { key: 'menunggu', label: 'Menunggu Aktivasi', filter: function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; } },
+    { key: 'aktif', label: 'Aktif', filter: function(p){ return p.loginStatus === 'ACTIVE'; } },
+    { key: 'nonaktif', label: 'Nonaktif', filter: function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; } }
+  ];
+  document.getElementById('tabBar').innerHTML = tabs.map(function(t){
+    var count = list.filter(t.filter).length;
+    return '<button type="button" class="tab' + (t.key === activeTab ? ' active' : '') + '" onclick="switchTab(\'' + t.key + '\')">' + t.label + ' <span class="count">' + count + '</span></button>';
+  }).join('');
+}
+function switchTab(key){
+  activeTab = key;
+  renderTabBar();
+  renderTable();
+}
+function populateRoleFilter(){
+  var sel = document.getElementById('roleFilter');
+  sel.innerHTML = '<option value="">Semua Role</option>' + rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
+}
+
+function currentList(){
+  var list = accounts();
+  if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; });
+  else if(activeTab === 'aktif') list = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; });
+  else if(activeTab === 'nonaktif') list = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; });
+  var roleFilter = document.getElementById('roleFilter').value;
+  if(roleFilter) list = list.filter(function(p){ return String(p.roleId) === roleFilter; });
+  return list;
+}
+
+function renderTable(){
+  var tbody = document.getElementById('tbodyAkun');
+  var list = currentList();
+  if(!list.length){
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Belum ada akun untuk filter ini.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(function(p){
+    var actions = '<button class="btn btn-outline btn-sm" onclick="window.location.href=\'pengguna-edit.html?id=' + p.id + '\'"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      + '<button class="btn btn-outline btn-sm" onclick="resetPassword(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Aktivasi / Reset Password</button>';
+    if(p.loginStatus === 'ACTIVE' || p.loginStatus === 'PENDING_ACTIVATION'){
+      actions += '<button class="btn btn-danger-outline btn-sm" onclick="deactivate(' + p.id + ')">Nonaktifkan</button>';
+    }
+    return '<tr>'
+      + '<td><div class="namecell"><span class="av">' + initials(p.nama) + '</span><div><div class="n">' + p.nama + '</div><div class="s">' + p.nip + '</div></div></div></td>'
+      + '<td>' + roleNamaOf(p.roleId) + '</td>'
+      + '<td>' + p.email + '</td>'
+      + '<td>' + jabatanNama(p.jabatanId) + '</td>'
+      + '<td>' + unitTypeNamaOf(p.unitTypeId) + '</td>'
+      + '<td><span class="badge ' + STATUS_BADGE[p.loginStatus] + '">' + STATUS_LABEL[p.loginStatus] + '</span></td>'
+      + '<td><div class="actions-cell">' + actions + '</div></td>'
+    + '</tr>';
+  }).join('');
+}
+
+function resetPassword(id){
+  var p = pegawaiFindById(PEGAWAI_LIST, id);
+  if(!p) return;
+  p.loginStatus = 'PENDING_ACTIVATION';
+  pegawaiSaveList(PEGAWAI_LIST);
+  renderTabBar();
+  renderTable();
+  updateStats();
+  toast('Tautan aktivasi / reset password dikirim ke ' + p.email);
+}
+function deactivate(id){
+  var p = pegawaiFindById(PEGAWAI_LIST, id);
+  if(!p) return;
+  p.loginStatus = 'DEACTIVATED';
+  pegawaiSaveList(PEGAWAI_LIST);
+  renderTabBar();
+  renderTable();
+  updateStats();
+  toast('Akun "' + p.nama + '" dinonaktifkan');
+}
+
+function updateStats(){
+  var list = accounts();
+  document.getElementById('statAktif').textContent = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; }).length;
+  document.getElementById('statMenunggu').textContent = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; }).length;
+  document.getElementById('statNonaktif').textContent = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; }).length;
+}
+
+populateRoleFilter();
+renderTabBar();
+renderTable();
+updateStats();
 </script>
 </body>
 </html>
