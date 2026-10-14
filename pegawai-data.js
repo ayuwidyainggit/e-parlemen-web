@@ -23,10 +23,20 @@
 // Field akun (dipakai oleh pengguna.html, pengguna-buat.html & pengguna-edit.html untuk fitur
 // User Management - Create/Edit Account, Aktivasi/Reset Password, Nonaktifkan Account):
 //  - email: alamat login & tujuan tautan aktivasi; null = belum ada akun untuk pegawai ini.
-//  - loginStatus: null (belum punya akun) | 'PENDING_ACTIVATION' | 'ACTIVE' | 'SUSPENDED' |
-//    'DEACTIVATED' - meniru kolom login_status pada tabel `users` (lihat
-//    docs/trd-database-eparlemen.md Bagian 4.7). Hanya 4 pegawai contoh (id 1, 2, 26, 52) yang
-//    diisi demo akun di seed ini; sisanya null (belum dibuatkan akun).
+//  - loginStatus: null (belum punya akun) | 'PENDING_ACTIVATION' | 'PENDING_RESET_APPROVAL' |
+//    'ACTIVE' | 'SUSPENDED' | 'DEACTIVATED' - meniru kolom login_status pada tabel `users`
+//    (lihat docs/trd-database-eparlemen.md Bagian 4.7). 'PENDING_RESET_APPROVAL' dipakai
+//    fitur "Lupa Kata Sandi" (lihat forgot-password.html & forgot-password-data.js): login
+//    diblokir sampai admin menyetujui permintaan lewat pengguna.html. Hanya 4 pegawai contoh
+//    (id 1, 2, 26, 52) yang diisi demo akun di seed ini; sisanya null (belum dibuatkan akun).
+//  - password: kata sandi akun (prototipe, plain text - tidak ada backend nyata di proyek ini).
+//    null = akun belum pernah punya kata sandi (mis. belum diaktivasi). Diisi/diganti lewat
+//    fitur "Lupa Kata Sandi" setelah disetujui admin.
+//  - roleId: role utama (FK ke rbac-data.js) - dipakai semua akun selain contoh di bawah.
+//  - roleIds: OPSIONAL, array of roleId - dipakai kalau satu akun butuh LEBIH DARI SATU role
+//    (mis. id 1 - NARISQA punya role Ketua & Anggota sekaligus, lihat assignments-nya).
+//    Kalau roleIds ada, pengguna.html menampilkan & memfilter berdasarkan roleIds (roleId tetap
+//    diisi sbg fallback role utama utk kode yang belum sadar multi-role, mis. pengguna-edit.html).
 //  - unitTypeId: FK ke UNIT_TYPE_LIST (unit-type-data.js) - unit organisasi tempat pegawai ini
 //    ditugaskan saat ini (hasil "Assign Unit Type" pada Create/Edit Account).
 var PEGAWAI_STORAGE_KEY = 'ep_master_pegawai_list';
@@ -34,10 +44,10 @@ var PEGAWAI_STORAGE_KEY = 'ep_master_pegawai_list';
 // browser yang masih menyimpan data lama di localStorage otomatis di-reseed, tanpa perlu
 // localStorage.clear() manual. Edit yang sudah dibuat lewat form tetap tersimpan selama versi
 // seed tidak berubah.
-var PEGAWAI_SEED_VERSION = 6;
+var PEGAWAI_SEED_VERSION = 8;
 var PEGAWAI_VERSION_KEY = 'ep_master_pegawai_seed_version';
 var PEGAWAI_DEFAULT_LIST = [
-  { id: 1, tipePegawai: 'Politisi', nama: 'NARISQA', nik: '0000000000000001', nip: 'DPRD-AGT-0001', alamat: '', hp: '', jabatanId: 'b80c6030-b60f-511a-b69a-e1fcaf15ef9a', roleId: 3, fraksiId: 2, partaiId: '987362f7-493a-4508-977f-45637f3a175c', dapilId: 'DAPIL-1', email: 'narisqa@dprd-magelangkota.go.id', loginStatus: 'ACTIVE', unitTypeId: 'f14157bb-d374-579c-a364-344b20f95539',
+  { id: 1, tipePegawai: 'Politisi', nama: 'NARISQA', nik: '0000000000000001', nip: 'DPRD-AGT-0001', alamat: '', hp: '', jabatanId: 'b80c6030-b60f-511a-b69a-e1fcaf15ef9a', roleId: 3, roleIds: [1, 3], fraksiId: 2, partaiId: '987362f7-493a-4508-977f-45637f3a175c', dapilId: 'DAPIL-1', email: 'narisqa@dprd-magelangkota.go.id', loginStatus: 'ACTIVE', password: 'rahasia123', unitTypeId: 'f14157bb-d374-579c-a364-344b20f95539',
     statusKepegawaian: null, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: [{ jabatan: 'Ketua', kategori: 'KELOMPOK', unitKerja: 'Fraksi PDI Perjuangan', mulai: '2024-08-01', sk: null }, { jabatan: 'Ketua', kategori: 'KELOMPOK', unitKerja: 'Komisi C', mulai: '2024-10-01', sk: null }, { jabatan: 'Anggota', kategori: 'KELOMPOK', unitKerja: 'Badan Anggaran', mulai: '2024-10-01', sk: null }] },
@@ -137,7 +147,7 @@ var PEGAWAI_DEFAULT_LIST = [
     statusKepegawaian: null, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: [{ jabatan: 'Anggota', kategori: 'KELOMPOK', unitKerja: 'Fraksi Gerindra', mulai: '2024-08-01', sk: null }, { jabatan: 'Wakil Ketua', kategori: 'KELOMPOK', unitKerja: 'Komisi A', mulai: '2024-10-01', sk: null }, { jabatan: 'Anggota', kategori: 'KELOMPOK', unitKerja: 'Badan Musyawarah', mulai: '2024-10-01', sk: null }] },
-  { id: 26, tipePegawai: 'ASN', nama: 'INDAH DWIANTARI, S.Sos.', nik: '0000000000000026', nip: '197204291997032002', alamat: '', hp: '', jabatanId: 'bb22c8a1-9e75-5277-b9ab-fee2d7966619', roleId: 2, fraksiId: null, partaiId: null, dapilId: null, email: 'indah.dwiantari@dprd-magelangkota.go.id', loginStatus: 'ACTIVE', unitTypeId: 'b0259834-de2f-5648-be44-bd576db6d9a4',
+  { id: 26, tipePegawai: 'ASN', nama: 'INDAH DWIANTARI, S.Sos.', nik: '0000000000000026', nip: '197204291997032002', alamat: '', hp: '', jabatanId: 'bb22c8a1-9e75-5277-b9ab-fee2d7966619', roleId: 2, fraksiId: null, partaiId: null, dapilId: null, email: 'indah.dwiantari@dprd-magelangkota.go.id', loginStatus: 'ACTIVE', password: 'rahasia123', unitTypeId: 'b0259834-de2f-5648-be44-bd576db6d9a4',
     statusKepegawaian: 'PNS', pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: [{ jabatan: 'Sekretaris DPRD', kategori: 'STRUKTURAL', unitKerja: 'Sekretariat DPRD', mulai: '2025-01-02', sk: null }] },

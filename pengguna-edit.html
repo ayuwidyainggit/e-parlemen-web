@@ -69,6 +69,11 @@ a{color:inherit;}
 .field input[disabled]{background:var(--neutral-bg);color:var(--muted);font-weight:800;}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 
+.assign-item{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;background:var(--neutral-bg);border-radius:10px;padding:11px 14px;margin-bottom:8px;}
+.assign-item .info{font-size:12px;line-height:1.55;color:var(--ink);}
+.assign-item .info .t{font-weight:800;display:block;}
+.assign-item .remove-btn{background:none;border:none;color:var(--danger);cursor:pointer;font-weight:800;font-size:11.5px;flex-shrink:0;font-family:inherit;}
+
 .badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
 .badge-success{background:var(--success-bg);color:var(--success);}
 .badge-warn{background:var(--warn-bg);color:var(--warn);}
@@ -111,20 +116,6 @@ a{color:inherit;}
       <div class="snav-label">Report</div>
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
-      <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
-      <div class="snav-label">Persuratan</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
-      <div class="snav-label">Rapat</div>
-      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
-      <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
-      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <div class="snav-label">Lainnya</div>
       <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
     </nav>
@@ -148,61 +139,115 @@ a{color:inherit;}
     <div class="content" id="content">
       <div class="info-box">
         <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-        <span>Edit Akun hanya mengubah <strong>Role</strong>, <strong>Unit Type</strong>, <strong>Jabatan</strong>, &amp; <strong>Assignment Dapil</strong>. Untuk reset kata sandi atau menonaktifkan akun, gunakan aksi pada halaman <a href="pengguna.html" style="color:var(--green);font-weight:700;">User Management</a>.</span>
+        <span>Form ini sama dengan <strong>Buat Akun Baru</strong> &mdash; biodata, Partai &amp; Fraksi, rangkap jabatan (Jabatan &amp; Penempatan), dan Assignment Dapil semua bisa diubah di sini. Tipe Pengguna (DEWAN/SETWAN) tidak bisa diganti lewat Edit. Untuk reset kata sandi atau menonaktifkan akun, gunakan aksi pada halaman <a href="pengguna.html" style="color:var(--green);font-weight:700;">User Management</a>.</span>
       </div>
 
-      <form onsubmit="return submitForm(event)">
-        <div class="card">
-          <div class="section-title">Data Pengguna</div>
-          <div class="hint">Biodata tidak dapat diubah dari halaman ini.</div>
-          <div class="field-row">
-            <div class="field"><label>Nama Lengkap</label><input type="text" id="fNama" disabled></div>
-            <div class="field"><label>Tipe Pengguna</label><input type="text" id="fTipeDisplay" disabled></div>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>NIP / Member Code</label><input type="text" id="fNip" disabled></div>
-            <div class="field"><label>Status Akun</label><input type="text" id="fStatusDisplay" disabled></div>
-          </div>
+      <div class="card">
+        <div class="section-title">Tipe Pengguna</div>
+        <div class="field-row">
+          <div class="field"><label>Tipe Pengguna</label><input type="text" id="fTipeDisplay" disabled></div>
+          <div class="field"><label>Status Akun</label><input type="text" id="fStatusDisplay" disabled></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Data Pegawai</div>
+        <div class="hint">Data ini akan ditampilkan pada profil akun pengguna.</div>
+
+        <div class="field"><label>Nama Lengkap</label><input type="text" id="fNama" required></div>
+        <div class="field-row">
+          <div class="field"><label id="lblNip">NIP</label><input type="text" id="fNip" required></div>
+          <div class="field"><label>NIK</label><input type="text" id="fNik" maxlength="16"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>No. HP</label><input type="text" id="fHp" placeholder="08xxxxxxxxxx"></div>
+          <div class="field"><label>Alamat</label><input type="text" id="fAlamat" placeholder="Opsional"></div>
         </div>
 
-        <div class="card">
-          <div class="section-title">Jabatan &amp; Penempatan</div>
-          <div class="hint">Assign Role, Unit Type, Jabatan baru &mdash; serta Dapil jika pengguna ini DEWAN.</div>
-
-          <div class="field-row">
-            <div class="field"><label>Category Jabatan</label>
-              <select id="fJabatanCategory" onchange="populateJabatanOptions()"></select>
-            </div>
-            <div class="field"><label>Jabatan</label>
-              <select id="fJabatan" required></select>
-            </div>
-          </div>
-          <div class="field"><label>Unit Type <span class="opt">(unit organisasi penempatan)</span></label>
-            <select id="fUnitType" required></select>
-          </div>
-          <div class="field-row">
-            <div class="field"><label>Role</label>
-              <select id="fRole" onchange="handleRoleChange()" required></select>
-            </div>
-            <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fPlatformDisplay" disabled></div>
-          </div>
-          <div class="field" id="groupDapil">
-            <label>Assignment Dapil</label>
-            <select id="fDapil" required></select>
+        <div id="groupSetwanBio">
+          <div class="field"><label>Status Kepegawaian</label>
+            <select id="fStatusKepegawaian">
+              <option value="PNS">PNS</option>
+              <option value="PPPK">PPPK</option>
+              <option value="NON_ASN">Non-ASN</option>
+            </select>
           </div>
         </div>
+      </div>
 
-        <div class="btn-row">
-          <button type="submit" class="btn btn-primary"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg> Simpan Perubahan</button>
-          <a class="btn btn-outline" href="pengguna.html">Batal</a>
+      <div class="card" id="groupDewanBio">
+        <div class="section-title">Partai &amp; Fraksi</div>
+        <div class="hint">Partai menentukan Fraksi secara otomatis. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut.</div>
+        <div class="field"><label>Partai</label>
+          <select id="fPartai" onchange="handlePartaiChange()"></select>
         </div>
-      </form>
+        <div class="field"><label>Fraksi <span class="opt">(otomatis dari Partai)</span></label><input type="text" id="fFraksiDisplay" disabled></div>
+        <div class="field-row">
+          <div class="field"><label>Category Jabatan</label>
+            <select id="fFraksiJabatanCategory" onchange="populateFraksiJabatanOptions()"></select>
+          </div>
+          <div class="field"><label>Jabatan</label>
+            <select id="fFraksiJabatan"></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Role</label>
+            <select id="fFraksiRole" onchange="handleFraksiRoleChange()"></select>
+          </div>
+          <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fFraksiPlatformDisplay" disabled></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="section-title">Jabatan &amp; Penempatan <span class="opt">(opsional)</span></div>
+        <div class="hint">Satu pengguna dapat memiliki lebih dari satu penempatan (rangkap jabatan) &mdash; lengkapi Unit Type, Category Jabatan, Jabatan, &amp; Role, lalu klik "Tambah Penempatan". Penempatan yang sudah ada sebelumnya tetap mempertahankan tanggal mulainya; penempatan baru dicatat mulai hari ini.</div>
+
+        <div class="field"><label>Unit Type <span class="opt">(unit organisasi penempatan, selain Fraksi)</span></label>
+          <select id="fUnitType"></select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Category Jabatan</label>
+            <select id="fJabatanCategory" onchange="populateJabatanOptions()"></select>
+          </div>
+          <div class="field"><label>Jabatan</label>
+            <select id="fJabatan"></select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Role</label>
+            <select id="fRole" onchange="handleRoleChange()"></select>
+          </div>
+          <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fPlatformDisplay" disabled></div>
+        </div>
+        <div class="btn-row" style="margin-bottom:18px;">
+          <button type="button" class="btn btn-outline" onclick="addAssignmentEntry()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Penempatan</button>
+        </div>
+
+        <div class="section-title" style="font-size:12.5px;">Daftar Penempatan</div>
+        <div id="assignmentList" style="margin-top:8px;"></div>
+      </div>
+
+      <div class="card" id="groupDapilCard">
+        <div class="section-title">Assignment Dapil</div>
+        <div class="hint" id="dapilHint" style="margin:0 0 12px;">Dapil wajib ditentukan untuk pengguna DEWAN (Politisi/Anggota).</div>
+        <div class="field" id="groupDapil">
+          <label>Dapil</label>
+          <select id="fDapil"></select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button type="button" class="btn btn-primary" onclick="submitForm()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg> Simpan Perubahan</button>
+        <a class="btn btn-outline" href="pengguna.html">Batal</a>
+      </div>
     </div>
   </div>
 </div>
 <div class="toast" id="toast" style="display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;"></div>
 <script src="jabatan-data.js"></script>
 <script src="unit-type-data.js"></script>
+<script src="fraksi-data.js"></script>
+<script src="partai-data.js"></script>
 <script src="dapil-data.js"></script>
 <script src="rbac-data.js"></script>
 <script src="pegawai-data.js"></script>
@@ -213,12 +258,14 @@ function toast(msg){
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
 
-var STATUS_LABEL = { PENDING_ACTIVATION: 'Menunggu Aktivasi', ACTIVE: 'Aktif', SUSPENDED: 'Ditangguhkan', DEACTIVATED: 'Nonaktif' };
+var STATUS_LABEL = { PENDING_ACTIVATION: 'Menunggu Aktivasi', PENDING_RESET_APPROVAL: 'Menunggu Approval Reset', ACTIVE: 'Aktif', SUSPENDED: 'Ditangguhkan', DEACTIVATED: 'Nonaktif' };
 
 var pegawaiId = parseInt(new URLSearchParams(window.location.search).get('id'), 10);
 var PEGAWAI_LIST = pegawaiLoadList();
 var UNIT_TYPE_LIST = unitTypeLoadList();
 var current = pegawaiFindById(PEGAWAI_LIST, pegawaiId);
+var assignmentsDraft = []; // penempatan selain Fraksi (ditampilkan di "Daftar Penempatan")
+var fraksiAssignmentExisting = null; // { jabatanId, roleId, mulai, sk } milik penempatan di Fraksi, kalau ketemu
 
 if(!current || !current.loginStatus){
   document.getElementById('content').innerHTML = '<div class="card">Akun tidak ditemukan. <a href="pengguna.html" style="color:var(--green);font-weight:700;">Kembali ke User Management</a></div>';
@@ -226,9 +273,61 @@ if(!current || !current.loginStatus){
   init();
 }
 
+// --- Resolusi assignment lama ke ID (data lama cuma simpan label teks jabatan/unitKerja,
+// tanpa jabatanId/unitTypeId/roleId - lihat pegawai-data.js). Best-effort by name match;
+// kalau tidak ketemu, biarkan null - field itu bisa diperbaiki admin lewat Tambah Penempatan,
+// tidak menghilangkan data (label asli tetap kepake kalau entry tidak disentuh).
+function resolveJabatanId(a){
+  if(a.jabatanId) return a.jabatanId;
+  var j = jabatanLoadList().find(function(j){ return jabatanLabel(j).toLowerCase() === String(a.jabatan).toLowerCase(); });
+  return j ? j.id : null;
+}
+function resolveUnitTypeId(a){
+  if(a.unitTypeId) return a.unitTypeId;
+  var u = UNIT_TYPE_LIST.find(function(u){ return unitTypeLabel(u).toLowerCase() === String(a.unitKerja).toLowerCase(); });
+  return u ? u.id : null;
+}
+function labelFor(id, finder, labelFn, fallback){
+  if(!id) return fallback || '—';
+  var item = finder(id);
+  return item ? labelFn(item) : (fallback || '—');
+}
+
+function splitExistingAssignments(){
+  var list = (current.assignments || []).slice();
+  fraksiAssignmentExisting = null;
+
+  if(current.tipePegawai === 'Politisi' && current.fraksiId){
+    var fraksi = fraksiLoadList().find(function(f){ return f.id === current.fraksiId; });
+    var partai = partaiById(current.partaiId);
+    var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
+    var idx = list.findIndex(function(a){
+      if(fraksiUnitType && resolveUnitTypeId(a) === fraksiUnitType.id) return true;
+      return fraksi && a.unitKerja === fraksi.nama;
+    });
+    if(idx !== -1) fraksiAssignmentExisting = list.splice(idx, 1)[0];
+  }
+
+  assignmentsDraft = list.map(function(a){
+    var unitTypeId = resolveUnitTypeId(a);
+    var jabatanId = resolveJabatanId(a);
+    var roleId = a.roleId || current.roleId;
+    return {
+      unitTypeId: unitTypeId, unitTypeLabel: a.unitKerja || labelFor(unitTypeId, function(id){ return unitTypeFindById(UNIT_TYPE_LIST, id); }, unitTypeLabel),
+      category: a.kategori, jabatanId: jabatanId, jabatanLabel: a.jabatan || labelFor(jabatanId, function(id){ return jabatanFindById(jabatanLoadList(), id); }, jabatanLabel),
+      roleId: roleId, roleLabel: roleNameOf(roleId),
+      mulai: a.mulai || null, sk: a.sk || null
+    };
+  });
+}
+function roleNameOf(roleId){
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  return role ? role.nama : '—';
+}
+
 function populateUnitTypeOptions(){
   var sel = document.getElementById('fUnitType');
-  var tabs = current.tipePegawai === 'Politisi' ? ['AKD', 'FRAKSI'] : ['SEKRE'];
+  var tabs = current.tipePegawai === 'Politisi' ? ['AKD'] : ['SEKRE'];
   var options = [];
   tabs.forEach(function(t){
     unitTypeByType(UNIT_TYPE_LIST, t).forEach(function(u){
@@ -236,14 +335,11 @@ function populateUnitTypeOptions(){
     });
   });
   sel.innerHTML = options.join('');
-  sel.value = current.unitTypeId || '';
 }
+
 function populateJabatanCategoryOptions(){
   var sel = document.getElementById('fJabatanCategory');
-  var cats = current.tipePegawai === 'Politisi' ? ['KELOMPOK'] : ['STRUKTURAL', 'FUNGSIONAL', 'PELAKSANA'];
-  sel.innerHTML = cats.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
-  var currentJabatan = jabatanFindById(jabatanLoadList(), current.jabatanId);
-  sel.value = currentJabatan ? currentJabatan.category : cats[0];
+  sel.innerHTML = JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
   populateJabatanOptions();
 }
 function populateJabatanOptions(){
@@ -252,17 +348,11 @@ function populateJabatanOptions(){
   sel.innerHTML = jabatanByCategory(jabatanLoadList(), category).map(function(j){
     return '<option value="' + j.id + '">' + jabatanLabel(j) + '</option>';
   }).join('');
-  sel.value = current.jabatanId || '';
 }
-function populateDapilOptions(){
-  var sel = document.getElementById('fDapil');
-  sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
-  sel.value = current.dapilId || '';
-}
+
 function populateRoleOptions(){
   var sel = document.getElementById('fRole');
   sel.innerHTML = rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
-  sel.value = current.roleId;
   handleRoleChange();
 }
 function handleRoleChange(){
@@ -271,28 +361,176 @@ function handleRoleChange(){
   document.getElementById('fPlatformDisplay').value = role && role.akses.length ? role.akses.join(', ') : '—';
 }
 
+function populatePartaiOptions(){
+  var sel = document.getElementById('fPartai');
+  sel.innerHTML = partaiLoadList().filter(function(p){ return p.is_aktif; }).map(function(p){
+    return '<option value="' + p.id + '">' + p.nama + ' (' + p.singkatan + ')</option>';
+  }).join('');
+  sel.value = current.partaiId || '';
+  handlePartaiChange();
+}
+function handlePartaiChange(){
+  var partaiId = document.getElementById('fPartai').value;
+  var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === partaiId; });
+  document.getElementById('fFraksiDisplay').value = fraksi ? fraksi.nama : 'Belum terdaftar di Master Fraksi';
+}
+function populateFraksiJabatanCategoryOptions(){
+  var sel = document.getElementById('fFraksiJabatanCategory');
+  sel.innerHTML = JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
+  sel.value = fraksiAssignmentExisting ? (jabatanFindById(jabatanLoadList(), fraksiAssignmentExisting.jabatanId) || {}).category || 'KELOMPOK' : 'KELOMPOK';
+  populateFraksiJabatanOptions();
+}
+function populateFraksiJabatanOptions(){
+  var category = document.getElementById('fFraksiJabatanCategory').value;
+  var sel = document.getElementById('fFraksiJabatan');
+  sel.innerHTML = jabatanByCategory(jabatanLoadList(), category).map(function(j){
+    return '<option value="' + j.id + '">' + jabatanLabel(j) + '</option>';
+  }).join('');
+  if(fraksiAssignmentExisting && fraksiAssignmentExisting.jabatanId) sel.value = fraksiAssignmentExisting.jabatanId;
+}
+function populateFraksiRoleOptions(){
+  var sel = document.getElementById('fFraksiRole');
+  sel.innerHTML = rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
+  sel.value = fraksiAssignmentExisting ? fraksiAssignmentExisting.roleId : current.roleId;
+  handleFraksiRoleChange();
+}
+function handleFraksiRoleChange(){
+  var roleId = parseInt(document.getElementById('fFraksiRole').value, 10);
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  document.getElementById('fFraksiPlatformDisplay').value = role && role.akses.length ? role.akses.join(', ') : '—';
+}
+
+function populateDapilOptions(){
+  var sel = document.getElementById('fDapil');
+  sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
+  sel.value = current.dapilId || '';
+}
+
+function addAssignmentEntry(){
+  var unitTypeId = document.getElementById('fUnitType').value;
+  var category = document.getElementById('fJabatanCategory').value;
+  var jabatanId = document.getElementById('fJabatan').value;
+  var roleId = parseInt(document.getElementById('fRole').value, 10);
+  if(!unitTypeId || !jabatanId || !roleId){ toast('Lengkapi Unit Type, Jabatan, & Role sebelum menambah'); return; }
+
+  var unit = unitTypeFindById(UNIT_TYPE_LIST, unitTypeId);
+  var jab = jabatanFindById(jabatanLoadList(), jabatanId);
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+
+  assignmentsDraft.push({
+    unitTypeId: unitTypeId, unitTypeLabel: unit ? unitTypeLabel(unit) : '—',
+    category: category, jabatanId: jabatanId, jabatanLabel: jab ? jabatanLabel(jab) : '—',
+    roleId: roleId, roleLabel: role ? role.nama : '—',
+    mulai: null, sk: null // null = penempatan baru, distempel tanggal hari ini saat Simpan
+  });
+  renderAssignmentList();
+}
+function removeAssignmentEntry(idx){
+  assignmentsDraft.splice(idx, 1);
+  renderAssignmentList();
+}
+function renderAssignmentList(){
+  var wrap = document.getElementById('assignmentList');
+  if(!assignmentsDraft.length){
+    wrap.innerHTML = '<div class="hint" style="margin:0;">Belum ada penempatan ditambahkan.</div>';
+    return;
+  }
+  wrap.innerHTML = assignmentsDraft.map(function(a, idx){
+    var mulaiBadge = a.mulai ? '<span class="badge badge-neutral">mulai ' + a.mulai + '</span>' : '<span class="badge badge-success">baru</span>';
+    return '<div class="assign-item"><div class="info"><span class="t">' + a.jabatanLabel + ' ' + mulaiBadge + '</span>' + (JABATAN_CATEGORY_LABEL[a.category] || a.category) + ' &middot; ' + a.unitTypeLabel + ' &middot; Role: ' + a.roleLabel + '</div><button type="button" class="remove-btn" onclick="removeAssignmentEntry(' + idx + ')">Hapus</button></div>';
+  }).join('');
+}
+
 function init(){
-  document.getElementById('fNama').value = current.nama;
   document.getElementById('fTipeDisplay').value = current.tipePegawai === 'Politisi' ? 'DEWAN (Politisi)' : 'SETWAN (ASN)';
-  document.getElementById('fNip').value = current.nip;
   document.getElementById('fStatusDisplay').value = STATUS_LABEL[current.loginStatus] || current.loginStatus;
-  document.getElementById('groupDapil').style.display = current.tipePegawai === 'Politisi' ? 'block' : 'none';
+
+  document.getElementById('fNama').value = current.nama;
+  document.getElementById('lblNip').textContent = current.tipePegawai === 'Politisi' ? 'Member Code (NIP Anggota)' : 'NIP';
+  document.getElementById('fNip').value = current.nip || '';
+  document.getElementById('fNik').value = current.nik || '';
+  document.getElementById('fHp').value = current.hp || '';
+  document.getElementById('fAlamat').value = current.alamat || '';
+  if(current.tipePegawai === 'ASN') document.getElementById('fStatusKepegawaian').value = current.statusKepegawaian || 'PNS';
+
+  var isPolitisi = current.tipePegawai === 'Politisi';
+  document.getElementById('groupSetwanBio').style.display = isPolitisi ? 'none' : 'block';
+  document.getElementById('groupDewanBio').style.display = isPolitisi ? 'block' : 'none';
+  document.getElementById('groupDapilCard').style.display = isPolitisi ? 'block' : 'none';
+
+  splitExistingAssignments();
 
   populateUnitTypeOptions();
   populateJabatanCategoryOptions();
   populateRoleOptions();
-  if(current.tipePegawai === 'Politisi') populateDapilOptions();
+  renderAssignmentList();
+
+  if(isPolitisi){
+    populatePartaiOptions();
+    populateFraksiJabatanCategoryOptions();
+    populateFraksiRoleOptions();
+    populateDapilOptions();
+  }
 }
 
-function submitForm(e){
-  e.preventDefault();
-  current.jabatanId = document.getElementById('fJabatan').value;
-  current.unitTypeId = document.getElementById('fUnitType').value;
-  current.roleId = parseInt(document.getElementById('fRole').value, 10);
-  if(current.tipePegawai === 'Politisi') current.dapilId = document.getElementById('fDapil').value;
+function submitForm(){
+  var nama = document.getElementById('fNama').value.trim();
+  var nip = document.getElementById('fNip').value.trim();
+  if(!nama || !nip){ toast('Nama & ' + document.getElementById('lblNip').textContent + ' wajib diisi'); return; }
+  if(current.tipePegawai === 'Politisi' && !document.getElementById('fDapil').value){ toast('Dapil wajib dipilih'); return; }
+
+  var today = new Date().toISOString().slice(0, 10);
+
+  current.nama = nama;
+  current.nip = nip;
+  current.nik = document.getElementById('fNik').value.trim() || null;
+  current.hp = document.getElementById('fHp').value.trim();
+  current.alamat = document.getElementById('fAlamat').value.trim();
+
+  var fraksiAssignment = null;
+  if(current.tipePegawai === 'Politisi'){
+    current.partaiId = document.getElementById('fPartai').value;
+    var partai = partaiById(current.partaiId);
+    var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === current.partaiId; });
+    current.fraksiId = fraksi ? fraksi.id : null;
+    current.dapilId = document.getElementById('fDapil').value;
+
+    var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
+    var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
+    var fraksiRoleId = parseInt(document.getElementById('fFraksiRole').value, 10);
+    if(fraksiJabatanId && fraksiRoleId){
+      var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
+      var fraksiRole = rbacLoadRoles().find(function(r){ return r.id === fraksiRoleId; });
+      fraksiAssignment = {
+        unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksi ? fraksi.nama : (fraksiUnitType ? unitTypeLabel(fraksiUnitType) : '—'),
+        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—',
+        roleId: fraksiRoleId, roleLabel: fraksiRole ? fraksiRole.nama : '—',
+        mulai: fraksiAssignmentExisting ? fraksiAssignmentExisting.mulai : null, sk: fraksiAssignmentExisting ? fraksiAssignmentExisting.sk : null
+      };
+    }
+  } else {
+    current.statusKepegawaian = document.getElementById('fStatusKepegawaian').value;
+  }
+
+  var allAssignments = fraksiAssignment ? [fraksiAssignment].concat(assignmentsDraft) : assignmentsDraft.slice();
+  var primary = allAssignments.length ? allAssignments[0] : null;
+
+  // Snapshot current.* hanya ditimpa kalau ada nilai baru yg valid - entry lama yg jabatanId/
+  // unitTypeId-nya gagal di-resolve (data lama cuma simpan label teks) tidak menghapus snapshot
+  // yg sudah ada sebelumnya.
+  if(primary){
+    if(primary.jabatanId) current.jabatanId = primary.jabatanId;
+    if(primary.unitTypeId) current.unitTypeId = primary.unitTypeId;
+    if(primary.roleId) current.roleId = primary.roleId;
+  }
+
+  current.assignments = allAssignments.map(function(a){
+    return { jabatanId: a.jabatanId, jabatan: a.jabatanLabel, kategori: a.category, unitTypeId: a.unitTypeId, unitKerja: a.unitTypeLabel, roleId: a.roleId, mulai: a.mulai || today, sk: a.sk };
+  });
+
   pegawaiSaveList(PEGAWAI_LIST);
+  toast('Perubahan tersimpan');
   window.location.href = 'pengguna.html';
-  return false;
 }
 </script>
 </body>

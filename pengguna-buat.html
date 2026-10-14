@@ -302,7 +302,7 @@ a{color:inherit;}
       <div id="resultSection" style="display:none;">
         <div class="success-box">
           <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-          <span><strong>Akun <span id="sentNama"></span> berhasil dibuat</strong> dengan role <strong id="sentRole"></strong>. Lengkapi Email &amp; kirim tautan aktivasi lewat aksi <strong>Aktivasi / Reset Password</strong> pada halaman User Management.</span>
+          <span><strong>Akun <span id="sentNama"></span> berhasil dibuat</strong> dengan role <strong id="sentRole"></strong>. Lengkapi Email, lalu gunakan aksi <strong>Aktifkan Akun</strong> pada halaman User Management untuk mengaktifkannya.</span>
         </div>
 
         <div class="btn-row">
@@ -571,7 +571,7 @@ function submitForm(){
   var primary = allAssignments.length ? allAssignments[0] : null;
   var today = new Date().toISOString().slice(0, 10);
 
-  // Akun Aktivasi (email) dikumpulkan kemudian lewat aksi "Aktivasi / Reset Password" pada
+  // Akun Aktivasi (email) dikumpulkan kemudian lewat aksi "Aktifkan Akun" pada
   // halaman User Management, bukan saat pembuatan akun - loginStatus tetap PENDING_ACTIVATION
   // agar pegawai ini langsung muncul di tab "Menunggu Aktivasi".
   var list = pegawaiLoadList();

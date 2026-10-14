@@ -6,6 +6,13 @@
 // Bentuk tiap baris: { id, parentId, level, unit, jabatan, nama } -- flat list ala adjacency
 // list (level + parentId), persis kontrak di docs/api-kontrak-struktur-organisasi-setwan.md.
 // nama = null berarti jabatan lowong.
+//
+// periodeId (ditambahkan belakangan, lihat master-alat-kelengkapan.html filter Periode):
+// SEMUA baris di bawah ini adalah roster periode AKTIF ('prd-2024' / 2024-2029, lihat
+// periode-data.js) -- di database eparlemenv2, org_units domain DEWAN (Pimpinan/Komisi/AKD)
+// baru punya struktur utk periode aktif ini; periode 2019-2024 belum ada datanya (lihat
+// data/README.md). Jadi filter periode 2019-2024 di halaman ini akan tampil kosong - itu
+// bukan bug, memang belum ada datanya.
 var AKD_STRUKTUR = [
   { id:'8d45b766-c734-5fd7-a405-a1e7b64947c3', parentId:null, level:0, unit:'Pimpinan DPRD', jabatan:'Ketua', nama:'EVIN SEPTA HARYANTO KAMIL, S.H.' },
   { id:'1560d441-1823-54ed-88ff-44d706203c86', parentId:'8d45b766-c734-5fd7-a405-a1e7b64947c3', level:1, unit:'Pimpinan DPRD', jabatan:'Wakil Ketua', nama:'BUSTANUL ARIFIN, S.T.' },
@@ -77,6 +84,9 @@ var AKD_STRUKTUR = [
   { id:'edefe1ab-c331-5cf3-9e8f-ab38c89bca0c', parentId:'f842af50-4148-57c7-9bfb-8c94c57ff24c', level:2, unit:'Badan Kehormatan', jabatan:'Anggota', nama:'FEBRIAN PRABOWO' }
 ];
 
-function akdStrukturList(){
-  return AKD_STRUKTUR;
+AKD_STRUKTUR.forEach(function(r){ r.periodeId = 'prd-2024'; });
+
+function akdStrukturList(periodeId){
+  if(!periodeId) return AKD_STRUKTUR;
+  return AKD_STRUKTUR.filter(function(r){ return r.periodeId === periodeId; });
 }

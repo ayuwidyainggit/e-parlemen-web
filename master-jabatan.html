@@ -86,6 +86,18 @@ a{color:inherit;}
 .badge-cat-STRUKTURAL{background:#fbf1dc;color:#9a7b1f;}
 .badge-cat-FUNGSIONAL{background:var(--success-bg);color:var(--success);}
 .badge-cat-PELAKSANA{background:var(--neutral-bg);color:var(--neutral);}
+.badge-status-AKTIF{background:var(--success-bg);color:var(--success);}
+.badge-status-NONAKTIF{background:var(--neutral-bg);color:var(--neutral);}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center;}
+.toolbar input[type="text"],.toolbar select{padding:9px 12px;border-radius:10px;border:1px solid var(--border);font-size:12.5px;font-family:inherit;background:#fff;color:var(--ink);}
+.toolbar input[type="text"]{flex:1;min-width:180px;}
+.pagination{display:flex;gap:6px;align-items:center;justify-content:flex-end;padding:14px 16px;font-size:11.5px;color:var(--muted);}
+.pagination button{appearance:none;border:1px solid var(--border);background:#fff;border-radius:8px;padding:5px 11px;font-size:11.5px;font-weight:700;cursor:pointer;color:var(--ink);}
+.pagination button:disabled{opacity:.4;cursor:not-allowed;}
+.field-error{color:var(--danger);font-size:10.5px;margin-top:5px;display:none;}
+.field.invalid input,.field.invalid select{border-color:var(--danger);}
+.field.invalid .field-error{display:block;}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
@@ -192,9 +204,17 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi <strong>Jabatan</strong> (tabel <code>positions</code>) &mdash; katalog jabatan lintas unit, dibedakan lewat <strong>Category</strong>: <strong>Kelompok</strong> (Ketua/Wakil Ketua/Sekretaris/Anggota &mdash; dipakai di Pimpinan, Fraksi, Komisi, Badan), <strong>Struktural</strong> (eselon Sekretariat DPRD), <strong>Fungsional</strong> (jabatan fungsional ASN), dan <strong>Pelaksana</strong> (staf pelaksana). <strong>Parent</strong> dipakai untuk merepresentasikan jenjang antar jabatan sejenis (mis. Wakil Ketua di bawah Ketua); <strong>Level</strong> diisi manual sesuai <code>hierarchy_level</code>.</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi <strong>Jabatan</strong> (tabel <code>positions</code>) &mdash; katalog jabatan lintas unit, dibedakan lewat <strong>Kategori</strong>: <strong>Kelompok</strong> (Ketua/Wakil Ketua/Sekretaris/Anggota &mdash; dipakai di Pimpinan, Fraksi, Komisi, Badan), <strong>Struktural</strong> (eselon Sekretariat DPRD), <strong>Fungsional</strong> (jabatan fungsional ASN), dan <strong>Pelaksana</strong> (staf pelaksana). <strong>Parent</strong> dipakai untuk merepresentasikan jenjang antar jabatan sejenis (mis. Wakil Ketua di bawah Ketua), dibatasi ke Kategori yang sama. <strong>Level</strong> dihitung <strong>otomatis</strong> dari Parent (Parent.Level + 1, root = 1) &mdash; tidak bisa diisi manual.</div>
 
       <div class="tab-bar" id="tabBar"></div>
+      <div class="toolbar">
+        <input type="text" id="fSearch" placeholder="Cari Kode atau Nama Jabatan..." oninput="handleSearch()">
+        <select id="fStatusFilter" onchange="handleSearch()">
+          <option value="">Semua Status</option>
+          <option value="AKTIF">Aktif</option>
+          <option value="NONAKTIF">Nonaktif</option>
+        </select>
+      </div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -205,19 +225,24 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div>
           <div><div class="num" id="statRoot">0</div><div class="lbl">Tanpa Parent</div></div>
         </div>
+        <div class="stat-card neutral">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M9 9l6 6"/><path d="M15 9l-6 6"/></svg></div>
+          <div><div class="num" id="statNonaktif">0</div><div class="lbl">Nonaktif</div></div>
+        </div>
         <div class="stat-card success">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
-          <div><div class="num" id="statKategori">Kelompok</div><div class="lbl">Category Aktif</div></div>
+          <div><div class="num" id="statKategori">Kelompok</div><div class="lbl">Kategori Aktif</div></div>
         </div>
       </div>
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Code</th><th>Nama Jabatan</th><th>Category</th><th>Level</th><th>Parent</th><th></th></tr></thead>
+          <thead><tr><th>Code</th><th>Nama Jabatan</th><th>Kategori</th><th>Level</th><th>Parent</th><th>Status</th><th></th></tr></thead>
           <tbody id="tbodyJabatan"></tbody>
         </table>
+        <div class="pagination" id="pagination"></div>
       </div>
-      <div class="hint" style="margin-top:12px;">Jabatan yang masih punya anak (dirujuk sebagai Parent) tidak dapat dihapus &mdash; hapus/alihkan anaknya terlebih dahulu. Kode (<code>code</code>) bersifat unik lintas Category. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+      <div class="hint" style="margin-top:12px;">Jabatan yang masih punya anak (dirujuk sebagai Parent) atau sedang dipegang pegawai tidak dapat dihapus permanen &mdash; gunakan <strong>Nonaktifkan</strong> agar jabatan hilang dari pilihan baru namun tetap tampil pada riwayat penempatan. Kode (<code>code</code>) bersifat unik lintas Kategori, maksimal 20 karakter. Nama 3&ndash;150 karakter dan unik pada Kategori yang sama. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
     </div>
   </div>
 </div>
@@ -225,22 +250,29 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
 <div class="modal-backdrop" id="modalBackdrop">
   <div class="modal-box">
     <div class="modal-head"><h3 id="modalTitle">Tambah Jabatan</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <form onsubmit="return saveJabatan(event)">
-      <div class="field"><label>Category</label>
+    <form onsubmit="return saveJabatan(event)" novalidate>
+      <div class="field" id="fldCategory"><label>Kategori</label>
         <select id="fCategory" onchange="handleCategoryChange()" required>
           <option value="KELOMPOK">Kelompok</option>
           <option value="STRUKTURAL">Struktural</option>
           <option value="FUNGSIONAL">Fungsional</option>
           <option value="PELAKSANA">Pelaksana</option>
         </select>
+        <div class="field-error" id="errCategory"></div>
       </div>
       <div class="field-row">
-        <div class="field"><label>Code</label><input type="text" id="fCode" placeholder="Contoh: KEPALA_BAGIAN" required></div>
-        <div class="field"><label>Level</label><input type="number" id="fLevel" min="1" placeholder="Contoh: 2" required></div>
+        <div class="field" id="fldCode"><label>Code</label><input type="text" id="fCode" maxlength="20" placeholder="Contoh: KEPALA_BAGIAN" required>
+          <div class="field-error" id="errCode"></div>
+        </div>
+        <div class="field"><label>Level <span class="opt">(otomatis)</span></label>
+          <input type="text" id="fLevelDisplay" disabled>
+        </div>
       </div>
-      <div class="field"><label>Nama Jabatan</label><input type="text" id="fNama" placeholder="Contoh: Kepala Bagian" required></div>
-      <div class="field"><label>Parent <span class="opt">(opsional, jabatan sejenis/Category yang sama)</span></label>
-        <select id="fParent"></select>
+      <div class="field" id="fldNama"><label>Nama Jabatan</label><input type="text" id="fNama" maxlength="150" placeholder="Contoh: Kepala Bagian" required>
+        <div class="field-error" id="errNama"></div>
+      </div>
+      <div class="field"><label>Parent <span class="opt">(opsional, jabatan Aktif sejenis/Kategori yang sama)</span></label>
+        <select id="fParent" onchange="handleParentChange()"></select>
       </div>
       <div class="modal-foot">
         <button type="button" class="btn btn-outline" onclick="closeModal()">Batal</button>
@@ -263,6 +295,7 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
 
 <div class="toast" id="toast"></div>
 <script src="jabatan-data.js"></script>
+<script src="pegawai-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -271,10 +304,13 @@ function toast(msg){
 }
 
 var JABATAN_LIST = jabatanLoadList();
+var PEGAWAI_LIST = pegawaiLoadList();
 var activeTab = (function(){
   var hash = (window.location.hash || '').replace('#', '').toUpperCase();
   return JABATAN_CATEGORIES.indexOf(hash) > -1 ? hash : 'ALL';
 })();
+var PAGE_SIZE = 10;
+var currentPage = 1;
 
 function tabList(tab){
   return tab === 'ALL' ? JABATAN_LIST.slice() : jabatanByCategory(JABATAN_LIST, tab);
@@ -292,14 +328,26 @@ function renderTabBar(){
 }
 function switchTab(t){
   activeTab = t;
+  currentPage = 1;
   window.location.hash = t === 'ALL' ? '' : t.toLowerCase();
   renderTabBar();
   renderTable();
   updateStats();
 }
+function handleSearch(){
+  currentPage = 1;
+  renderTable();
+  updateStats();
+}
 
-function currentList(){
-  return tabList(activeTab).sort(function(a, b){
+function filteredList(){
+  var keyword = (document.getElementById('fSearch').value || '').trim().toLowerCase();
+  var statusFilter = document.getElementById('fStatusFilter').value;
+  return tabList(activeTab).filter(function(j){
+    if(statusFilter && j.status !== statusFilter) return false;
+    if(keyword && j.code.toLowerCase().indexOf(keyword) === -1 && j.name.toLowerCase().indexOf(keyword) === -1) return false;
+    return true;
+  }).sort(function(a, b){
     if(a.category !== b.category) return JABATAN_CATEGORIES.indexOf(a.category) - JABATAN_CATEGORIES.indexOf(b.category);
     return a.level - b.level;
   });
@@ -309,33 +357,59 @@ function parentLabel(j){
   var p = jabatanFindById(JABATAN_LIST, j.parentId);
   return p ? jabatanLabel(p) : '<span class="badge badge-danger">Tidak ditemukan</span>';
 }
+function statusLabel(j){
+  return '<span class="badge badge-status-' + j.status + '">' + JABATAN_STATUS_LABEL[j.status] + '</span>';
+}
 
 function renderTable(){
   var tbody = document.getElementById('tbodyJabatan');
-  var list = currentList();
+  var all = filteredList();
+  var totalPages = Math.max(1, Math.ceil(all.length / PAGE_SIZE));
+  if(currentPage > totalPages) currentPage = totalPages;
+  var list = all.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
   if(!list.length){
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="6">Belum ada data Jabatan' + (activeTab === 'ALL' ? '' : ' untuk Category ' + JABATAN_CATEGORY_LABEL[activeTab]) + '.</td></tr>';
-    return;
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Data Jabatan tidak ditemukan.</td></tr>';
+  } else {
+    tbody.innerHTML = list.map(function(j){
+      var usage = jabatanUsagePegawaiCount(PEGAWAI_LIST, j.id);
+      var toggleBtn = j.status === 'AKTIF'
+        ? '<button class="btn btn-outline btn-sm" onclick="toggleStatus(\'' + j.id + '\')">Nonaktifkan</button>'
+        : '<button class="btn btn-outline btn-sm" onclick="toggleStatus(\'' + j.id + '\')">Aktifkan</button>';
+      return '<tr data-id="' + j.id + '">'
+        + '<td><div class="namecell"><div class="n">' + j.code + '</div>' + (usage ? '<div class="s">Dipakai ' + usage + ' pegawai</div>' : '') + '</div></td>'
+        + '<td>' + j.name + '</td>'
+        + '<td><span class="badge badge-cat-' + j.category + '">' + JABATAN_CATEGORY_LABEL[j.category] + '</span></td>'
+        + '<td><span class="badge badge-info">L' + j.level + '</span></td>'
+        + '<td>' + parentLabel(j) + '</td>'
+        + '<td>' + statusLabel(j) + '</td>'
+        + '<td><div class="actions-cell">'
+        +   toggleBtn
+        +   '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + j.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+        +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + j.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
+        + '</div></td>'
+      + '</tr>';
+    }).join('');
   }
-  tbody.innerHTML = list.map(function(j){
-    return '<tr data-id="' + j.id + '">'
-      + '<td><div class="namecell"><div class="n">' + j.code + '</div></div></td>'
-      + '<td>' + j.name + '</td>'
-      + '<td><span class="badge badge-cat-' + j.category + '">' + JABATAN_CATEGORY_LABEL[j.category] + '</span></td>'
-      + '<td><span class="badge badge-info">L' + j.level + '</span></td>'
-      + '<td>' + parentLabel(j) + '</td>'
-      + '<td><div class="actions-cell">'
-      +   '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + j.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
-      +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + j.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
-      + '</div></td>'
-    + '</tr>';
-  }).join('');
+  renderPagination(all.length, totalPages);
+}
+function renderPagination(total, totalPages){
+  var el = document.getElementById('pagination');
+  if(total <= PAGE_SIZE){ el.innerHTML = ''; return; }
+  el.innerHTML = 'Halaman ' + currentPage + ' dari ' + totalPages + ' (' + total + ' data)'
+    + ' <button type="button" onclick="gotoPage(' + (currentPage - 1) + ')" ' + (currentPage <= 1 ? 'disabled' : '') + '>&lsaquo; Sebelumnya</button>'
+    + ' <button type="button" onclick="gotoPage(' + (currentPage + 1) + ')" ' + (currentPage >= totalPages ? 'disabled' : '') + '>Selanjutnya &rsaquo;</button>';
+}
+function gotoPage(p){
+  currentPage = p;
+  renderTable();
 }
 
 function updateStats(){
-  var list = currentList();
+  var list = filteredList();
   document.getElementById('statTotal').textContent = list.length;
   document.getElementById('statRoot').textContent = list.filter(function(j){ return !j.parentId; }).length;
+  document.getElementById('statNonaktif').textContent = list.filter(function(j){ return j.status === 'NONAKTIF'; }).length;
   document.getElementById('statKategori').textContent = activeTab === 'ALL' ? 'Semua' : JABATAN_CATEGORY_LABEL[activeTab];
 }
 
@@ -345,24 +419,52 @@ function populateParentOptions(category, excludeId){
   var excludeIds = excludeId ? [excludeId].concat(jabatanDescendantIds(JABATAN_LIST, excludeId)) : [];
   jabatanByCategory(JABATAN_LIST, category).forEach(function(j){
     if(excludeIds.indexOf(j.id) > -1) return;
+    if(j.status !== 'AKTIF') return; // jabatan Nonaktif tidak muncul sebagai pilihan Parent baru
     var opt = document.createElement('option');
     opt.value = j.id;
     opt.textContent = jabatanLabel(j) + ' (Level ' + j.level + ')';
     select.appendChild(opt);
   });
 }
+function updateLevelPreview(){
+  var category = document.getElementById('fCategory').value;
+  var parentId = document.getElementById('fParent').value || null;
+  var level = jabatanComputeLevel(JABATAN_LIST, parentId);
+  document.getElementById('fLevelDisplay').value = level;
+}
 function handleCategoryChange(){
   populateParentOptions(document.getElementById('fCategory').value, editingId);
+  document.getElementById('fParent').value = '';
+  updateLevelPreview();
+}
+function handleParentChange(){
+  updateLevelPreview();
 }
 
 var editingId = null;
+function setFieldError(fieldId, errId, msg){
+  var field = document.getElementById(fieldId);
+  var err = document.getElementById(errId);
+  if(msg){ field.classList.add('invalid'); err.textContent = msg; }
+  else { field.classList.remove('invalid'); err.textContent = ''; }
+}
+function clearFieldErrors(){
+  ['fldCategory', 'fldCode', 'fldNama'].forEach(function(id){ document.getElementById(id).classList.remove('invalid'); });
+  ['errCategory', 'errCode', 'errNama'].forEach(function(id){ document.getElementById(id).textContent = ''; });
+}
+function jabatanInUse(id){
+  return jabatanHasChildren(JABATAN_LIST, id) || jabatanUsagePegawaiCount(PEGAWAI_LIST, id) > 0;
+}
 function resetForm(){
+  clearFieldErrors();
   document.getElementById('fCategory').value = activeTab === 'ALL' ? 'KELOMPOK' : activeTab;
+  document.getElementById('fCategory').removeAttribute('disabled');
   document.getElementById('fCode').value = '';
+  document.getElementById('fCode').removeAttribute('disabled');
   document.getElementById('fNama').value = '';
-  document.getElementById('fLevel').value = '';
   populateParentOptions(document.getElementById('fCategory').value, null);
   document.getElementById('fParent').value = '';
+  updateLevelPreview();
 }
 function openAdd(){
   editingId = null;
@@ -378,9 +480,15 @@ function openEdit(id){
   document.getElementById('fCategory').value = j.category;
   document.getElementById('fCode').value = j.code;
   document.getElementById('fNama').value = j.name;
-  document.getElementById('fLevel').value = j.level;
   populateParentOptions(j.category, j.id);
   document.getElementById('fParent').value = j.parentId || '';
+  updateLevelPreview();
+  // Kode & Kategori terkunci bila jabatan sudah dipakai (punya anak atau dipegang pegawai) -
+  // lihat docs/review_srs/master-jabatan-review-dan-feedback-srs.md §1.8/NEG-14/NEG-16.
+  if(jabatanInUse(j.id)){
+    document.getElementById('fCode').setAttribute('disabled', 'disabled');
+    document.getElementById('fCategory').setAttribute('disabled', 'disabled');
+  }
   document.getElementById('modalTitle').textContent = 'Edit Jabatan';
   document.getElementById('modalBackdrop').classList.add('open');
 }
@@ -389,22 +497,36 @@ function closeModal(){
 }
 function saveJabatan(e){
   e.preventDefault();
+  clearFieldErrors();
   var category = document.getElementById('fCategory').value;
   var code = document.getElementById('fCode').value.trim();
   var nama = document.getElementById('fNama').value.trim();
-  var level = parseInt(document.getElementById('fLevel').value, 10);
   var parentId = document.getElementById('fParent').value || null;
+  var valid = true;
 
-  if(!code || !nama || !level){ toast('Code, Nama, & Level wajib diisi'); return false; }
-  var dupe = JABATAN_LIST.some(function(j){ return j.code.toLowerCase() === code.toLowerCase() && j.id !== editingId; });
-  if(dupe){ toast('Code "' + code + '" sudah digunakan'); return false; }
+  if(!code){ setFieldError('fldCode', 'errCode', 'Code wajib diisi'); valid = false; }
+  else if(code.length > JABATAN_CODE_MAXLEN){ setFieldError('fldCode', 'errCode', 'Code maksimal ' + JABATAN_CODE_MAXLEN + ' karakter'); valid = false; }
+  else if(JABATAN_LIST.some(function(j){ return j.code.toLowerCase() === code.toLowerCase() && j.id !== editingId; })){
+    setFieldError('fldCode', 'errCode', 'Code "' + code + '" sudah digunakan'); valid = false;
+  }
+
+  if(!nama){ setFieldError('fldNama', 'errNama', 'Nama Jabatan wajib diisi'); valid = false; }
+  else if(nama.length < JABATAN_NAME_MINLEN){ setFieldError('fldNama', 'errNama', 'Nama Jabatan minimal ' + JABATAN_NAME_MINLEN + ' karakter'); valid = false; }
+  else if(nama.length > JABATAN_NAME_MAXLEN){ setFieldError('fldNama', 'errNama', 'Nama Jabatan maksimal ' + JABATAN_NAME_MAXLEN + ' karakter'); valid = false; }
+  else if(jabatanIsDuplicateName(JABATAN_LIST, category, nama, editingId)){
+    setFieldError('fldNama', 'errNama', 'Nama "' + nama + '" sudah digunakan pada Kategori ini'); valid = false;
+  }
+
+  if(!valid) return false;
 
   if(editingId){
     var j = jabatanFindById(JABATAN_LIST, editingId);
-    j.category = category; j.code = code; j.name = nama; j.level = level; j.parentId = parentId;
+    j.category = category; j.code = code; j.name = nama; j.parentId = parentId;
+    jabatanRecalcSubtreeLevels(JABATAN_LIST, editingId);
     toast('Jabatan "' + nama + '" diperbarui (prototipe)');
   } else {
-    JABATAN_LIST.push({ id: jabatanNextId(), category: category, code: code, name: nama, level: level, parentId: parentId });
+    var newId = jabatanNextId();
+    JABATAN_LIST.push({ id: newId, category: category, code: code, name: nama, level: jabatanComputeLevel(JABATAN_LIST, parentId), parentId: parentId, status: 'AKTIF' });
     toast('Jabatan "' + nama + '" ditambahkan (prototipe)');
   }
   jabatanSaveList(JABATAN_LIST);
@@ -415,15 +537,31 @@ function saveJabatan(e){
   return false;
 }
 
+function toggleStatus(id){
+  var j = jabatanFindById(JABATAN_LIST, id);
+  if(!j) return;
+  j.status = j.status === 'AKTIF' ? 'NONAKTIF' : 'AKTIF';
+  jabatanSaveList(JABATAN_LIST);
+  renderTable();
+  updateStats();
+  toast('Jabatan "' + j.name + '" ' + (j.status === 'AKTIF' ? 'diaktifkan' : 'dinonaktifkan') + ' (prototipe)');
+}
+
 var deletingId = null;
 function openDelete(id){
   var j = jabatanFindById(JABATAN_LIST, id);
   if(!j) return;
   deletingId = id;
   var hasChildren = jabatanHasChildren(JABATAN_LIST, id);
+  var usage = jabatanUsagePegawaiCount(PEGAWAI_LIST, id);
   var confirmBtn = document.getElementById('btnConfirmDelete');
+  // Hapus permanen diblokir selama jabatan masih dirujuk (anak ATAU pegawai) - lihat
+  // docs/review_srs/master-jabatan-review-dan-feedback-srs.md §1.1 (Opsi A).
   if(hasChildren){
     document.getElementById('deleteModalText').textContent = 'Jabatan "' + j.name + '" (' + j.code + ') masih memiliki jabatan anak (dirujuk sebagai Parent). Hapus atau alihkan parent jabatan anak tersebut terlebih dahulu.';
+    confirmBtn.setAttribute('disabled', 'disabled');
+  } else if(usage > 0){
+    document.getElementById('deleteModalText').textContent = 'Jabatan "' + j.name + '" (' + j.code + ') masih dipegang ' + usage + ' pegawai. Jabatan yang sedang dipakai tidak dapat dihapus permanen - gunakan tombol "Nonaktifkan" agar jabatan ini hilang dari pilihan baru namun riwayat penempatan pegawai tetap tercatat dengan benar.';
     confirmBtn.setAttribute('disabled', 'disabled');
   } else {
     document.getElementById('deleteModalText').textContent = 'Hapus Jabatan "' + j.name + '" (' + j.code + ')? Tindakan ini tidak dapat dibatalkan.';
@@ -437,7 +575,7 @@ function closeDeleteModal(){
 }
 function confirmDelete(){
   if(deletingId == null) return;
-  if(jabatanHasChildren(JABATAN_LIST, deletingId)) return;
+  if(!jabatanCanHardDelete(JABATAN_LIST, PEGAWAI_LIST, deletingId)) return;
   var idx = JABATAN_LIST.findIndex(function(j){ return j.id === deletingId; });
   if(idx > -1){
     var removed = JABATAN_LIST.splice(idx, 1)[0];

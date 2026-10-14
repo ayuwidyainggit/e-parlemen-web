@@ -239,39 +239,12 @@ tr:hover td{background:#fafaf7;}
 
 <div class="toast" id="toast"></div>
 <script src="periode-data.js"></script>
+<script src="periode-reses-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
-}
-
-var PERIODE_RESES_STORAGE_KEY = 'ep_master_periode_reses_list';
-var PERIODE_RESES_DEFAULT_LIST = [
-  { id: 1, periodeId: 'prd-2024', nama: 'Reses I Tahun 2026', mulai: '2026-01-12', selesai: '2026-01-19', status: 'Nonaktif', createdAt: '2026-01-05T09:00:00', updatedAt: '2026-01-19T09:00:00' },
-  { id: 2, periodeId: 'prd-2024', nama: 'Reses II Tahun 2026', mulai: '2026-05-11', selesai: '2026-05-18', status: 'Nonaktif', createdAt: '2026-04-20T09:00:00', updatedAt: '2026-05-18T09:00:00' },
-  { id: 3, periodeId: 'prd-2024', nama: 'Reses III Tahun 2026', mulai: '2026-08-26', selesai: '2026-09-02', status: 'Aktif', createdAt: '2026-08-10T09:00:00', updatedAt: '2026-08-26T09:00:00' },
-  { id: 4, periodeId: 'prd-2024', nama: 'Reses I Tahun 2027', mulai: '2027-01-11', selesai: '2027-01-18', status: 'Nonaktif', createdAt: '2026-12-20T09:00:00', updatedAt: '2026-12-20T09:00:00' }
-];
-function periodeResesLoadList(){
-  try{
-    var raw = localStorage.getItem(PERIODE_RESES_STORAGE_KEY);
-    if(raw){
-      var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch(e){}
-  var seed = JSON.parse(JSON.stringify(PERIODE_RESES_DEFAULT_LIST));
-  periodeResesSaveList(seed);
-  return seed;
-}
-function periodeResesSaveList(list){
-  try{ localStorage.setItem(PERIODE_RESES_STORAGE_KEY, JSON.stringify(list)); } catch(e){}
-}
-function periodeResesNextId(list){
-  var max = 0;
-  list.forEach(function(p){ if(p.id > max) max = p.id; });
-  return max + 1;
 }
 
 var PERIODE_RESES_LIST = periodeResesLoadList();
@@ -287,9 +260,13 @@ function fmtDiperbarui(iso){
   return d.getDate() + ' ' + bulanNames[d.getMonth()] + ' ' + d.getFullYear();
 }
 
-function populateSelectOptions(){
+function populateSelectOptions(keepPeriodeId){
   var sel = document.getElementById('fPeriodeId');
-  sel.innerHTML = periodeLoadList().map(function(p){ return '<option value="' + p.id + '">' + p.nama + '</option>'; }).join('');
+  var list = periodeLoadList().filter(function(p){ return p.status === 'Aktif' || p.id === keepPeriodeId; });
+  sel.innerHTML = list.map(function(p){
+    var label = p.nama + (p.status !== 'Aktif' ? ' (Nonaktif - arsip)' : '');
+    return '<option value="' + p.id + '">' + label + '</option>';
+  }).join('');
 }
 
 function renderTable(){
@@ -318,8 +295,8 @@ function updateStats(){
 }
 
 var editingId = null;
-function resetForm(){
-  populateSelectOptions();
+function resetForm(keepPeriodeId){
+  populateSelectOptions(keepPeriodeId);
   document.getElementById('fPeriodeId').selectedIndex = 0;
   document.getElementById('fNama').value = '';
   document.getElementById('fMulai').value = '';
@@ -336,7 +313,7 @@ function openEdit(id){
   var p = PERIODE_RESES_LIST.find(function(p){ return p.id === id; });
   if(!p) return;
   editingId = id;
-  resetForm();
+  resetForm(p.periodeId);
   document.getElementById('modalTitle').textContent = 'Edit Periode Reses';
   document.getElementById('fPeriodeId').value = p.periodeId;
   document.getElementById('fNama').value = p.nama;
@@ -355,6 +332,20 @@ function savePeriode(e){
   var mulai = document.getElementById('fMulai').value;
   var selesai = document.getElementById('fSelesai').value;
   var status = document.getElementById('fStatus').value;
+
+  if(selesai && mulai && selesai <= mulai){
+    toast('Tanggal Selesai harus setelah Tanggal Mulai.');
+    return false;
+  }
+
+  var originalPeriodeId = editingId ? (PERIODE_RESES_LIST.find(function(p){ return p.id === editingId; }) || {}).periodeId : null;
+  if(periodeId !== originalPeriodeId){
+    var periode = periodeLoadList().find(function(pr){ return pr.id === periodeId; });
+    if(periode && periode.status !== 'Aktif'){
+      toast('Periode "' + periode.nama + '" sudah Nonaktif (arsip) — tidak dapat menambah data baru pada periode ini.');
+      return false;
+    }
+  }
 
   var now = new Date().toISOString();
   var savedId;

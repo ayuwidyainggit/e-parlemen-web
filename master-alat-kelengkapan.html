@@ -69,6 +69,10 @@ a{color:inherit;}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
 .btn-sm{padding:8px 13px;font-size:11.5px;}
 
+.filter-row{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:16px;}
+.filter-row select{padding:8px 11px;border-radius:9px;border:1px solid var(--border);font-size:12.5px;font-family:inherit;color:var(--ink);background:#fff;}
+.empty-state{text-align:center;color:var(--muted);font-size:13px;padding:60px 20px;}
+
 .chart-scroll{overflow-x:auto;padding:10px 10px 40px;}
 .chart-title{text-align:center;margin-bottom:22px;}
 .chart-title h1{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0 0 2px;color:var(--ink);letter-spacing:.3px;}
@@ -175,7 +179,12 @@ a{color:inherit;}
     </div>
 
     <div class="content">
-      <div class="hint">Pimpinan DPRD &amp; Alat Kelengkapan DPRD (AKD) beserta keanggotaannya &mdash; <strong>view-only</strong>, bersumber dari data penempatan aktif (<code>assignments</code>). Kotak/baris kosong pada kolom nama berarti jabatan tersebut masih lowong.</div>
+      <div class="hint">Pimpinan DPRD &amp; Alat Kelengkapan DPRD (AKD) beserta keanggotaannya &mdash; <strong>view-only</strong>, bersumber dari data penempatan aktif (<code>assignments</code>). Kotak/baris kosong pada kolom nama berarti jabatan tersebut masih lowong. Gunakan filter <strong>Periode</strong> untuk melihat roster AKD periode lain.</div>
+
+      <div class="filter-row">
+        Periode:
+        <select id="periodeFilter" onchange="renderOrgChart()"></select>
+      </div>
 
       <div class="chart-scroll">
         <div class="chart-title">
@@ -188,6 +197,7 @@ a{color:inherit;}
   </div>
 </div>
 
+<script src="periode-data.js"></script>
 <script src="alat-kelengkapan-struktur-data.js"></script>
 <script>
 // Flat list (level + parentId, dari docs/query-struktur-pimpinan-dprd.sql) -> bentuk
@@ -229,8 +239,25 @@ function staffColHtml(staf, tone){
   return '<div class="staff-col">' + staf.map(function(r){ return staffRowHtml(r, tone); }).join('') + '</div>';
 }
 
+function populatePeriodeFilter(){
+  var sel = document.getElementById('periodeFilter');
+  var list = periodeLoadList();
+  sel.innerHTML = list.map(function(pr){ return '<option value="' + pr.id + '">' + pr.nama + '</option>'; }).join('');
+  var aktif = list.find(function(pr){ return pr.status === 'Aktif'; });
+  if(aktif) sel.value = aktif.id;
+}
+
 function renderOrgChart(){
-  var data = buildAkdTree(akdStrukturList());
+  var periodeId = document.getElementById('periodeFilter').value;
+  var rows = akdStrukturList(periodeId);
+  var orgTree = document.getElementById('orgTree');
+
+  if(!rows.length){
+    orgTree.innerHTML = '<div class="empty-state">Belum ada data Pimpinan &amp; Alat Kelengkapan DPRD untuk periode ini.</div>';
+    return;
+  }
+
+  var data = buildAkdTree(rows);
 
   var unitsHtml = data.units.map(function(u){
     var tone = /^Komisi/.test(u.unit) ? 'warm' : 'cool';
@@ -240,9 +267,10 @@ function renderOrgChart(){
 
   var rootBox = boxHtml('pimpinan', data.root.unit, data.root.jabatan, data.root) + staffColHtml(data.staf, 'cool');
   var html = '<ul><li>' + rootBox + '<ul>' + unitsHtml + '</ul></li></ul>';
-  document.getElementById('orgTree').innerHTML = html;
+  orgTree.innerHTML = html;
 }
 
+populatePeriodeFilter();
 renderOrgChart();
 </script>
 </body>

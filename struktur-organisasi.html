@@ -74,6 +74,15 @@ a{color:inherit;}
 .chart-title h1{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0 0 2px;color:var(--ink);letter-spacing:.3px;}
 .chart-title h2{font-family:Georgia,'Times New Roman',serif;font-size:14px;margin:0;color:var(--ink);font-weight:700;}
 
+.periode-filter{display:flex;align-items:center;justify-content:center;gap:10px;margin:14px 0 4px;flex-wrap:wrap;}
+.periode-filter label{font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.periode-filter select{padding:9px 14px;border-radius:8px;border:1.5px solid var(--border);background:#fff;color:var(--ink);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+.periode-badge{font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.3px;}
+.periode-badge.aktif{background:var(--success-bg);color:var(--success);}
+.periode-badge.nonaktif{background:var(--neutral-bg);color:var(--neutral);}
+.periode-note{text-align:center;font-size:11px;color:var(--muted);margin:2px 0 18px;font-style:italic;}
+@media print{ .periode-filter{display:none;} }
+
 /* --- Tree connector pattern (leadership levels only) --- */
 .org-tree{display:flex;justify-content:center;min-width:1300px;}
 .org-tree ul{padding-top:22px;position:relative;display:flex;justify-content:center;margin:0;}
@@ -177,7 +186,14 @@ a{color:inherit;}
     </div>
 
     <div class="content">
-      <div class="hint">Struktur Organisasi Sekretariat DPRD Kota Magelang &mdash; <strong>view-only</strong>, bersumber dari data seeder Backend (org_units, positions, assignments, persons). Kotak kosong pada kolom nama berarti posisi tersebut masih lowong.</div>
+      <div class="hint">Struktur Organisasi Sekretariat DPRD Kota Magelang &mdash; <strong>view-only</strong>, bersumber dari data seeder Backend (org_units, positions, assignments, persons). Kotak kosong pada kolom nama berarti posisi tersebut masih lowong (atau, untuk periode nonaktif, tidak ada data historis yang tercatat).</div>
+
+      <div class="periode-filter">
+        <label for="periodeFilter">Periode</label>
+        <select id="periodeFilter" onchange="renderOrgChart(this.value)"></select>
+        <span class="periode-badge" id="periodeBadge"></span>
+      </div>
+      <div class="periode-note" id="periodeNote"></div>
 
       <div class="chart-scroll">
         <div class="chart-title">
@@ -190,8 +206,19 @@ a{color:inherit;}
   </div>
 </div>
 
+<script src="periode-data.js"></script>
 <script src="struktur-organisasi-data.js"></script>
 <script>
+function isiPeriodeFilter(){
+  var select = document.getElementById('periodeFilter');
+  var list = periodeLoadList().slice().sort(function(a, b){ return (b.mulai || '').localeCompare(a.mulai || ''); });
+  select.innerHTML = list.map(function(p){
+    return '<option value="' + p.id + '">' + p.nama + ' (' + p.status + ')</option>';
+  }).join('');
+  var aktif = list.find(function(p){ return p.status === 'Aktif'; });
+  select.value = aktif ? aktif.id : (list[0] ? list[0].id : '');
+  return select.value;
+}
 function staffRowHtml(row, tone){
   var personHtml = row.nama
     ? '<div class="pn">' + row.nama + '</div><div class="pnip">NIP. ' + row.nip + '</div>'
@@ -208,8 +235,11 @@ function boxHtml(cls, title, pejabat){
   return '<div class="org-box ' + cls + '"><div class="t">' + title + '</div>' + nama + nip + '</div>';
 }
 
-function renderOrgChart(){
-  var data = strukturOrganisasi();
+function renderOrgChart(periodeId){
+  var list = periodeLoadList();
+  var periode = list.find(function(p){ return p.id === periodeId; });
+  var data = strukturOrganisasi(periodeId);
+
   var bagianHtml = data.bagian.map(function(b){
     var tone = b.kode === 'BAG-UMUM' ? 'warm' : 'cool';
     var inner = boxHtml('bagian', b.nama, b.pejabat);
@@ -225,9 +255,27 @@ function renderOrgChart(){
 
   var html = '<ul><li>' + boxHtml('sekretaris', data.sekretaris.posisi, data.sekretaris) + '<ul>' + bagianHtml + '</ul></li></ul>';
   document.getElementById('orgTree').innerHTML = html;
+
+  var badge = document.getElementById('periodeBadge');
+  var note = document.getElementById('periodeNote');
+  if(periode){
+    var isAktif = periode.status === 'Aktif';
+    badge.textContent = periode.status;
+    badge.className = 'periode-badge ' + (isAktif ? 'aktif' : 'nonaktif');
+    note.textContent = isAktif
+      ? ''
+      : 'Periode nonaktif -- hanya posisi dengan data historis tercatat yang ditampilkan; sisanya bukan berarti lowong, melainkan tidak ada data historisnya.';
+  } else {
+    badge.textContent = '';
+    badge.className = 'periode-badge';
+    note.textContent = '';
+  }
 }
 
-renderOrgChart();
+(function initStrukturOrganisasi(){
+  var defaultId = isiPeriodeFilter();
+  renderOrgChart(defaultId);
+})();
 </script>
 </body>
 </html>
