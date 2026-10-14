@@ -294,27 +294,7 @@ a{color:inherit;}
 
           <div class="btn-row">
             <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
-            <button type="button" class="btn btn-primary" onclick="nextStep()">Lanjut</button>
-          </div>
-        </div>
-
-        <div class="step-panel" id="stepPanel4">
-          <div class="info-box">
-            <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-            <span>Setelah disimpan, sistem mengirimkan email berisi tautan aktivasi ke pengguna untuk mengatur kata sandi sebelum dapat masuk (login) sesuai Platform Akses dari Role utama yang dipilih.</span>
-          </div>
-          <div class="card">
-            <div class="section-title">Akun Aktivasi</div>
-            <div class="hint" id="emailHint">Email digunakan sebagai tujuan pengiriman tautan aktivasi sekaligus alamat login.</div>
-            <div class="field">
-              <label>Email</label>
-              <input type="email" id="fEmail" placeholder="nama@dprd-magelangkota.go.id">
-            </div>
-          </div>
-
-          <div class="btn-row">
-            <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
-            <button type="button" class="btn btn-primary" onclick="submitForm()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Buat Akun &amp; Kirim Aktivasi</button>
+            <button type="button" class="btn btn-primary" onclick="submitForm()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg> Buat Akun</button>
           </div>
         </div>
       </div>
@@ -322,30 +302,11 @@ a{color:inherit;}
       <div id="resultSection" style="display:none;">
         <div class="success-box">
           <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-          <span><strong>Akun berhasil dibuat.</strong> Email aktivasi telah dikirim ke <strong id="sentEmail"></strong>. Pengguna perlu membuka tautan pada email tersebut untuk mengatur kata sandi sebelum bisa masuk ke aplikasi <span id="sentPlatform"></span>.</span>
-        </div>
-
-        <div class="card">
-          <div class="section-title">Pratinjau Email Aktivasi <span style="font-weight:600;font-size:11px;color:var(--muted);">(simulasi)</span></div>
-          <div class="email-preview">
-            <div class="em-head">
-              <div class="em-row"><b>Dari:</b> noreply@dprd-magelangkota.go.id</div>
-              <div class="em-row"><b>Kepada:</b> <span id="emTo"></span></div>
-              <div class="em-row"><b>Subjek:</b> Aktivasi Akun Aplikasi <span id="emSubjectPlatform"></span> e-Parlemen</div>
-            </div>
-            <div class="em-body">
-              <div class="em-logo"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></div>
-              <h3>Selamat Datang, <span id="emNama"></span></h3>
-              <p>Akun aplikasi <span id="emPlatform"></span> e-Parlemen DPRD Kota Magelang Anda telah dibuat oleh Admin Sekretariat dengan role <strong id="emRole"></strong>. Klik tombol di bawah ini untuk mengaktifkan akun &amp; membuat kata sandi baru sebelum masuk ke aplikasi.</p>
-              <a class="btn btn-gold" id="activationLink" href="#" target="_blank" style="width:auto;display:inline-flex;">Aktivasi Akun Saya</a>
-              <div class="em-link-note">Atau salin tautan berikut: <br><code id="activationLinkText"></code></div>
-            </div>
-            <div class="em-foot">Tautan berlaku 24 jam. Abaikan email ini jika Anda tidak merasa meminta pembuatan akun.</div>
-          </div>
+          <span><strong>Akun <span id="sentNama"></span> berhasil dibuat</strong> dengan role <strong id="sentRole"></strong>. Lengkapi Email &amp; kirim tautan aktivasi lewat aksi <strong>Aktivasi / Reset Password</strong> pada halaman User Management.</span>
         </div>
 
         <div class="btn-row">
-          <a class="btn btn-outline" href="pengguna.html">Kembali ke Daftar Akun</a>
+          <a class="btn btn-outline" href="pengguna.html">Kembali ke User Management</a>
           <a class="btn btn-outline" href="pengguna-buat.html">Buat Akun Lain</a>
         </div>
       </div>
@@ -366,19 +327,20 @@ var currentTipe = 'Politisi';
 var currentStep = 1;
 var assignmentsDraft = [];
 
-var STEP_LABELS = ['Data Pegawai', 'Partai, Jabatan & Penempatan', 'Assignment Dapil', 'Akun Aktivasi'];
+var STEP_LABELS = ['Data Pegawai', 'Partai, Jabatan & Penempatan', 'Assignment Dapil'];
+var TOTAL_STEPS = STEP_LABELS.length;
 function renderStepper(){
   var html = '';
-  for(var i = 1; i <= 4; i++){
+  for(var i = 1; i <= TOTAL_STEPS; i++){
     var state = i < currentStep ? 'done' : (i === currentStep ? 'active' : '');
     html += '<div class="step ' + state + '"><div class="circle">' + (i < currentStep ? '&#10003;' : i) + '</div><div class="label">' + STEP_LABELS[i - 1] + '</div></div>';
-    if(i < 4) html += '<div class="line' + (i < currentStep ? ' done' : '') + '"></div>';
+    if(i < TOTAL_STEPS) html += '<div class="line' + (i < currentStep ? ' done' : '') + '"></div>';
   }
   document.getElementById('stepper').innerHTML = html;
 }
 function showStep(n){
   currentStep = n;
-  for(var i = 1; i <= 4; i++){
+  for(var i = 1; i <= TOTAL_STEPS; i++){
     document.getElementById('stepPanel' + i).classList.toggle('active', i === n);
   }
   renderStepper();
@@ -386,7 +348,7 @@ function showStep(n){
 }
 function nextStep(){
   if(!validateStep(currentStep)) return;
-  if(currentStep < 4) showStep(currentStep + 1);
+  if(currentStep < TOTAL_STEPS) showStep(currentStep + 1);
 }
 function prevStep(){
   if(currentStep > 1) showStep(currentStep - 1);
@@ -407,10 +369,6 @@ function validateStep(n){
   }
   if(n === 3){
     if(currentTipe === 'Politisi' && !document.getElementById('fDapil').value){ toast('Dapil wajib dipilih'); return false; }
-    return true;
-  }
-  if(n === 4){
-    if(!document.getElementById('fEmail').value.trim()){ toast('Email wajib diisi'); return false; }
     return true;
   }
   return true;
@@ -572,14 +530,13 @@ setTipe('Politisi');
 renderStepper();
 
 function submitForm(){
-  if(!validateStep(4)) return;
+  if(!validateStep(TOTAL_STEPS)) return;
 
   var nama = document.getElementById('fNama').value.trim();
   var nip = document.getElementById('fNip').value.trim();
   var nik = document.getElementById('fNik').value.trim();
   var hp = document.getElementById('fHp').value.trim();
   var alamat = document.getElementById('fAlamat').value.trim();
-  var email = document.getElementById('fEmail').value.trim();
 
   var partaiId = null, fraksiId = null, dapilId = null, statusKepegawaian = null;
   var fraksiAssignment = null;
@@ -614,11 +571,14 @@ function submitForm(){
   var primary = allAssignments.length ? allAssignments[0] : null;
   var today = new Date().toISOString().slice(0, 10);
 
+  // Akun Aktivasi (email) dikumpulkan kemudian lewat aksi "Aktivasi / Reset Password" pada
+  // halaman User Management, bukan saat pembuatan akun - loginStatus tetap PENDING_ACTIVATION
+  // agar pegawai ini langsung muncul di tab "Menunggu Aktivasi".
   var list = pegawaiLoadList();
   var newPegawai = {
     id: pegawaiNextId(list), tipePegawai: currentTipe, nama: nama, nik: nik || null, nip: nip, alamat: alamat, hp: hp,
     jabatanId: primary ? primary.jabatanId : null, roleId: primary ? primary.roleId : null, fraksiId: fraksiId, partaiId: partaiId, dapilId: dapilId,
-    email: email, loginStatus: 'PENDING_ACTIVATION', unitTypeId: primary ? primary.unitTypeId : null,
+    email: null, loginStatus: 'PENDING_ACTIVATION', unitTypeId: primary ? primary.unitTypeId : null,
     statusKepegawaian: statusKepegawaian, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: allAssignments.map(function(a){
@@ -629,28 +589,9 @@ function submitForm(){
   pegawaiSaveList(list);
 
   var roleNama = primary ? primary.roleLabel : '—';
-  var role = primary ? rbacLoadRoles().find(function(r){ return r.id === primary.roleId; }) : null;
-  var platform = role && role.akses.length ? role.akses[0] : 'Web';
-  var token = 'tok-' + Math.random().toString(36).slice(2, 10);
 
-  document.getElementById('sentEmail').textContent = email;
-  document.getElementById('sentPlatform').textContent = platform;
-  document.getElementById('emTo').textContent = email;
-  document.getElementById('emNama').textContent = nama;
-  document.getElementById('emRole').textContent = roleNama;
-  document.getElementById('emPlatform').textContent = platform;
-  document.getElementById('emSubjectPlatform').textContent = platform;
-
-  var url = new URL('aktivasi-akun.html', window.location.href);
-  url.searchParams.set('nama', nama);
-  url.searchParams.set('email', email);
-  url.searchParams.set('user_id', nip);
-  url.searchParams.set('jabatan', primary ? primary.jabatanLabel : '—');
-  url.searchParams.set('role', roleNama);
-  url.searchParams.set('token', token);
-
-  document.getElementById('activationLink').href = url.toString();
-  document.getElementById('activationLinkText').textContent = url.toString();
+  document.getElementById('sentNama').textContent = nama;
+  document.getElementById('sentRole').textContent = roleNama;
 
   document.getElementById('formSection').style.display = 'none';
   document.getElementById('resultSection').style.display = 'block';

@@ -290,7 +290,7 @@ function renderTable(){
     return '<tr>'
       + '<td><div class="namecell"><span class="av">' + initials(p.nama) + '</span><div><div class="n">' + p.nama + '</div><div class="s">' + p.nip + '</div></div></div></td>'
       + '<td>' + roleNamaOf(p.roleId) + '</td>'
-      + '<td>' + p.email + '</td>'
+      + '<td>' + (p.email || '&mdash;') + '</td>'
       + '<td>' + jabatanNama(p.jabatanId) + '</td>'
       + '<td>' + unitTypeNamaOf(p.unitTypeId) + '</td>'
       + '<td><span class="badge ' + STATUS_BADGE[p.loginStatus] + '">' + STATUS_LABEL[p.loginStatus] + '</span></td>'
@@ -307,7 +307,7 @@ function resetPassword(id){
   renderTabBar();
   renderTable();
   updateStats();
-  toast('Tautan aktivasi / reset password dikirim ke ' + p.email);
+  toast(p.email ? ('Tautan aktivasi / reset password dikirim ke ' + p.email) : 'Email belum diisi - lengkapi lewat Edit Account sebelum tautan dapat dikirim');
 }
 function deactivate(id){
   var p = pegawaiFindById(PEGAWAI_LIST, id);
