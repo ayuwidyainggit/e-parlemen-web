@@ -193,7 +193,7 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Daftar ini mencakup <strong>semua pegawai</strong> (anggota DEWAN &amp; staf SETWAN), bukan hanya yang sudah punya akun. Pegawai yang belum punya akun berstatus <strong>Belum Ada Akun</strong> &mdash; pakai tombol <strong>Buat Akun</strong> untuk melengkapi email &amp; mengirim akunnya ke status Menunggu Aktivasi (atau <strong>Buat Akun Baru</strong> di atas untuk pegawai yang benar-benar baru). Akun <strong>Menunggu Aktivasi</strong> &amp; <strong>Nonaktif</strong> diaktifkan lewat tombol <strong>Aktifkan</strong> (perlu konfirmasi). Permintaan dari fitur <strong>Lupa Kata Sandi</strong> muncul di tab <strong>Menunggu Approval Reset</strong> &mdash; akun tidak bisa login sampai di-<strong>Setujui</strong> (perlu konfirmasi) atau <strong>Tolak</strong>. Gunakan filter <strong>Periode</strong> untuk melihat anggota per periode keanggotaan.</div>
+      <div class="hint" style="margin-bottom:16px;">Daftar ini mencakup <strong>semua pegawai</strong> (anggota DEWAN &amp; staf SETWAN) &mdash; setiap pegawai sudah punya akun sejak lahir, jadi status akun hanya ada tiga: <strong>Aktif</strong>, <strong>Nonaktif</strong>, &amp; <strong>Menunggu Verifikasi</strong>. Pakai <strong>Buat Akun Baru</strong> di atas kalau pegawainya benar-benar baru (belum ada di daftar ini sama sekali) &mdash; akun yang dibuat admin langsung Aktif, tidak perlu verifikasi. Akun <strong>Menunggu Verifikasi</strong> hanya punya 2 aksi: <strong>Setujui</strong> (status jadi Aktif) atau <strong>Tolak</strong> (status jadi Nonaktif). Akun <strong>Nonaktif</strong> diaktifkan lagi lewat tombol <strong>Aktifkan</strong> (perlu konfirmasi). Permintaan dari fitur <strong>Lupa Kata Sandi</strong> muncul sebagai tombol <strong>Setujui</strong>/<strong>Tolak</strong> langsung pada akun Aktif terkait &mdash; akun tidak bisa login sampai permintaan itu diputuskan. Gunakan filter <strong>Periode</strong> untuk melihat anggota per periode keanggotaan.</div>
 
       <div class="stats-grid">
         <div class="stat-card success">
@@ -202,7 +202,7 @@ tr:hover td{background:#fafaf7;}
         </div>
         <div class="stat-card warn">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
-          <div><div class="num" id="statMenunggu">0</div><div class="lbl">Menunggu Aktivasi</div></div>
+          <div><div class="num" id="statMenunggu">0</div><div class="lbl">Menunggu Verifikasi</div></div>
         </div>
         <div class="stat-card neutral">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
@@ -248,20 +248,6 @@ tr:hover td{background:#fafaf7;}
     </div>
   </div>
 </div>
-<div class="modal-overlay" id="createAccountModal">
-  <div class="modal-box">
-    <h3>Buat Akun</h3>
-    <p>Buat akun login untuk <strong id="createAccNama"></strong>. Akun akan berstatus Menunggu Aktivasi.</p>
-    <div class="field">
-      <label for="createAccEmail">Email</label>
-      <input type="email" id="createAccEmail" placeholder="nama@dprd-magelangkota.go.id">
-    </div>
-    <div class="modal-actions">
-      <button type="button" class="btn btn-outline" onclick="closeCreateAccountModal()">Batal</button>
-      <button type="button" class="btn btn-primary" onclick="submitCreateAccount()">Buat Akun</button>
-    </div>
-  </div>
-</div>
 <script src="jabatan-data.js"></script>
 <script src="unit-type-data.js"></script>
 <script src="rbac-data.js"></script>
@@ -275,8 +261,8 @@ function toast(msg){
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
 
-var STATUS_LABEL = { PENDING_ACTIVATION: 'Menunggu Aktivasi', PENDING_RESET_APPROVAL: 'Menunggu Approval Reset', ACTIVE: 'Aktif', SUSPENDED: 'Ditangguhkan', DEACTIVATED: 'Nonaktif', null: 'Belum Ada Akun' };
-var STATUS_BADGE = { PENDING_ACTIVATION: 'badge-warn', PENDING_RESET_APPROVAL: 'badge-info', ACTIVE: 'badge-success', SUSPENDED: 'badge-neutral', DEACTIVATED: 'badge-neutral', null: 'badge-neutral' };
+var STATUS_LABEL = { PENDING_VERIFICATION: 'Menunggu Verifikasi', ACTIVE: 'Aktif', DEACTIVATED: 'Nonaktif' };
+var STATUS_BADGE = { PENDING_VERIFICATION: 'badge-warn', ACTIVE: 'badge-success', DEACTIVATED: 'badge-neutral' };
 
 var PEGAWAI_LIST = pegawaiLoadList();
 var UNIT_TYPE_LIST = unitTypeLoadList();
@@ -286,8 +272,8 @@ var activeTab = 'semua';
 var PAGE_SIZE = 10;
 var currentPage = 1;
 
-// Seluruh pegawai (anggota DEWAN & staf SETWAN) - bukan hanya yang sudah punya akun.
-// Baris tanpa akun (loginStatus null) ditampilkan dgn status "Belum Ada Akun" + aksi "Buat Akun".
+// Seluruh pegawai (anggota DEWAN & staf SETWAN) - setiap pegawai sudah punya akun
+// (loginStatus tidak pernah null, lihat pegawai-data.js).
 function accounts(){
   return PEGAWAI_LIST;
 }
@@ -329,9 +315,9 @@ function renderTabBar(){
   var list = accounts();
   var tabs = [
     { key: 'semua', label: 'Semua', filter: function(){ return true; } },
-    { key: 'menunggu', label: 'Menunggu Aktivasi', filter: function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; } },
+    { key: 'menunggu', label: 'Menunggu Verifikasi', filter: function(p){ return p.loginStatus === 'PENDING_VERIFICATION'; } },
     { key: 'aktif', label: 'Aktif', filter: function(p){ return p.loginStatus === 'ACTIVE'; } },
-    { key: 'nonaktif', label: 'Nonaktif', filter: function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; } }
+    { key: 'nonaktif', label: 'Nonaktif', filter: function(p){ return p.loginStatus === 'DEACTIVATED'; } }
   ];
   document.getElementById('tabBar').innerHTML = tabs.map(function(t){
     var count = list.filter(t.filter).length;
@@ -359,9 +345,9 @@ function handleFilterChange(){
 
 function currentList(){
   var list = accounts();
-  if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; });
+  if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_VERIFICATION'; });
   else if(activeTab === 'aktif') list = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; });
-  else if(activeTab === 'nonaktif') list = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; });
+  else if(activeTab === 'nonaktif') list = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED'; });
   var roleFilter = document.getElementById('roleFilter').value;
   if(roleFilter) list = list.filter(function(p){ return roleIdsOf(p).map(String).indexOf(roleFilter) !== -1; });
   var periodeFilter = document.getElementById('periodeFilter').value;
@@ -386,17 +372,15 @@ function renderTable(){
   tbody.innerHTML = list.map(function(p){
     var actions;
     var namaEsc = p.nama.replace(/'/g, "\\'");
-    if(!p.loginStatus){
-      actions = '<button class="btn btn-primary btn-sm" onclick="openCreateAccount(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Buat Akun</button>';
-    } else if(p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'){
+    var pendingReset = p.loginStatus === 'ACTIVE' ? forgotPwdFindPendingByPegawaiId(FORGOT_PWD_LIST, p.id) : null;
+    if(p.loginStatus === 'DEACTIVATED'){
       actions = '<button class="btn btn-primary btn-sm" onclick="confirmActivate(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Aktifkan</button>';
-    } else if(p.loginStatus === 'PENDING_RESET_APPROVAL'){
-      actions = '<button class="btn btn-primary btn-sm" onclick="confirmApproveReset(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>'
+    } else if(pendingReset){
+      actions = '<button class="btn btn-primary btn-sm" onclick="confirmApproveReset(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui Reset</button>'
         + '<button class="btn btn-danger-outline btn-sm" onclick="rejectReset(' + p.id + ')">Tolak</button>';
-    } else if(p.loginStatus === 'PENDING_ACTIVATION'){
-      actions = '<button class="btn btn-outline btn-sm" onclick="window.location.href=\'pengguna-edit.html?id=' + p.id + '\'"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
-        + '<button class="btn btn-primary btn-sm" onclick="confirmActivate(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Aktifkan Akun</button>'
-        + '<button class="btn btn-danger-outline btn-sm" onclick="deactivate(' + p.id + ')">Nonaktifkan</button>';
+    } else if(p.loginStatus === 'PENDING_VERIFICATION'){
+      actions = '<button class="btn btn-primary btn-sm" onclick="confirmActivate(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>'
+        + '<button class="btn btn-danger-outline btn-sm" onclick="deactivate(' + p.id + ')">Tolak</button>';
     } else {
       actions = '<button class="btn btn-outline btn-sm" onclick="window.location.href=\'pengguna-edit.html?id=' + p.id + '\'"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
         + '<button class="btn btn-danger-outline btn-sm" onclick="deactivate(' + p.id + ')">Nonaktifkan</button>';
@@ -433,38 +417,7 @@ function renderPagination(totalCount, totalPages){
   document.getElementById('pgBtns').innerHTML = btns;
 }
 
-// --- Modal "Buat Akun" utk pegawai yang belum punya akun ---
-var pendingCreateAccountId = null;
-function openCreateAccount(id, nama){
-  pendingCreateAccountId = id;
-  document.getElementById('createAccNama').textContent = nama;
-  document.getElementById('createAccEmail').value = '';
-  document.getElementById('createAccountModal').classList.add('open');
-}
-function closeCreateAccountModal(){
-  document.getElementById('createAccountModal').classList.remove('open');
-  pendingCreateAccountId = null;
-}
-function submitCreateAccount(){
-  var email = document.getElementById('createAccEmail').value.trim();
-  if(!email){
-    toast('Email wajib diisi');
-    return;
-  }
-  var p = pegawaiFindById(PEGAWAI_LIST, pendingCreateAccountId);
-  if(!p) return;
-  p.email = email;
-  if(!p.roleId) p.roleId = p.tipePegawai === 'Politisi' ? 3 : 2;
-  p.loginStatus = 'PENDING_ACTIVATION';
-  pegawaiSaveList(PEGAWAI_LIST);
-  closeCreateAccountModal();
-  renderTabBar();
-  renderTable();
-  updateStats();
-  toast('Akun untuk "' + p.nama + '" berhasil dibuat - status Menunggu Aktivasi');
-}
-
-// --- Modal konfirmasi generik, dipakai utk aksi "mengaktifkan akun" (akun baru & approve reset) ---
+// --- Modal konfirmasi generik, dipakai utk aksi "mengaktifkan akun" (approve reset, dll) ---
 var pendingConfirmAction = null;
 function openConfirm(title, msg, btnLabel, actionFn){
   document.getElementById('confirmTitle').textContent = title;
@@ -551,8 +504,8 @@ function rejectReset(id){
 function updateStats(){
   var list = accounts();
   document.getElementById('statAktif').textContent = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; }).length;
-  document.getElementById('statMenunggu').textContent = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; }).length;
-  document.getElementById('statNonaktif').textContent = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; }).length;
+  document.getElementById('statMenunggu').textContent = list.filter(function(p){ return p.loginStatus === 'PENDING_VERIFICATION'; }).length;
+  document.getElementById('statNonaktif').textContent = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED'; }).length;
 }
 
 populatePeriodeFilter();

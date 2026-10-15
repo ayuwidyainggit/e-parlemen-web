@@ -187,7 +187,7 @@ a{color:inherit;}
             <div class="hint">Menentukan field biodata &amp; kebutuhan Assignment Dapil di langkah selanjutnya.</div>
             <div class="seg">
               <button type="button" class="seg-btn active" id="segDewan" onclick="setTipe('Politisi')">DEWAN (Politisi / Anggota)</button>
-              <button type="button" class="seg-btn" id="segSetwan" onclick="setTipe('ASN')">SETWAN (ASN / Sekretariat)</button>
+              <button type="button" class="seg-btn" id="segSekwan" onclick="setTipe('ASN')">SEKWAN (ASN / Sekretariat)</button>
             </div>
           </div>
 
@@ -205,7 +205,7 @@ a{color:inherit;}
               <div class="field"><label>Alamat</label><input type="text" id="fAlamat" placeholder="Opsional"></div>
             </div>
 
-            <div id="groupSetwanBio">
+            <div id="groupSekwanBio">
               <div class="field"><label>Status Kepegawaian</label>
                 <select id="fStatusKepegawaian">
                   <option value="PNS">PNS</option>
@@ -289,7 +289,21 @@ a{color:inherit;}
               <label>Dapil</label>
               <select id="fDapil"></select>
             </div>
-            <div class="hint" id="dapilNaText" style="display:none;margin:0;">Assignment Dapil tidak diperlukan untuk pengguna SETWAN (ASN/Sekretariat).</div>
+            <div class="hint" id="dapilNaText" style="display:none;margin:0;">Assignment Dapil tidak diperlukan untuk pengguna SEKWAN (ASN/Sekretariat).</div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Lanjut</button>
+          </div>
+        </div>
+
+        <div class="step-panel" id="stepPanel4">
+          <div class="card">
+            <div class="section-title">Password Akun</div>
+            <div class="hint">Akun yang dibuat admin langsung berstatus <strong>Aktif</strong> &mdash; tidak perlu verifikasi. Verifikasi hanya berlaku untuk fitur reset kata sandi (Lupa Kata Sandi).</div>
+            <div class="field"><label>Password</label><input type="password" id="fPassword" placeholder="Minimal 6 karakter" minlength="6" required></div>
+            <div class="field"><label>Konfirmasi Password</label><input type="password" id="fPasswordConfirm" placeholder="Ulangi password" minlength="6" required></div>
           </div>
 
           <div class="btn-row">
@@ -302,7 +316,7 @@ a{color:inherit;}
       <div id="resultSection" style="display:none;">
         <div class="success-box">
           <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-          <span><strong>Akun <span id="sentNama"></span> berhasil dibuat</strong> dengan role <strong id="sentRole"></strong>. Lengkapi Email, lalu gunakan aksi <strong>Aktifkan Akun</strong> pada halaman User Management untuk mengaktifkannya.</span>
+          <span><strong>Akun <span id="sentNama"></span> berhasil dibuat &amp; langsung Aktif</strong> dengan role <strong id="sentRole"></strong>. Lengkapi Email lewat Edit Account pada halaman User Management agar akun ini bisa dipakai login.</span>
         </div>
 
         <div class="btn-row">
@@ -327,7 +341,7 @@ var currentTipe = 'Politisi';
 var currentStep = 1;
 var assignmentsDraft = [];
 
-var STEP_LABELS = ['Data Pegawai', 'Partai, Jabatan & Penempatan', 'Assignment Dapil'];
+var STEP_LABELS = ['Data Pegawai', 'Partai, Jabatan & Penempatan', 'Assignment Dapil', 'Password Akun'];
 var TOTAL_STEPS = STEP_LABELS.length;
 function renderStepper(){
   var html = '';
@@ -371,6 +385,14 @@ function validateStep(n){
     if(currentTipe === 'Politisi' && !document.getElementById('fDapil').value){ toast('Dapil wajib dipilih'); return false; }
     return true;
   }
+  if(n === 4){
+    var pass = document.getElementById('fPassword').value;
+    var confirm = document.getElementById('fPasswordConfirm').value;
+    if(!pass || !confirm){ toast('Password & Konfirmasi Password wajib diisi'); return false; }
+    if(pass.length < 6){ toast('Password minimal 6 karakter'); return false; }
+    if(pass !== confirm){ toast('Konfirmasi Password tidak cocok'); return false; }
+    return true;
+  }
   return true;
 }
 
@@ -389,10 +411,10 @@ function toast(msg){
 function setTipe(tipe){
   currentTipe = tipe;
   document.getElementById('segDewan').classList.toggle('active', tipe === 'Politisi');
-  document.getElementById('segSetwan').classList.toggle('active', tipe === 'ASN');
+  document.getElementById('segSekwan').classList.toggle('active', tipe === 'ASN');
   document.getElementById('lblNip').textContent = tipe === 'Politisi' ? 'Member Code (NIP Anggota)' : 'NIP';
   document.getElementById('groupDewanBio').style.display = tipe === 'Politisi' ? 'block' : 'none';
-  document.getElementById('groupSetwanBio').style.display = tipe === 'ASN' ? 'block' : 'none';
+  document.getElementById('groupSekwanBio').style.display = tipe === 'ASN' ? 'block' : 'none';
   document.getElementById('groupDapil').style.display = tipe === 'Politisi' ? 'block' : 'none';
   document.getElementById('dapilHint').style.display = tipe === 'Politisi' ? 'block' : 'none';
   document.getElementById('dapilNaText').style.display = tipe === 'Politisi' ? 'none' : 'block';
@@ -447,7 +469,7 @@ function populateDapilOptions(){
   sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
 }
 
-// Unit Type selain Fraksi: DEWAN -> AKD, SETWAN -> SEKRE (lihat unit-type-data.js).
+// Unit Type selain Fraksi: DEWAN -> AKD, SEKWAN -> SEKRE (lihat unit-type-data.js).
 function populateUnitTypeOptions(){
   var sel = document.getElementById('fUnitType');
   var tabs = currentTipe === 'Politisi' ? ['AKD'] : ['SEKRE'];
@@ -571,14 +593,17 @@ function submitForm(){
   var primary = allAssignments.length ? allAssignments[0] : null;
   var today = new Date().toISOString().slice(0, 10);
 
-  // Akun Aktivasi (email) dikumpulkan kemudian lewat aksi "Aktifkan Akun" pada
-  // halaman User Management, bukan saat pembuatan akun - loginStatus tetap PENDING_ACTIVATION
-  // agar pegawai ini langsung muncul di tab "Menunggu Aktivasi".
+  var password = document.getElementById('fPassword').value;
+
+  // Akun yang dibuat admin lewat halaman ini langsung Aktif (loginStatus: 'ACTIVE') dengan
+  // password yang diisi di Step 4 - tidak perlu verifikasi. Verifikasi (PENDING_VERIFICATION)
+  // hanya dipakai utk flow reset kata sandi (lihat forgot-password-data.js & pengguna.html).
+  // Email masih dilengkapi menyusul lewat Edit Account.
   var list = pegawaiLoadList();
   var newPegawai = {
     id: pegawaiNextId(list), tipePegawai: currentTipe, nama: nama, nik: nik || null, nip: nip, alamat: alamat, hp: hp,
     jabatanId: primary ? primary.jabatanId : null, roleId: primary ? primary.roleId : null, fraksiId: fraksiId, partaiId: partaiId, dapilId: dapilId,
-    email: null, loginStatus: 'PENDING_ACTIVATION', unitTypeId: primary ? primary.unitTypeId : null,
+    email: null, loginStatus: 'ACTIVE', password: password, unitTypeId: primary ? primary.unitTypeId : null,
     statusKepegawaian: statusKepegawaian, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: allAssignments.map(function(a){

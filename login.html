@@ -68,11 +68,10 @@ body{
     <div class="footer-note">Kembali ke <a href="index.html">Beranda Admin</a></div>
   </div>
 <script src="pegawai-data.js"></script>
+<script src="forgot-password-data.js"></script>
 <script>
 var LOGIN_STATUS_BLOCK_MSG = {
-  PENDING_ACTIVATION: 'Akun belum diaktivasi. Hubungi admin untuk mengirim tautan aktivasi.',
-  PENDING_RESET_APPROVAL: 'Permintaan reset kata sandi Anda belum disetujui admin. Silakan tunggu persetujuan.',
-  SUSPENDED: 'Akun Anda ditangguhkan. Hubungi admin Sekretariat.',
+  PENDING_VERIFICATION: 'Akun belum diverifikasi. Hubungi admin untuk mengaktifkan akun.',
   DEACTIVATED: 'Akun Anda nonaktif. Hubungi admin Sekretariat.'
 };
 
@@ -102,6 +101,9 @@ function doLogin(e){
   }
   if(akun.loginStatus !== 'ACTIVE'){
     return showError(LOGIN_STATUS_BLOCK_MSG[akun.loginStatus] || 'Akun ini belum bisa digunakan untuk login.');
+  }
+  if(forgotPwdFindPendingByPegawaiId(forgotPwdLoadList(), akun.id)){
+    return showError('Permintaan reset kata sandi Anda belum disetujui admin. Silakan tunggu persetujuan.');
   }
   if(!akun.password || akun.password !== pass){
     return showError('Email atau kata sandi tidak sesuai.');

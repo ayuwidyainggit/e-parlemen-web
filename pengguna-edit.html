@@ -258,7 +258,7 @@ function toast(msg){
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
 
-var STATUS_LABEL = { PENDING_ACTIVATION: 'Menunggu Aktivasi', PENDING_RESET_APPROVAL: 'Menunggu Approval Reset', ACTIVE: 'Aktif', SUSPENDED: 'Ditangguhkan', DEACTIVATED: 'Nonaktif' };
+var STATUS_LABEL = { PENDING_VERIFICATION: 'Menunggu Verifikasi', ACTIVE: 'Aktif', DEACTIVATED: 'Nonaktif' };
 
 var pegawaiId = parseInt(new URLSearchParams(window.location.search).get('id'), 10);
 var PEGAWAI_LIST = pegawaiLoadList();

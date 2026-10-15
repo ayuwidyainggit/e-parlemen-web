@@ -4,13 +4,12 @@
 // untuk pola yang sama (seed + versi).
 //
 // Flow: user klik "Lupa kata sandi?" di login.html -> forgot-password.html -> isi
-// email + kata sandi baru + konfirmasi -> request dibuat dgn status PENDING, dan
-// pegawai terkait (pegawai-data.js) di-set loginStatus = 'PENDING_RESET_APPROVAL'
-// (login diblokir selama status ini). Admin meninjau di pengguna.html:
-//  - Setujui -> pegawai.password diganti ke newPassword, loginStatus = 'ACTIVE',
-//    request.status = 'APPROVED'.
-//  - Tolak   -> loginStatus dikembalikan ke 'ACTIVE' (password lama tetap berlaku),
-//    request.status = 'REJECTED'.
+// email + kata sandi baru + konfirmasi -> request dibuat dgn status PENDING. loginStatus
+// pegawai (pegawai-data.js) TIDAK diubah - login.html memblokir login selama ada request
+// PENDING milik pegawai tsb (lihat forgotPwdFindPendingByPegawaiId). Admin meninjau di
+// pengguna.html:
+//  - Setujui -> pegawai.password diganti ke newPassword, request.status = 'APPROVED'.
+//  - Tolak   -> password lama tetap berlaku, request.status = 'REJECTED'.
 //
 // Field request: { id, pegawaiId, email, newPassword, status: 'PENDING'|'APPROVED'|'REJECTED',
 //   requestedAt, decidedAt }.
