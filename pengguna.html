@@ -214,6 +214,10 @@ tr:hover td{background:#fafaf7;}
         <div class="tabs" id="tabBar"></div>
         <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
           <div class="field-inline">
+            Lingkup:
+            <select id="lingkupFilter" onchange="handleFilterChange()"></select>
+          </div>
+          <div class="field-inline">
             Periode:
             <select id="periodeFilter" onchange="handleFilterChange()"></select>
           </div>
@@ -226,7 +230,7 @@ tr:hover td{background:#fafaf7;}
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Nama</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Unit Type</th><th>Status</th><th></th></tr></thead>
+          <thead><tr><th>Nama</th><th>Lingkup</th><th>Role</th><th>Email</th><th>Jabatan</th><th>Unit Type</th><th>Status</th><th></th></tr></thead>
           <tbody id="tbodyAkun"></tbody>
         </table>
       </div>
@@ -310,6 +314,11 @@ function unitTypeNamaOf(unitTypeId){
   var u = unitTypeFindById(UNIT_TYPE_LIST, unitTypeId);
   return u ? unitTypeLabel(u) : '—';
 }
+// Lingkup (DEWAN/SEKWAN) - diturunkan dari tipePegawai (lihat pegawai-data.js, sumber
+// data/persons.json kolom person_type): 'Politisi' = DEWAN, 'ASN' = SEKWAN.
+function lingkupOf(p){
+  return p.tipePegawai === 'Politisi' ? 'DEWAN' : 'SEKWAN';
+}
 
 function renderTabBar(){
   var list = accounts();
@@ -334,6 +343,10 @@ function populateRoleFilter(){
   var sel = document.getElementById('roleFilter');
   sel.innerHTML = '<option value="">Semua Role</option>' + rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
 }
+function populateLingkupFilter(){
+  var sel = document.getElementById('lingkupFilter');
+  sel.innerHTML = '<option value="">Semua Lingkup</option><option value="DEWAN">DEWAN</option><option value="SEKWAN">SEKWAN</option>';
+}
 function populatePeriodeFilter(){
   var sel = document.getElementById('periodeFilter');
   sel.innerHTML = '<option value="">Semua Periode</option>' + PERIODE_LIST.map(function(pr){ return '<option value="' + pr.id + '">' + pr.nama + '</option>'; }).join('');
@@ -348,6 +361,8 @@ function currentList(){
   if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_VERIFICATION'; });
   else if(activeTab === 'aktif') list = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; });
   else if(activeTab === 'nonaktif') list = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED'; });
+  var lingkupFilter = document.getElementById('lingkupFilter').value;
+  if(lingkupFilter) list = list.filter(function(p){ return lingkupOf(p) === lingkupFilter; });
   var roleFilter = document.getElementById('roleFilter').value;
   if(roleFilter) list = list.filter(function(p){ return roleIdsOf(p).map(String).indexOf(roleFilter) !== -1; });
   var periodeFilter = document.getElementById('periodeFilter').value;
@@ -365,7 +380,7 @@ function renderTable(){
   var list = filtered.slice(start, start + PAGE_SIZE);
 
   if(!list.length){
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Tidak ada data untuk filter ini.</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Tidak ada data untuk filter ini.</td></tr>';
     renderPagination(filtered.length, totalPages);
     return;
   }
@@ -387,6 +402,7 @@ function renderTable(){
     }
     return '<tr>'
       + '<td><div class="namecell"><span class="av">' + initials(p.nama) + '</span><div><div class="n">' + p.nama + '</div><div class="s">' + p.nip + '</div></div></div></td>'
+      + '<td><span class="badge badge-neutral">' + lingkupOf(p) + '</span></td>'
       + '<td>' + roleBadgesHtml(p) + '</td>'
       + '<td>' + (p.email || '&mdash;') + '</td>'
       + '<td>' + jabatanNama(p.jabatanId) + '</td>'
@@ -508,6 +524,7 @@ function updateStats(){
   document.getElementById('statNonaktif').textContent = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED'; }).length;
 }
 
+populateLingkupFilter();
 populatePeriodeFilter();
 populateRoleFilter();
 renderTabBar();
