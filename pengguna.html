@@ -186,7 +186,6 @@ tr:hover td{background:#fafaf7;}
         <div><h2>User Management</h2><div class="crumb">Admin &middot; User Management</div></div>
       </div>
       <div class="topbar-actions">
-        <a class="btn btn-outline btn-sm" href="pengguna-import-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg> Import Penugasan Periode</a>
         <a class="btn btn-primary btn-sm" href="pengguna-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Buat Akun Baru</a>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
         <div class="tb-user"><span class="av">AS</span></div>
@@ -205,17 +204,9 @@ tr:hover td{background:#fafaf7;}
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
           <div><div class="num" id="statMenunggu">0</div><div class="lbl">Menunggu Aktivasi</div></div>
         </div>
-        <div class="stat-card info">
-          <div class="ic" style="background:var(--info-bg);color:var(--info);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
-          <div><div class="num" id="statMenungguReset">0</div><div class="lbl">Menunggu Approval Reset</div></div>
-        </div>
         <div class="stat-card neutral">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
           <div><div class="num" id="statNonaktif">0</div><div class="lbl">Nonaktif</div></div>
-        </div>
-        <div class="stat-card neutral">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 11V7"/><path d="M15 9h4"/></svg></div>
-          <div><div class="num" id="statBelumAkun">0</div><div class="lbl">Belum Ada Akun</div></div>
         </div>
       </div>
 
@@ -338,9 +329,7 @@ function renderTabBar(){
   var list = accounts();
   var tabs = [
     { key: 'semua', label: 'Semua', filter: function(){ return true; } },
-    { key: 'belum_akun', label: 'Belum Ada Akun', filter: function(p){ return !p.loginStatus; } },
     { key: 'menunggu', label: 'Menunggu Aktivasi', filter: function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; } },
-    { key: 'menunggu_reset', label: 'Menunggu Approval Reset', filter: function(p){ return p.loginStatus === 'PENDING_RESET_APPROVAL'; } },
     { key: 'aktif', label: 'Aktif', filter: function(p){ return p.loginStatus === 'ACTIVE'; } },
     { key: 'nonaktif', label: 'Nonaktif', filter: function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; } }
   ];
@@ -370,9 +359,7 @@ function handleFilterChange(){
 
 function currentList(){
   var list = accounts();
-  if(activeTab === 'belum_akun') list = list.filter(function(p){ return !p.loginStatus; });
-  else if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; });
-  else if(activeTab === 'menunggu_reset') list = list.filter(function(p){ return p.loginStatus === 'PENDING_RESET_APPROVAL'; });
+  if(activeTab === 'menunggu') list = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; });
   else if(activeTab === 'aktif') list = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; });
   else if(activeTab === 'nonaktif') list = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; });
   var roleFilter = document.getElementById('roleFilter').value;
@@ -565,9 +552,7 @@ function updateStats(){
   var list = accounts();
   document.getElementById('statAktif').textContent = list.filter(function(p){ return p.loginStatus === 'ACTIVE'; }).length;
   document.getElementById('statMenunggu').textContent = list.filter(function(p){ return p.loginStatus === 'PENDING_ACTIVATION'; }).length;
-  document.getElementById('statMenungguReset').textContent = list.filter(function(p){ return p.loginStatus === 'PENDING_RESET_APPROVAL'; }).length;
   document.getElementById('statNonaktif').textContent = list.filter(function(p){ return p.loginStatus === 'DEACTIVATED' || p.loginStatus === 'SUSPENDED'; }).length;
-  document.getElementById('statBelumAkun').textContent = list.filter(function(p){ return !p.loginStatus; }).length;
 }
 
 populatePeriodeFilter();
