@@ -208,6 +208,7 @@ a{color:inherit;}
             <div id="groupSekwanBio">
               <div class="field"><label>Status Kepegawaian</label>
                 <select id="fStatusKepegawaian">
+                  <option value="">-- Pilih Status Kepegawaian --</option>
                   <option value="PNS">PNS</option>
                   <option value="PPPK">PPPK</option>
                   <option value="NON_ASN">Non-ASN</option>
@@ -224,12 +225,11 @@ a{color:inherit;}
 
         <div class="step-panel" id="stepPanel2">
           <div class="card" id="groupDewanBio">
-            <div class="section-title">Partai &amp; Fraksi</div>
-            <div class="hint">Partai menentukan Fraksi secara otomatis. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut.</div>
-            <div class="field"><label>Partai</label>
-              <select id="fPartai" onchange="handlePartaiChange()"></select>
+            <div class="section-title">Fraksi</div>
+            <div class="hint">Pilih Fraksi pengguna ini. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut.</div>
+            <div class="field"><label>Fraksi</label>
+              <select id="fFraksi"></select>
             </div>
-            <div class="field"><label>Fraksi <span class="opt">(otomatis dari Partai)</span></label><input type="text" id="fFraksiDisplay" disabled></div>
             <div class="field-row">
               <div class="field"><label>Category Jabatan</label>
                 <select id="fFraksiJabatanCategory" onchange="populateFraksiJabatanOptions()"></select>
@@ -238,17 +238,11 @@ a{color:inherit;}
                 <select id="fFraksiJabatan"></select>
               </div>
             </div>
-            <div class="field-row">
-              <div class="field"><label>Role</label>
-                <select id="fFraksiRole" onchange="handleFraksiRoleChange()"></select>
-              </div>
-              <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fFraksiPlatformDisplay" disabled></div>
-            </div>
           </div>
 
           <div class="card">
             <div class="section-title">Jabatan &amp; Penempatan <span class="opt">(opsional)</span></div>
-            <div class="hint">Opsional &mdash; dapat dilewati &amp; diisi menyusul lewat Edit Account. Satu pengguna dapat memiliki lebih dari satu penempatan (rangkap jabatan) &mdash; lengkapi Unit Type, Category Jabatan, Jabatan, &amp; Role, lalu klik "Tambah Penempatan". Role menentukan hak akses menu &amp; Platform (Web/Mobile), dikelola di Master Role &amp; RBAC.</div>
+            <div class="hint">Opsional &mdash; dapat dilewati &amp; diisi menyusul lewat Edit Account. Satu pengguna dapat memiliki lebih dari satu penempatan (rangkap jabatan) &mdash; lengkapi Unit Type, Category Jabatan, &amp; Jabatan, lalu klik "Tambah Penempatan". Role (hak akses menu &amp; Platform Web/Mobile) diatur terpisah di langkah Role Akun.</div>
 
             <div class="field"><label>Unit Type <span class="opt">(unit organisasi penempatan, selain Fraksi)</span></label>
               <select id="fUnitType" onchange="handleUnitTypeChange()"></select>
@@ -260,12 +254,6 @@ a{color:inherit;}
               <div class="field"><label>Jabatan</label>
                 <select id="fJabatan"></select>
               </div>
-            </div>
-            <div class="field-row">
-              <div class="field"><label>Role</label>
-                <select id="fRole" onchange="handleRoleChange()"></select>
-              </div>
-              <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fPlatformDisplay" disabled></div>
             </div>
             <div class="btn-row" style="margin-bottom:18px;">
               <button type="button" class="btn btn-outline" onclick="addAssignmentEntry()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Penempatan</button>
@@ -299,6 +287,31 @@ a{color:inherit;}
         </div>
 
         <div class="step-panel" id="stepPanel4">
+          <div class="card">
+            <div class="section-title">Role Akun</div>
+            <div class="hint">Role menentukan hak akses menu &amp; Platform (Web/Mobile), dikelola di Master Role &amp; RBAC. Satu pengguna dapat memiliki lebih dari satu Role (rangkap akses) &mdash; pilih Role lalu klik "Tambah Role". Minimal 1 Role wajib dipilih.</div>
+
+            <div class="field-row">
+              <div class="field"><label>Role</label>
+                <select id="fRoleAkun" onchange="handleRoleAkunChange()"></select>
+              </div>
+              <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fRoleAkunPlatformDisplay" disabled></div>
+            </div>
+            <div class="btn-row" style="margin-bottom:18px;">
+              <button type="button" class="btn btn-outline" onclick="addRoleEntry()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Role</button>
+            </div>
+
+            <div class="section-title" style="font-size:12.5px;">Role Terpilih</div>
+            <div id="roleAkunList" style="margin-top:8px;"></div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Lanjut</button>
+          </div>
+        </div>
+
+        <div class="step-panel" id="stepPanel5">
           <div class="card">
             <div class="section-title">Password Akun</div>
             <div class="hint">Akun yang dibuat admin langsung berstatus <strong>Aktif</strong> &mdash; tidak perlu verifikasi. Verifikasi hanya berlaku untuk fitur reset kata sandi (Lupa Kata Sandi).</div>
@@ -340,8 +353,9 @@ var UNIT_TYPE_LIST = unitTypeLoadList();
 var currentTipe = 'Politisi';
 var currentStep = 1;
 var assignmentsDraft = [];
+var rolesDraft = [];
 
-var STEP_LABELS = ['Data Pegawai', 'Partai, Jabatan & Penempatan', 'Assignment Dapil', 'Password Akun'];
+var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Role Akun', 'Password Akun'];
 var TOTAL_STEPS = STEP_LABELS.length;
 function renderStepper(){
   var html = '';
@@ -376,8 +390,8 @@ function validateStep(n){
   }
   if(n === 2){
     if(currentTipe === 'Politisi'){
-      if(!document.getElementById('fPartai').value){ toast('Partai wajib dipilih'); return false; }
-      if(!document.getElementById('fFraksiJabatan').value || !document.getElementById('fFraksiRole').value){ toast('Jabatan & Role di dalam Fraksi wajib diisi'); return false; }
+      if(!document.getElementById('fFraksi').value){ toast('Fraksi wajib dipilih'); return false; }
+      if(!document.getElementById('fFraksiJabatan').value){ toast('Jabatan di dalam Fraksi wajib diisi'); return false; }
     }
     return true;
   }
@@ -386,6 +400,10 @@ function validateStep(n){
     return true;
   }
   if(n === 4){
+    if(!rolesDraft.length){ toast('Role wajib dipilih, minimal 1'); return false; }
+    return true;
+  }
+  if(n === 5){
     var pass = document.getElementById('fPassword').value;
     var confirm = document.getElementById('fPasswordConfirm').value;
     if(!pass || !confirm){ toast('Password & Konfirmasi Password wajib diisi'); return false; }
@@ -423,57 +441,39 @@ function setTipe(tipe){
   populateUnitTypeOptions();
   populateJabatanCategoryOptions();
   populateFraksiJabatanCategoryOptions();
-  populateFraksiRoleOptions();
 }
 
-function populatePartaiOptions(){
-  var sel = document.getElementById('fPartai');
-  sel.innerHTML = partaiLoadList().filter(function(p){ return p.is_aktif; }).map(function(p){
-    return '<option value="' + p.id + '">' + p.nama + ' (' + p.singkatan + ')</option>';
+function populateFraksiOptions(){
+  var sel = document.getElementById('fFraksi');
+  sel.innerHTML = '<option value="">-- Pilih Fraksi --</option>' + fraksiLoadList().map(function(f){
+    return '<option value="' + f.id + '">' + fraksiOptionLabel(f) + '</option>';
   }).join('');
-  handlePartaiChange();
-}
-function handlePartaiChange(){
-  var partaiId = document.getElementById('fPartai').value;
-  var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === partaiId; });
-  document.getElementById('fFraksiDisplay').value = fraksi ? fraksi.nama : 'Belum terdaftar di Master Fraksi';
 }
 
 // Jabatan di dalam Fraksi (mis. Ketua/Sekretaris Fraksi) - Category mengikuti 4 pilihan tetap
 // di positions (lihat JABATAN_CATEGORIES di jabatan-data.js).
 function populateFraksiJabatanCategoryOptions(){
   var sel = document.getElementById('fFraksiJabatanCategory');
-  sel.innerHTML = JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
+  sel.innerHTML = '<option value="">-- Pilih Category --</option>' + JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
   populateFraksiJabatanOptions();
 }
 function populateFraksiJabatanOptions(){
   var category = document.getElementById('fFraksiJabatanCategory').value;
   var sel = document.getElementById('fFraksiJabatan');
-  sel.innerHTML = jabatanByCategory(jabatanLoadList(), category).map(function(j){
+  sel.innerHTML = '<option value="">-- Pilih Jabatan --</option>' + jabatanByCategory(jabatanLoadList(), category).map(function(j){
     return '<option value="' + j.id + '">' + jabatanLabel(j) + '</option>';
   }).join('');
 }
-function populateFraksiRoleOptions(){
-  var sel = document.getElementById('fFraksiRole');
-  sel.innerHTML = rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
-  handleFraksiRoleChange();
-}
-function handleFraksiRoleChange(){
-  var roleId = parseInt(document.getElementById('fFraksiRole').value, 10);
-  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
-  document.getElementById('fFraksiPlatformDisplay').value = role && role.akses.length ? role.akses.join(', ') : '—';
-}
-
 function populateDapilOptions(){
   var sel = document.getElementById('fDapil');
-  sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
+  sel.innerHTML = '<option value="">-- Pilih Dapil --</option>' + dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
 }
 
 // Unit Type selain Fraksi: DEWAN -> AKD, SEKWAN -> SEKRE (lihat unit-type-data.js).
 function populateUnitTypeOptions(){
   var sel = document.getElementById('fUnitType');
   var tabs = currentTipe === 'Politisi' ? ['AKD'] : ['SEKRE'];
-  var options = [];
+  var options = ['<option value="">-- Pilih Unit Type --</option>'];
   tabs.forEach(function(t){
     unitTypeByType(UNIT_TYPE_LIST, t).forEach(function(u){
       options.push('<option value="' + u.id + '">' + UNIT_TYPE_TAB_LABEL[t] + ' &middot; ' + unitTypeLabel(u) + '</option>');
@@ -487,46 +487,32 @@ function handleUnitTypeChange(){}
 // JABATAN_CATEGORIES di jabatan-data.js, sama seperti tabel `positions`).
 function populateJabatanCategoryOptions(){
   var sel = document.getElementById('fJabatanCategory');
-  sel.innerHTML = JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
+  sel.innerHTML = '<option value="">-- Pilih Category --</option>' + JABATAN_CATEGORIES.map(function(c){ return '<option value="' + c + '">' + JABATAN_CATEGORY_LABEL[c] + '</option>'; }).join('');
   populateJabatanOptions();
 }
 function populateJabatanOptions(){
   var category = document.getElementById('fJabatanCategory').value;
   var sel = document.getElementById('fJabatan');
-  sel.innerHTML = jabatanByCategory(jabatanLoadList(), category).map(function(j){
+  sel.innerHTML = '<option value="">-- Pilih Jabatan --</option>' + jabatanByCategory(jabatanLoadList(), category).map(function(j){
     return '<option value="' + j.id + '">' + jabatanLabel(j) + '</option>';
   }).join('');
 }
 
-function populateRoleOptions(){
-  var sel = document.getElementById('fRole');
-  sel.innerHTML = rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
-  handleRoleChange();
-}
-function handleRoleChange(){
-  var roleId = parseInt(document.getElementById('fRole').value, 10);
-  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
-  var platform = role && role.akses.length ? role.akses.join(', ') : '—';
-  document.getElementById('fPlatformDisplay').value = platform;
-}
-
 // Jabatan & Penempatan bersifat rangkap (0..n) - setiap klik "Tambah Penempatan" menyimpan
-// kombinasi Unit Type + Category Jabatan + Jabatan + Role saat ini ke assignmentsDraft.
+// kombinasi Unit Type + Category Jabatan + Jabatan saat ini ke assignmentsDraft. Role tidak lagi
+// ditempel per-penempatan - lihat rolesDraft (Step Role Akun) utk hak akses.
 function addAssignmentEntry(){
   var unitTypeId = document.getElementById('fUnitType').value;
   var category = document.getElementById('fJabatanCategory').value;
   var jabatanId = document.getElementById('fJabatan').value;
-  var roleId = parseInt(document.getElementById('fRole').value, 10);
-  if(!unitTypeId || !jabatanId || !roleId){ toast('Lengkapi Unit Type, Jabatan, & Role sebelum menambah'); return; }
+  if(!unitTypeId || !jabatanId){ toast('Lengkapi Unit Type & Jabatan sebelum menambah'); return; }
 
   var unit = unitTypeFindById(UNIT_TYPE_LIST, unitTypeId);
   var jab = jabatanFindById(jabatanLoadList(), jabatanId);
-  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
 
   assignmentsDraft.push({
     unitTypeId: unitTypeId, unitTypeLabel: unit ? unitTypeLabel(unit) : '—',
-    category: category, jabatanId: jabatanId, jabatanLabel: jab ? jabatanLabel(jab) : '—',
-    roleId: roleId, roleLabel: role ? role.nama : '—'
+    category: category, jabatanId: jabatanId, jabatanLabel: jab ? jabatanLabel(jab) : '—'
   });
   renderAssignmentList();
 }
@@ -541,13 +527,52 @@ function renderAssignmentList(){
     return;
   }
   wrap.innerHTML = assignmentsDraft.map(function(a, idx){
-    return '<div class="assign-item"><div class="info"><span class="t">' + a.jabatanLabel + '</span>' + JABATAN_CATEGORY_LABEL[a.category] + ' &middot; ' + a.unitTypeLabel + ' &middot; Role: ' + a.roleLabel + '</div><button type="button" class="remove-btn" onclick="removeAssignmentEntry(' + idx + ')">Hapus</button></div>';
+    return '<div class="assign-item"><div class="info"><span class="t">' + a.jabatanLabel + '</span>' + JABATAN_CATEGORY_LABEL[a.category] + ' &middot; ' + a.unitTypeLabel + '</div><button type="button" class="remove-btn" onclick="removeAssignmentEntry(' + idx + ')">Hapus</button></div>';
   }).join('');
 }
 
-populatePartaiOptions();
+// Role Akun bersifat rangkap (1..n, minimal 1) - terpisah dari Jabatan & Penempatan di atas.
+// Satu pengguna dapat memiliki lebih dari satu Role sekaligus (lihat rolesDraft).
+function populateRoleAkunOptions(){
+  var sel = document.getElementById('fRoleAkun');
+  sel.innerHTML = '<option value="">-- Pilih Role --</option>' + rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
+  handleRoleAkunChange();
+}
+function handleRoleAkunChange(){
+  var roleId = parseInt(document.getElementById('fRoleAkun').value, 10);
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  document.getElementById('fRoleAkunPlatformDisplay').value = role && role.akses.length ? role.akses.join(', ') : '—';
+}
+function addRoleEntry(){
+  var roleId = parseInt(document.getElementById('fRoleAkun').value, 10);
+  if(!roleId){ toast('Pilih Role sebelum menambah'); return; }
+  if(rolesDraft.some(function(r){ return r.roleId === roleId; })){ toast('Role tersebut sudah ditambahkan'); return; }
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  rolesDraft.push({
+    roleId: roleId, roleLabel: role ? role.nama : '—',
+    platform: role && role.akses.length ? role.akses.join(', ') : '—'
+  });
+  renderRoleAkunList();
+}
+function removeRoleEntry(idx){
+  rolesDraft.splice(idx, 1);
+  renderRoleAkunList();
+}
+function renderRoleAkunList(){
+  var wrap = document.getElementById('roleAkunList');
+  if(!rolesDraft.length){
+    wrap.innerHTML = '<div class="hint" style="margin:0;">Belum ada Role ditambahkan.</div>';
+    return;
+  }
+  wrap.innerHTML = rolesDraft.map(function(r, idx){
+    return '<div class="assign-item"><div class="info"><span class="t">' + r.roleLabel + '</span>Platform: ' + r.platform + '</div><button type="button" class="remove-btn" onclick="removeRoleEntry(' + idx + ')">Hapus</button></div>';
+  }).join('');
+}
+
+populateFraksiOptions();
 populateDapilOptions();
-populateRoleOptions();
+populateRoleAkunOptions();
+renderRoleAkunList();
 setTipe('Politisi');
 renderStepper();
 
@@ -563,24 +588,22 @@ function submitForm(){
   var partaiId = null, fraksiId = null, dapilId = null, statusKepegawaian = null;
   var fraksiAssignment = null;
   if(currentTipe === 'Politisi'){
-    partaiId = document.getElementById('fPartai').value;
-    var partai = partaiById(partaiId);
-    var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === partaiId; });
+    var fraksiSelectId = document.getElementById('fFraksi').value;
+    var fraksi = fraksiLoadList().find(function(f){ return String(f.id) === fraksiSelectId; });
     fraksiId = fraksi ? fraksi.id : null;
+    partaiId = fraksi ? fraksi.partaiId : null;
+    var partai = partaiById(partaiId);
     dapilId = document.getElementById('fDapil').value;
 
     // Jabatan pengguna ini di dalam Fraksi-nya sendiri (mis. Ketua/Sekretaris Fraksi) - unit type
     // Fraksi dicari lewat kecocokan kode Partai vs kode Unit Type FRAKSI (lihat unit-type-data.js).
     var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
     var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
-    var fraksiRoleId = parseInt(document.getElementById('fFraksiRole').value, 10);
-    if(fraksiJabatanId && fraksiRoleId){
+    if(fraksiJabatanId){
       var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
-      var fraksiRole = rbacLoadRoles().find(function(r){ return r.id === fraksiRoleId; });
       fraksiAssignment = {
         unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksi ? fraksi.nama : (fraksiUnitType ? unitTypeLabel(fraksiUnitType) : '—'),
-        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—',
-        roleId: fraksiRoleId, roleLabel: fraksiRole ? fraksiRole.nama : '—'
+        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—'
       };
     }
   } else {
@@ -595,25 +618,33 @@ function submitForm(){
 
   var password = document.getElementById('fPassword').value;
 
+  // Role Akun (1..n, lihat Step Role Akun) disimpan terpisah dari Jabatan & Penempatan -
+  // roleId = role utama (role pertama yang ditambahkan), roleIds diisi hanya kalau akun ini
+  // punya lebih dari satu Role (rangkap akses) - lihat catatan roleIds di pegawai-data.js.
+  var primaryRole = rolesDraft.length ? rolesDraft[0] : null;
+
   // Akun yang dibuat admin lewat halaman ini langsung Aktif (loginStatus: 'ACTIVE') dengan
-  // password yang diisi di Step 4 - tidak perlu verifikasi. Verifikasi (PENDING_VERIFICATION)
-  // hanya dipakai utk flow reset kata sandi (lihat forgot-password-data.js & pengguna.html).
-  // Email masih dilengkapi menyusul lewat Edit Account.
+  // password yang diisi di Step Password Akun - tidak perlu verifikasi. Verifikasi
+  // (PENDING_VERIFICATION) hanya dipakai utk flow reset kata sandi (lihat forgot-password-data.js
+  // & pengguna.html). Email masih dilengkapi menyusul lewat Edit Account.
   var list = pegawaiLoadList();
   var newPegawai = {
     id: pegawaiNextId(list), tipePegawai: currentTipe, nama: nama, nik: nik || null, nip: nip, alamat: alamat, hp: hp,
-    jabatanId: primary ? primary.jabatanId : null, roleId: primary ? primary.roleId : null, fraksiId: fraksiId, partaiId: partaiId, dapilId: dapilId,
+    jabatanId: primary ? primary.jabatanId : null, roleId: primaryRole ? primaryRole.roleId : null, fraksiId: fraksiId, partaiId: partaiId, dapilId: dapilId,
     email: null, loginStatus: 'ACTIVE', password: password, unitTypeId: primary ? primary.unitTypeId : null,
     statusKepegawaian: statusKepegawaian, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
     assignments: allAssignments.map(function(a){
-      return { jabatanId: a.jabatanId, jabatan: a.jabatanLabel, kategori: a.category, unitTypeId: a.unitTypeId, unitKerja: a.unitTypeLabel, roleId: a.roleId, mulai: today, sk: null };
+      return { jabatanId: a.jabatanId, jabatan: a.jabatanLabel, kategori: a.category, unitTypeId: a.unitTypeId, unitKerja: a.unitTypeLabel, mulai: today, sk: null };
     })
   };
+  if(rolesDraft.length > 1){
+    newPegawai.roleIds = rolesDraft.map(function(r){ return r.roleId; });
+  }
   list.push(newPegawai);
   pegawaiSaveList(list);
 
-  var roleNama = primary ? primary.roleLabel : '—';
+  var roleNama = rolesDraft.length ? rolesDraft.map(function(r){ return r.roleLabel; }).join(', ') : '—';
 
   document.getElementById('sentNama').textContent = nama;
   document.getElementById('sentRole').textContent = roleNama;

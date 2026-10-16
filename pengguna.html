@@ -246,6 +246,10 @@ tr:hover td{background:#fafaf7;}
   <div class="modal-box">
     <h3 id="confirmTitle">Konfirmasi</h3>
     <p id="confirmMsg"></p>
+    <div class="field" id="confirmEmailField" style="display:none;">
+      <label for="confirmEmailInput">Email Akun</label>
+      <input type="email" id="confirmEmailInput" readonly>
+    </div>
     <div class="modal-actions">
       <button type="button" class="btn btn-outline" onclick="closeConfirmModal()">Batal</button>
       <button type="button" class="btn btn-primary" id="confirmActionBtn">Ya, Aktifkan</button>
@@ -435,16 +439,24 @@ function renderPagination(totalCount, totalPages){
 
 // --- Modal konfirmasi generik, dipakai utk aksi "mengaktifkan akun" (approve reset, dll) ---
 var pendingConfirmAction = null;
-function openConfirm(title, msg, btnLabel, actionFn){
+function openConfirm(title, msg, btnLabel, actionFn, email){
   document.getElementById('confirmTitle').textContent = title;
   document.getElementById('confirmMsg').textContent = msg;
   var btn = document.getElementById('confirmActionBtn');
   btn.textContent = btnLabel;
   pendingConfirmAction = actionFn;
+  var emailField = document.getElementById('confirmEmailField');
+  if(email){
+    document.getElementById('confirmEmailInput').value = email;
+    emailField.style.display = 'block';
+  } else {
+    emailField.style.display = 'none';
+  }
   document.getElementById('confirmModal').classList.add('open');
 }
 function closeConfirmModal(){
   document.getElementById('confirmModal').classList.remove('open');
+  document.getElementById('confirmEmailField').style.display = 'none';
   pendingConfirmAction = null;
 }
 document.getElementById('confirmActionBtn').addEventListener('click', function(){
@@ -467,7 +479,9 @@ function activateAccount(id){
   toast('Akun "' + p.nama + '" berhasil diaktifkan');
 }
 function confirmApproveReset(id, nama){
-  openConfirm('Setujui Reset Kata Sandi', 'Setujui permintaan reset kata sandi dari "' + nama + '"? Kata sandi baru akan aktif dan akun bisa login kembali.', 'Ya, Setujui', function(){ approveReset(id); });
+  var req = forgotPwdFindPendingByPegawaiId(FORGOT_PWD_LIST, id);
+  var email = req ? req.email : '';
+  openConfirm('Setujui Reset Kata Sandi', 'Setujui permintaan reset kata sandi dari "' + nama + '"? Kata sandi baru akan aktif dan akun bisa login kembali.', 'Ya, Setujui', function(){ approveReset(id); }, email);
 }
 
 function deactivate(id){
