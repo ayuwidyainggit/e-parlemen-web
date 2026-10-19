@@ -580,7 +580,7 @@ function renderAssignmentList(){
 // Satu pengguna dapat memiliki lebih dari satu Role sekaligus (lihat rolesDraft).
 function populateRoleAkunOptions(){
   var sel = document.getElementById('fRoleAkun');
-  sel.innerHTML = '<option value="">-- Pilih Role --</option>' + rbacLoadRoles().map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
+  sel.innerHTML = '<option value="">-- Pilih Role --</option>' + rbacLoadRoles().filter(function(r){ return !r.locked; }).map(function(r){ return '<option value="' + r.id + '">' + r.nama + '</option>'; }).join('');
   handleRoleAkunChange();
 }
 function handleRoleAkunChange(){
