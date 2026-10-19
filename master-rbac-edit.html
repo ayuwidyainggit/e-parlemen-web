@@ -211,7 +211,7 @@ var checkedIds = {};
 var editingId = parseInt(new URLSearchParams(window.location.search).get('id'), 10);
 var editingRole = ROLE_LIST.find(function(r){ return r.id === editingId; });
 
-if(!editingRole){
+if(!editingRole || editingRole.locked){
   window.location.href = 'master-rbac.html';
 }
 

@@ -275,8 +275,22 @@ var assignmentsDraft = []; // penempatan selain Fraksi (ditampilkan di "Daftar P
 var fraksiAssignmentExisting = null; // { jabatanId, roleId, mulai, sk } milik penempatan di Fraksi, kalau ketemu
 var fraksiAssignmentDraft = null; // null = belum/tidak ada penempatan Fraksi; object = 1 penempatan Fraksi (maks 1)
 
+// Akun dgn Role terkunci (mis. Super Admin, lihat rbac-data.js & master-rbac.html) adalah akun
+// sistem - tidak bisa diedit lewat halaman ini juga (konsisten dgn tombol Edit yg disembunyikan
+// di pengguna.html).
+function currentHasLockedRole(){
+  var roleIds = (current.roleIds && current.roleIds.length) ? current.roleIds : [current.roleId];
+  var roles = rbacLoadRoles();
+  return roleIds.some(function(rid){
+    var r = roles.find(function(r){ return r.id === rid; });
+    return r && r.locked;
+  });
+}
+
 if(!current || !current.loginStatus){
   document.getElementById('content').innerHTML = '<div class="card">Akun tidak ditemukan. <a href="pengguna.html" style="color:var(--green);font-weight:700;">Kembali ke User Management</a></div>';
+} else if(currentHasLockedRole()){
+  document.getElementById('content').innerHTML = '<div class="card">Akun "' + current.nama + '" adalah akun sistem & tidak dapat diedit. <a href="pengguna.html" style="color:var(--green);font-weight:700;">Kembali ke User Management</a></div>';
 } else {
   init();
 }

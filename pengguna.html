@@ -319,9 +319,21 @@ function unitTypeNamaOf(unitTypeId){
   return u ? unitTypeLabel(u) : '—';
 }
 // Lingkup (DEWAN/SEKWAN) - diturunkan dari tipePegawai (lihat pegawai-data.js, sumber
-// data/persons.json kolom person_type): 'Politisi' = DEWAN, 'ASN' = SEKWAN.
+// data/persons.json kolom person_type): 'Politisi' = DEWAN, 'ASN' = SEKWAN. Akun dgn Role
+// terkunci (mis. Super Admin, lihat rbac-data.js) tidak punya Lingkup (akun sistem, bukan
+// Anggota DPRD maupun pegawai Setwan riil).
 function lingkupOf(p){
+  if(accountHasLockedRole(p)) return null;
   return p.tipePegawai === 'Politisi' ? 'DEWAN' : 'SEKWAN';
+}
+// Akun yg salah satu Role-nya terkunci (RBAC role dgn flag `locked`, lihat master-rbac.html)
+// bersifat akun sistem - tidak bisa di-Edit/Nonaktifkan/Hapus lewat halaman ini.
+function accountHasLockedRole(p){
+  var roles = rbacLoadRoles();
+  return roleIdsOf(p).some(function(rid){
+    var r = roles.find(function(r){ return r.id === rid; });
+    return r && r.locked;
+  });
 }
 
 function renderTabBar(){
@@ -392,7 +404,9 @@ function renderTable(){
     var actions;
     var namaEsc = p.nama.replace(/'/g, "\\'");
     var pendingReset = p.loginStatus === 'ACTIVE' ? forgotPwdFindPendingByPegawaiId(FORGOT_PWD_LIST, p.id) : null;
-    if(p.loginStatus === 'DEACTIVATED'){
+    if(accountHasLockedRole(p)){
+      actions = '<span class="badge badge-neutral"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Akun Sistem</span>';
+    } else if(p.loginStatus === 'DEACTIVATED'){
       actions = '<button class="btn btn-primary btn-sm" onclick="confirmActivate(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Aktifkan</button>';
     } else if(pendingReset){
       actions = '<button class="btn btn-primary btn-sm" onclick="confirmApproveReset(' + p.id + ', \'' + namaEsc + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui Reset</button>'
@@ -406,7 +420,7 @@ function renderTable(){
     }
     return '<tr>'
       + '<td><div class="namecell"><span class="av">' + initials(p.nama) + '</span><div><div class="n">' + p.nama + '</div><div class="s">' + p.nip + '</div></div></div></td>'
-      + '<td><span class="badge badge-neutral">' + lingkupOf(p) + '</span></td>'
+      + '<td>' + (lingkupOf(p) ? '<span class="badge badge-neutral">' + lingkupOf(p) + '</span>' : '&mdash;') + '</td>'
       + '<td>' + roleBadgesHtml(p) + '</td>'
       + '<td>' + (p.email || '&mdash;') + '</td>'
       + '<td>' + jabatanNama(p.jabatanId) + '</td>'
@@ -487,6 +501,7 @@ function confirmApproveReset(id, nama){
 function deactivate(id){
   var p = pegawaiFindById(PEGAWAI_LIST, id);
   if(!p) return;
+  if(accountHasLockedRole(p)){ toast('Akun "' + p.nama + '" adalah akun sistem & tidak dapat dinonaktifkan.'); return; }
   p.loginStatus = 'DEACTIVATED';
   pegawaiSaveList(PEGAWAI_LIST);
   renderTabBar();

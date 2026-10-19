@@ -71,7 +71,13 @@ function rbacAllIds(catalog){
   return ids;
 }
 
+// Role "Super Admin" (id 0) bersifat bawaan sistem & terkunci (locked: true) - akses penuh ke
+// SELURUH menu Web & Mobile, selalu ditampilkan paling atas di master-rbac.html, dan TIDAK bisa
+// di-Edit/Hapus lewat UI (lihat guard `r.locked` di master-rbac.html & master-rbac-edit.html).
+var RBAC_SUPERADMIN_ROLE = { id: 0, kode: 'ROL-00', nama: 'Super Admin', akses: ['Web', 'Mobile'], permissions: rbacAllIds(WEB_MENU_CATALOG).concat(rbacAllIds(MOBILE_MENU_CATALOG)), locked: true, createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' };
+
 var RBAC_DEFAULT_ROLES = [
+  RBAC_SUPERADMIN_ROLE,
   { id: 1, kode: 'ROL-01', nama: 'Ketua', akses: ['Web'], permissions: rbacAllIds(WEB_MENU_CATALOG), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' },
   { id: 2, kode: 'ROL-02', nama: 'Administrator', akses: ['Web'], permissions: rbacAllIds(WEB_MENU_CATALOG), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' },
   { id: 3, kode: 'ROL-03', nama: 'Anggota', akses: ['Mobile'], permissions: rbacAllIds(MOBILE_MENU_CATALOG), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' }
@@ -82,7 +88,15 @@ function rbacLoadRoles(){
     var raw = localStorage.getItem(RBAC_STORAGE_KEY);
     if(raw){
       var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
+      if(Array.isArray(parsed) && parsed.length){
+        // Migrasi non-destruktif: browser dgn data lama (sebelum role Super Admin ditambahkan)
+        // dapat role ini disisipkan di urutan pertama, tanpa menghapus role custom yg sudah dibuat.
+        if(!parsed.some(function(r){ return r.locked; })){
+          parsed.unshift(JSON.parse(JSON.stringify(RBAC_SUPERADMIN_ROLE)));
+          rbacSaveRoles(parsed);
+        }
+        return parsed;
+      }
     }
   } catch(e){}
   var seed = JSON.parse(JSON.stringify(RBAC_DEFAULT_ROLES));

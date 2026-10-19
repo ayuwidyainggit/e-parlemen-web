@@ -60,9 +60,16 @@ var PEGAWAI_STORAGE_KEY = 'ep_master_pegawai_list';
 // browser yang masih menyimpan data lama di localStorage otomatis di-reseed, tanpa perlu
 // localStorage.clear() manual. Edit yang sudah dibuat lewat form tetap tersimpan selama versi
 // seed tidak berubah.
-var PEGAWAI_SEED_VERSION = 10;
+var PEGAWAI_SEED_VERSION = 11;
 var PEGAWAI_VERSION_KEY = 'ep_master_pegawai_seed_version';
 var PEGAWAI_DEFAULT_LIST = [
+  // Akun sistem Super Admin - dipasangkan dengan role terkunci RBAC_SUPERADMIN_ROLE (id 0,
+  // lihat rbac-data.js). Tidak terikat Fraksi/Dapil/Unit Type/Jabatan manapun (akun sistem,
+  // bukan pegawai riil) - akun ini langsung Aktif & bisa login tanpa verifikasi.
+  { id: 86, tipePegawai: 'ASN', nama: 'Super Admin', nik: '0000000000000086', nip: 'SUPERADMIN-0001', alamat: '', hp: '', jabatanId: null, roleId: 0, fraksiId: null, partaiId: null, dapilId: null, email: 'superadmin@eparlemen.test', loginStatus: 'ACTIVE', password: 'superadmin123', unitTypeId: null,
+    statusKepegawaian: null, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
+    tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
+    assignments: [] },
   { id: 1, tipePegawai: 'Politisi', nama: 'NARISQA', nik: '0000000000000001', nip: 'DPRD-AGT-0001', alamat: '', hp: '', jabatanId: 'b80c6030-b60f-511a-b69a-e1fcaf15ef9a', roleId: 3, roleIds: [1, 3], fraksiId: 2, partaiId: '987362f7-493a-4508-977f-45637f3a175c', dapilId: 'DAPIL-1', email: 'narisqa@dprd-magelangkota.go.id', loginStatus: 'ACTIVE', password: 'rahasia123', unitTypeId: 'f14157bb-d374-579c-a364-344b20f95539',
     statusKepegawaian: null, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
