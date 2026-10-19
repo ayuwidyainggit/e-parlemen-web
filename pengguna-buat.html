@@ -313,13 +313,6 @@ a{color:inherit;}
             <div id="roleAkunList" style="margin-top:8px;"></div>
           </div>
 
-          <div class="btn-row">
-            <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
-            <button type="button" class="btn btn-primary" onclick="nextStep()">Lanjut</button>
-          </div>
-        </div>
-
-        <div class="step-panel" id="stepPanel5">
           <div class="card">
             <div class="section-title">Password Akun</div>
             <div class="hint">Akun yang dibuat admin langsung berstatus <strong>Aktif</strong> &mdash; tidak perlu verifikasi. Verifikasi hanya berlaku untuk fitur reset kata sandi (Lupa Kata Sandi).</div>
@@ -333,7 +326,7 @@ a{color:inherit;}
           </div>
         </div>
 
-        <div class="step-panel" id="stepPanel6">
+        <div class="step-panel" id="stepPanel5">
           <div class="card">
             <div class="section-head">
               <div class="section-title">Tipe &amp; Data Pegawai</div>
@@ -360,17 +353,10 @@ a{color:inherit;}
 
           <div class="card">
             <div class="section-head">
-              <div class="section-title">Role Akun</div>
+              <div class="section-title">Peran dan Kata Sandi</div>
               <button type="button" class="btn btn-outline btn-sm" onclick="editStep(4)">Edit</button>
             </div>
             <div id="ringkasanRole"></div>
-          </div>
-
-          <div class="card">
-            <div class="section-head">
-              <div class="section-title">Password Akun</div>
-              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(5)">Edit</button>
-            </div>
             <div id="ringkasanPassword"></div>
           </div>
 
@@ -410,7 +396,7 @@ var currentStep = 1;
 var assignmentsDraft = [];
 var rolesDraft = [];
 
-var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Role Akun', 'Password Akun', 'Ringkasan'];
+var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Peran dan Kata Sandi', 'Ringkasan'];
 var TOTAL_STEPS = STEP_LABELS.length;
 function renderStepper(){
   var html = '';
@@ -463,9 +449,6 @@ function validateStep(n){
   }
   if(n === 4){
     if(!rolesDraft.length){ toast('Role wajib dipilih, minimal 1'); return false; }
-    return true;
-  }
-  if(n === 5){
     var pass = document.getElementById('fPassword').value;
     var confirm = document.getElementById('fPasswordConfirm').value;
     if(!pass || !confirm){ toast('Password & Konfirmasi Password wajib diisi'); return false; }

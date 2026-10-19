@@ -177,7 +177,7 @@ a{color:inherit;}
 
       <div class="card" id="groupDewanBio">
         <div class="section-title">Partai &amp; Fraksi</div>
-        <div class="hint">Partai menentukan Fraksi secara otomatis. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut.</div>
+        <div class="hint">Partai menentukan Fraksi secara otomatis. Lengkapi Jabatan &amp; Role di dalam Fraksi, lalu klik "Tambah Penempatan Fraksi" &mdash; hanya 1 penempatan Fraksi yang bisa aktif sekaligus.</div>
         <div class="field"><label>Partai</label>
           <select id="fPartai" onchange="handlePartaiChange()"></select>
         </div>
@@ -196,6 +196,13 @@ a{color:inherit;}
           </div>
           <div class="field"><label>Platform Akses <span class="opt">(otomatis dari Role)</span></label><input type="text" id="fFraksiPlatformDisplay" disabled></div>
         </div>
+        <div class="btn-row" style="margin-bottom:18px;">
+          <button type="button" class="btn btn-outline" id="btnTambahFraksi" onclick="addFraksiAssignmentEntry()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Penempatan Fraksi</button>
+        </div>
+
+        <div class="section-title" style="font-size:12.5px;">Daftar Penempatan Fraksi</div>
+        <div class="hint" style="margin:6px 0 0;">Pengguna DEWAN hanya boleh memiliki 1 penempatan Fraksi aktif &mdash; hapus penempatan yang ada dulu sebelum menambah yang baru (mis. saat pindah partai/fraksi).</div>
+        <div id="fraksiAssignmentList" style="margin-top:8px;"></div>
       </div>
 
       <div class="card">
@@ -266,6 +273,7 @@ var UNIT_TYPE_LIST = unitTypeLoadList();
 var current = pegawaiFindById(PEGAWAI_LIST, pegawaiId);
 var assignmentsDraft = []; // penempatan selain Fraksi (ditampilkan di "Daftar Penempatan")
 var fraksiAssignmentExisting = null; // { jabatanId, roleId, mulai, sk } milik penempatan di Fraksi, kalau ketemu
+var fraksiAssignmentDraft = null; // null = belum/tidak ada penempatan Fraksi; object = 1 penempatan Fraksi (maks 1)
 
 if(!current || !current.loginStatus){
   document.getElementById('content').innerHTML = '<div class="card">Akun tidak ditemukan. <a href="pengguna.html" style="color:var(--green);font-weight:700;">Kembali ke User Management</a></div>';
@@ -400,6 +408,49 @@ function handleFraksiRoleChange(){
   document.getElementById('fFraksiPlatformDisplay').value = role && role.akses.length ? role.akses.join(', ') : '—';
 }
 
+function addFraksiAssignmentEntry(){
+  if(fraksiAssignmentDraft){ toast('Fraksi hanya bisa 1 penempatan - hapus dulu sebelum menambah baru'); return; }
+
+  var partaiId = document.getElementById('fPartai').value;
+  var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === partaiId; });
+  if(!partaiId || !fraksi){ toast('Pilih Partai yang sudah terdaftar di Master Fraksi'); return; }
+
+  var category = document.getElementById('fFraksiJabatanCategory').value;
+  var jabatanId = document.getElementById('fFraksiJabatan').value;
+  var roleId = parseInt(document.getElementById('fFraksiRole').value, 10);
+  if(!jabatanId || !roleId){ toast('Lengkapi Jabatan & Role di dalam Fraksi sebelum menambah'); return; }
+
+  var jab = jabatanFindById(jabatanLoadList(), jabatanId);
+  var role = rbacLoadRoles().find(function(r){ return r.id === roleId; });
+  var preserve = fraksiAssignmentExisting && current.partaiId === partaiId;
+
+  fraksiAssignmentDraft = {
+    partaiId: partaiId, fraksiId: fraksi.id, fraksiLabel: fraksi.nama,
+    category: category, jabatanId: jabatanId, jabatanLabel: jab ? jabatanLabel(jab) : '—',
+    roleId: roleId, roleLabel: role ? role.nama : '—',
+    mulai: preserve ? fraksiAssignmentExisting.mulai : null, sk: preserve ? fraksiAssignmentExisting.sk : null
+  };
+  renderFraksiAssignmentList();
+}
+function removeFraksiAssignmentEntry(){
+  fraksiAssignmentDraft = null;
+  renderFraksiAssignmentList();
+}
+function renderFraksiAssignmentList(){
+  var wrap = document.getElementById('fraksiAssignmentList');
+  var btn = document.getElementById('btnTambahFraksi');
+  btn.disabled = !!fraksiAssignmentDraft;
+  btn.style.opacity = fraksiAssignmentDraft ? '.5' : '1';
+  btn.style.cursor = fraksiAssignmentDraft ? 'not-allowed' : 'pointer';
+  if(!fraksiAssignmentDraft){
+    wrap.innerHTML = '<div class="hint" style="margin:0;">Belum ada penempatan Fraksi.</div>';
+    return;
+  }
+  var a = fraksiAssignmentDraft;
+  var mulaiBadge = a.mulai ? '<span class="badge badge-neutral">mulai ' + a.mulai + '</span>' : '<span class="badge badge-success">baru</span>';
+  wrap.innerHTML = '<div class="assign-item"><div class="info"><span class="t">' + a.fraksiLabel + ' ' + mulaiBadge + '</span>' + a.jabatanLabel + ' &middot; Role: ' + a.roleLabel + '</div><button type="button" class="remove-btn" onclick="removeFraksiAssignmentEntry()">Hapus</button></div>';
+}
+
 function populateDapilOptions(){
   var sel = document.getElementById('fDapil');
   sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
@@ -470,6 +521,20 @@ function init(){
     populateFraksiJabatanCategoryOptions();
     populateFraksiRoleOptions();
     populateDapilOptions();
+
+    if(current.fraksiId){
+      var fraksi0 = fraksiLoadList().find(function(f){ return f.id === current.fraksiId; });
+      fraksiAssignmentDraft = {
+        partaiId: current.partaiId, fraksiId: current.fraksiId, fraksiLabel: fraksi0 ? fraksi0.nama : '—',
+        category: fraksiAssignmentExisting ? ((jabatanFindById(jabatanLoadList(), fraksiAssignmentExisting.jabatanId) || {}).category || 'KELOMPOK') : 'KELOMPOK',
+        jabatanId: fraksiAssignmentExisting ? fraksiAssignmentExisting.jabatanId : null,
+        jabatanLabel: fraksiAssignmentExisting ? fraksiAssignmentExisting.jabatan : '—',
+        roleId: fraksiAssignmentExisting ? fraksiAssignmentExisting.roleId : current.roleId,
+        roleLabel: roleNameOf(fraksiAssignmentExisting ? fraksiAssignmentExisting.roleId : current.roleId),
+        mulai: fraksiAssignmentExisting ? fraksiAssignmentExisting.mulai : null, sk: fraksiAssignmentExisting ? fraksiAssignmentExisting.sk : null
+      };
+    }
+    renderFraksiAssignmentList();
   }
 }
 
@@ -489,24 +554,23 @@ function submitForm(){
 
   var fraksiAssignment = null;
   if(current.tipePegawai === 'Politisi'){
-    current.partaiId = document.getElementById('fPartai').value;
-    var partai = partaiById(current.partaiId);
-    var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === current.partaiId; });
-    current.fraksiId = fraksi ? fraksi.id : null;
     current.dapilId = document.getElementById('fDapil').value;
 
-    var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
-    var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
-    var fraksiRoleId = parseInt(document.getElementById('fFraksiRole').value, 10);
-    if(fraksiJabatanId && fraksiRoleId){
-      var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
-      var fraksiRole = rbacLoadRoles().find(function(r){ return r.id === fraksiRoleId; });
+    if(fraksiAssignmentDraft){
+      current.partaiId = fraksiAssignmentDraft.partaiId;
+      current.fraksiId = fraksiAssignmentDraft.fraksiId;
+      var partai = partaiById(fraksiAssignmentDraft.partaiId);
+      var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
       fraksiAssignment = {
-        unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksi ? fraksi.nama : (fraksiUnitType ? unitTypeLabel(fraksiUnitType) : '—'),
-        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—',
-        roleId: fraksiRoleId, roleLabel: fraksiRole ? fraksiRole.nama : '—',
-        mulai: fraksiAssignmentExisting ? fraksiAssignmentExisting.mulai : null, sk: fraksiAssignmentExisting ? fraksiAssignmentExisting.sk : null
+        unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksiAssignmentDraft.fraksiLabel,
+        category: fraksiAssignmentDraft.category, jabatanId: fraksiAssignmentDraft.jabatanId, jabatanLabel: fraksiAssignmentDraft.jabatanLabel,
+        roleId: fraksiAssignmentDraft.roleId, roleLabel: fraksiAssignmentDraft.roleLabel,
+        mulai: fraksiAssignmentDraft.mulai, sk: fraksiAssignmentDraft.sk
       };
+    } else {
+      // Dihapus lewat "Hapus" di Daftar Penempatan Fraksi - pengguna jadi tanpa Partai/Fraksi.
+      current.partaiId = null;
+      current.fraksiId = null;
     }
   } else {
     current.statusKepegawaian = document.getElementById('fStatusKepegawaian').value;
