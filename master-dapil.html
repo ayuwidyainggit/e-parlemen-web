@@ -95,6 +95,10 @@ tr:hover td{background:#fafaf7;}
 
 .chip-list{display:flex;flex-wrap:wrap;gap:5px;max-width:260px;}
 
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-bar label{font-size:11.8px;font-weight:800;color:var(--ink);}
+.filter-bar select{padding:9px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);min-width:220px;}
+
 .btn-expand .ic-svg{transition:transform .15s;}
 .btn-expand.is-open .ic-svg{transform:rotate(180deg);}
 .dapil-detail-row td{padding:0 16px 16px;border-bottom:1px solid var(--border);}
@@ -173,6 +177,11 @@ tr:hover td{background:#fafaf7;}
     <div class="content">
       <div class="hint" style="margin-bottom:16px;">Data referensi Daerah Pemilihan (Dapil) berikut struktur wilayah (Kecamatan &amp; Kelurahan/Desa) dan pemetaan Pegawai. Satu Dapil dapat memiliki banyak Pegawai, namun satu Pegawai hanya dapat terdaftar pada satu Dapil.</div>
 
+      <div class="filter-bar">
+        <label for="filterPeriode">Filter Periode</label>
+        <select id="filterPeriode" onchange="handleFilterChange()"></select>
+      </div>
+
       <div class="stats-grid">
         <div class="stat-card">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg></div>
@@ -204,6 +213,7 @@ tr:hover td{background:#fafaf7;}
 </div>
 
 <div class="toast" id="toast"></div>
+<script src="periode-data.js"></script>
 <script src="dapil-data.js"></script>
 <script src="pegawai-data.js"></script>
 <script>
@@ -215,6 +225,19 @@ function toast(msg){
 
 var DAPIL_LIST = dapilLoadList();
 var PEGAWAI_LIST = pegawaiLoadList();
+
+function populateFilterOptions(){
+  var periodeList = periodeLoadList();
+  var sel = document.getElementById('filterPeriode');
+  sel.innerHTML = '<option value="">Semua Periode</option>'
+    + periodeList.map(function(p){ return '<option value="' + p.id + '">' + p.nama + '</option>'; }).join('');
+  var aktif = periodeList.find(function(p){ return p.status === 'Aktif'; });
+  sel.value = aktif ? aktif.id : '';
+}
+function handleFilterChange(){
+  renderAllRows();
+  updateStats();
+}
 
 function renderAllRows(){
   var tbody = document.getElementById('tbodyDapil');
@@ -271,6 +294,7 @@ function updateStats(){
   document.getElementById('statPegawaiMapped').textContent = mapped + '/' + politisiList.length;
 }
 
+populateFilterOptions();
 renderAllRows();
 updateStats();
 </script>
