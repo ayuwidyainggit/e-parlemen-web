@@ -58,34 +58,50 @@ function dapilAssignHistoryNextId(list){
 
 // Bagian 2: Jadwal Penugasan Reses & Kunjungan Dapil - admin menjadwalkan SIAPA
 // bertugas reses/kunjungan dapil DI MANA & KAPAN; Anggota mencatat realisasinya
-// lewat aplikasi mobile (reses-buat.html). Jenis & vokabuler status disamakan dengan
-// eparlemen-mobile/reses-kunjungan.html & reses-buat.html (RESES / KUNJUNGAN,
-// Draft/Terjadwal/Selesai/Batal) - di sini "Sudah Lapor" dipakai utk menandai jadwal
-// yang laporannya sudah tercatat (lihat juga Laporan Dapil & Reses).
+// lewat aplikasi mobile. Jenis tetap RESES / KUNJUNGAN.
+// Status (j.status) HANYA diisi 'Draft' (belum di-submit admin) atau 'Submit' - dua
+// state yang dipilih manual lewat form di penugasan-dapil-reses.html. Status yang TAMPIL ke
+// user dihitung otomatis oleh jadwalEffectiveStatus() dari tanggalRencana vs hari ini: masih
+// 'Submit' apa adanya kalau tanggal rencana >14 hari lagi, jadi "Dalam Proses Penugasan" kalau
+// tinggal <=14 hari lagi, jadi "Lewat Masa Penugasan" kalau sudah lewat tanpa laporan, atau
+// jadi "Selesai" kapan saja field j.submittedByMember true (salah satu Anggota yang ditugaskan
+// sudah submit realisasi lewat aplikasi mobile - field simulasi, tidak ada kontrol UI admin
+// untuk mengubahnya). Tombol Edit/Delete di halaman admin hanya tampil selama status yang
+// TAMPIL masih 'Draft'/'Submit' (terkunci begitu sudah Dalam Proses Penugasan ke atas).
 var RESES_JADWAL_STORAGE_KEY = 'ep_jadwal_penugasan_reses';
+// Naikkan versi ini setiap kali RESES_JADWAL_DEFAULT_LIST diganti (mis. skema status baru)
+// supaya browser yang masih menyimpan data lama di localStorage otomatis di-reseed.
+var RESES_JADWAL_SEED_VERSION = 4;
+var RESES_JADWAL_VERSION_KEY = 'ep_jadwal_penugasan_reses_seed_version';
 var RESES_JADWAL_DEFAULT_LIST = [
-  { id: 1, personId: 10, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-27', lokasiRencana: 'Balai Desa Kedungsari, Kec. Magelang Utara', catatan: '', status: 'Sudah Lapor', createdAt: '2026-08-10T09:00:00' },
-  { id: 2, personId: 1, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-28', lokasiRencana: 'Balai Kelurahan Wates, Kec. Magelang Utara', catatan: '', status: 'Sudah Lapor', createdAt: '2026-08-10T09:00:00' },
-  { id: 3, personId: 2, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-29', lokasiRencana: 'Aula Kecamatan Magelang Tengah', catatan: '', status: 'Terjadwal', createdAt: '2026-08-10T09:00:00' },
-  { id: 4, personId: 3, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-25', lokasiRencana: 'Balai Desa Tidar Selatan', catatan: '', status: 'Belum Lapor', createdAt: '2026-08-05T09:00:00' },
-  { id: 5, personId: 8, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-10', lokasiRencana: 'Pasar Rejowinangun, Kec. Magelang Tengah', catatan: 'Tindak lanjut aspirasi penataan lapak PKL', status: 'Terjadwal', createdAt: '2026-08-20T09:00:00' },
-  { id: 6, personId: 13, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-05', lokasiRencana: 'Puskesmas Magelang Utara', catatan: '', status: 'Sudah Lapor', createdAt: '2026-08-18T09:00:00' },
-  { id: 7, personId: 17, jenis: 'RESES', periodeResesId: 4, tanggalRencana: '2027-01-13', lokasiRencana: 'Balai Desa Jurangombo Utara', catatan: '', status: 'Terjadwal', createdAt: '2026-12-22T09:00:00' },
-  { id: 8, personId: 23, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-30', lokasiRencana: 'Balai Desa Rejowinangun Utara', catatan: 'Dibatalkan karena bertepatan dengan agenda Rapat Paripurna', status: 'Batal', createdAt: '2026-08-10T09:00:00' },
-  { id: 9, personId: 7, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-26', lokasiRencana: 'Balai Desa Jurangombo Selatan', catatan: '', status: 'Sudah Lapor', createdAt: '2026-08-10T09:00:00' },
-  { id: 10, personId: 19, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-12', lokasiRencana: 'Proyek Drainase Kel. Wates', catatan: '', status: 'Terjadwal', createdAt: '2026-08-25T09:00:00' }
+  { id: 1, personId: 10, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-27', lokasiRencana: 'Balai Desa Kedungsari, Kec. Magelang Utara', catatan: '', status: 'Submit', submittedByMember: true, createdAt: '2026-08-10T09:00:00' },
+  { id: 2, personId: 1, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-28', lokasiRencana: 'Balai Kelurahan Wates, Kec. Magelang Utara', catatan: '', status: 'Submit', submittedByMember: true, createdAt: '2026-08-10T09:00:00' },
+  { id: 3, personId: 2, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-29', lokasiRencana: 'Aula Kecamatan Magelang Tengah', catatan: '', status: 'Submit', submittedByMember: false, createdAt: '2026-08-10T09:00:00' },
+  { id: 4, personId: 3, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-25', lokasiRencana: 'Balai Desa Tidar Selatan', catatan: '', status: 'Submit', submittedByMember: false, createdAt: '2026-08-05T09:00:00' },
+  { id: 5, personId: 8, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-10', lokasiRencana: 'Pasar Rejowinangun, Kec. Magelang Tengah', catatan: 'Tindak lanjut aspirasi penataan lapak PKL', status: 'Draft', submittedByMember: false, createdAt: '2026-08-20T09:00:00' },
+  { id: 6, personId: 13, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-05', lokasiRencana: 'Puskesmas Magelang Utara', catatan: '', status: 'Submit', submittedByMember: true, createdAt: '2026-08-18T09:00:00' },
+  { id: 7, personId: 17, jenis: 'RESES', periodeResesId: 4, tanggalRencana: '2027-01-13', lokasiRencana: 'Balai Desa Jurangombo Utara', catatan: '', status: 'Submit', submittedByMember: false, createdAt: '2026-12-22T09:00:00' },
+  { id: 8, personId: 23, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-30', lokasiRencana: 'Balai Desa Rejowinangun Utara', catatan: 'Ditinjau ulang karena bertepatan dengan agenda Rapat Paripurna', status: 'Draft', submittedByMember: false, createdAt: '2026-08-10T09:00:00' },
+  { id: 9, personId: 7, jenis: 'RESES', periodeResesId: 3, tanggalRencana: '2026-08-26', lokasiRencana: 'Balai Desa Jurangombo Selatan', catatan: '', status: 'Submit', submittedByMember: true, createdAt: '2026-08-10T09:00:00' },
+  { id: 10, personId: 19, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-09-12', lokasiRencana: 'Proyek Drainase Kel. Wates', catatan: '', status: 'Submit', submittedByMember: false, createdAt: '2026-08-25T09:00:00' },
+  { id: 11, personId: 5, jenis: 'KUNJUNGAN', periodeResesId: null, tanggalRencana: '2026-11-20', lokasiRencana: 'Posyandu Kel. Gelangan, Kec. Magelang Tengah', catatan: 'Contoh penugasan yang sudah di-Submit, tanggal rencana masih jauh (lebih dari 14 hari lagi) - tampil sebagai "Submit"', status: 'Submit', submittedByMember: false, createdAt: '2026-10-05T09:00:00' },
+  { id: 12, personId: 20, jenis: 'RESES', periodeResesId: 4, tanggalRencana: '2026-10-28', lokasiRencana: 'Balai Desa Kramat Selatan, Kec. Magelang Utara', catatan: 'Contoh penugasan yang sudah di-Submit, tanggal rencana tinggal <=14 hari lagi & belum ada laporan dari Anggota - tampil sebagai "Dalam Proses Penugasan"', status: 'Submit', submittedByMember: false, createdAt: '2026-10-10T09:00:00' }
 ];
 
 function jadwalResesLoadList(){
   try{
-    var raw = localStorage.getItem(RESES_JADWAL_STORAGE_KEY);
-    if(raw){
-      var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
+    var storedVersion = localStorage.getItem(RESES_JADWAL_VERSION_KEY);
+    if(storedVersion === String(RESES_JADWAL_SEED_VERSION)){
+      var raw = localStorage.getItem(RESES_JADWAL_STORAGE_KEY);
+      if(raw){
+        var parsed = JSON.parse(raw);
+        if(Array.isArray(parsed) && parsed.length) return parsed;
+      }
     }
   } catch(e){}
   var seed = JSON.parse(JSON.stringify(RESES_JADWAL_DEFAULT_LIST));
   jadwalResesSaveList(seed);
+  try{ localStorage.setItem(RESES_JADWAL_VERSION_KEY, String(RESES_JADWAL_SEED_VERSION)); } catch(e){}
   return seed;
 }
 function jadwalResesSaveList(list){

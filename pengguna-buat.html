@@ -95,7 +95,15 @@ a{color:inherit;}
 .btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
 .btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
 .btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-light));color:var(--green-dark);}
+.btn-sm{padding:7px 13px;font-size:11.5px;}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+.section-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:4px;}
+.section-head .section-title{margin:0;}
+.ringkasan-row{display:flex;justify-content:space-between;gap:14px;padding:8px 0;border-bottom:1px dashed var(--border);font-size:12.5px;}
+.ringkasan-row:last-child{border-bottom:none;}
+.ringkasan-row .k{color:var(--muted);flex-shrink:0;}
+.ringkasan-row .v{font-weight:700;text-align:right;}
 
 .info-box{background:var(--info-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#2a5583;display:flex;gap:9px;align-items:flex-start;line-height:1.55;margin-bottom:18px;}
 .success-box{background:var(--success-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#1c6b3d;display:flex;gap:9px;align-items:flex-start;line-height:1.55;margin-bottom:18px;}
@@ -321,6 +329,53 @@ a{color:inherit;}
 
           <div class="btn-row">
             <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
+            <button type="button" class="btn btn-primary" onclick="nextStep()">Lanjut ke Ringkasan</button>
+          </div>
+        </div>
+
+        <div class="step-panel" id="stepPanel6">
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title">Tipe &amp; Data Pegawai</div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(1)">Edit</button>
+            </div>
+            <div id="ringkasanDataPegawai"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title">Fraksi, Jabatan &amp; Penempatan</div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(2)">Edit</button>
+            </div>
+            <div id="ringkasanFraksiJabatan"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title">Assignment Dapil</div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(3)">Edit</button>
+            </div>
+            <div id="ringkasanDapil"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title">Role Akun</div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(4)">Edit</button>
+            </div>
+            <div id="ringkasanRole"></div>
+          </div>
+
+          <div class="card">
+            <div class="section-head">
+              <div class="section-title">Password Akun</div>
+              <button type="button" class="btn btn-outline btn-sm" onclick="editStep(5)">Edit</button>
+            </div>
+            <div id="ringkasanPassword"></div>
+          </div>
+
+          <div class="btn-row">
+            <button type="button" class="btn btn-outline" onclick="prevStep()">Kembali</button>
             <button type="button" class="btn btn-primary" onclick="submitForm()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg> Buat Akun</button>
           </div>
         </div>
@@ -355,7 +410,7 @@ var currentStep = 1;
 var assignmentsDraft = [];
 var rolesDraft = [];
 
-var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Role Akun', 'Password Akun'];
+var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Role Akun', 'Password Akun', 'Ringkasan'];
 var TOTAL_STEPS = STEP_LABELS.length;
 function renderStepper(){
   var html = '';
@@ -372,6 +427,7 @@ function showStep(n){
     document.getElementById('stepPanel' + i).classList.toggle('active', i === n);
   }
   renderStepper();
+  if(n === TOTAL_STEPS) renderRingkasan();
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function nextStep(){
@@ -380,6 +436,12 @@ function nextStep(){
 }
 function prevStep(){
   if(currentStep > 1) showStep(currentStep - 1);
+}
+// Dipanggil dari tombol "Edit" di Ringkasan (step terakhir) - lompat langsung ke step terkait
+// tanpa validasi (konsisten dgn prevStep). Untuk kembali ke Ringkasan, user tetap harus klik
+// "Lanjut" berurutan dari step yang diedit supaya step-step setelahnya tervalidasi ulang.
+function editStep(n){
+  showStep(n);
 }
 function validateStep(n){
   if(n === 1){
@@ -576,9 +638,10 @@ renderRoleAkunList();
 setTipe('Politisi');
 renderStepper();
 
-function submitForm(){
-  if(!validateStep(TOTAL_STEPS)) return;
-
+// Membaca field isian Step 1-3 & meresolusi Fraksi/Partai/Dapil - dipakai BERSAMA oleh
+// renderRingkasan() (preview, read-only) & submitForm() (simpan sungguhan) supaya logic
+// resolusi Fraksi/Partai/Unit Type FRAKSI tidak dobel & berisiko drift antar keduanya.
+function gatherStepData(){
   var nama = document.getElementById('fNama').value.trim();
   var nip = document.getElementById('fNip').value.trim();
   var nik = document.getElementById('fNik').value.trim();
@@ -586,14 +649,16 @@ function submitForm(){
   var alamat = document.getElementById('fAlamat').value.trim();
 
   var partaiId = null, fraksiId = null, dapilId = null, statusKepegawaian = null;
-  var fraksiAssignment = null;
+  var fraksiAssignment = null, fraksiLabel = null, fraksiJabatanLabel = null, dapilLabel = null;
   if(currentTipe === 'Politisi'){
     var fraksiSelectId = document.getElementById('fFraksi').value;
     var fraksi = fraksiLoadList().find(function(f){ return String(f.id) === fraksiSelectId; });
     fraksiId = fraksi ? fraksi.id : null;
     partaiId = fraksi ? fraksi.partaiId : null;
+    fraksiLabel = fraksi ? fraksiOptionLabel(fraksi) : null;
     var partai = partaiById(partaiId);
     dapilId = document.getElementById('fDapil').value;
+    dapilLabel = dapilId ? dapilNamaByKode(dapilId) : null;
 
     // Jabatan pengguna ini di dalam Fraksi-nya sendiri (mis. Ketua/Sekretaris Fraksi) - unit type
     // Fraksi dicari lewat kecocokan kode Partai vs kode Unit Type FRAKSI (lihat unit-type-data.js).
@@ -601,9 +666,10 @@ function submitForm(){
     var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
     if(fraksiJabatanId){
       var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
+      fraksiJabatanLabel = fraksiJab ? jabatanLabel(fraksiJab) : null;
       fraksiAssignment = {
         unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksi ? fraksi.nama : (fraksiUnitType ? unitTypeLabel(fraksiUnitType) : '—'),
-        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—'
+        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJabatanLabel || '—'
       };
     }
   } else {
@@ -613,7 +679,60 @@ function submitForm(){
   // Jabatan & Penempatan (AKD) bersifat opsional - boleh kosong & dilengkapi menyusul lewat Edit
   // Account. Jabatan di dalam Fraksi (jika ada) ditaruh di urutan pertama sebagai penempatan utama.
   var allAssignments = fraksiAssignment ? [fraksiAssignment].concat(assignmentsDraft) : assignmentsDraft.slice();
-  var primary = allAssignments.length ? allAssignments[0] : null;
+
+  return {
+    nama: nama, nip: nip, nik: nik, hp: hp, alamat: alamat,
+    partaiId: partaiId, fraksiId: fraksiId, dapilId: dapilId, dapilLabel: dapilLabel,
+    statusKepegawaian: statusKepegawaian, fraksiLabel: fraksiLabel, fraksiJabatanLabel: fraksiJabatanLabel,
+    allAssignments: allAssignments
+  };
+}
+
+function ringkasanRow(k, v){
+  return '<div class="ringkasan-row"><span class="k">' + k + '</span><span class="v">' + v + '</span></div>';
+}
+function renderRingkasan(){
+  var data = gatherStepData();
+  var tipeLabel = currentTipe === 'Politisi' ? 'DEWAN (Politisi / Anggota)' : 'SEKWAN (ASN / Sekretariat)';
+  var nipLabel = document.getElementById('lblNip').textContent;
+
+  var bio = ringkasanRow('Tipe Pengguna', tipeLabel)
+    + ringkasanRow('Nama Lengkap', data.nama || '—')
+    + ringkasanRow(nipLabel, data.nip || '—')
+    + ringkasanRow('NIK', data.nik || '—')
+    + ringkasanRow('No. HP', data.hp || '—')
+    + ringkasanRow('Alamat', data.alamat || '—');
+  if(currentTipe === 'ASN'){
+    bio += ringkasanRow('Status Kepegawaian', data.statusKepegawaian || '—');
+  }
+  document.getElementById('ringkasanDataPegawai').innerHTML = bio;
+
+  var fraksiHtml = currentTipe === 'Politisi'
+    ? ringkasanRow('Fraksi', data.fraksiLabel || '—') + ringkasanRow('Jabatan di Fraksi', data.fraksiJabatanLabel || '—')
+    : '<div class="hint" style="margin:0;">Tidak berlaku untuk SEKWAN.</div>';
+  if(assignmentsDraft.length){
+    fraksiHtml += '<div class="section-title" style="font-size:12px;margin-top:14px;">Jabatan &amp; Penempatan Lain</div>'
+      + assignmentsDraft.map(function(a){ return ringkasanRow(JABATAN_CATEGORY_LABEL[a.category] + ' &middot; ' + a.unitTypeLabel, a.jabatanLabel); }).join('');
+  }
+  document.getElementById('ringkasanFraksiJabatan').innerHTML = fraksiHtml;
+
+  document.getElementById('ringkasanDapil').innerHTML = currentTipe === 'Politisi'
+    ? ringkasanRow('Dapil', data.dapilLabel || '— (belum dipilih)')
+    : '<div class="hint" style="margin:0;">Assignment Dapil tidak diperlukan untuk SEKWAN.</div>';
+
+  document.getElementById('ringkasanRole').innerHTML = rolesDraft.length
+    ? rolesDraft.map(function(r){ return ringkasanRow(r.roleLabel, 'Platform: ' + r.platform); }).join('')
+    : '<div class="hint" style="margin:0;">Belum ada Role ditambahkan.</div>';
+
+  var pass = document.getElementById('fPassword').value;
+  document.getElementById('ringkasanPassword').innerHTML = ringkasanRow('Password', pass ? '&bull;&bull;&bull;&bull;&bull;&bull; (sudah diisi)' : '— (belum diisi)');
+}
+
+function submitForm(){
+  if(!validateStep(TOTAL_STEPS)) return;
+
+  var data = gatherStepData();
+  var primary = data.allAssignments.length ? data.allAssignments[0] : null;
   var today = new Date().toISOString().slice(0, 10);
 
   var password = document.getElementById('fPassword').value;
@@ -629,12 +748,12 @@ function submitForm(){
   // & pengguna.html). Email masih dilengkapi menyusul lewat Edit Account.
   var list = pegawaiLoadList();
   var newPegawai = {
-    id: pegawaiNextId(list), tipePegawai: currentTipe, nama: nama, nik: nik || null, nip: nip, alamat: alamat, hp: hp,
-    jabatanId: primary ? primary.jabatanId : null, roleId: primaryRole ? primaryRole.roleId : null, fraksiId: fraksiId, partaiId: partaiId, dapilId: dapilId,
+    id: pegawaiNextId(list), tipePegawai: currentTipe, nama: data.nama, nik: data.nik || null, nip: data.nip, alamat: data.alamat, hp: data.hp,
+    jabatanId: primary ? primary.jabatanId : null, roleId: primaryRole ? primaryRole.roleId : null, fraksiId: data.fraksiId, partaiId: data.partaiId, dapilId: data.dapilId,
     email: null, loginStatus: 'ACTIVE', password: password, unitTypeId: primary ? primary.unitTypeId : null,
-    statusKepegawaian: statusKepegawaian, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
+    statusKepegawaian: data.statusKepegawaian, pangkat: null, golongan: null, tmtGolongan: null, tmtPertama: null,
     tanggalLahir: null, tempatLahir: null, jenisKelamin: null, agama: null, pendidikan: null, tahunLulus: null, foto: null,
-    assignments: allAssignments.map(function(a){
+    assignments: data.allAssignments.map(function(a){
       return { jabatanId: a.jabatanId, jabatan: a.jabatanLabel, kategori: a.category, unitTypeId: a.unitTypeId, unitKerja: a.unitTypeLabel, mulai: today, sk: null };
     })
   };
@@ -646,7 +765,7 @@ function submitForm(){
 
   var roleNama = rolesDraft.length ? rolesDraft.map(function(r){ return r.roleLabel; }).join(', ') : '—';
 
-  document.getElementById('sentNama').textContent = nama;
+  document.getElementById('sentNama').textContent = data.nama;
   document.getElementById('sentRole').textContent = roleNama;
 
   document.getElementById('formSection').style.display = 'none';

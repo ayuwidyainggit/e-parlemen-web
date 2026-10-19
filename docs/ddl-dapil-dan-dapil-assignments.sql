@@ -1,6 +1,12 @@
 -- DDL: tabel `dapils` (Daerah Pemilihan) + `dapil_assignments` (penugasan
 -- anggota DEWAN ke 1 dapil, per periode).
 --
+-- UPDATE: `dapil_assignments` belakangan DIBERI kolom `period_id` tambahan
+-- (denormalisasi utk query/laporan per periode) -- lihat migrasi terpisah
+-- docs/ddl-dapil-assignments-add-period-id.sql. Keputusan desain no. 1 di
+-- bawah ("periode didapat lewat join ke dapils") sudah tidak berlaku utuh;
+-- dibiarkan apa adanya di sini sbg riwayat keputusan awal.
+--
 -- KONTEKS: TRD (docs/trd-database-eparlemen.md, Bagian 9 poin 1) sudah
 -- mencatat gap ini -- kolom `users.electoral_district_id` ADA di DB tapi
 -- belum punya tabel referensi & belum punya FK (dicek langsung ke DB:
