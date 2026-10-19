@@ -55,6 +55,30 @@ a{color:inherit;}
 .menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
 .menu-toggle .ic-svg{width:22px;height:22px;}
 
+.role-switch{position:relative;}
+.role-switch-btn{display:flex;align-items:center;gap:7px;background:var(--neutral-bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:800;color:var(--ink);cursor:pointer;font-family:inherit;}
+.role-switch-btn .rs-dot{width:7px;height:7px;border-radius:50%;background:var(--success);flex-shrink:0;}
+.role-switch-btn .chev-ic{width:13px;height:13px;color:var(--muted);transition:transform .15s ease;}
+.role-switch-btn.open .chev-ic{transform:rotate(180deg);}
+.role-switch-dropdown{display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 14px 30px rgba(0,0,0,.16);min-width:250px;z-index:40;overflow:hidden;}
+.role-switch-dropdown.open{display:block;}
+.rs-dd-head{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;padding:12px 14px 6px;}
+.rs-option{display:flex;align-items:center;gap:8px;padding:10px 14px;cursor:pointer;}
+.rs-option:hover{background:var(--neutral-bg);}
+.rs-option.active{background:var(--success-bg);}
+.rs-option .rs-body{flex:1;min-width:0;}
+.rs-option .rs-name{font-size:12.5px;font-weight:800;color:var(--ink);}
+.rs-option .rs-meta{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.rs-option .rs-check{width:16px;height:16px;color:var(--success);flex-shrink:0;}
+.rs-dd-foot{padding:9px 14px;border-top:1px solid var(--border);font-size:10.5px;color:var(--muted);line-height:1.5;}
+
+.role-banner{display:none;align-items:flex-start;gap:10px;background:var(--warn-bg);color:#96590f;border-radius:12px;padding:12px 14px;font-size:12px;line-height:1.55;margin-bottom:18px;}
+.role-banner .ic-svg{width:17px;height:17px;flex-shrink:0;margin-top:1px;}
+
+.snav-item.snav-locked{opacity:.42;cursor:not-allowed;}
+.snav-item.snav-locked:hover{background:transparent;}
+.snav-item .lock-ic{margin-left:auto;width:13px;height:13px;flex-shrink:0;}
+
 .content{padding:24px 26px 60px;max-width:1280px;width:100%;}
 
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:22px;}
@@ -161,39 +185,39 @@ tr:hover td{background:#fafaf7;}
     </div>
     <nav class="sidebar-nav">
       <div class="snav-label">Menu Utama</div>
-      <a class="snav-item active" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
+      <a class="snav-item active" href="dashboard.html" data-menu-id="web-dashboard"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
       <div class="snav-label">Master Data</div>
-      <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
-      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
+      <a class="snav-item" href="master-periode.html" data-menu-id="web-master-periode"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
+      <a class="snav-item" href="master-jabatan.html" data-menu-id="web-master-jabatan"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
       <a class="snav-item" href="master-unit-type.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M16.5 13v7"/><path d="M13 16.5h7"/></svg> Master Unit Type</a>
-      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
-      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> User Management</a>
-      <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
-      <a class="snav-item" href="master-periode-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
-      <a class="snav-item" href="master-jenis-kegiatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
+      <a class="snav-item" href="master-rbac.html" data-menu-id="web-rbac"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
+      <a class="snav-item" href="pengguna.html" data-menu-id="web-akun-pengguna-mobile"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> User Management</a>
+      <a class="snav-item" href="master-dapil.html" data-menu-id="web-master-dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
+      <a class="snav-item" href="master-periode-reses.html" data-menu-id="web-periode-reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><circle cx="8.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/><circle cx="15.5" cy="14.5" r="1.2" fill="currentColor" stroke="none"/></svg> Periode Reses</a>
+      <a class="snav-item" href="master-jenis-kegiatan.html" data-menu-id="web-jenis-kegiatan"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1.3" fill="currentColor" stroke="none"/></svg> Jenis Kegiatan</a>
       <div class="snav-label">Report</div>
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
+      <a class="snav-item" href="penugasan-dapil-reses.html" data-menu-id="web-penugasan-dapil-reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses</a>
+      <a class="snav-item" href="laporan-dapil-reses.html#reses" data-menu-id="web-laporan-reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
+      <a class="snav-item" href="laporan-dapil-reses.html#dapil" data-menu-id="web-laporan-dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
+      <a class="snav-item" href="#" data-menu-id="web-approval-pokir"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="laporan-pokir.html" data-menu-id="web-laporan-pokir"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
       <div class="snav-label">Persuratan</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <a class="snav-item" href="#" data-menu-id="web-buat-surat"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="surat-keluar.html" data-menu-id="web-surat-keluar"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
       <div class="snav-label">Rapat</div>
-      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
-      <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
-      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="jadwal-rapat.html" data-menu-id="web-jadwal-rapat"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
+      <a class="snav-item" href="jadwal-rapat-buat.html" data-menu-id="web-create-rapat"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
+      <a class="snav-item" href="absensi.html" data-menu-id="web-presensi"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
+      <a class="snav-item" href="#" data-menu-id="web-laporan-rapat"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <div class="snav-label">Lainnya</div>
-      <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
+      <a class="snav-item" href="notifikasi.html" data-menu-id="web-notifikasi"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
     </nav>
     <div class="sidebar-foot">
-      <div class="sidebar-user"><span class="av">AS</span><div><div class="name">Admin Sekretariat</div><div class="role">Sekretariat DPRD</div></div></div>
-      <a class="logout-link" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
+      <div class="sidebar-user"><span class="av" id="sidebarAvatar">AS</span><div><div class="name" id="sidebarNameText">Admin Sekretariat</div><div class="role" id="sidebarRoleText">Sekretariat DPRD</div></div></div>
+      <a class="logout-link" href="login.html" onclick="sessionClear();"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
     </div>
   </aside>
 
@@ -204,12 +228,25 @@ tr:hover td{background:#fafaf7;}
         <div><h2>Dashboard</h2><div class="crumb">Admin &middot; Dashboard</div></div>
       </div>
       <div class="topbar-actions">
+        <div class="role-switch" id="roleSwitch">
+          <button type="button" class="role-switch-btn" id="roleSwitchBtn" onclick="toggleRoleDropdown(event)">
+            <span class="rs-dot"></span>
+            <span id="roleSwitchLabel">Role</span>
+            <svg class="ic-svg chev-ic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="role-switch-dropdown" id="roleSwitchDropdown">
+            <div class="rs-dd-head">Pilih Role Aktif</div>
+            <div id="roleSwitchOptions"></div>
+            <div class="rs-dd-foot">Role aktif menentukan menu yang dapat Anda akses di aplikasi ini.</div>
+          </div>
+        </div>
         <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
-        <div class="tb-user"><span class="av">AS</span></div>
+        <div class="tb-user"><span class="av" id="tbAvatar">AS</span></div>
       </div>
     </div>
 
     <div class="content">
+      <div class="role-banner" id="roleAccessBanner"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span class="rb-text"></span></div>
 
       <div class="stats-grid">
         <div class="stat-card info">
@@ -484,6 +521,8 @@ tr:hover td{background:#fafaf7;}
   </div>
 </div>
 <div class="toast" id="toast" style="display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;"></div>
+<script src="rbac-data.js"></script>
+<script src="session-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -511,6 +550,94 @@ function resetFilter(){
   document.getElementById('filterStatus').selectedIndex = 0;
   applyFilter();
 }
+
+// ---------- Role switcher (pojok kanan atas) ----------
+// Satu akun bisa punya >1 Role (session.roleIds) - dropdown ini memilih Role AKTIF
+// (session.activeRoleId), lalu menu sidebar di-gate sesuai `permissions` Role itu
+// (lihat rbac-data.js/WEB_MENU_CATALOG, dipetakan lewat atribut data-menu-id pada
+// masing-masing <a class="snav-item"> di sidebar).
+var ROLE_LIST = rbacLoadRoles();
+var activeSession = sessionLoad();
+if(!activeSession){
+  // Dashboard dibuka langsung tanpa lewat login.html - pakai sesi demo bawaan supaya halaman tetap berfungsi.
+  activeSession = sessionStart(null, 'Admin Sekretariat', [2, 1]);
+}
+
+function initials(nama){
+  var parts = (nama || '').trim().split(/\s+/).filter(Boolean).slice(0, 2);
+  var s = parts.map(function(w){ return w[0]; }).join('').toUpperCase();
+  return s || 'U';
+}
+
+function renderRoleOptions(){
+  var el = document.getElementById('roleSwitchOptions');
+  el.innerHTML = activeSession.roleIds.map(function(rid){
+    var role = ROLE_LIST.find(function(r){ return r.id === rid; });
+    if(!role) return '';
+    var isActive = rid === activeSession.activeRoleId;
+    return '<div class="rs-option' + (isActive ? ' active' : '') + '" onclick="switchRole(' + rid + ')">'
+      + '<div class="rs-body"><div class="rs-name">' + role.nama + '</div><div class="rs-meta">Akses: ' + role.akses.join(', ') + '</div></div>'
+      + (isActive ? '<svg class="ic-svg rs-check" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6L9 17l-5-5"/></svg>' : '')
+      + '</div>';
+  }).join('');
+}
+
+function applyActiveRole(){
+  var role = ROLE_LIST.find(function(r){ return r.id === activeSession.activeRoleId; }) || ROLE_LIST[0];
+
+  document.getElementById('roleSwitchLabel').textContent = role.nama;
+  document.getElementById('sidebarRoleText').textContent = role.nama;
+  document.getElementById('sidebarNameText').textContent = activeSession.nama;
+  document.getElementById('tbAvatar').textContent = initials(activeSession.nama);
+  document.getElementById('sidebarAvatar').textContent = initials(activeSession.nama);
+
+  var hasWebAccess = role.akses.indexOf('Web') !== -1;
+  var banner = document.getElementById('roleAccessBanner');
+  if(hasWebAccess){
+    banner.style.display = 'none';
+  } else {
+    banner.style.display = 'flex';
+    banner.querySelector('.rb-text').textContent = 'Role "' + role.nama + '" yang sedang aktif hanya memiliki akses ke aplikasi Mobile - menu di sidebar dinonaktifkan. Pilih Role lain di pojok kanan atas untuk kembali mengakses halaman Web.';
+  }
+
+  var permSet = {};
+  (role.permissions || []).forEach(function(id){ permSet[id] = true; });
+
+  document.querySelectorAll('.snav-item[data-menu-id]').forEach(function(a){
+    var allowed = hasWebAccess && !!permSet[a.dataset.menuId];
+    a.classList.toggle('snav-locked', !allowed);
+    if(allowed){
+      a.onclick = null;
+      a.removeAttribute('title');
+    } else {
+      a.onclick = function(e){ e.preventDefault(); toast('Role "' + role.nama + '" tidak memiliki akses ke menu ini'); };
+      a.title = 'Tidak tersedia untuk Role "' + role.nama + '"';
+    }
+  });
+}
+
+function switchRole(roleId){
+  activeSession = sessionSetActiveRole(roleId);
+  applyActiveRole();
+  closeRoleDropdown();
+  renderRoleOptions();
+  var role = ROLE_LIST.find(function(r){ return r.id === roleId; });
+  toast('Role aktif diubah ke "' + role.nama + '"');
+}
+
+function toggleRoleDropdown(e){
+  e.stopPropagation();
+  document.getElementById('roleSwitchDropdown').classList.toggle('open');
+  document.getElementById('roleSwitchBtn').classList.toggle('open');
+}
+function closeRoleDropdown(){
+  document.getElementById('roleSwitchDropdown').classList.remove('open');
+  document.getElementById('roleSwitchBtn').classList.remove('open');
+}
+document.addEventListener('click', function(){ closeRoleDropdown(); });
+
+renderRoleOptions();
+applyActiveRole();
 </script>
 </body>
 </html>

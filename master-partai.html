@@ -139,7 +139,7 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
@@ -207,7 +207,7 @@ tr:hover td{background:#fafaf7;}
   <div class="modal-box">
     <div class="modal-head"><h3 id="modalTitle">Tambah Partai</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
     <form onsubmit="return savePartai(event)">
-      <div class="field"><label>Kode Partai</label><input type="text" id="fKode" placeholder="Contoh: PDIP" maxlength="20" required></div>
+      <div class="field"><label>Kode Partai <span class="opt" id="fKodeLockHint" style="display:none;">(terkunci saat Edit)</span></label><input type="text" id="fKode" placeholder="Contoh: PDIP" maxlength="20" required></div>
       <div class="field"><label>Nama Resmi Partai</label><input type="text" id="fNama" placeholder="Contoh: Partai Demokrasi Indonesia Perjuangan" maxlength="150" required></div>
       <div class="field"><label>Singkatan</label><input type="text" id="fSingkatan" placeholder="Contoh: PDI-P" maxlength="30" required></div>
       <div class="field"><label>Logo URL <span class="opt">(opsional &mdash; tampil di halaman Fraksi)</span></label><input type="text" id="fLogoUrl" placeholder="https://..."></div>
@@ -281,6 +281,8 @@ function updateStats(){
 var editingId = null;
 function resetForm(){
   document.getElementById('fKode').value = '';
+  document.getElementById('fKode').disabled = false;
+  document.getElementById('fKodeLockHint').style.display = 'none';
   document.getElementById('fNama').value = '';
   document.getElementById('fSingkatan').value = '';
   document.getElementById('fLogoUrl').value = '';
@@ -299,6 +301,8 @@ function openEdit(id){
   resetForm();
   document.getElementById('modalTitle').textContent = 'Edit Partai';
   document.getElementById('fKode').value = p.kode;
+  document.getElementById('fKode').disabled = true;
+  document.getElementById('fKodeLockHint').style.display = 'inline';
   document.getElementById('fNama').value = p.nama;
   document.getElementById('fSingkatan').value = p.singkatan;
   document.getElementById('fLogoUrl').value = p.logo_url || '';

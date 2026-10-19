@@ -48,7 +48,7 @@ body{
       <div class="sub">SEKRETARIAT DPRD KOTA MAGELANG</div>
       <div class="desc">Portal Admin Sekretariat untuk pengelolaan surat, jadwal rapat &amp; presensi kehadiran.</div>
 
-      <div class="demo-box"><strong>Mode prototipe:</strong> kredensial contoh sudah terisi otomatis &mdash; email <strong>admin@dprdmagelang.go.id</strong> / kata sandi <strong>admin</strong> &mdash; klik Masuk untuk membuka dashboard.</div>
+      <div class="demo-box"><strong>Mode prototipe:</strong> kredensial contoh sudah terisi otomatis &mdash; email <strong>admin@dprdmagelang.go.id</strong> / kata sandi <strong>admin</strong> &mdash; klik Masuk untuk membuka dashboard.<br><br>Ingin coba akun dengan &gt;1 Role (ganti Role di dashboard)? Masuk dengan email <strong>narisqa@dprd-magelangkota.go.id</strong> / kata sandi <strong>rahasia123</strong> (Role: Ketua + Anggota).</div>
 
       <div class="error-box" id="errBox">Email atau kata sandi tidak sesuai. Gunakan kredensial contoh pada catatan di atas.</div>
 
@@ -69,6 +69,7 @@ body{
   </div>
 <script src="pegawai-data.js"></script>
 <script src="forgot-password-data.js"></script>
+<script src="session-data.js"></script>
 <script>
 var LOGIN_STATUS_BLOCK_MSG = {
   PENDING_VERIFICATION: 'Akun belum diverifikasi. Hubungi admin untuk mengaktifkan akun.',
@@ -91,6 +92,7 @@ function doLogin(e){
 
   // Jalur demo bawaan - tetap dipertahankan supaya kredensial contoh di kotak info di atas jalan.
   if(email === 'admin@dprdmagelang.go.id' && pass === 'admin'){
+    sessionStart(null, 'Admin Sekretariat', [2, 1]); // Administrator + Ketua, utk demo ganti Role
     window.location.href = 'dashboard.html';
     return false;
   }
@@ -109,6 +111,8 @@ function doLogin(e){
     return showError('Email atau kata sandi tidak sesuai.');
   }
 
+  var roleIds = (akun.roleIds && akun.roleIds.length) ? akun.roleIds : [akun.roleId];
+  sessionStart(akun.id, akun.nama, roleIds);
   window.location.href = 'dashboard.html';
   return false;
 }

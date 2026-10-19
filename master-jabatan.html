@@ -168,7 +168,7 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan Dapil &amp; Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
       <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
@@ -242,7 +242,7 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
         <div class="field-error" id="errCategory"></div>
       </div>
       <div class="field-row">
-        <div class="field" id="fldCode"><label>Code</label><input type="text" id="fCode" maxlength="20" placeholder="Contoh: KEPALA_BAGIAN" required>
+        <div class="field" id="fldCode"><label>Code <span class="opt" id="fCodeLockHint" style="display:none;">(terkunci saat Edit)</span></label><input type="text" id="fCode" maxlength="20" placeholder="Contoh: KEPALA_BAGIAN" required>
           <div class="field-error" id="errCode"></div>
         </div>
         <div class="field"><label>Level <span class="opt">(otomatis)</span></label>
@@ -432,6 +432,7 @@ function resetForm(){
   document.getElementById('fCategory').removeAttribute('disabled');
   document.getElementById('fCode').value = '';
   document.getElementById('fCode').removeAttribute('disabled');
+  document.getElementById('fCodeLockHint').style.display = 'none';
   document.getElementById('fNama').value = '';
   populateParentOptions(document.getElementById('fCategory').value, null);
   document.getElementById('fParent').value = '';
@@ -454,10 +455,12 @@ function openEdit(id){
   populateParentOptions(j.category, j.id);
   document.getElementById('fParent').value = j.parentId || '';
   updateLevelPreview();
-  // Kode & Kategori terkunci bila jabatan sudah dipakai (punya anak atau dipegang pegawai) -
+  // Kode selalu terkunci saat Edit (konsisten dengan semua Master Data lain).
+  document.getElementById('fCode').setAttribute('disabled', 'disabled');
+  document.getElementById('fCodeLockHint').style.display = 'inline';
+  // Kategori terkunci tambahan bila jabatan sudah dipakai (punya anak atau dipegang pegawai) -
   // lihat docs/review_srs/master-jabatan-review-dan-feedback-srs.md §1.8/NEG-14/NEG-16.
   if(jabatanInUse(j.id)){
-    document.getElementById('fCode').setAttribute('disabled', 'disabled');
     document.getElementById('fCategory').setAttribute('disabled', 'disabled');
   }
   document.getElementById('modalTitle').textContent = 'Edit Jabatan';
