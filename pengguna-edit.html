@@ -236,11 +236,14 @@ a{color:inherit;}
 
       <div class="card" id="groupDapilCard">
         <div class="section-title">Assignment Dapil</div>
-        <div class="hint" id="dapilHint" style="margin:0 0 12px;">Dapil wajib ditentukan untuk pengguna DEWAN (Politisi/Anggota).</div>
+        <div class="hint" id="dapilHint" style="margin:0 0 12px;">Dapil untuk pengguna DEWAN (Politisi/Anggota) &mdash; satu orang hanya dapat terdaftar pada satu Dapil.</div>
         <div class="field" id="groupDapil">
           <label>Dapil</label>
-          <select id="fDapil"></select>
+          <select id="fDapil" onchange="renderDapilAssignmentList()"></select>
         </div>
+
+        <div class="section-title" style="font-size:12.5px;">Daftar Penempatan Dapil</div>
+        <div id="dapilAssignmentList" style="margin-top:8px;"></div>
       </div>
 
       <div class="btn-row">
@@ -467,8 +470,23 @@ function renderFraksiAssignmentList(){
 
 function populateDapilOptions(){
   var sel = document.getElementById('fDapil');
-  sel.innerHTML = dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
+  sel.innerHTML = '<option value="">&mdash; Tidak Ada Dapil &mdash;</option>' + dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
   sel.value = current.dapilId || '';
+  renderDapilAssignmentList();
+}
+function renderDapilAssignmentList(){
+  var wrap = document.getElementById('dapilAssignmentList');
+  var dapilId = document.getElementById('fDapil').value;
+  if(!dapilId){
+    wrap.innerHTML = '<div class="hint" style="margin:0;">Belum ada Dapil dipilih.</div>';
+    return;
+  }
+  var d = dapilLoadList().find(function(d){ return d.kode === dapilId; });
+  wrap.innerHTML = '<div class="assign-item"><div class="info"><span class="t">' + (d ? d.nama : dapilId) + '</span></div><button type="button" class="remove-btn" onclick="removeDapilAssignment()" aria-label="Hapus Dapil" title="Hapus Dapil" style="font-size:16px;line-height:1;">&times;</button></div>';
+}
+function removeDapilAssignment(){
+  document.getElementById('fDapil').value = '';
+  renderDapilAssignmentList();
 }
 
 function addAssignmentEntry(){
@@ -556,7 +574,6 @@ function submitForm(){
   var nama = document.getElementById('fNama').value.trim();
   var nip = document.getElementById('fNip').value.trim();
   if(!nama || !nip){ toast('Nama & ' + document.getElementById('lblNip').textContent + ' wajib diisi'); return; }
-  if(current.tipePegawai === 'Politisi' && !document.getElementById('fDapil').value){ toast('Dapil wajib dipilih'); return; }
 
   var today = new Date().toISOString().slice(0, 10);
 
@@ -568,7 +585,7 @@ function submitForm(){
 
   var fraksiAssignment = null;
   if(current.tipePegawai === 'Politisi'){
-    current.dapilId = document.getElementById('fDapil').value;
+    current.dapilId = document.getElementById('fDapil').value || null;
 
     if(fraksiAssignmentDraft){
       current.partaiId = fraksiAssignmentDraft.partaiId;
