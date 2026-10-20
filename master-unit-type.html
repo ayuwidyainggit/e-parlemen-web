@@ -60,6 +60,10 @@ a{color:inherit;}
 .card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
 .hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
 
+.filter-bar{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.filter-bar label{font-size:11.8px;font-weight:800;color:var(--ink);}
+.filter-bar select{padding:9px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);min-width:220px;}
+
 .tab-bar{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:0;}
 .tab-btn{appearance:none;background:none;border:none;cursor:pointer;font-family:inherit;font-size:13px;font-weight:800;color:var(--muted);padding:10px 16px;border-bottom:2.5px solid transparent;margin-bottom:-1px;display:flex;align-items:center;gap:7px;}
 .tab-btn .ic-svg{width:15px;height:15px;}
@@ -199,6 +203,11 @@ tr:hover td{background:#fafaf7;}
 
       <div class="tab-bar" id="tabBar"></div>
 
+      <div class="filter-bar" id="filterBarPeriode" style="display:none;">
+        <label for="filterPeriode">Filter Periode</label>
+        <select id="filterPeriode" onchange="handleFilterChange()"></select>
+      </div>
+
       <div class="stats-grid">
         <div class="stat-card">
           <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/></svg></div>
@@ -277,6 +286,9 @@ tr:hover td{background:#fafaf7;}
 
 <div class="toast" id="toast"></div>
 <script src="unit-type-data.js"></script>
+<script src="periode-data.js"></script>
+<script src="partai-data.js"></script>
+<script src="fraksi-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -309,12 +321,49 @@ function switchTab(t){
   activeTab = t;
   window.location.hash = t.toLowerCase();
   renderTabBar();
+  updateFilterBarVisibility();
   renderTable();
   updateStats();
 }
 
+// Filter Periode hanya berlaku utk tab FRAKSI - unit_types sendiri tidak punya periodeId (lihat
+// unit-type-data.js & docs/DDL_Insert_Struktur_DPRD.md, period_id ada di org_units bukan
+// unit_types). Anak unit type FRAKSI (mis. PDIP, GOLKAR) dipetakan ke Partai lewat kecocokan
+// code, lalu ke Fraksi (fraksi-data.js) lewat partaiId utk tahu periodeId-nya.
+function updateFilterBarVisibility(){
+  document.getElementById('filterBarPeriode').style.display = activeTab === 'FRAKSI' ? 'flex' : 'none';
+}
+function populateFilterOptions(){
+  var periodeList = periodeLoadList();
+  var sel = document.getElementById('filterPeriode');
+  sel.innerHTML = '<option value="">Semua Periode</option>'
+    + periodeList.map(function(p){ return '<option value="' + p.id + '">' + p.nama + '</option>'; }).join('');
+  var aktif = periodeList.find(function(p){ return p.status === 'Aktif'; });
+  sel.value = aktif ? aktif.id : '';
+}
+function handleFilterChange(){
+  renderTable();
+  updateStats();
+}
+function fraksiPeriodeIdForUnitType(u){
+  var partai = partaiLoadList().find(function(p){ return p.kode === u.code; });
+  if(!partai) return null;
+  var fraksi = fraksiLoadList().find(function(f){ return f.partaiId === partai.id; });
+  return fraksi ? fraksi.periodeId : null;
+}
+
 function currentList(){
-  return unitTypeByType(UNIT_TYPE_LIST, activeTab).sort(function(a, b){
+  var list = unitTypeByType(UNIT_TYPE_LIST, activeTab);
+  if(activeTab === 'FRAKSI'){
+    var periodeId = document.getElementById('filterPeriode').value;
+    if(periodeId){
+      list = list.filter(function(u){
+        if(!u.parentId) return true; // node root "Fraksi" selalu tampil, tak terikat Partai/Periode
+        return fraksiPeriodeIdForUnitType(u) === periodeId;
+      });
+    }
+  }
+  return list.sort(function(a, b){
     if(a.level !== b.level) return a.level - b.level;
     return a.sortOrder - b.sortOrder;
   });
@@ -492,6 +541,8 @@ function confirmDelete(){
 }
 
 renderTabBar();
+populateFilterOptions();
+updateFilterBarVisibility();
 renderTable();
 updateStats();
 </script>
