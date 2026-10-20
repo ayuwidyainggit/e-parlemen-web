@@ -234,7 +234,7 @@ a{color:inherit;}
         <div class="step-panel" id="stepPanel2">
           <div class="card" id="groupDewanBio">
             <div class="section-title">Fraksi</div>
-            <div class="hint">Pilih Fraksi pengguna ini. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut.</div>
+            <div class="hint">Pilih Fraksi pengguna ini. Lengkapi juga jabatan pengguna ini di dalam Fraksi tersebut, lalu klik &ldquo;Tambah Penempatan Fraksi&rdquo; &mdash; hanya 1 penempatan Fraksi yang bisa aktif sekaligus.</div>
             <div class="field"><label>Fraksi</label>
               <select id="fFraksi"></select>
             </div>
@@ -246,6 +246,13 @@ a{color:inherit;}
                 <select id="fFraksiJabatan"></select>
               </div>
             </div>
+            <div class="btn-row" style="margin-bottom:18px;">
+              <button type="button" class="btn btn-outline" id="btnTambahFraksi" onclick="addFraksiAssignmentEntry()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Tambah Penempatan Fraksi</button>
+            </div>
+
+            <div class="section-title" style="font-size:12.5px;">Daftar Penempatan Fraksi</div>
+            <div class="hint" style="margin:6px 0 0;">Pengguna DEWAN hanya boleh memiliki 1 penempatan Fraksi aktif &mdash; hapus penempatan yang ada dulu sebelum menambah yang baru.</div>
+            <div id="fraksiAssignmentList" style="margin-top:8px;"></div>
           </div>
 
           <div class="card">
@@ -395,6 +402,7 @@ var currentTipe = 'Politisi';
 var currentStep = 1;
 var assignmentsDraft = [];
 var rolesDraft = [];
+var fraksiAssignmentDraft = null; // null = belum ada penempatan Fraksi; object = 1 penempatan Fraksi (maks 1)
 
 var STEP_LABELS = ['Data Pegawai', 'Fraksi, Jabatan & Penempatan', 'Assignment Dapil', 'Peran dan Kata Sandi', 'Ringkasan'];
 var TOTAL_STEPS = STEP_LABELS.length;
@@ -438,8 +446,7 @@ function validateStep(n){
   }
   if(n === 2){
     if(currentTipe === 'Politisi'){
-      if(!document.getElementById('fFraksi').value){ toast('Fraksi wajib dipilih'); return false; }
-      if(!document.getElementById('fFraksiJabatan').value){ toast('Jabatan di dalam Fraksi wajib diisi'); return false; }
+      if(!fraksiAssignmentDraft){ toast('Fraksi & Jabatan di dalam Fraksi wajib ditambahkan (klik Tambah Penempatan Fraksi)'); return false; }
     }
     return true;
   }
@@ -483,6 +490,8 @@ function setTipe(tipe){
   document.getElementById('dapilNaText').style.display = tipe === 'Politisi' ? 'none' : 'block';
   assignmentsDraft = [];
   renderAssignmentList();
+  fraksiAssignmentDraft = null;
+  renderFraksiAssignmentList();
   populateUnitTypeOptions();
   populateJabatanCategoryOptions();
   populateFraksiJabatanCategoryOptions();
@@ -509,6 +518,48 @@ function populateFraksiJabatanOptions(){
     return '<option value="' + j.id + '">' + jabatanLabel(j) + '</option>';
   }).join('');
 }
+// Fraksi bersifat tunggal (maks 1) - klik "Tambah Penempatan Fraksi" menyimpan kombinasi
+// Fraksi + Category + Jabatan saat ini ke fraksiAssignmentDraft. Tombol dinonaktifkan selama
+// draft sudah terisi; hapus dulu lewat "Hapus" di Daftar Penempatan Fraksi sebelum menambah lagi.
+function addFraksiAssignmentEntry(){
+  if(fraksiAssignmentDraft){ toast('Fraksi hanya bisa 1 penempatan - hapus dulu sebelum menambah baru'); return; }
+
+  var fraksiSelectId = document.getElementById('fFraksi').value;
+  var fraksi = fraksiLoadList().find(function(f){ return String(f.id) === fraksiSelectId; });
+  if(!fraksiSelectId || !fraksi){ toast('Fraksi wajib dipilih'); return; }
+
+  var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
+  if(!fraksiJabatanId){ toast('Jabatan di dalam Fraksi wajib diisi'); return; }
+
+  var partai = partaiById(fraksi.partaiId);
+  var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
+  var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
+
+  fraksiAssignmentDraft = {
+    fraksiId: fraksi.id, partaiId: fraksi.partaiId, fraksiLabel: fraksiOptionLabel(fraksi),
+    unitTypeId: fraksiUnitType ? fraksiUnitType.id : null,
+    jabatanId: fraksiJabatanId, jabatanLabel: fraksiJab ? jabatanLabel(fraksiJab) : '—'
+  };
+  renderFraksiAssignmentList();
+}
+function removeFraksiAssignmentEntry(){
+  fraksiAssignmentDraft = null;
+  renderFraksiAssignmentList();
+}
+function renderFraksiAssignmentList(){
+  var wrap = document.getElementById('fraksiAssignmentList');
+  var btn = document.getElementById('btnTambahFraksi');
+  btn.disabled = !!fraksiAssignmentDraft;
+  btn.style.opacity = fraksiAssignmentDraft ? '.5' : '1';
+  btn.style.cursor = fraksiAssignmentDraft ? 'not-allowed' : 'pointer';
+  if(!fraksiAssignmentDraft){
+    wrap.innerHTML = '<div class="hint" style="margin:0;">Belum ada penempatan Fraksi.</div>';
+    return;
+  }
+  var a = fraksiAssignmentDraft;
+  wrap.innerHTML = '<div class="assign-item"><div class="info"><span class="t">' + a.fraksiLabel + '</span>' + a.jabatanLabel + '</div><button type="button" class="remove-btn" onclick="removeFraksiAssignmentEntry()">Hapus</button></div>';
+}
+
 function populateDapilOptions(){
   var sel = document.getElementById('fDapil');
   sel.innerHTML = '<option value="">-- Pilih Dapil --</option>' + dapilLoadList().map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
@@ -634,25 +685,19 @@ function gatherStepData(){
   var partaiId = null, fraksiId = null, dapilId = null, statusKepegawaian = null;
   var fraksiAssignment = null, fraksiLabel = null, fraksiJabatanLabel = null, dapilLabel = null;
   if(currentTipe === 'Politisi'){
-    var fraksiSelectId = document.getElementById('fFraksi').value;
-    var fraksi = fraksiLoadList().find(function(f){ return String(f.id) === fraksiSelectId; });
-    fraksiId = fraksi ? fraksi.id : null;
-    partaiId = fraksi ? fraksi.partaiId : null;
-    fraksiLabel = fraksi ? fraksiOptionLabel(fraksi) : null;
-    var partai = partaiById(partaiId);
     dapilId = document.getElementById('fDapil').value;
     dapilLabel = dapilId ? dapilNamaByKode(dapilId) : null;
 
-    // Jabatan pengguna ini di dalam Fraksi-nya sendiri (mis. Ketua/Sekretaris Fraksi) - unit type
-    // Fraksi dicari lewat kecocokan kode Partai vs kode Unit Type FRAKSI (lihat unit-type-data.js).
-    var fraksiUnitType = partai ? unitTypeByType(UNIT_TYPE_LIST, 'FRAKSI').find(function(u){ return u.code === partai.kode; }) : null;
-    var fraksiJabatanId = document.getElementById('fFraksiJabatan').value;
-    if(fraksiJabatanId){
-      var fraksiJab = jabatanFindById(jabatanLoadList(), fraksiJabatanId);
-      fraksiJabatanLabel = fraksiJab ? jabatanLabel(fraksiJab) : null;
+    // Jabatan pengguna ini di dalam Fraksi-nya sendiri (mis. Ketua/Sekretaris Fraksi) - diambil
+    // dari fraksiAssignmentDraft (maks 1 penempatan Fraksi, lihat addFraksiAssignmentEntry()).
+    if(fraksiAssignmentDraft){
+      fraksiId = fraksiAssignmentDraft.fraksiId;
+      partaiId = fraksiAssignmentDraft.partaiId;
+      fraksiLabel = fraksiAssignmentDraft.fraksiLabel;
+      fraksiJabatanLabel = fraksiAssignmentDraft.jabatanLabel;
       fraksiAssignment = {
-        unitTypeId: fraksiUnitType ? fraksiUnitType.id : null, unitTypeLabel: fraksi ? fraksi.nama : (fraksiUnitType ? unitTypeLabel(fraksiUnitType) : '—'),
-        category: 'KELOMPOK', jabatanId: fraksiJabatanId, jabatanLabel: fraksiJabatanLabel || '—'
+        unitTypeId: fraksiAssignmentDraft.unitTypeId, unitTypeLabel: fraksiAssignmentDraft.fraksiLabel,
+        category: 'KELOMPOK', jabatanId: fraksiAssignmentDraft.jabatanId, jabatanLabel: fraksiJabatanLabel || '—'
       };
     }
   } else {
