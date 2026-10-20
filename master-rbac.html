@@ -169,7 +169,7 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Kelola Role &amp; hak akses menu (RBAC) &mdash; Tambah, Edit, dan Hapus Role di halaman ini. Klik Edit pada Role yang ingin diubah untuk mengatur platform Akses (Web/Mobile) dan mencentang menu yang diizinkan &mdash; daftar menu otomatis menyesuaikan platform yang dipilih, mencakup seluruh menu sidebar Admin (Web) maupun aplikasi Anggota DPRD (Mobile). Role yang masih dipakai oleh data Pegawai tidak dapat dihapus.</div>
+      <div class="hint" style="margin-bottom:16px;">Kelola Role &amp; hak akses menu (RBAC) &mdash; Tambah, Edit, dan Hapus Role di halaman ini. Klik Edit pada Role yang ingin diubah untuk mengatur platform Akses (Web/Mobile) dan mencentang menu yang diizinkan &mdash; daftar menu otomatis menyesuaikan platform yang dipilih, mencakup seluruh menu sidebar Admin (Web) maupun aplikasi Anggota DPRD (Mobile). Menu Mobile diatur per aksi <strong>Create/Read/Update/Delete</strong>, sedangkan menu Web tetap 1 akses penuh per menu. Role yang masih dipakai oleh data Pegawai tidak dapat dihapus.</div>
 
       <div class="stats-grid">
         <div class="stat-card">
@@ -235,7 +235,7 @@ function renderTable(){
       + '<td><div class="namecell"><div class="n">' + r.kode + '</div></div></td>'
       + '<td><div class="namecell"><div class="n">' + r.nama + '</div></div></td>'
       + '<td><div class="chip-row">' + aksesHtml + '</div></td>'
-      + '<td>' + r.permissions.length + ' menu</td>'
+      + '<td>' + rbacMenuCount(r) + ' menu</td>'
       + '<td><div class="actions-cell">' + actions + '</div></td>'
     + '</tr>';
   }).join('');

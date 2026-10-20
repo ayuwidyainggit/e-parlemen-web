@@ -199,7 +199,7 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Data referensi <strong>Unit Type</strong> (tabel <code>unit_types</code>) &mdash; jenis wadah organisasi yang dipakai oleh <code>org_units</code>. Setiap unit type punya 1 dari 3 jenis: <strong>AKD</strong> (Pimpinan, Komisi, Badan, Pansus), <strong>Fraksi</strong> (Fraksi &amp; turunannya per Partai), atau <strong>Sekretariat</strong> (Bagian &amp; Sub Bagian Setwan). Kolom <code>domain</code> otomatis terisi dari jenis ini (AKD/Fraksi &rarr; DEWAN, Sekretariat &rarr; SETWAN). Gunakan <strong>Parent</strong> untuk membentuk hierarki (mis. Komisi A di bawah Komisi).</div>
+      <div class="hint" style="margin-bottom:16px;">Data referensi <strong>Unit Type</strong> (tabel <code>unit_types</code>) &mdash; jenis wadah organisasi yang dipakai oleh <code>org_units</code>. Setiap unit type punya 1 dari 3 jenis: <strong>AKD</strong> (Pimpinan, Komisi, Badan, Pansus), <strong>Fraksi</strong> (Fraksi &amp; turunannya per Partai), atau <strong>Sekretariat</strong> (Bagian &amp; Sub Bagian Setwan). Kolom <code>domain</code> otomatis terisi dari jenis ini (AKD/Fraksi &rarr; DEWAN, Sekretariat &rarr; SETWAN). Gunakan <strong>Parent</strong> untuk membentuk hierarki (mis. Komisi A di bawah Komisi). Saat Tambah, pilih <strong>Unit Type</strong> dari katalog resmi (data/unit_types.json) &mdash; Jenis Unit &amp; Domain otomatis terisi &amp; terkunci sesuai pilihan; gunakan opsi "Lainnya" untuk unit yang benar-benar baru.</div>
 
       <div class="tab-bar" id="tabBar"></div>
 
@@ -242,18 +242,26 @@ tr:hover td{background:#fafaf7;}
   <div class="modal-box">
     <div class="modal-head"><h3 id="modalTitle">Tambah Unit Type</h3><button class="modal-close" onclick="closeModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
     <form onsubmit="return saveUnitType(event)">
-      <div class="field"><label>Jenis Unit</label><input type="text" id="fJenisDisplay" disabled></div>
-      <div class="field-row">
-        <div class="field"><label>Kode Unit <span class="opt" id="fKodeLockHint" style="display:none;">(terkunci saat Edit)</span></label><input type="text" id="fKode" placeholder="Contoh: KOMISI-D" required></div>
-        <div class="field"><label>Domain <span class="opt">(otomatis)</span></label><input type="text" id="fDomainDisplay" disabled></div>
+      <div class="field"><label>Jenis Unit</label>
+        <select id="fJenisSelect" onchange="handleJenisChange()"></select>
       </div>
-      <div class="field"><label>Nama Unit</label><input type="text" id="fNama" placeholder="Contoh: Komisi D" required></div>
-      <div class="field"><label>URL Gambar/Logo <span class="opt">(opsional)</span></label><input type="text" id="fImageUrl" placeholder="https://..."></div>
+      <div class="field"><label>Unit Type <span class="opt" id="fKodeLockHint" style="display:none;">(terkunci saat Edit)</span></label>
+        <select id="fKodeSelect" onchange="handleKodeSelectChange()" required></select>
+      </div>
+      <div class="field" id="fKodeNewField" style="display:none;"><label>Unit Type Baru</label><input type="text" id="fKodeNew" placeholder="Contoh: KOMISI-D"></div>
+      <div class="field-row">
+        <div class="field"><label>Domain <span class="opt">(otomatis)</span></label><input type="text" id="fDomainDisplay" disabled></div>
+        <div class="field"><label>Nama Unit</label><input type="text" id="fNama" placeholder="Contoh: Komisi D" required></div>
+      </div>
       <div class="field-row">
         <div class="field"><label>Parent <span class="opt">(opsional)</span></label>
           <select id="fParent" onchange="handleParentChange()"></select>
         </div>
         <div class="field"><label>Level <span class="opt">(otomatis)</span></label><input type="number" id="fLevel" disabled></div>
+      </div>
+      <div class="field" id="fPeriodeWrap">
+        <label>Periode <span class="opt">(kosongkan jika berlaku di semua periode)</span></label>
+        <select id="fPeriode"></select>
       </div>
       <div class="field-row">
         <div class="field"><label>Maks Rangkap per Anggota <span class="opt">(opsional)</span></label><input type="number" id="fMaxPerMember" min="1" placeholder="Kosongkan jika tak dibatasi"></div>
@@ -326,12 +334,16 @@ function switchTab(t){
   updateStats();
 }
 
-// Filter Periode hanya berlaku utk tab FRAKSI - unit_types sendiri tidak punya periodeId (lihat
-// unit-type-data.js & docs/DDL_Insert_Struktur_DPRD.md, period_id ada di org_units bukan
-// unit_types). Anak unit type FRAKSI (mis. PDIP, GOLKAR) dipetakan ke Partai lewat kecocokan
-// code, lalu ke Fraksi (fraksi-data.js) lewat partaiId utk tahu periodeId-nya.
+// Filter Periode berlaku di semua tab, tapi sumber periode-nya beda per tab:
+// - FRAKSI: unit_types sendiri tidak punya periodeId (lihat unit-type-data.js &
+//   docs/DDL_Insert_Struktur_DPRD.md, period_id ada di org_units bukan unit_types). Anak unit
+//   type FRAKSI (mis. PDIP, GOLKAR) dipetakan ke Partai lewat kecocokan code, lalu ke Fraksi
+//   (fraksi-data.js) lewat partaiId utk tahu periodeId-nya.
+// - AKD & SEKRE: pakai field periodeId yang ditambahkan langsung ke tiap unit type (lihat
+//   unit-type-data.js) karena tidak ada sumber data lain spt Fraksi. Kosong/null = tampil di
+//   semua periode (dipakai utk root node spt Pimpinan DPRD/Sekretariat).
 function updateFilterBarVisibility(){
-  document.getElementById('filterBarPeriode').style.display = activeTab === 'FRAKSI' ? 'flex' : 'none';
+  document.getElementById('filterBarPeriode').style.display = 'flex';
 }
 function populateFilterOptions(){
   var periodeList = periodeLoadList();
@@ -354,12 +366,16 @@ function fraksiPeriodeIdForUnitType(u){
 
 function currentList(){
   var list = unitTypeByType(UNIT_TYPE_LIST, activeTab);
-  if(activeTab === 'FRAKSI'){
-    var periodeId = document.getElementById('filterPeriode').value;
-    if(periodeId){
+  var periodeId = document.getElementById('filterPeriode').value;
+  if(periodeId){
+    if(activeTab === 'FRAKSI'){
       list = list.filter(function(u){
         if(!u.parentId) return true; // node root "Fraksi" selalu tampil, tak terikat Partai/Periode
         return fraksiPeriodeIdForUnitType(u) === periodeId;
+      });
+    } else {
+      list = list.filter(function(u){
+        return !u.periodeId || u.periodeId === periodeId;
       });
     }
   }
@@ -408,11 +424,11 @@ function updateStats(){
   document.getElementById('statDomain').textContent = unitTypeDomain(activeTab);
 }
 
-function populateParentOptions(excludeId){
+function populateParentOptions(excludeId, jenis){
   var select = document.getElementById('fParent');
   select.innerHTML = '<option value="">Tidak Ada (Root / Level 0)</option>';
   var excludeIds = excludeId ? [excludeId].concat(unitTypeDescendantIds(UNIT_TYPE_LIST, excludeId)) : [];
-  unitTypeByType(UNIT_TYPE_LIST, activeTab).forEach(function(u){
+  unitTypeByType(UNIT_TYPE_LIST, jenis).forEach(function(u){
     if(excludeIds.indexOf(u.id) > -1) return;
     var opt = document.createElement('option');
     opt.value = u.id;
@@ -425,26 +441,90 @@ function handleParentChange(){
   document.getElementById('fLevel').value = unitTypeLevelForParent(UNIT_TYPE_LIST, parentId || null);
 }
 
-var editingId = null;
-function resetForm(){
-  document.getElementById('fJenisDisplay').value = UNIT_TYPE_TAB_LABEL[activeTab] + ' (' + activeTab + ')';
-  document.getElementById('fDomainDisplay').value = unitTypeDomain(activeTab);
-  document.getElementById('fKode').value = '';
-  document.getElementById('fKode').disabled = false;
-  document.getElementById('fKodeLockHint').style.display = 'none';
+function populatePeriodeFieldOptions(){
+  var periodeList = periodeLoadList();
+  var sel = document.getElementById('fPeriode');
+  sel.innerHTML = '<option value="">Semua Periode</option>'
+    + periodeList.map(function(p){ return '<option value="' + p.id + '">' + p.nama + '</option>'; }).join('');
+}
+
+// Urutan pilih: Jenis Unit (AKD/Fraksi/Sekre) dulu, lalu dropdown Unit Type menyaring katalog
+// (lihat unitTypeCatalogList() di unit-type-data.js, bersumber dari data/unit_types.json) sesuai
+// Jenis Unit yang dipilih. Domain otomatis mengikuti Jenis Unit. Opsi "Lainnya" pada dropdown Unit
+// Type membuka input Kode manual utk unit yang benar-benar baru (Jenis Unit yang dipilih tetap
+// dipakai). Tambah Unit Type TIDAK terikat ke tab aktif - tabel berpindah otomatis ke tab sesuai
+// Jenis Unit setelah disimpan (lihat switchTab() di saveUnitType()).
+var UNIT_TYPE_LAINNYA = '__lainnya__';
+
+function populateJenisOptions(){
+  var sel = document.getElementById('fJenisSelect');
+  sel.innerHTML = UNIT_TYPE_TABS.map(function(t){ return '<option value="' + t + '">' + UNIT_TYPE_TAB_LABEL[t] + ' (' + t + ')</option>'; }).join('');
+}
+function populateKodeSelectOptions(jenis, pinned){
+  var sel = document.getElementById('fKodeSelect');
+  var available = unitTypeCatalogList().filter(function(c){ return c.unitType === jenis; });
+  if(pinned && pinned.unitType === jenis && !available.some(function(c){ return c.code.toLowerCase() === pinned.code.toLowerCase(); })){
+    available = available.concat([pinned]);
+  }
+  var options = ['<option value="">-- Pilih Unit Type --</option>']
+    .concat(available.map(function(c){ return '<option value="' + c.code + '">' + c.code + ' - ' + c.name + '</option>'; }))
+    .concat(['<option value="' + UNIT_TYPE_LAINNYA + '">Lainnya (tambah unit baru)</option>']);
+  sel.innerHTML = options.join('');
+}
+function handleKodeSelectChange(){
+  var val = document.getElementById('fKodeSelect').value;
+  var isLainnya = val === UNIT_TYPE_LAINNYA;
+  document.getElementById('fKodeNewField').style.display = isLainnya ? 'block' : 'none';
+  document.getElementById('fKodeNew').required = isLainnya;
+
+  if(editingId) return; // Nama Unit sudah dikunci lewat openEdit()
+
+  var namaInput = document.getElementById('fNama');
+  if(isLainnya || !val){
+    namaInput.disabled = false;
+    if(!val) namaInput.value = '';
+  } else {
+    var jenis = document.getElementById('fJenisSelect').value;
+    var picked = unitTypeCatalogList().find(function(c){ return c.code === val && c.unitType === jenis; });
+    if(picked){ namaInput.value = picked.name; }
+    namaInput.disabled = true;
+  }
+}
+function handleJenisChange(){
+  var jenis = document.getElementById('fJenisSelect').value;
+  document.getElementById('fDomainDisplay').value = unitTypeDomain(jenis);
+  populateKodeSelectOptions(jenis, null);
+  document.getElementById('fKodeSelect').value = '';
+  document.getElementById('fKodeNewField').style.display = 'none';
+  document.getElementById('fKodeNew').value = '';
+  document.getElementById('fKodeNew').required = false;
   document.getElementById('fNama').value = '';
-  document.getElementById('fImageUrl').value = '';
-  document.getElementById('fMaxPerMember').value = '';
-  document.getElementById('fSortOrder').value = currentList().length + 1;
-  document.getElementById('fAllowsVacancy').checked = false;
-  populateParentOptions(null);
+  document.getElementById('fNama').disabled = true;
+  populateParentOptions(editingId, jenis);
   document.getElementById('fParent').value = '';
   handleParentChange();
+  document.getElementById('fPeriodeWrap').style.display = 'none'; // Periode tidak dikumpulkan saat Tambah (semua jenis) - lihat openEdit() utk tampilan saat Edit
+  if(!editingId){
+    document.getElementById('fSortOrder').value = unitTypeByType(UNIT_TYPE_LIST, jenis).length + 1;
+  }
+}
+
+var editingId = null;
+function resetForm(){
+  document.getElementById('fKodeLockHint').style.display = 'none';
+  document.getElementById('fJenisSelect').value = UNIT_TYPE_TABS[0];
+  document.getElementById('fJenisSelect').disabled = false;
+  document.getElementById('fKodeSelect').disabled = false;
+  document.getElementById('fMaxPerMember').value = '';
+  document.getElementById('fAllowsVacancy').checked = false;
+  handleJenisChange();
+  populatePeriodeFieldOptions();
+  document.getElementById('fPeriode').value = '';
 }
 function openAdd(){
   editingId = null;
   resetForm();
-  document.getElementById('modalTitle').textContent = 'Tambah Unit Type (' + UNIT_TYPE_TAB_LABEL[activeTab] + ')';
+  document.getElementById('modalTitle').textContent = 'Tambah Unit Type';
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function openEdit(id){
@@ -452,18 +532,30 @@ function openEdit(id){
   if(!u) return;
   editingId = id;
   resetForm();
-  document.getElementById('fKode').value = u.code;
-  document.getElementById('fKode').disabled = true;
+
+  document.getElementById('fJenisSelect').value = u.unitType;
+  document.getElementById('fJenisSelect').disabled = true;
+  document.getElementById('fDomainDisplay').value = unitTypeDomain(u.unitType);
+
+  populateKodeSelectOptions(u.unitType, { code: u.code, name: u.name, unitType: u.unitType });
+  document.getElementById('fKodeSelect').value = u.code;
+  document.getElementById('fKodeSelect').disabled = true;
   document.getElementById('fKodeLockHint').style.display = 'inline';
+  document.getElementById('fKodeNewField').style.display = 'none';
+
   document.getElementById('fNama').value = u.name;
-  document.getElementById('fImageUrl').value = u.imageUrl || '';
+  document.getElementById('fNama').disabled = false;
   document.getElementById('fMaxPerMember').value = u.maxPerMember != null ? u.maxPerMember : '';
   document.getElementById('fSortOrder').value = u.sortOrder;
   document.getElementById('fAllowsVacancy').checked = !!u.allowsVacancy;
-  populateParentOptions(u.id);
+
+  populateParentOptions(u.id, u.unitType);
   document.getElementById('fParent').value = u.parentId || '';
   handleParentChange();
-  document.getElementById('modalTitle').textContent = 'Edit Unit Type (' + UNIT_TYPE_TAB_LABEL[activeTab] + ')';
+  document.getElementById('fPeriodeWrap').style.display = u.unitType === 'FRAKSI' ? 'none' : 'block';
+  document.getElementById('fPeriode').value = u.periodeId || '';
+
+  document.getElementById('modalTitle').textContent = 'Edit Unit Type';
   document.getElementById('modalBackdrop').classList.add('open');
 }
 function closeModal(){
@@ -471,37 +563,53 @@ function closeModal(){
 }
 function saveUnitType(e){
   e.preventDefault();
-  var kode = document.getElementById('fKode').value.trim();
+  var jenis = document.getElementById('fJenisSelect').value;
+  var kodeSelectVal = document.getElementById('fKodeSelect').value;
+  var isLainnya = kodeSelectVal === UNIT_TYPE_LAINNYA;
+  var kode;
+
+  if(editingId){
+    var existing = unitTypeFindById(UNIT_TYPE_LIST, editingId);
+    kode = existing.code;
+    jenis = existing.unitType;
+  } else if(isLainnya){
+    kode = document.getElementById('fKodeNew').value.trim();
+  } else {
+    if(!kodeSelectVal){ toast('Pilih Unit Type terlebih dahulu'); return false; }
+    kode = kodeSelectVal;
+  }
+
   var nama = document.getElementById('fNama').value.trim();
-  var imageUrl = document.getElementById('fImageUrl').value.trim() || null;
   var parentId = document.getElementById('fParent').value || null;
   var level = unitTypeLevelForParent(UNIT_TYPE_LIST, parentId);
   var maxRaw = document.getElementById('fMaxPerMember').value;
   var maxPerMember = maxRaw === '' ? null : parseInt(maxRaw, 10);
   var sortOrder = parseInt(document.getElementById('fSortOrder').value, 10) || 0;
   var allowsVacancy = document.getElementById('fAllowsVacancy').checked;
+  var periodeId = jenis === 'FRAKSI' ? undefined : (document.getElementById('fPeriode').value || null);
 
   if(!kode || !nama){ toast('Kode & Nama Unit wajib diisi'); return false; }
   var dupe = UNIT_TYPE_LIST.some(function(u){ return u.code.toLowerCase() === kode.toLowerCase() && u.id !== editingId; });
-  if(dupe){ toast('Kode Unit "' + kode + '" sudah digunakan'); return false; }
+  if(dupe){ toast('Unit Type "' + kode + '" sudah digunakan'); return false; }
 
   if(editingId){
     var u = unitTypeFindById(UNIT_TYPE_LIST, editingId);
-    u.code = kode; u.name = nama; u.imageUrl = imageUrl; u.parentId = parentId; u.level = level;
+    u.name = nama; u.parentId = parentId; u.level = level;
     u.maxPerMember = maxPerMember; u.sortOrder = sortOrder; u.allowsVacancy = allowsVacancy;
+    if(periodeId !== undefined) u.periodeId = periodeId;
     toast('Unit Type "' + nama + '" diperbarui (prototipe)');
   } else {
-    UNIT_TYPE_LIST.push({
-      id: unitTypeNextId(), code: kode, name: nama, imageUrl: imageUrl, unitType: activeTab,
+    var newUnit = {
+      id: unitTypeNextId(), code: kode, name: nama, unitType: jenis,
       level: level, parentId: parentId, maxPerMember: maxPerMember, allowsVacancy: allowsVacancy, sortOrder: sortOrder
-    });
+    };
+    if(periodeId !== undefined) newUnit.periodeId = periodeId;
+    UNIT_TYPE_LIST.push(newUnit);
     toast('Unit Type "' + nama + '" ditambahkan (prototipe)');
   }
   unitTypeSaveList(UNIT_TYPE_LIST);
-  renderTabBar();
-  renderTable();
-  updateStats();
   closeModal();
+  switchTab(jenis);
   return false;
 }
 
@@ -543,6 +651,7 @@ function confirmDelete(){
 renderTabBar();
 populateFilterOptions();
 updateFilterBarVisibility();
+populateJenisOptions();
 renderTable();
 updateStats();
 </script>
