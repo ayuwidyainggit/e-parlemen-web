@@ -114,8 +114,18 @@ tr:hover td{background:#fafaf7;}
 .field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
 .field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
 .field textarea{min-height:66px;resize:vertical;}
-.modal-foot{display:flex;gap:10px;margin-top:18px;}
-.modal-foot .btn{flex:1;}
+.field-row{display:flex;gap:12px;}
+.field-row .field{flex:1;}
+.modal-foot{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.modal-foot .btn{flex:1;min-width:110px;}
+.chk-list{border:1px solid var(--border);border-radius:10px;max-height:190px;overflow-y:auto;background:#fff;}
+.chk-item{display:flex;align-items:center;gap:9px;padding:9px 12px;font-size:12.5px;border-bottom:1px solid var(--border);}
+.chk-item:last-child{border-bottom:none;}
+.chk-item:hover{background:#fafaf7;}
+.chk-item input{width:auto;flex-shrink:0;}
+.chk-item .cs{font-size:10.5px;color:var(--muted);margin-left:auto;}
+.chk-empty{padding:16px 10px;text-align:center;color:var(--muted);font-size:11.5px;}
+.chk-count{font-size:10.5px;color:var(--muted);margin-top:6px;}
 
 .empty-note{text-align:center;padding:16px 10px;color:var(--muted);font-size:11.5px;}
 
@@ -261,34 +271,43 @@ tr:hover td{background:#fafaf7;}
   <div class="modal-box">
     <div class="modal-head"><h3 id="jadwalModalTitle">Tambah Penugasan</h3><button class="modal-close" onclick="closeModalJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
     <form onsubmit="return saveJadwal(event)">
-      <div class="field"><label>Anggota DPRD</label>
-        <select id="jPersonId" required onchange="onJadwalAnggotaChange()"></select>
-      </div>
-      <div class="field"><label>Dapil</label>
-        <input type="text" id="jDapilText" readonly disabled style="background:var(--neutral-bg);color:var(--muted);">
-      </div>
       <div class="field"><label>Jenis</label>
         <select id="jJenis" required onchange="toggleJenisJadwal()">
           <option value="RESES">Reses</option>
           <option value="KUNJUNGAN">Kunjungan Dapil</option>
         </select>
       </div>
+      <div class="field"><label>Dapil</label>
+        <select id="jDapilKode" required onchange="onJadwalDapilChange()"><option value="">Pilih dapil&hellip;</option></select>
+      </div>
+      <div class="field"><label>Anggota DPRD <span class="opt">(bisa pilih lebih dari satu)</span></label>
+        <input type="text" id="jAnggotaSearch" placeholder="Cari nama anggota&hellip;" oninput="filterAnggotaChecklist()" autocomplete="off" style="margin-bottom:8px;">
+        <div class="chk-list" id="jAnggotaList"><div class="chk-empty">Pilih Dapil terlebih dahulu untuk menampilkan daftar Anggota DPRD.</div></div>
+        <div class="chk-empty" id="jAnggotaNoMatch" style="display:none;">Tidak ada anggota yang cocok dengan pencarian.</div>
+        <div class="chk-count" id="jAnggotaCount"></div>
+      </div>
       <div class="field" id="jPeriodeField"><label>Periode Reses</label>
         <select id="jPeriodeResesId"></select>
       </div>
-      <div class="field"><label id="jTanggalLabel">Tanggal Rencana</label><input type="date" id="jTanggalRencana" required></div>
-      <div class="field"><label>Lokasi Rencana</label><input type="text" id="jLokasiRencana" placeholder="Contoh: Balai Desa Sukamaju, Kec. Magelang Utara" required></div>
-      <div class="field"><label>Status</label>
-        <select id="jStatus" required>
-          <option value="Draft">Draft (belum di-submit)</option>
-          <option value="Submit">Submit</option>
-        </select>
-        <div class="hint" style="margin-top:6px;">Status yang tampil setelah Submit (tetap Submit, lalu Dalam Proses Penugasan, Lewat Masa Penugasan, atau Selesai) dihitung otomatis oleh sistem &mdash; tidak dipilih manual di sini.</div>
+      <div class="field" id="jPokirField" style="display:none;"><label>Pokir <span class="opt">(opsional &ndash; tautkan ke usulan pokir terkait)</span></label>
+        <select id="jPokirId" onchange="renderJadwalPokirProgress()"><option value="">Tidak terkait usulan pokir</option></select>
+        <div class="hint" id="jPokirProgress" style="margin-top:8px;display:none;"></div>
       </div>
+      <div class="field"><label>Tanggal Kegiatan</label><input type="date" id="jTanggalRencana" required></div>
+      <div class="field-row">
+        <div class="field"><label>Jam Mulai</label><input type="time" id="jJamMulai"></div>
+        <div class="field"><label>Jam Selesai</label><input type="time" id="jJamSelesai"></div>
+      </div>
+      <div class="field"><label>Jenis Kegiatan</label>
+        <select id="jJenisKegiatan"></select>
+      </div>
+      <div class="field"><label>Lokasi Rencana</label><input type="text" id="jLokasiRencana" placeholder="Contoh: Balai Desa Sukamaju, Kec. Magelang Utara" required></div>
       <div class="field" style="margin-bottom:0;"><label>Catatan <span class="opt">(opsional)</span></label><textarea id="jCatatan" placeholder="Catatan tambahan&hellip;"></textarea></div>
+      <div class="hint" style="margin-top:10px;">Status Draft/Submit ditentukan lewat tombol di bawah. Status lanjutan (Dalam Proses Penugasan, Lewat Masa Penugasan, Selesai) dihitung otomatis oleh sistem.</div>
       <div class="modal-foot">
         <button type="button" class="btn btn-outline" onclick="closeModalJadwal()">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan Penugasan</button>
+        <button type="submit" class="btn btn-primary" onclick="pendingJadwalStatus='Submit'">Simpan Penugasan</button>
+        <button type="submit" class="btn btn-outline" onclick="pendingJadwalStatus='Draft'">Draft</button>
       </div>
     </form>
   </div>
@@ -311,6 +330,7 @@ tr:hover td{background:#fafaf7;}
 <script src="periode-data.js"></script>
 <script src="periode-reses-data.js"></script>
 <script src="pegawai-data.js"></script>
+<script src="pokir-data.js"></script>
 <script src="penugasan-dapil-reses-data.js"></script>
 <script>
 function toast(msg){
@@ -322,6 +342,7 @@ function toast(msg){
 var DAPIL_LIST = dapilLoadList();
 var PERIODE_RESES_LIST = periodeResesLoadList();
 var PEGAWAI_LIST = pegawaiLoadList();
+var POKIR_LIST = pokirLoadList();
 var JADWAL_RESES_LIST = jadwalResesLoadList();
 
 function politisiList(){ return PEGAWAI_LIST.filter(function(p){ return p.tipePegawai === 'Politisi'; }); }
@@ -403,7 +424,7 @@ function renderJadwalTable(){
     if(!p) return false;
     if(periodeFilter && String(j.periodeResesId) !== periodeFilter) return false;
     if(jenisFilter && j.jenis !== jenisFilter) return false;
-    if(dapilFilter && p.dapilId !== dapilFilter) return false;
+    if(dapilFilter && (j.dapilKode || p.dapilId) !== dapilFilter) return false;
     if(statusFilter && jadwalEffectiveStatus(j) !== statusFilter) return false;
     return true;
   }).slice().sort(function(a,b){ return (b.tanggalRencana||'').localeCompare(a.tanggalRencana||''); });
@@ -417,11 +438,13 @@ function renderJadwalTable(){
   tbody.innerHTML = list.map(function(j){
     var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
     var nama = p ? p.nama : 'Anggota #' + j.personId;
-    var dapilNama = p && p.dapilId ? dapilNamaByKode(p.dapilId) : '&mdash;';
+    var dapilKode = j.dapilKode || (p && p.dapilId);
+    var dapilNama = dapilKode ? dapilNamaByKode(dapilKode) : '&mdash;';
     var jenisBadge = j.jenis === 'KUNJUNGAN' ? '<span class="badge badge-purple">Kunjungan Dapil</span>' : '<span class="badge badge-info">Reses</span>';
+    var jamRange = (j.jamMulai && j.jamSelesai) ? ' <span class="hint">' + j.jamMulai + '&ndash;' + j.jamSelesai + '</span>' : '';
     var periodeOrTanggal = j.jenis === 'RESES'
-      ? (periodeResesNamaById(j.periodeResesId) || '&mdash;') + '<br><span class="hint">' + fmtTanggal(j.tanggalRencana) + '</span>'
-      : fmtTanggal(j.tanggalRencana);
+      ? (periodeResesNamaById(j.periodeResesId) || '&mdash;') + '<br><span class="hint">' + fmtTanggal(j.tanggalRencana) + '</span>' + jamRange
+      : fmtTanggal(j.tanggalRencana) + jamRange;
     var effStatus = jadwalEffectiveStatus(j);
     var statusBadge = '<span class="badge ' + (jadwalStatusClass[effStatus] || 'badge-neutral') + '">' + effStatus + '</span>';
 
@@ -463,41 +486,115 @@ function resetFilterJadwal(){
   renderJadwalTable();
 }
 
-function toggleJenisJadwal(){
-  var isReses = document.getElementById('jJenis').value === 'RESES';
-  document.getElementById('jPeriodeField').style.display = isReses ? 'block' : 'none';
-  document.getElementById('jTanggalLabel').textContent = isReses ? 'Tanggal Rencana Reses' : 'Tanggal Rencana Kunjungan';
-  document.getElementById('jPeriodeResesId').required = isReses;
+var JENIS_KEGIATAN_OPTIONS = {
+  RESES: ['Pertemuan Masyarakat', 'Dialog Masyarakat', 'Penyerapan Aspirasi', 'Lainnya'],
+  KUNJUNGAN: ['Kunjungan Lapangan', 'Sosialisasi', 'Kunjungan Fasilitas Publik', 'Lainnya']
+};
+function populateJenisKegiatanSelect(jenis, selected){
+  var opts = JENIS_KEGIATAN_OPTIONS[jenis] || [];
+  var html = opts.map(function(o){ return '<option value="' + o + '">' + o + '</option>'; }).join('');
+  if(selected && opts.indexOf(selected) === -1){
+    html += '<option value="' + selected + '">' + selected + '</option>';
+  }
+  document.getElementById('jJenisKegiatan').innerHTML = html;
+  if(selected) document.getElementById('jJenisKegiatan').value = selected;
 }
-function onJadwalAnggotaChange(){
-  var personId = parseInt(document.getElementById('jPersonId').value, 10);
-  var p = PEGAWAI_LIST.find(function(p){ return p.id === personId; });
-  document.getElementById('jDapilText').value = p && p.dapilId ? dapilNamaByKode(p.dapilId) : 'Belum ditugaskan dapil';
+function toggleJenisJadwal(){
+  var jenis = document.getElementById('jJenis').value;
+  var isReses = jenis === 'RESES';
+  document.getElementById('jPeriodeField').style.display = isReses ? 'block' : 'none';
+  document.getElementById('jPeriodeResesId').required = isReses;
+  document.getElementById('jPokirField').style.display = isReses ? 'none' : 'block';
+  populateJenisKegiatanSelect(jenis);
 }
 
 var editingJadwalId = null;
-function populateJadwalPersonSelect(){
-  var opts = politisiList().slice().sort(function(a,b){ return a.nama.localeCompare(b.nama); }).map(function(p){
-    return '<option value="' + p.id + '">' + p.nama + '</option>';
+function populateJadwalDapilSelect(){
+  document.getElementById('jDapilKode').innerHTML = '<option value="">Pilih dapil&hellip;</option>' + DAPIL_LIST.map(function(d){
+    return '<option value="' + d.kode + '">' + d.nama + '</option>';
   }).join('');
-  document.getElementById('jPersonId').innerHTML = opts;
 }
 function populateJadwalPeriodeSelect(){
   document.getElementById('jPeriodeResesId').innerHTML = '<option value="">Pilih periode reses&hellip;</option>' + PERIODE_RESES_LIST.map(function(p){
     return '<option value="' + p.id + '">' + p.nama + '</option>';
   }).join('');
 }
+function populateJadwalPokirSelect(dapilKode, selectedId){
+  var opts = POKIR_LIST.filter(function(p){ return p.dapilKode === dapilKode; });
+  document.getElementById('jPokirId').innerHTML = '<option value="">Tidak terkait usulan pokir</option>' + opts.map(function(p){
+    return '<option value="' + p.id + '">' + p.judul + '</option>';
+  }).join('');
+  document.getElementById('jPokirId').value = selectedId || '';
+  renderJadwalPokirProgress();
+}
+function renderJadwalPokirProgress(){
+  var id = parseInt(document.getElementById('jPokirId').value, 10);
+  var box = document.getElementById('jPokirProgress');
+  var p = id ? POKIR_LIST.find(function(p){ return p.id === id; }) : null;
+  if(!p){ box.style.display = 'none'; box.innerHTML = ''; return; }
+  var cls = POKIR_STATUS_CLASS[p.status] || 'badge-neutral';
+  box.style.display = 'block';
+  box.innerHTML = 'Progres terakhir: <strong>' + p.progres + '%</strong> <span class="badge ' + cls + '">' + p.status + '</span> &middot; diperbarui ' + p.updated;
+}
+function buildAnggotaChecklist(dapilKode, checkedIds){
+  checkedIds = checkedIds || [];
+  document.getElementById('jAnggotaSearch').value = '';
+  document.getElementById('jAnggotaNoMatch').style.display = 'none';
+  var box = document.getElementById('jAnggotaList');
+  if(!dapilKode){
+    box.innerHTML = '<div class="chk-empty">Pilih Dapil terlebih dahulu untuk menampilkan daftar Anggota DPRD.</div>';
+    updateAnggotaCount();
+    return;
+  }
+  var opts = politisiList().filter(function(p){ return p.dapilId === dapilKode; }).slice().sort(function(a,b){ return a.nama.localeCompare(b.nama); });
+  if(!opts.length){
+    box.innerHTML = '<div class="chk-empty">Belum ada Anggota DPRD yang ditugaskan ke dapil ini.</div>';
+    updateAnggotaCount();
+    return;
+  }
+  box.innerHTML = opts.map(function(p){
+    var checked = checkedIds.indexOf(p.id) !== -1 ? ' checked' : '';
+    return '<label class="chk-item" data-nama="' + p.nama.toLowerCase() + '"><input type="checkbox" value="' + p.id + '" onchange="updateAnggotaCount()"' + checked + '> ' + p.nama + '</label>';
+  }).join('');
+  updateAnggotaCount();
+}
+function filterAnggotaChecklist(){
+  var q = document.getElementById('jAnggotaSearch').value.trim().toLowerCase();
+  var items = document.querySelectorAll('#jAnggotaList .chk-item');
+  var visibleCount = 0;
+  items.forEach(function(item){
+    var match = !q || item.dataset.nama.indexOf(q) !== -1;
+    item.style.display = match ? '' : 'none';
+    if(match) visibleCount++;
+  });
+  document.getElementById('jAnggotaNoMatch').style.display = (items.length && !visibleCount) ? 'block' : 'none';
+}
+function getSelectedAnggotaIds(){
+  return Array.prototype.map.call(document.querySelectorAll('#jAnggotaList input[type="checkbox"]:checked'), function(cb){ return parseInt(cb.value, 10); });
+}
+function updateAnggotaCount(){
+  var n = getSelectedAnggotaIds().length;
+  document.getElementById('jAnggotaCount').textContent = n ? n + ' anggota dipilih' : '';
+}
+function onJadwalDapilChange(){
+  var dapilKode = document.getElementById('jDapilKode').value;
+  buildAnggotaChecklist(dapilKode, []);
+  populateJadwalPokirSelect(dapilKode, null);
+}
 function openAddJadwal(){
   editingJadwalId = null;
-  populateJadwalPersonSelect();
+  populateJadwalDapilSelect();
   populateJadwalPeriodeSelect();
   document.getElementById('jadwalModalTitle').textContent = 'Tambah Penugasan';
   document.getElementById('jJenis').value = 'RESES';
+  document.getElementById('jDapilKode').value = '';
+  buildAnggotaChecklist('', []);
+  populateJadwalPokirSelect('', null);
   document.getElementById('jTanggalRencana').value = '';
+  document.getElementById('jJamMulai').value = '';
+  document.getElementById('jJamSelesai').value = '';
   document.getElementById('jLokasiRencana').value = '';
-  document.getElementById('jStatus').value = 'Draft';
   document.getElementById('jCatatan').value = '';
-  onJadwalAnggotaChange();
   toggleJenisJadwal();
   document.getElementById('modalJadwalBackdrop').classList.add('open');
 }
@@ -508,37 +605,60 @@ function openEditJadwal(id){
     toast('Penugasan ini sudah ' + jadwalEffectiveStatus(j) + ' sehingga tidak dapat diedit.');
     return;
   }
+  var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
+  var dapilKode = j.dapilKode || (p && p.dapilId) || '';
   editingJadwalId = id;
-  populateJadwalPersonSelect();
+  populateJadwalDapilSelect();
   populateJadwalPeriodeSelect();
   document.getElementById('jadwalModalTitle').textContent = 'Edit Penugasan';
-  document.getElementById('jPersonId').value = j.personId;
   document.getElementById('jJenis').value = j.jenis;
+  document.getElementById('jDapilKode').value = dapilKode;
+  buildAnggotaChecklist(dapilKode, [j.personId]);
+  populateJadwalPokirSelect(dapilKode, j.pokirId || null);
   document.getElementById('jPeriodeResesId').value = j.periodeResesId || '';
   document.getElementById('jTanggalRencana').value = j.tanggalRencana;
+  document.getElementById('jJamMulai').value = j.jamMulai || '';
+  document.getElementById('jJamSelesai').value = j.jamSelesai || '';
   document.getElementById('jLokasiRencana').value = j.lokasiRencana;
-  document.getElementById('jStatus').value = j.status;
   document.getElementById('jCatatan').value = j.catatan || '';
-  onJadwalAnggotaChange();
   toggleJenisJadwal();
+  populateJenisKegiatanSelect(j.jenis, j.jenisKegiatan);
   document.getElementById('modalJadwalBackdrop').classList.add('open');
 }
 function closeModalJadwal(){
   document.getElementById('modalJadwalBackdrop').classList.remove('open');
   editingJadwalId = null;
 }
+var pendingJadwalStatus = 'Submit';
 function saveJadwal(e){
   e.preventDefault();
-  var personId = parseInt(document.getElementById('jPersonId').value, 10);
   var jenis = document.getElementById('jJenis').value;
+  var dapilKode = document.getElementById('jDapilKode').value;
+  var personIds = getSelectedAnggotaIds();
   var periodeResesId = jenis === 'RESES' ? (parseInt(document.getElementById('jPeriodeResesId').value, 10) || null) : null;
+  var pokirId = jenis === 'KUNJUNGAN' ? (parseInt(document.getElementById('jPokirId').value, 10) || null) : null;
   var tanggalRencana = document.getElementById('jTanggalRencana').value;
+  var jamMulai = document.getElementById('jJamMulai').value;
+  var jamSelesai = document.getElementById('jJamSelesai').value;
+  var jenisKegiatan = document.getElementById('jJenisKegiatan').value;
   var lokasiRencana = document.getElementById('jLokasiRencana').value.trim();
-  var status = document.getElementById('jStatus').value;
   var catatan = document.getElementById('jCatatan').value.trim();
+  var status = pendingJadwalStatus;
 
+  if(!dapilKode){
+    toast('Pilih Dapil terlebih dahulu.');
+    return false;
+  }
+  if(!personIds.length){
+    toast('Pilih minimal satu Anggota DPRD.');
+    return false;
+  }
   if(jenis === 'RESES' && !periodeResesId){
     toast('Pilih Periode Reses untuk jenis penugasan Reses.');
+    return false;
+  }
+  if(jamMulai && jamSelesai && jamSelesai <= jamMulai){
+    toast('Jam Selesai harus setelah Jam Mulai.');
     return false;
   }
 
@@ -548,13 +668,18 @@ function saveJadwal(e){
       toast('Penugasan ini sudah ' + jadwalEffectiveStatus(j) + ' sehingga tidak dapat diubah lagi.');
       return false;
     }
-    j.personId = personId; j.jenis = jenis; j.periodeResesId = periodeResesId;
-    j.tanggalRencana = tanggalRencana; j.lokasiRencana = lokasiRencana; j.status = status; j.catatan = catatan;
+    j.personId = personIds[0]; j.dapilKode = dapilKode; j.jenis = jenis; j.periodeResesId = periodeResesId; j.pokirId = pokirId;
+    j.tanggalRencana = tanggalRencana; j.jamMulai = jamMulai; j.jamSelesai = jamSelesai; j.jenisKegiatan = jenisKegiatan;
+    j.lokasiRencana = lokasiRencana; j.catatan = catatan; j.status = status;
+    personIds.slice(1).forEach(function(pid){
+      JADWAL_RESES_LIST.push({ id: jadwalResesNextId(JADWAL_RESES_LIST), personId: pid, dapilKode: dapilKode, jenis: jenis, periodeResesId: periodeResesId, pokirId: pokirId, tanggalRencana: tanggalRencana, jamMulai: jamMulai, jamSelesai: jamSelesai, jenisKegiatan: jenisKegiatan, lokasiRencana: lokasiRencana, catatan: catatan, status: status, submittedByMember: false, createdAt: new Date().toISOString() });
+    });
     toast('Penugasan berhasil diperbarui (prototipe)');
   } else {
-    var newId = jadwalResesNextId(JADWAL_RESES_LIST);
-    JADWAL_RESES_LIST.push({ id: newId, personId: personId, jenis: jenis, periodeResesId: periodeResesId, tanggalRencana: tanggalRencana, lokasiRencana: lokasiRencana, catatan: catatan, status: status, submittedByMember: false, createdAt: new Date().toISOString() });
-    toast('Penugasan baru ditambahkan (prototipe)');
+    personIds.forEach(function(pid){
+      JADWAL_RESES_LIST.push({ id: jadwalResesNextId(JADWAL_RESES_LIST), personId: pid, dapilKode: dapilKode, jenis: jenis, periodeResesId: periodeResesId, pokirId: pokirId, tanggalRencana: tanggalRencana, jamMulai: jamMulai, jamSelesai: jamSelesai, jenisKegiatan: jenisKegiatan, lokasiRencana: lokasiRencana, catatan: catatan, status: status, submittedByMember: false, createdAt: new Date().toISOString() });
+    });
+    toast(personIds.length > 1 ? 'Penugasan baru ditambahkan untuk ' + personIds.length + ' anggota (prototipe)' : 'Penugasan baru ditambahkan (prototipe)');
   }
   jadwalResesSaveList(JADWAL_RESES_LIST);
   renderJadwalTable();
