@@ -10,9 +10,12 @@
 // "is_active" jabatan di form Tambah/Edit karena tidak ada field lain utk itu di prototipe ini.
 // `isSingleHolder` diisi sesuai kolom `is_single_holder` di docs/DDL_Insert_Struktur_DPRD.md
 // (match per id) - TRUE berarti jabatan ini hanya boleh dipegang oleh satu orang sekaligus.
+// `canAssignTask` ditambahkan di prototipe ini (belum ada di DDL) - TRUE berarti pemegang
+// jabatan ini boleh ditugaskan/di-assign sebagai penugas task (lihat checkbox "Dapat Assign
+// Tugas" di form Tambah/Edit master-jabatan.html). Default FALSE utk semua jabatan.
 // Disimpan di localStorage supaya data tetap ada setelah reload.
 var JABATAN_STORAGE_KEY = 'ep_master_jabatan_list';
-var JABATAN_SEED_VERSION = 4;
+var JABATAN_SEED_VERSION = 5;
 var JABATAN_VERSION_KEY = 'ep_master_jabatan_seed_version';
 
 var JABATAN_CATEGORIES = ['KELOMPOK', 'STRUKTURAL', 'FUNGSIONAL', 'PELAKSANA'];
@@ -26,35 +29,35 @@ var JABATAN_NAME_MAXLEN = 150;
 // Seed persis sesuai INSERT INTO positions di docs/DDL_Insert_Struktur_DPRD.md (26 baris, id asli).
 // parentId diisi untuk jalur KELOMPOK & STRUKTURAL yang jelas berjenjang; FUNGSIONAL & PELAKSANA flat (null).
 var JABATAN_DEFAULT_LIST = [
-  { id: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', category: 'KELOMPOK', code: 'KETUA', name: 'Ketua', level: 1, parentId: null, status: 'AKTIF', isSingleHolder: true },
-  { id: '8941fe45-9288-50da-874c-c149b0a7c350', category: 'KELOMPOK', code: 'WAKIL_KETUA', name: 'Wakil Ketua', level: 2, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: false },
-  { id: '306dc94b-c8a3-5274-b638-09ecfc192e86', category: 'KELOMPOK', code: 'SEKRETARIS', name: 'Sekretaris', level: 3, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: true },
-  { id: '085e0dc6-ce1a-5682-b4af-81144a629550', category: 'KELOMPOK', code: 'SEKRETARIS_BUKAN_ANGGOTA', name: 'Sekretaris Bukan Anggota', level: 4, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: true },
-  { id: 'b80c6030-b60f-511a-b69a-e1fcaf15ef9a', category: 'KELOMPOK', code: 'ANGGOTA', name: 'Anggota', level: 9, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: false },
+  { id: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', category: 'KELOMPOK', code: 'KETUA', name: 'Ketua', level: 1, parentId: null, status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
+  { id: '8941fe45-9288-50da-874c-c149b0a7c350', category: 'KELOMPOK', code: 'WAKIL_KETUA', name: 'Wakil Ketua', level: 2, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '306dc94b-c8a3-5274-b638-09ecfc192e86', category: 'KELOMPOK', code: 'SEKRETARIS', name: 'Sekretaris', level: 3, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
+  { id: '085e0dc6-ce1a-5682-b4af-81144a629550', category: 'KELOMPOK', code: 'SEKRETARIS_BUKAN_ANGGOTA', name: 'Sekretaris Bukan Anggota', level: 4, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
+  { id: 'b80c6030-b60f-511a-b69a-e1fcaf15ef9a', category: 'KELOMPOK', code: 'ANGGOTA', name: 'Anggota', level: 9, parentId: '0d21b5b9-30a7-5345-9ffe-7987d0e7a947', status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
 
-  { id: '78588557-c2e9-5b41-883f-ee7c98d24bef', category: 'STRUKTURAL', code: 'SEKRETARIS_DPRD', name: 'Sekretaris DPRD', level: 1, parentId: null, status: 'AKTIF', isSingleHolder: true },
-  { id: '370fc088-3bec-5d9a-8da4-94f944e5c8de', category: 'STRUKTURAL', code: 'KEPALA_BAGIAN', name: 'Kepala Bagian', level: 2, parentId: '78588557-c2e9-5b41-883f-ee7c98d24bef', status: 'AKTIF', isSingleHolder: true },
-  { id: '24865043-380a-5929-aa29-b2ae9e09cbd3', category: 'STRUKTURAL', code: 'KEPALA_SUB_BAGIAN', name: 'Kepala Sub Bagian', level: 3, parentId: '370fc088-3bec-5d9a-8da4-94f944e5c8de', status: 'AKTIF', isSingleHolder: true },
+  { id: '78588557-c2e9-5b41-883f-ee7c98d24bef', category: 'STRUKTURAL', code: 'SEKRETARIS_DPRD', name: 'Sekretaris DPRD', level: 1, parentId: null, status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
+  { id: '370fc088-3bec-5d9a-8da4-94f944e5c8de', category: 'STRUKTURAL', code: 'KEPALA_BAGIAN', name: 'Kepala Bagian', level: 2, parentId: '78588557-c2e9-5b41-883f-ee7c98d24bef', status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
+  { id: '24865043-380a-5929-aa29-b2ae9e09cbd3', category: 'STRUKTURAL', code: 'KEPALA_SUB_BAGIAN', name: 'Kepala Sub Bagian', level: 3, parentId: '370fc088-3bec-5d9a-8da4-94f944e5c8de', status: 'AKTIF', isSingleHolder: true, canAssignTask: false },
 
-  { id: 'd00a235a-a693-5786-9c70-928c732447af', category: 'FUNGSIONAL', code: 'PRANATA_HUMAS_AHLI_PERTAMA', name: 'Pranata Humas Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '04dce491-6172-5e2b-af9f-b217b7d43395', category: 'FUNGSIONAL', code: 'PRANATA_KOMPUTER_AHLI_PERTAMA', name: 'Pranata Komputer Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '7cf2507b-35e2-5b06-a20a-e7e98e73a45f', category: 'FUNGSIONAL', code: 'PRANATA_SDM_APARATUR_TERAMPIL', name: 'Pranata SDM Aparatur Terampil', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '87240066-c49b-52d6-980a-3cbba2815561', category: 'FUNGSIONAL', code: 'ANALIS_KEBIJAKAN_AHLI_MUDA', name: 'Analis Kebijakan Ahli Muda', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'd6024ddc-ac71-54bd-a38e-1e1bca223cc7', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_MADYA', name: 'Perisalah Legislatif Ahli Madya', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '99954d21-8d76-5bc9-9c64-60f921d99d50', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_MUDA', name: 'Perisalah Legislatif Ahli Muda', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'd6c03e4b-c67a-5280-b8b6-6683c8aa6040', category: 'FUNGSIONAL', code: 'PERANCANG_PERATURAN_PERUNDANG_UNDANGAN_AHLI_PERTAMA', name: 'Perancang Peraturan Perundang-undangan Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'f803c918-51d5-5919-ad4e-7a3d7a83e313', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_PERTAMA', name: 'Perisalah Legislatif Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'ebdd7ce9-cfe7-5df8-9f29-77f6bb9c8298', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_PENYELIA', name: 'Asisten Perisalah Legislatif Penyelia', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'fb11da3c-df6e-58e2-916a-5964140afef4', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_MAHIR', name: 'Asisten Perisalah Legislatif Mahir', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '951459cd-1124-55d9-bb77-857218e88ffd', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_TERAMPIL', name: 'Asisten Perisalah Legislatif Terampil', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false },
+  { id: 'd00a235a-a693-5786-9c70-928c732447af', category: 'FUNGSIONAL', code: 'PRANATA_HUMAS_AHLI_PERTAMA', name: 'Pranata Humas Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '04dce491-6172-5e2b-af9f-b217b7d43395', category: 'FUNGSIONAL', code: 'PRANATA_KOMPUTER_AHLI_PERTAMA', name: 'Pranata Komputer Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '7cf2507b-35e2-5b06-a20a-e7e98e73a45f', category: 'FUNGSIONAL', code: 'PRANATA_SDM_APARATUR_TERAMPIL', name: 'Pranata SDM Aparatur Terampil', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '87240066-c49b-52d6-980a-3cbba2815561', category: 'FUNGSIONAL', code: 'ANALIS_KEBIJAKAN_AHLI_MUDA', name: 'Analis Kebijakan Ahli Muda', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'd6024ddc-ac71-54bd-a38e-1e1bca223cc7', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_MADYA', name: 'Perisalah Legislatif Ahli Madya', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '99954d21-8d76-5bc9-9c64-60f921d99d50', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_MUDA', name: 'Perisalah Legislatif Ahli Muda', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'd6c03e4b-c67a-5280-b8b6-6683c8aa6040', category: 'FUNGSIONAL', code: 'PERANCANG_PERATURAN_PERUNDANG_UNDANGAN_AHLI_PERTAMA', name: 'Perancang Peraturan Perundang-undangan Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'f803c918-51d5-5919-ad4e-7a3d7a83e313', category: 'FUNGSIONAL', code: 'PERISALAH_LEGISLATIF_AHLI_PERTAMA', name: 'Perisalah Legislatif Ahli Pertama', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'ebdd7ce9-cfe7-5df8-9f29-77f6bb9c8298', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_PENYELIA', name: 'Asisten Perisalah Legislatif Penyelia', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'fb11da3c-df6e-58e2-916a-5964140afef4', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_MAHIR', name: 'Asisten Perisalah Legislatif Mahir', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '951459cd-1124-55d9-bb77-857218e88ffd', category: 'FUNGSIONAL', code: 'ASISTEN_PERISALAH_LEGISLATIF_TERAMPIL', name: 'Asisten Perisalah Legislatif Terampil', level: 5, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
 
-  { id: 'ce85c387-8129-5dce-9c91-7e9fe3fa6498', category: 'PELAKSANA', code: 'PENELAAH_TEKNIS_KEBIJAKAN', name: 'Penelaah Teknis Kebijakan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '11e3ada7-c900-55c4-819b-b51e5928dd1d', category: 'PELAKSANA', code: 'PENGELOLA_LAYANAN_OPERASIONAL', name: 'Pengelola Layanan Operasional', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'bb22c8a1-9e75-5277-b9ab-fee2d7966619', category: 'PELAKSANA', code: 'PENGADMINISTRASI_PERKANTORAN', name: 'Pengadministrasi Perkantoran', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'dc2e3c13-583c-50e6-aa05-5be865014014', category: 'PELAKSANA', code: 'OPERATOR_LAYANAN_OPERASIONAL', name: 'Operator Layanan Operasional', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: 'dcdbf0ae-835d-5a90-825e-3c655e01ecdf', category: 'PELAKSANA', code: 'PENGADMINISTRASI_KEUANGAN', name: 'Pengadministrasi Keuangan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '3dac938a-da2e-5aaa-9efc-221242cc8a37', category: 'PELAKSANA', code: 'PENYUSUN_MATERI_HUKUM_DAN_PERUNDANG_UNDANGAN', name: 'Penyusun Materi Hukum dan Perundang-undangan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false },
-  { id: '1d274582-2817-59be-90a2-6beb99836985', category: 'PELAKSANA', code: 'DOKUMENTALIS_HUKUM', name: 'Dokumentalis Hukum', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false }
+  { id: 'ce85c387-8129-5dce-9c91-7e9fe3fa6498', category: 'PELAKSANA', code: 'PENELAAH_TEKNIS_KEBIJAKAN', name: 'Penelaah Teknis Kebijakan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '11e3ada7-c900-55c4-819b-b51e5928dd1d', category: 'PELAKSANA', code: 'PENGELOLA_LAYANAN_OPERASIONAL', name: 'Pengelola Layanan Operasional', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'bb22c8a1-9e75-5277-b9ab-fee2d7966619', category: 'PELAKSANA', code: 'PENGADMINISTRASI_PERKANTORAN', name: 'Pengadministrasi Perkantoran', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'dc2e3c13-583c-50e6-aa05-5be865014014', category: 'PELAKSANA', code: 'OPERATOR_LAYANAN_OPERASIONAL', name: 'Operator Layanan Operasional', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: 'dcdbf0ae-835d-5a90-825e-3c655e01ecdf', category: 'PELAKSANA', code: 'PENGADMINISTRASI_KEUANGAN', name: 'Pengadministrasi Keuangan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '3dac938a-da2e-5aaa-9efc-221242cc8a37', category: 'PELAKSANA', code: 'PENYUSUN_MATERI_HUKUM_DAN_PERUNDANG_UNDANGAN', name: 'Penyusun Materi Hukum dan Perundang-undangan', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false },
+  { id: '1d274582-2817-59be-90a2-6beb99836985', category: 'PELAKSANA', code: 'DOKUMENTALIS_HUKUM', name: 'Dokumentalis Hukum', level: 6, parentId: null, status: 'AKTIF', isSingleHolder: false, canAssignTask: false }
 ];
 
 function jabatanLoadList(){

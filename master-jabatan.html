@@ -220,7 +220,7 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Code</th><th>Nama Jabatan</th><th>Kategori</th><th>Level</th><th>Parent</th><th>Status</th><th></th></tr></thead>
+          <thead><tr><th>Code</th><th>Nama Jabatan</th><th>Kategori</th><th>Level</th><th>Parent</th><th>Assign Tugas</th><th>Status</th><th></th></tr></thead>
           <tbody id="tbodyJabatan"></tbody>
         </table>
         <div class="pagination" id="pagination"></div>
@@ -259,6 +259,8 @@ code{background:var(--neutral-bg);padding:1px 6px;border-radius:6px;font-size:11
           <label class="radio-opt"><input type="radio" name="fIsSingleHolder" value="true"> Ya</label>
           <label class="radio-opt"><input type="radio" name="fIsSingleHolder" value="false"> Tidak</label>
         </div>
+      </div>
+      <div class="field"><label style="display:flex;align-items:center;gap:8px;cursor:pointer;"><input type="checkbox" id="fCanAssignTask" style="width:auto;flex-shrink:0;"> Dapat Assign Tugas <span class="opt">(pemegang jabatan ini bisa ditugaskan sebagai penugas task, default Tidak)</span></label>
       </div>
       <div class="field"><label>Status Aktif</label>
         <div class="radio-row">
@@ -362,7 +364,7 @@ function renderTable(){
   var list = all.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   if(!list.length){
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="7">Data Jabatan tidak ditemukan.</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Data Jabatan tidak ditemukan.</td></tr>';
   } else {
     tbody.innerHTML = list.map(function(j){
       var usage = jabatanUsagePegawaiCount(PEGAWAI_LIST, j.id);
@@ -375,6 +377,7 @@ function renderTable(){
         + '<td><span class="badge badge-cat-' + j.category + '">' + JABATAN_CATEGORY_LABEL[j.category] + '</span></td>'
         + '<td><span class="badge badge-info">L' + j.level + '</span></td>'
         + '<td>' + parentLabel(j) + '</td>'
+        + '<td>' + (j.canAssignTask ? '<span class="badge badge-success">Ya</span>' : '<span class="badge badge-neutral">Tidak</span>') + '</td>'
         + '<td>' + statusLabel(j) + '</td>'
         + '<td><div class="actions-cell">'
         +   toggleBtn
@@ -458,6 +461,7 @@ function resetForm(){
   document.getElementById('fNama').value = '';
   setRadioValue('fIsSingleHolder', 'false');
   setRadioValue('fIsActive', 'AKTIF');
+  document.getElementById('fCanAssignTask').checked = false;
   populateParentOptions(document.getElementById('fCategory').value, null);
   document.getElementById('fParent').value = '';
   updateLevelPreview();
@@ -478,6 +482,7 @@ function openEdit(id){
   document.getElementById('fNama').value = j.name;
   setRadioValue('fIsSingleHolder', j.isSingleHolder ? 'true' : 'false');
   setRadioValue('fIsActive', j.status === 'NONAKTIF' ? 'NONAKTIF' : 'AKTIF');
+  document.getElementById('fCanAssignTask').checked = !!j.canAssignTask;
   populateParentOptions(j.category, j.id);
   document.getElementById('fParent').value = j.parentId || '';
   updateLevelPreview();
@@ -504,6 +509,7 @@ function saveJabatan(e){
   var parentId = document.getElementById('fParent').value || null;
   var isSingleHolder = getRadioValue('fIsSingleHolder') === 'true';
   var isActive = getRadioValue('fIsActive') !== 'NONAKTIF';
+  var canAssignTask = document.getElementById('fCanAssignTask').checked;
   var valid = true;
 
   if(!code){ setFieldError('fldCode', 'errCode', 'Code wajib diisi'); valid = false; }
@@ -524,12 +530,12 @@ function saveJabatan(e){
   if(editingId){
     var j = jabatanFindById(JABATAN_LIST, editingId);
     j.category = category; j.code = code; j.name = nama; j.parentId = parentId;
-    j.isSingleHolder = isSingleHolder; j.status = isActive ? 'AKTIF' : 'NONAKTIF';
+    j.isSingleHolder = isSingleHolder; j.status = isActive ? 'AKTIF' : 'NONAKTIF'; j.canAssignTask = canAssignTask;
     jabatanRecalcSubtreeLevels(JABATAN_LIST, editingId);
     toast('Jabatan "' + nama + '" diperbarui (prototipe)');
   } else {
     var newId = jabatanNextId();
-    JABATAN_LIST.push({ id: newId, category: category, code: code, name: nama, level: jabatanComputeLevel(JABATAN_LIST, parentId), parentId: parentId, status: isActive ? 'AKTIF' : 'NONAKTIF', isSingleHolder: isSingleHolder });
+    JABATAN_LIST.push({ id: newId, category: category, code: code, name: nama, level: jabatanComputeLevel(JABATAN_LIST, parentId), parentId: parentId, status: isActive ? 'AKTIF' : 'NONAKTIF', isSingleHolder: isSingleHolder, canAssignTask: canAssignTask });
     toast('Jabatan "' + nama + '" ditambahkan (prototipe)');
   }
   jabatanSaveList(JABATAN_LIST);

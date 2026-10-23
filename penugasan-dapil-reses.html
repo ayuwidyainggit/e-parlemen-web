@@ -206,7 +206,7 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Penugasan mengatur siapa (Anggota DPRD) bertugas di mana &amp; kapan, atas nama Jabatan Pimpinan yang dipegang oleh Anggota yang sedang "login". Pengajuan baru yang dibuat oleh pimpinan yang BUKAN level paling atas memerlukan approval dari pimpinan di atasnya (lihat Config Approval pada form).</div>
+      <div class="hint" style="margin-bottom:16px;">Penugasan mengatur siapa (Anggota DPRD) bertugas di mana &amp; kapan, atas nama Jabatan Pimpinan yang dipegang oleh Anggota yang sedang "login". Pengajuan baru yang dibuat oleh pimpinan yang BUKAN Pucuk Pimpinan (Ketua DPRD / Ketua Sekretariat &mdash; org unit tipe AKD/SEKRE Level 0) memerlukan approval dari Ketua DPRD dan/atau Ketua Sekretariat (lihat Config Approval pada form, approval tidak berjenjang).</div>
 
       <div id="panel-jadwal">
 
@@ -296,8 +296,8 @@ tr:hover td{background:#fafaf7;}
         <select id="jLokasiKelurahan"></select>
       </div>
       <div class="field-row" id="jLokasiKabupatenProvinsiField" style="display:none;">
+        <div class="field"><label>Provinsi</label><select id="jLokasiProvinsi" onchange="onLokasiProvinsiChange()"></select></div>
         <div class="field"><label>Kabupaten/Kota</label><select id="jLokasiKabupaten"></select></div>
-        <div class="field"><label>Provinsi</label><select id="jLokasiProvinsi"></select></div>
       </div>
       <div class="field" id="jLokasiNegaraField" style="display:none;"><label>Negara</label>
         <select id="jLokasiNegara"></select>
@@ -321,10 +321,10 @@ tr:hover td{background:#fafaf7;}
       <div class="field"><label>Catatan <span class="opt">(opsional)</span></label><textarea id="jCatatan" placeholder="Catatan tambahan&hellip;"></textarea></div>
 
       <div class="field" id="jApprovalSection" style="display:none;">
-        <label>Config Approval <span class="opt">(pilih 1&ndash;3 orang dari hierarchy di atas Anda)</span></label>
+        <label>Config Approval <span class="opt">(pilih 1&ndash;2 orang &mdash; Ketua DPRD / Ketua Sekretariat)</span></label>
         <div class="approval-box">
           <div class="chk-list" id="jApproverList"></div>
-          <div class="hint" style="margin-top:8px;">Approval tidak berjenjang &mdash; penugasan akan lanjut begitu salah satu dari approver yang dipilih menyetujui/menolak.</div>
+          <div class="hint" style="margin-top:8px;">Approval tidak berjenjang &mdash; penugasan akan lanjut begitu salah satu dari approver yang dipilih menyetujui/menolak. Approver selalu diambil dari Pucuk Pimpinan (jabatan tertinggi pada org unit tipe AKD/SEKRE Level 0, yaitu Ketua DPRD &amp; Ketua Sekretariat) &mdash; bukan dari hierarchy jabatan Anda.</div>
         </div>
       </div>
 
@@ -380,6 +380,7 @@ tr:hover td{background:#fafaf7;}
 <div class="toast" id="toast"></div>
 <script src="dapil-data.js"></script>
 <script src="jabatan-data.js"></script>
+<script src="unit-type-data.js"></script>
 <script src="pegawai-data.js"></script>
 <script src="jenis-penugasan-data.js"></script>
 <script src="penugasan-dapil-reses-data.js"></script>
@@ -422,7 +423,25 @@ function allKelurahanOptions(){
   return out;
 }
 var LOKASI_PROVINSI_LIST = ['Aceh','Sumatera Utara','Sumatera Barat','Riau','Kepulauan Riau','Jambi','Sumatera Selatan','Kepulauan Bangka Belitung','Bengkulu','Lampung','DKI Jakarta','Jawa Barat','Jawa Tengah','DI Yogyakarta','Jawa Timur','Banten','Bali','Nusa Tenggara Barat','Nusa Tenggara Timur','Kalimantan Barat','Kalimantan Tengah','Kalimantan Selatan','Kalimantan Timur','Kalimantan Utara','Sulawesi Utara','Sulawesi Tengah','Sulawesi Selatan','Sulawesi Tenggara','Gorontalo','Sulawesi Barat','Maluku','Maluku Utara','Papua','Papua Barat','Papua Tengah','Papua Pegunungan','Papua Selatan','Papua Barat Daya'];
-var LOKASI_KABUPATEN_LIST = ['Kota Semarang','Kota Yogyakarta','Kota Surakarta','Kota Surabaya','Kota Malang','Kabupaten Magelang','Kabupaten Purworejo','Kabupaten Temanggung','Kabupaten Wonosobo','Kabupaten Kebumen','Kabupaten Boyolali','Kabupaten Sleman','Kabupaten Bantul','Kota Bandung','Kota Bogor','Kabupaten Bogor','Kota Jakarta Selatan','Kota Jakarta Pusat','Kota Denpasar','Kabupaten Badung','Kota Medan','Kota Makassar','Kota Palembang','Kota Balikpapan','Kota Pontianak','Kota Manado','Kota Batam','Kota Pekanbaru','Kota Padang','Kota Banjarmasin'];
+// Kabupaten/Kota dikelompokkan per Provinsi supaya dropdown Kabupaten/Kota mengikuti Provinsi yang dipilih (lihat onLokasiProvinsiChange()).
+var LOKASI_KABUPATEN_BY_PROVINSI = {
+  'Sumatera Utara': ['Kota Medan'],
+  'Sumatera Barat': ['Kota Padang'],
+  'Riau': ['Kota Pekanbaru'],
+  'Kepulauan Riau': ['Kota Batam'],
+  'Sumatera Selatan': ['Kota Palembang'],
+  'DKI Jakarta': ['Kota Jakarta Selatan','Kota Jakarta Pusat'],
+  'Jawa Barat': ['Kota Bandung','Kota Bogor','Kabupaten Bogor'],
+  'Jawa Tengah': ['Kota Semarang','Kota Surakarta','Kabupaten Magelang','Kabupaten Purworejo','Kabupaten Temanggung','Kabupaten Wonosobo','Kabupaten Kebumen','Kabupaten Boyolali'],
+  'DI Yogyakarta': ['Kota Yogyakarta','Kabupaten Sleman','Kabupaten Bantul'],
+  'Jawa Timur': ['Kota Surabaya','Kota Malang'],
+  'Bali': ['Kota Denpasar','Kabupaten Badung'],
+  'Kalimantan Barat': ['Kota Pontianak'],
+  'Kalimantan Selatan': ['Kota Banjarmasin'],
+  'Kalimantan Timur': ['Kota Balikpapan'],
+  'Sulawesi Utara': ['Kota Manado'],
+  'Sulawesi Selatan': ['Kota Makassar']
+};
 var LOKASI_NEGARA_LIST = ['Singapura','Malaysia','Thailand','Filipina','Vietnam','Brunei Darussalam','Kamboja','Laos','Myanmar','Timor Leste','Jepang','Korea Selatan','Tiongkok','India','Australia','Selandia Baru','Amerika Serikat','Kanada','Inggris','Jerman','Prancis','Belanda','Belgia','Swiss','Spanyol','Italia','Uni Emirat Arab','Arab Saudi','Turki','Mesir','Afrika Selatan','Lainnya'];
 
 function populateLokasiKelurahanSelect(selected){
@@ -430,13 +449,25 @@ function populateLokasiKelurahanSelect(selected){
   document.getElementById('jLokasiKelurahan').innerHTML = '<option value="">Pilih kelurahan&hellip;</option>' + opts.map(function(o){ return '<option value="' + o.nama + '">' + o.nama + ' (Kec. ' + o.kecamatan + ')</option>'; }).join('');
   document.getElementById('jLokasiKelurahan').value = selected || '';
 }
-function populateLokasiKabupatenSelect(selected){
-  document.getElementById('jLokasiKabupaten').innerHTML = '<option value="">Pilih kabupaten/kota&hellip;</option>' + LOKASI_KABUPATEN_LIST.map(function(k){ return '<option value="' + k + '">' + k + '</option>'; }).join('');
-  document.getElementById('jLokasiKabupaten').value = selected || '';
+function populateLokasiKabupatenSelect(selected, provinsi){
+  var sel = document.getElementById('jLokasiKabupaten');
+  var opts = provinsi ? (LOKASI_KABUPATEN_BY_PROVINSI[provinsi] || []) : [];
+  if(!provinsi){
+    sel.innerHTML = '<option value="">Pilih provinsi terlebih dahulu&hellip;</option>';
+    sel.disabled = true;
+  } else {
+    sel.disabled = false;
+    sel.innerHTML = '<option value="">Pilih kabupaten/kota&hellip;</option>' + opts.map(function(k){ return '<option value="' + k + '">' + k + '</option>'; }).join('');
+  }
+  sel.value = selected || '';
 }
 function populateLokasiProvinsiSelect(selected){
   document.getElementById('jLokasiProvinsi').innerHTML = '<option value="">Pilih provinsi&hellip;</option>' + LOKASI_PROVINSI_LIST.map(function(p){ return '<option value="' + p + '">' + p + '</option>'; }).join('');
   document.getElementById('jLokasiProvinsi').value = selected || '';
+}
+function onLokasiProvinsiChange(){
+  var provinsi = document.getElementById('jLokasiProvinsi').value;
+  populateLokasiKabupatenSelect(null, provinsi);
 }
 function populateLokasiNegaraSelect(selected){
   document.getElementById('jLokasiNegara').innerHTML = '<option value="">Pilih negara&hellip;</option>' + LOKASI_NEGARA_LIST.map(function(n){ return '<option value="' + n + '">' + n + '</option>'; }).join('');
@@ -461,23 +492,47 @@ function lokasiLabel(j){
 
 // ---------- Hierarchy & "Login sebagai" (simulasi JWT user login - prototipe) ----------
 var SIM_LOGIN_KEY = 'ep_penugasan_sim_login_person_id';
+var UNIT_TYPE_LIST = unitTypeLoadList();
 var KELOMPOK_LEVEL_BY_NAME = {};
 JABATAN_LIST.filter(function(j){ return j.category === 'KELOMPOK'; }).forEach(function(j){ KELOMPOK_LEVEL_BY_NAME[j.name] = j.level; });
-
+var STRUKTURAL_LEVEL_BY_NAME = {};
+JABATAN_LIST.filter(function(j){ return j.category === 'STRUKTURAL'; }).forEach(function(j){ STRUKTURAL_LEVEL_BY_NAME[j.name] = j.level; });
+// "Pucuk Pimpinan" (org_unit type AKD atau SEKRE, Level 0 - lihat unit-type-data.js) = Ketua DPRD
+// (unit "Pimpinan DPRD", AKD) & Sekretaris DPRD/"Ketua Sekre" (unit "Sekretariat", SEKRE). INI SATU-
+// SATUNYA posisi yg dianggap "paling atas" utk Config Approval - BUKAN seluruh jabatan "Ketua" di
+// jabatan-data.js, karena nama jabatan KELOMPOK ("Ketua") itu generik & dipakai juga oleh Ketua
+// Fraksi/Komisi/Badan (unit AKD Level 1-2 atau FRAKSI) yang TETAP perlu approval.
+var TOP_UNIT_NAMES = UNIT_TYPE_LIST.filter(function(u){
+  return u.level === 0 && (u.unitType === 'AKD' || u.unitType === 'SEKRE');
+}).map(function(u){ return u.name; });
+function unitKerjaIsTopUnit(unitKerja){
+  return !!unitKerja && TOP_UNIT_NAMES.some(function(name){ return unitKerja.indexOf(name) !== -1; });
+}
 function personKelompokAssignments(p){
   return (p.assignments || []).filter(function(a){ return a.kategori === 'KELOMPOK'; });
 }
-// Level terkecil (= jabatan tertinggi) di antara seluruh assignment KELOMPOK milik orang ini -
-// siapapun yang pegang "Ketua" di unit APAPUN otomatis level 1 (paling atas, lihat Config Approval).
-function jadwalPersonMinLevel(p){
-  var asg = personKelompokAssignments(p);
-  if(!asg.length) return Infinity;
-  var min = Infinity;
-  asg.forEach(function(a){
-    var lvl = KELOMPOK_LEVEL_BY_NAME[a.jabatan];
-    if(lvl != null && lvl < min) min = lvl;
-  });
-  return min;
+// Jabatan Pimpinan yang BOLEH dipilih di form Penugasan - hanya Ketua & Wakil Ketua milik user
+// "login" (Sekretaris/Anggota dkk TIDAK dianggap "Pimpinan" untuk keperluan form ini).
+function personPimpinanAssignments(p){
+  return personKelompokAssignments(p).filter(function(a){ return a.jabatan === 'Ketua' || a.jabatan === 'Wakil Ketua'; });
+}
+// Assignment yang dianggap "Pucuk Pimpinan" - jabatan level 1 di kategorinya (Ketua utk KELOMPOK,
+// Sekretaris DPRD utk STRUKTURAL) DAN org_unit-nya level 0 bertipe AKD/SEKRE (lihat TOP_UNIT_NAMES).
+function isTopLevelAssignment(a){
+  if(a.kategori === 'KELOMPOK') return KELOMPOK_LEVEL_BY_NAME[a.jabatan] === 1 && unitKerjaIsTopUnit(a.unitKerja);
+  if(a.kategori === 'STRUKTURAL') return STRUKTURAL_LEVEL_BY_NAME[a.jabatan] === 1 && unitKerjaIsTopUnit(a.unitKerja);
+  return false;
+}
+// Orang ini "Pucuk Pimpinan" jika SALAH SATU assignment-nya (bisa pegang banyak jabatan sekaligus)
+// memenuhi isTopLevelAssignment - mis. kalau dia Ketua Komisi (level 2, perlu approval) TAPI juga
+// Ketua DPRD (level 1, Pimpinan DPRD), maka dia tetap dianggap Pucuk Pimpinan: tidak ada approval.
+function personIsPucukPimpinan(p){
+  return (p.assignments || []).some(isTopLevelAssignment);
+}
+function pucukPimpinanLabel(p){
+  var top = (p.assignments || []).find(isTopLevelAssignment);
+  if(!top) return '';
+  return top.kategori === 'KELOMPOK' ? 'Ketua DPRD' : 'Ketua Sekretariat';
 }
 function getCurrentUser(){
   var id = parseInt(localStorage.getItem(SIM_LOGIN_KEY), 10);
@@ -489,10 +544,12 @@ function getCurrentUser(){
   }
   return p || null;
 }
+// Approval TIDAK berjenjang: approver SELALU dari set tetap Pucuk Pimpinan (Ketua DPRD & Ketua
+// Sekretariat, lihat personIsPucukPimpinan), bukan "siapapun di atas level requester". Kalau
+// requester SENDIRI sudah Pucuk Pimpinan -> tidak ada Config Approval sama sekali.
 function eligibleApprovers(person){
-  if(!person) return [];
-  var lvl = jadwalPersonMinLevel(person);
-  return politisiList().filter(function(p){ return p.id !== person.id && jadwalPersonMinLevel(p) < lvl; });
+  if(!person || personIsPucukPimpinan(person)) return [];
+  return PEGAWAI_LIST.filter(function(p){ return p.id !== person.id && p.loginStatus !== 'DEACTIVATED' && personIsPucukPimpinan(p); });
 }
 function approvalNeededFor(person){ return eligibleApprovers(person).length > 0; }
 
@@ -658,10 +715,10 @@ function populateJenisPenugasanSelect(selected){
 var currentJabatanPimpinanOptions = [];
 function buildJabatanPimpinanChips(selectedPairs, checkedAnggotaIds){
   var currentUser = getCurrentUser();
-  currentJabatanPimpinanOptions = currentUser ? personKelompokAssignments(currentUser) : [];
+  currentJabatanPimpinanOptions = currentUser ? personPimpinanAssignments(currentUser) : [];
   var box = document.getElementById('jJabatanPimpinanChips');
   if(!currentJabatanPimpinanOptions.length){
-    box.innerHTML = '<div class="hint">' + (currentUser ? ('"' + currentUser.nama + '" belum') : 'Anda belum') + ' memiliki Jabatan Pimpinan (KELOMPOK) yang tercatat.</div>';
+    box.innerHTML = '<div class="hint">' + (currentUser ? ('"' + currentUser.nama + '" belum') : 'Anda belum') + ' memiliki Jabatan Pimpinan (Ketua/Wakil Ketua) yang tercatat.</div>';
     onJabatanPimpinanChange([], checkedAnggotaIds);
     return;
   }
@@ -742,15 +799,15 @@ function refreshApprovalSection(selectedApproverIds){
   section.style.display = 'block';
   document.getElementById('jApproverList').innerHTML = eligible.map(function(p){
     var checked = (selectedApproverIds || []).indexOf(p.id) !== -1 ? ' checked' : '';
-    return '<label class="chk-item"><input type="checkbox" value="' + p.id + '" onchange="enforceApproverMax()"' + checked + '> ' + p.nama + ' <span class="cs">Level ' + jadwalPersonMinLevel(p) + '</span></label>';
+    return '<label class="chk-item"><input type="checkbox" value="' + p.id + '" onchange="enforceApproverMax()"' + checked + '> ' + p.nama + ' <span class="cs">' + pucukPimpinanLabel(p) + '</span></label>';
   }).join('');
 }
 function enforceApproverMax(){
   var boxes = document.querySelectorAll('#jApproverList input[type="checkbox"]');
   var checkedBoxes = Array.prototype.filter.call(boxes, function(b){ return b.checked; });
-  if(checkedBoxes.length > 3){
+  if(checkedBoxes.length > 2){
     checkedBoxes[checkedBoxes.length - 1].checked = false;
-    toast('Maksimal 3 approver.');
+    toast('Maksimal 2 approver.');
   }
 }
 function getSelectedApproverIds(){
@@ -767,8 +824,8 @@ function openAddJadwal(){
   document.getElementById('jKegiatan').value = '';
   document.getElementById('jLokasiJenis').value = 'DALAM_KOTA';
   populateLokasiKelurahanSelect(null);
-  populateLokasiKabupatenSelect(null);
   populateLokasiProvinsiSelect(null);
+  populateLokasiKabupatenSelect(null, null);
   populateLokasiNegaraSelect(null);
   toggleLokasiFields();
   buildJabatanPimpinanChips([]);
@@ -792,8 +849,8 @@ function openEditJadwal(id){
   document.getElementById('jKegiatan').value = j.kegiatan;
   document.getElementById('jLokasiJenis').value = j.lokasiJenis;
   populateLokasiKelurahanSelect(j.lokasiKelurahan);
-  populateLokasiKabupatenSelect(j.lokasiKabupaten);
   populateLokasiProvinsiSelect(j.lokasiProvinsi);
+  populateLokasiKabupatenSelect(j.lokasiKabupaten, j.lokasiProvinsi);
   populateLokasiNegaraSelect(j.lokasiNegara);
   toggleLokasiFields();
   buildJabatanPimpinanChips(j.jabatanPimpinanList || [], [j.personId]);
@@ -843,8 +900,8 @@ function saveJadwal(e){
   var needsApproval = approvalNeededFor(currentUser);
   var approverIds = needsApproval ? getSelectedApproverIds() : [];
   var isFinal = status === 'Final';
-  if(needsApproval && isFinal && (approverIds.length < 1 || approverIds.length > 3)){
-    toast('Pilih 1-3 approver pada Config Approval.');
+  if(needsApproval && isFinal && (approverIds.length < 1 || approverIds.length > 2)){
+    toast('Pilih 1-2 approver pada Config Approval.');
     return false;
   }
   var finalStatus = !isFinal ? 'Draft' : (needsApproval ? 'Menunggu Approval' : 'Approve');
