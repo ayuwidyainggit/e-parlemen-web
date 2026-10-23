@@ -206,7 +206,7 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Penugasan mengatur siapa (Anggota DPRD) bertugas di mana &amp; kapan, atas nama Jabatan Pimpinan yang dipegang oleh Anggota yang sedang "login". Pengajuan baru &amp; pembatalan yang dibuat oleh pimpinan yang BUKAN level paling atas memerlukan approval dari pimpinan di atasnya (lihat Config Approval pada form) &mdash; Anggota mencatat realisasinya lewat aplikasi mobile.</div>
+      <div class="hint" style="margin-bottom:16px;">Penugasan mengatur siapa (Anggota DPRD) bertugas di mana &amp; kapan, atas nama Jabatan Pimpinan yang dipegang oleh Anggota yang sedang "login". Pengajuan baru yang dibuat oleh pimpinan yang BUKAN level paling atas memerlukan approval dari pimpinan di atasnya (lihat Config Approval pada form).</div>
 
       <div id="panel-jadwal">
 
@@ -223,25 +223,21 @@ tr:hover td{background:#fafaf7;}
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
             <div><div class="num" id="statMenunggu">0</div><div class="lbl">Menunggu Approval</div></div>
           </div>
-          <div class="stat-card info">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></div>
-            <div><div class="num" id="statSubmit">0</div><div class="lbl">Submit</div></div>
-          </div>
-          <div class="stat-card warn">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
-            <div><div class="num" id="statProses">0</div><div class="lbl">Dalam Proses Penugasan</div></div>
-          </div>
-          <div class="stat-card danger">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
-            <div><div class="num" id="statLewatMasa">0</div><div class="lbl">Lewat Masa Penugasan</div></div>
-          </div>
           <div class="stat-card success">
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-            <div><div class="num" id="statSelesai">0</div><div class="lbl">Selesai</div></div>
+            <div><div class="num" id="statApprove">0</div><div class="lbl">Approve</div></div>
           </div>
-          <div class="stat-card purple">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg></div>
-            <div><div class="num" id="statButuhApproval">0</div><div class="lbl">Butuh Approval (Batal)</div></div>
+          <div class="stat-card">
+            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
+            <div><div class="num" id="statCancel">0</div><div class="lbl">Cancel</div></div>
+          </div>
+          <div class="stat-card danger">
+            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
+            <div><div class="num" id="statReject">0</div><div class="lbl">Reject</div></div>
+          </div>
+          <div class="stat-card danger">
+            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
+            <div><div class="num" id="statCancelAnggota">0</div><div class="lbl">Cancel by Anggota</div></div>
           </div>
         </div>
 
@@ -257,13 +253,10 @@ tr:hover td{background:#fafaf7;}
               <option value="">Semua Status</option>
               <option value="Draft">Draft</option>
               <option value="Menunggu Approval">Menunggu Approval</option>
-              <option value="Submit">Submit</option>
-              <option value="Dalam Proses Penugasan">Dalam Proses Penugasan</option>
-              <option value="Lewat Masa Penugasan">Lewat Masa Penugasan</option>
-              <option value="Selesai">Selesai</option>
-              <option value="Butuh Approval">Butuh Approval (Batal)</option>
-              <option value="Dibatalkan">Dibatalkan</option>
-              <option value="Ditolak">Ditolak</option>
+              <option value="Approve">Approve</option>
+              <option value="Cancel">Cancel</option>
+              <option value="Reject">Reject</option>
+              <option value="Cancel by Anggota">Cancel by Anggota</option>
             </select>
           </div>
           <button class="btn btn-outline btn-sm" onclick="resetFilterJadwal()">Reset Filter</button>
@@ -271,11 +264,11 @@ tr:hover td{background:#fafaf7;}
 
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Anggota</th><th>Dapil</th><th>Jenis Penugasan</th><th>Kegiatan</th><th>Lokasi</th><th>Tanggal/Jam</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Anggota</th><th>Dapil</th><th>Jenis Penugasan</th><th>Kegiatan</th><th>Lokasi</th><th>Tanggal/Jam</th><th>Status</th><th>Respon Anggota</th><th></th></tr></thead>
             <tbody id="tbodyJadwal"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:12px;">Status berjalan otomatis: <strong>Draft</strong> &rarr; (bila perlu approval) <strong>Menunggu Approval</strong> &rarr; setelah disetujui/di-Submit langsung, status tampil <strong>Submit</strong> selama tanggal rencana masih jauh (&gt;14 hari lagi) &rarr; otomatis jadi <strong>Dalam Proses Penugasan</strong> begitu tanggal rencana tinggal 14 hari lagi &rarr; otomatis jadi <strong>Lewat Masa Penugasan</strong> kalau tanggal rencana sudah lewat tanpa laporan, atau otomatis jadi <strong>Selesai</strong> kapan saja salah satu Anggota yang ditugaskan submit realisasi lewat aplikasi mobile. Tombol Edit &amp; Batalkan hanya tersedia selama status masih <strong>Draft</strong> atau <strong>Submit</strong>. Mengklik Batalkan akan langsung membatalkan (jika "Login sebagai" sudah level paling atas) atau mengajukan status <strong>Butuh Approval</strong> ke approver yang sama dengan Config Approval saat Penugasan dibuat. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (Edit/Cancel oleh pembuat, Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status); pembuat menekan Cancel -&gt; <strong>Cancel</strong> (TERMINAL, view only, tanpa alasan). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
       </div>
 
     </div>
@@ -335,10 +328,10 @@ tr:hover td{background:#fafaf7;}
         </div>
       </div>
 
-      <div class="hint" style="margin-top:10px;">Status Draft/Submit ditentukan lewat tombol di bawah. Bila Anda bukan pimpinan level paling atas, tombol "Simpan Penugasan" akan mengirim status <strong>Menunggu Approval</strong> ke approver terpilih, bukan langsung Submit.</div>
+      <div class="hint" style="margin-top:10px;">Status Draft/Approve ditentukan lewat tombol di bawah. Bila Anda bukan pimpinan level paling atas, tombol "Simpan Penugasan" akan mengirim status <strong>Menunggu Approval</strong> ke approver terpilih, bukan langsung Approve.</div>
       <div class="modal-foot">
         <button type="button" class="btn btn-outline" onclick="closeModalJadwal()">Batal</button>
-        <button type="submit" class="btn btn-primary" onclick="pendingJadwalStatus='Submit'">Simpan Penugasan</button>
+        <button type="submit" class="btn btn-primary" onclick="pendingJadwalStatus='Final'">Simpan Penugasan</button>
         <button type="submit" class="btn btn-outline" onclick="pendingJadwalStatus='Draft'">Draft</button>
       </div>
     </form>
@@ -352,7 +345,34 @@ tr:hover td{background:#fafaf7;}
     <div class="hint" id="cancelJadwalText" style="margin-bottom:4px;"></div>
     <div class="modal-foot">
       <button type="button" class="btn btn-outline" onclick="closeCancelJadwal()">Batal</button>
-      <button type="button" class="btn btn-danger-outline" onclick="confirmCancelJadwal()">Batalkan Penugasan</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmCancelJadwal()">Ajukan Pembatalan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Hapus Penugasan (Draft) -->
+<div class="modal-backdrop" id="modalDeleteJadwalBackdrop">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-head"><h3>Hapus Penugasan</h3><button class="modal-close" onclick="closeDeleteJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="deleteJadwalText" style="margin-bottom:4px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeDeleteJadwal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmDeleteJadwal()">Hapus Permanen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tolak (Reject) Penugasan -->
+<div class="modal-backdrop" id="modalRejectJadwalBackdrop">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-head"><h3>Tolak Penugasan</h3><button class="modal-close" onclick="closeRejectJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="rejectJadwalText" style="margin-bottom:10px;"></div>
+    <div class="field"><label>Alasan Penolakan <span class="opt">(wajib diisi)</span></label>
+      <textarea id="rejectJadwalReason" placeholder="Jelaskan alasan menolak penugasan ini&hellip;"></textarea>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeRejectJadwal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmRejectJadwal()">Tolak Penugasan</button>
     </div>
   </div>
 </div>
@@ -496,59 +516,70 @@ function populateJadwalFilterOptions(){
   document.getElementById('filterJenisPenugasanJadwal').innerHTML = '<option value="">Semua Jenis</option>' + JENIS_PENUGASAN_LIST.map(function(j){ return '<option value="' + j.id + '">' + j.nama + '</option>'; }).join('');
 }
 
-// Status (j.status) ditulis manual: 'Draft' | 'Submit' | 'Menunggu Approval' | 'Butuh Approval' |
-// 'Dibatalkan' | 'Ditolak' (lihat catatan skema di penugasan-dapil-reses-data.js). Progres tanggal
-// (Dalam Proses Penugasan/Lewat Masa Penugasan/Selesai) HANYA dihitung selama j.status==='Submit'.
-var JADWAL_PROSES_WINDOW_DAYS = 14;
-function addDaysISO(iso, days){
-  var d = new Date(iso + 'T00:00:00');
-  d.setDate(d.getDate() + days);
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-function jadwalEffectiveStatus(j){
-  if(j.status !== 'Submit') return j.status;
-  if(j.submittedByMember) return 'Selesai';
-  var today = todayISO();
-  if(j.tanggalRencana && j.tanggalRencana < today) return 'Lewat Masa Penugasan';
-  if(j.tanggalRencana && j.tanggalRencana <= addDaysISO(today, JADWAL_PROSES_WINDOW_DAYS)) return 'Dalam Proses Penugasan';
-  return 'Submit';
-}
+// Status (j.status), 6 nilai literal, tidak ada progres otomatis berbasis tanggal:
+// 'Draft' | 'Menunggu Approval' | 'Approve' | 'Cancel' | 'Reject' | 'Cancel by Anggota'.
 function jadwalIsEditable(j){
-  var eff = jadwalEffectiveStatus(j);
-  return eff === 'Draft' || eff === 'Submit';
+  return j.status === 'Draft' || j.status === 'Menunggu Approval';
 }
-function syncJadwalStatuses(){
-  var changed = false;
-  JADWAL_RESES_LIST.forEach(function(j){
-    if(j.status === 'Submit'){
-      var eff = jadwalEffectiveStatus(j);
-      if(eff === 'Lewat Masa Penugasan' || eff === 'Selesai'){
-        j.status = eff;
-        changed = true;
-      }
-    }
-  });
-  if(changed) jadwalResesSaveList(JADWAL_RESES_LIST);
+function jadwalIsDeletable(j){
+  return j.status === 'Draft';
 }
-var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Submit':'badge-info', 'Dalam Proses Penugasan':'badge-warn', 'Lewat Masa Penugasan':'badge-danger', 'Selesai':'badge-success', 'Butuh Approval':'badge-purple', 'Dibatalkan':'badge-neutral', 'Ditolak':'badge-danger' };
+function jadwalIsCancelable(j){
+  return j.status === 'Menunggu Approval';
+}
+var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Cancel':'badge-neutral', 'Reject':'badge-danger', 'Cancel by Anggota':'badge-danger' };
 
-function buildActionsForRow(j, effStatus, currentUser){
-  var html = '';
-  if(currentUser && j.approverIds && j.approverIds.indexOf(currentUser.id) !== -1 && (effStatus === 'Menunggu Approval' || effStatus === 'Butuh Approval')){
-    html += '<button class="btn btn-outline btn-sm" onclick="approveJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>';
-    html += '<button class="btn btn-danger-outline btn-sm" onclick="rejectJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Tolak</button>';
-    return html;
+function buildActionsForRow(j, currentUser){
+  if(currentUser && j.approverIds && j.approverIds.indexOf(currentUser.id) !== -1 && j.status === 'Menunggu Approval'){
+    return '<button class="btn btn-outline btn-sm" onclick="approveJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>'
+      + '<button class="btn btn-danger-outline btn-sm" onclick="openRejectJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Tolak</button>';
   }
-  if(jadwalIsEditable(j)){
-    html += '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>';
-    html += '<button class="btn btn-danger-outline btn-sm" onclick="openCancelJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Batalkan</button>';
-    return html;
+  if(j.status === 'Draft'){
+    return '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      + '<button class="btn btn-danger-outline btn-sm" onclick="openDeleteJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg> Delete</button>';
+  }
+  if(j.status === 'Menunggu Approval'){
+    return '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+      + '<button class="btn btn-danger-outline btn-sm" onclick="openCancelJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Cancel</button>';
   }
   return '<span class="hint">&mdash;</span>';
 }
 
+// Respon Anggota: VIEW ONLY, dihitung dari anggotaResponse seluruh record satu batchId -
+// 'Menerima' (tidak ada yang menolak) | 'Sebagian Menolak' (sebagian menolak, belum semua) |
+// 'Menolak' (SEMUA menolak - lihat syncCancelByAnggota(), status record otomatis jadi
+// 'Cancel by Anggota' begitu kondisi ini terpenuhi, tidak perlu aksi apapun dari admin).
+function anggotaResponseLabel(j){
+  var siblings = JADWAL_RESES_LIST.filter(function(x){ return x.batchId === j.batchId; });
+  var totalTolak = siblings.filter(function(x){ return x.anggotaResponse === 'Tolak'; }).length;
+  if(totalTolak === 0) return 'Menerima';
+  if(totalTolak === siblings.length) return 'Menolak';
+  return 'Sebagian Menolak';
+}
+function buildRespondCellForRow(j){
+  if(j.status !== 'Approve' && j.status !== 'Cancel by Anggota'){
+    return '<span class="hint">&mdash;</span>';
+  }
+  var label = anggotaResponseLabel(j);
+  var cls = label === 'Menerima' ? 'badge-success' : (label === 'Menolak' ? 'badge-danger' : 'badge-warn');
+  return '<span class="badge ' + cls + '">' + label + '</span>';
+}
+function syncCancelByAnggota(){
+  var changed = false;
+  var batches = {};
+  JADWAL_RESES_LIST.forEach(function(j){ if(j.status === 'Approve'){ (batches[j.batchId] = batches[j.batchId] || []).push(j); } });
+  Object.keys(batches).forEach(function(batchId){
+    var siblings = batches[batchId];
+    if(siblings.every(function(x){ return x.anggotaResponse === 'Tolak'; })){
+      siblings.forEach(function(x){ x.status = 'Cancel by Anggota'; });
+      changed = true;
+    }
+  });
+  if(changed) jadwalResesSaveList(JADWAL_RESES_LIST);
+}
+
 function renderJadwalTable(){
-  syncJadwalStatuses();
+  syncCancelByAnggota();
   var currentUser = getCurrentUser();
   var jenisFilter = document.getElementById('filterJenisPenugasanJadwal').value;
   var dapilFilter = document.getElementById('filterDapilJadwal').value;
@@ -559,13 +590,13 @@ function renderJadwalTable(){
     if(!p) return false;
     if(jenisFilter && String(j.jenisPenugasanId) !== jenisFilter) return false;
     if(dapilFilter && j.dapilKode !== dapilFilter) return false;
-    if(statusFilter && jadwalEffectiveStatus(j) !== statusFilter) return false;
+    if(statusFilter && j.status !== statusFilter) return false;
     return true;
   }).slice().sort(function(a,b){ return (b.tanggalRencana||'').localeCompare(a.tanggalRencana||''); });
 
   var tbody = document.getElementById('tbodyJadwal');
   if(!list.length){
-    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-note">Tidak ada penugasan yang cocok dengan filter.</div></td></tr>';
+    tbody.innerHTML = '<tr><td colspan="9"><div class="empty-note">Tidak ada penugasan yang cocok dengan filter.</div></td></tr>';
     updateStatsJadwal();
     return;
   }
@@ -578,9 +609,10 @@ function renderJadwalTable(){
     var jpBadge = '<span class="badge badge-info">' + (jp ? jp.nama : '&mdash;') + '</span>';
     var pimpinanLabel = (j.jabatanPimpinanList || []).map(function(a){ return a.jabatan + ' - ' + a.unitKerja; }).join(', ') || '&mdash;';
     var jamRange = (j.jamMulai && j.jamSelesai) ? j.jamMulai + '&ndash;' + j.jamSelesai : '';
-    var effStatus = jadwalEffectiveStatus(j);
-    var statusBadge = '<span class="badge ' + (jadwalStatusClass[effStatus] || 'badge-neutral') + '">' + effStatus + '</span>';
-    var actions = buildActionsForRow(j, effStatus, currentUser);
+    var statusBadge = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + j.status + '</span>'
+      + (j.status === 'Reject' && j.rejectReason ? '<div class="hint" style="margin-top:4px;">' + j.rejectReason + '</div>' : '');
+    var actions = buildActionsForRow(j, currentUser);
+    var respond = buildRespondCellForRow(j);
 
     return '<tr>'
       + '<td><div class="namecell"><div class="n">' + nama + '</div></div></td>'
@@ -590,6 +622,7 @@ function renderJadwalTable(){
       + '<td>' + lokasiLabel(j) + '</td>'
       + '<td>' + fmtTanggal(j.tanggalRencana) + '<br><span class="hint">' + jamRange + '</span></td>'
       + '<td>' + statusBadge + '</td>'
+      + '<td>' + respond + '</td>'
       + '<td><div class="actions-cell">' + actions + '</div></td>'
     + '</tr>';
   }).join('');
@@ -599,14 +632,13 @@ function renderJadwalTable(){
 function updateStatsJadwal(){
   document.getElementById('statTotalJadwal').textContent = JADWAL_RESES_LIST.length;
   var byStatus = {};
-  JADWAL_RESES_LIST.forEach(function(j){ var s = jadwalEffectiveStatus(j); byStatus[s] = (byStatus[s] || 0) + 1; });
+  JADWAL_RESES_LIST.forEach(function(j){ byStatus[j.status] = (byStatus[j.status] || 0) + 1; });
   document.getElementById('statDraft').textContent = byStatus['Draft'] || 0;
   document.getElementById('statMenunggu').textContent = byStatus['Menunggu Approval'] || 0;
-  document.getElementById('statSubmit').textContent = byStatus['Submit'] || 0;
-  document.getElementById('statProses').textContent = byStatus['Dalam Proses Penugasan'] || 0;
-  document.getElementById('statLewatMasa').textContent = byStatus['Lewat Masa Penugasan'] || 0;
-  document.getElementById('statSelesai').textContent = byStatus['Selesai'] || 0;
-  document.getElementById('statButuhApproval').textContent = byStatus['Butuh Approval'] || 0;
+  document.getElementById('statApprove').textContent = byStatus['Approve'] || 0;
+  document.getElementById('statCancel').textContent = byStatus['Cancel'] || 0;
+  document.getElementById('statReject').textContent = byStatus['Reject'] || 0;
+  document.getElementById('statCancelAnggota').textContent = byStatus['Cancel by Anggota'] || 0;
 }
 
 function resetFilterJadwal(){
@@ -751,7 +783,7 @@ function openEditJadwal(id){
   var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
   if(!j) return;
   if(!jadwalIsEditable(j)){
-    toast('Penugasan ini sudah ' + jadwalEffectiveStatus(j) + ' sehingga tidak dapat diedit.');
+    toast('Penugasan ini sudah ' + j.status + ' sehingga tidak dapat diedit.');
     return;
   }
   editingJadwalId = id;
@@ -776,7 +808,7 @@ function closeModalJadwal(){
   document.getElementById('modalJadwalBackdrop').classList.remove('open');
   editingJadwalId = null;
 }
-var pendingJadwalStatus = 'Submit';
+var pendingJadwalStatus = 'Final';
 function saveJadwal(e){
   e.preventDefault();
   var currentUser = getCurrentUser();
@@ -810,37 +842,41 @@ function saveJadwal(e){
 
   var needsApproval = approvalNeededFor(currentUser);
   var approverIds = needsApproval ? getSelectedApproverIds() : [];
-  if(needsApproval && status === 'Submit' && (approverIds.length < 1 || approverIds.length > 3)){
+  var isFinal = status === 'Final';
+  if(needsApproval && isFinal && (approverIds.length < 1 || approverIds.length > 3)){
     toast('Pilih 1-3 approver pada Config Approval.');
     return false;
   }
-  var finalStatus = (status === 'Submit' && needsApproval) ? 'Menunggu Approval' : status;
+  var finalStatus = !isFinal ? 'Draft' : (needsApproval ? 'Menunggu Approval' : 'Approve');
 
   var baseFields = {
     dapilKode: currentUser.dapilId, jenisPenugasanId: jenisPenugasanId, jabatanPimpinanList: jabatanPimpinanList,
     kegiatan: kegiatan, lokasiJenis: lokasiJenis, lokasiKelurahan: lokasiKelurahan, lokasiKabupaten: lokasiKabupaten,
     lokasiProvinsi: lokasiProvinsi, lokasiNegara: lokasiNegara, tanggalRencana: tanggalRencana, jamMulai: jamMulai,
     jamSelesai: jamSelesai, catatan: catatan, status: finalStatus,
-    pendingAction: finalStatus === 'Menunggu Approval' ? 'CREATE' : null, statusBeforeCancel: null,
-    approverIds: approverIds
+    anggotaResponse: null, rejectReason: null, approverIds: approverIds
   };
 
   if(editingJadwalId){
     var j = JADWAL_RESES_LIST.find(function(j){ return j.id === editingJadwalId; });
     if(!jadwalIsEditable(j)){
-      toast('Penugasan ini sudah ' + jadwalEffectiveStatus(j) + ' sehingga tidak dapat diubah lagi.');
+      toast('Penugasan ini sudah ' + j.status + ' sehingga tidak dapat diubah lagi.');
       return false;
     }
+    var batchId = j.batchId;
     for(var k in baseFields){ j[k] = baseFields[k]; }
     personIds.slice(1).forEach(function(pid){
-      var clone = { id: jadwalResesNextId(JADWAL_RESES_LIST), personId: pid, submittedByMember: false, createdByUserId: currentUser.id, createdAt: new Date().toISOString() };
+      var clone = { id: jadwalResesNextId(JADWAL_RESES_LIST), personId: pid, batchId: batchId, createdByUserId: currentUser.id, createdAt: new Date().toISOString() };
       for(var k2 in baseFields){ clone[k2] = baseFields[k2]; }
       JADWAL_RESES_LIST.push(clone);
     });
     toast('Penugasan berhasil diperbarui (prototipe)');
   } else {
+    var firstBatchId = null;
     personIds.forEach(function(pid){
-      var rec = { id: jadwalResesNextId(JADWAL_RESES_LIST), personId: pid, submittedByMember: false, createdByUserId: currentUser.id, createdAt: new Date().toISOString() };
+      var newId = jadwalResesNextId(JADWAL_RESES_LIST);
+      if(firstBatchId === null) firstBatchId = newId;
+      var rec = { id: newId, personId: pid, batchId: firstBatchId, createdByUserId: currentUser.id, createdAt: new Date().toISOString() };
       for(var k3 in baseFields){ rec[k3] = baseFields[k3]; }
       JADWAL_RESES_LIST.push(rec);
     });
@@ -852,14 +888,43 @@ function saveJadwal(e){
   return false;
 }
 
-// ---------- Batalkan Penugasan (cancel -> langsung Dibatalkan, atau Butuh Approval) ----------
+// ---------- Hapus Penugasan (hanya status Draft) ----------
+var deletingJadwalId = null;
+function openDeleteJadwal(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  if(!j || !jadwalIsDeletable(j)) return;
+  deletingJadwalId = id;
+  var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
+  document.getElementById('deleteJadwalText').textContent = 'Hapus penugasan "' + j.kegiatan + '" untuk "' + (p ? p.nama : 'Anggota #' + j.personId) + '" secara permanen? Tindakan ini tidak bisa dibatalkan.';
+  document.getElementById('modalDeleteJadwalBackdrop').classList.add('open');
+}
+function closeDeleteJadwal(){
+  document.getElementById('modalDeleteJadwalBackdrop').classList.remove('open');
+  deletingJadwalId = null;
+}
+function confirmDeleteJadwal(){
+  var idx = JADWAL_RESES_LIST.findIndex(function(j){ return j.id === deletingJadwalId; });
+  if(idx === -1){ closeDeleteJadwal(); return; }
+  if(!jadwalIsDeletable(JADWAL_RESES_LIST[idx])){
+    toast('Penugasan ini sudah bukan Draft sehingga tidak dapat dihapus.');
+    closeDeleteJadwal();
+    return;
+  }
+  JADWAL_RESES_LIST.splice(idx, 1);
+  jadwalResesSaveList(JADWAL_RESES_LIST);
+  renderJadwalTable();
+  toast('Penugasan dihapus (prototipe)');
+  closeDeleteJadwal();
+}
+
+// ---------- Cancel Penugasan (hanya dari status Menunggu Approval, oleh pembuat - langsung "Cancel", tidak ada approval lagi) ----------
 var cancelingJadwalId = null;
 function openCancelJadwal(id){
   var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
-  if(!j || !jadwalIsEditable(j)) return;
+  if(!j || !jadwalIsCancelable(j)) return;
   cancelingJadwalId = id;
   var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
-  document.getElementById('cancelJadwalText').textContent = 'Batalkan penugasan "' + j.kegiatan + '" untuk "' + (p ? p.nama : 'Anggota #' + j.personId) + '"? Jika "Login sebagai" saat ini bukan pimpinan level paling atas, pembatalan akan menunggu approval dari approver yang sama dengan saat Penugasan ini dibuat.';
+  document.getElementById('cancelJadwalText').textContent = 'Batalkan (Cancel) penugasan "' + j.kegiatan + '" untuk "' + (p ? p.nama : 'Anggota #' + j.personId) + '"? Status akan langsung menjadi Cancel.';
   document.getElementById('modalCancelJadwalBackdrop').classList.add('open');
 }
 function closeCancelJadwal(){
@@ -869,26 +934,15 @@ function closeCancelJadwal(){
 function confirmCancelJadwal(){
   var j = JADWAL_RESES_LIST.find(function(j){ return j.id === cancelingJadwalId; });
   if(!j){ closeCancelJadwal(); return; }
-  if(!jadwalIsEditable(j)){
-    toast('Penugasan ini sudah ' + jadwalEffectiveStatus(j) + ' sehingga tidak dapat dibatalkan.');
+  if(!jadwalIsCancelable(j)){
+    toast('Penugasan ini sudah ' + j.status + ' sehingga tidak dapat dibatalkan.');
     closeCancelJadwal();
     return;
   }
-  var currentUser = getCurrentUser();
-  var currentNeedsApproval = currentUser && approvalNeededFor(currentUser);
-  if(currentNeedsApproval && j.approverIds && j.approverIds.length){
-    j.statusBeforeCancel = j.status;
-    j.status = 'Butuh Approval';
-    j.pendingAction = 'CANCEL';
-    toast('Pengajuan pembatalan menunggu approval (prototipe)');
-  } else {
-    j.status = 'Dibatalkan';
-    j.pendingAction = null;
-    j.statusBeforeCancel = null;
-    toast('Penugasan dibatalkan (prototipe)');
-  }
+  j.status = 'Cancel';
   jadwalResesSaveList(JADWAL_RESES_LIST);
   renderJadwalTable();
+  toast('Penugasan dibatalkan (prototipe)');
   closeCancelJadwal();
 }
 
@@ -900,28 +954,46 @@ function approveJadwal(id){
     toast('Anda bukan approver untuk penugasan ini.');
     return;
   }
-  if(j.pendingAction === 'CREATE') j.status = 'Submit';
-  else if(j.pendingAction === 'CANCEL') j.status = 'Dibatalkan';
-  j.pendingAction = null;
-  j.statusBeforeCancel = null;
+  j.status = 'Approve';
   jadwalResesSaveList(JADWAL_RESES_LIST);
   renderJadwalTable();
   toast('Penugasan disetujui (prototipe)');
 }
-function rejectJadwal(id){
+// ---------- Tolak (Reject) Penugasan - oleh approver, status jadi "Reject" dengan alasan wajib ----------
+var rejectingJadwalId = null;
+function openRejectJadwal(id){
   var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
   var currentUser = getCurrentUser();
   if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
     toast('Anda bukan approver untuk penugasan ini.');
     return;
   }
-  if(j.pendingAction === 'CREATE') j.status = 'Ditolak';
-  else if(j.pendingAction === 'CANCEL') j.status = j.statusBeforeCancel || 'Submit';
-  j.pendingAction = null;
-  j.statusBeforeCancel = null;
+  rejectingJadwalId = id;
+  var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
+  document.getElementById('rejectJadwalText').textContent = 'Tolak penugasan "' + j.kegiatan + '" untuk "' + (p ? p.nama : 'Anggota #' + j.personId) + '"?';
+  document.getElementById('rejectJadwalReason').value = '';
+  document.getElementById('modalRejectJadwalBackdrop').classList.add('open');
+}
+function closeRejectJadwal(){
+  document.getElementById('modalRejectJadwalBackdrop').classList.remove('open');
+  rejectingJadwalId = null;
+}
+function confirmRejectJadwal(){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === rejectingJadwalId; });
+  var currentUser = getCurrentUser();
+  if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
+    toast('Anda bukan approver untuk penugasan ini.');
+    closeRejectJadwal();
+    return;
+  }
+  var reason = document.getElementById('rejectJadwalReason').value.trim();
+  if(!reason){ toast('Isi alasan penolakan terlebih dahulu.'); return; }
+  j.status = 'Reject';
+  j.rejectReason = reason;
   jadwalResesSaveList(JADWAL_RESES_LIST);
   renderJadwalTable();
   toast('Penugasan ditolak (prototipe)');
+  closeRejectJadwal();
 }
 
 // ---------- Init ----------
