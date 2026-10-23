@@ -19,10 +19,11 @@ var WEB_MENU_CATALOG = [
     { id: 'web-master-dapil', label: 'Master Dapil' },
     { id: 'web-master-reses', label: 'Master Reses' },
     { id: 'web-periode-reses', label: 'Periode Reses' },
-    { id: 'web-jenis-kegiatan', label: 'Jenis Kegiatan' }
+    { id: 'web-jenis-kegiatan', label: 'Jenis Kegiatan' },
+    { id: 'web-jenis-penugasan', label: 'Jenis Penugasan' }
   ]},
   { group: 'Reses & Dapil', items: [
-    { id: 'web-penugasan-dapil-reses', label: 'Penugasan Dapil & Reses' },
+    { id: 'web-penugasan-dapil-reses', label: 'Penugasan' },
     { id: 'web-laporan-reses', label: 'Laporan Reses' },
     { id: 'web-laporan-dapil', label: 'Laporan Dapil' },
     { id: 'web-approval-pokir', label: 'Approval Pokir' },
@@ -128,7 +129,8 @@ var RBAC_DEFAULT_ROLES = [
   RBAC_SUPERADMIN_ROLE,
   { id: 1, kode: 'ROL-01', nama: 'Ketua', akses: ['Web'], permissions: rbacAllIds(WEB_MENU_CATALOG, 'Web'), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' },
   { id: 2, kode: 'ROL-02', nama: 'Administrator', akses: ['Web'], permissions: rbacAllIds(WEB_MENU_CATALOG, 'Web'), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' },
-  { id: 3, kode: 'ROL-03', nama: 'Anggota', akses: ['Mobile'], permissions: rbacAllIds(MOBILE_MENU_CATALOG, 'Mobile'), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' }
+  { id: 3, kode: 'ROL-03', nama: 'Anggota', akses: ['Mobile'], permissions: rbacAllIds(MOBILE_MENU_CATALOG, 'Mobile'), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' },
+  { id: 4, kode: 'ROL-04', nama: 'Superadmin', akses: ['Web', 'Mobile'], permissions: rbacAllIds(WEB_MENU_CATALOG, 'Web').concat(rbacAllIds(MOBILE_MENU_CATALOG, 'Mobile')), createdAt: '2026-01-12T09:00:00', updatedAt: '2026-01-12T09:00:00' }
 ];
 
 function rbacLoadRoles(){
@@ -142,6 +144,12 @@ function rbacLoadRoles(){
         var needsSave = false;
         if(!parsed.some(function(r){ return r.locked; })){
           parsed.unshift(JSON.parse(JSON.stringify(RBAC_SUPERADMIN_ROLE)));
+          needsSave = true;
+        }
+        // Migrasi non-destruktif: browser dgn data lama (sebelum role Superadmin ditambahkan)
+        // dapat role ini disisipkan, tanpa menghapus role custom yg sudah dibuat.
+        if(!parsed.some(function(r){ return r.kode === 'ROL-04'; })){
+          parsed.push({ id: rbacNextId(parsed), kode: 'ROL-04', nama: 'Superadmin', akses: ['Web', 'Mobile'], permissions: rbacAllIds(WEB_MENU_CATALOG, 'Web').concat(rbacAllIds(MOBILE_MENU_CATALOG, 'Mobile')), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
           needsSave = true;
         }
         if(rbacMigrateMobilePermissions(parsed)) needsSave = true;
