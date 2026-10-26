@@ -96,7 +96,7 @@ a{color:inherit;}
 .btn[disabled]{opacity:.5;cursor:not-allowed;}
 
 .table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:880px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:980px;}
 th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
 td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
@@ -163,10 +163,8 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
       <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
+      <a class="snav-item" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
+      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Aspirasi</a>
       <div class="snav-label">Persuratan</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
@@ -228,7 +226,7 @@ tr:hover td{background:#fafaf7;}
 
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Kode</th><th>Nama Unit</th><th>Parent</th><th>Level</th><th>Maks Rangkap</th><th>Formasi Kosong</th><th>Urutan</th><th></th></tr></thead>
+          <thead><tr><th>Periode</th><th>Kode</th><th>Nama Unit</th><th>Parent</th><th>Level</th><th>Maks Rangkap</th><th>Formasi Kosong</th><th>Urutan</th><th></th></tr></thead>
           <tbody id="tbodyUnitType"></tbody>
         </table>
       </div>
@@ -259,8 +257,8 @@ tr:hover td{background:#fafaf7;}
         <div class="field"><label>Level <span class="opt">(otomatis)</span></label><input type="number" id="fLevel" disabled></div>
       </div>
       <div class="field" id="fPeriodeWrap">
-        <label>Periode <span class="opt">(kosongkan jika berlaku di semua periode)</span></label>
-        <select id="fPeriode"></select>
+        <label>Periode <span class="opt">(otomatis, tidak dapat diubah)</span></label>
+        <input type="text" id="fPeriode" disabled>
       </div>
       <div class="field-row">
         <div class="field"><label>Maks Rangkap per Anggota <span class="opt">(opsional)</span></label><input type="number" id="fMaxPerMember" min="1" placeholder="Kosongkan jika tak dibatasi"></div>
@@ -389,17 +387,53 @@ function parentLabel(u){
   return p ? p.name : '<span class="badge badge-danger">Tidak ditemukan</span>';
 }
 
+function rowPeriodeId(u){
+  if(activeTab === 'FRAKSI') return u.parentId ? fraksiPeriodeIdForUnitType(u) : null;
+  return u.periodeId || null;
+}
+function periodeYearRange(p){
+  var mulai = new Date(p.mulai).getFullYear();
+  var selesai = new Date(p.selesai).getFullYear();
+  return mulai + ' - ' + selesai;
+}
+function currentFilterPeriode(){
+  var filterVal = document.getElementById('filterPeriode').value;
+  if(!filterVal) return null;
+  return periodeLoadList().find(function(p){ return p.id === filterVal; }) || null;
+}
+// Unit yang periodeId-nya null berlaku di semua periode -- saat ditampilkan, ikut konteks
+// periode yang sedang difilter (kalau ada filter aktif), supaya kolom Periode & status
+// edit/hapus-nya konsisten dgn periode yang sedang dilihat, bukan selalu periode aktif global.
+function effectivePeriodeForRow(u){
+  var pid = rowPeriodeId(u);
+  if(pid) return periodeLoadList().find(function(p){ return p.id === pid; }) || null;
+  return currentFilterPeriode() || activePeriode();
+}
+function rowPeriodeLabel(u){
+  var p = effectivePeriodeForRow(u);
+  return p ? periodeYearRange(p) : '<span class="badge badge-danger">Tidak ditemukan</span>';
+}
+function rowPeriodeIsAktif(u){
+  var p = effectivePeriodeForRow(u);
+  return p ? p.status === 'Aktif' : true;
+}
+
 function renderTable(){
   var tbody = document.getElementById('tbodyUnitType');
   var list = currentList();
   if(!list.length){
-    tbody.innerHTML = '<tr class="empty-row"><td colspan="8">Belum ada data Unit Type untuk jenis ' + UNIT_TYPE_TAB_LABEL[activeTab] + '.</td></tr>';
+    tbody.innerHTML = '<tr class="empty-row"><td colspan="9">Belum ada data Unit Type untuk jenis ' + UNIT_TYPE_TAB_LABEL[activeTab] + '.</td></tr>';
     return;
   }
   tbody.innerHTML = list.map(function(u){
     var indent = u.level > 0 ? '<span class="indent-dash">' + Array(u.level).fill('&mdash;').join('') + '</span> ' : '';
     var vacancyBadge = u.allowsVacancy ? '<span class="badge badge-success">Ya</span>' : '<span class="badge badge-neutral">Tidak</span>';
+    var actions = rowPeriodeIsAktif(u)
+      ? '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + u.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
+        + '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + u.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
+      : '<span class="badge badge-neutral">Periode nonaktif</span>';
     return '<tr data-id="' + u.id + '">'
+      + '<td>' + rowPeriodeLabel(u) + '</td>'
       + '<td><div class="namecell"><div class="n">' + u.code + '</div><div class="s">Level ' + u.level + '</div></div></td>'
       + '<td>' + indent + u.name + '</td>'
       + '<td>' + parentLabel(u) + '</td>'
@@ -407,10 +441,7 @@ function renderTable(){
       + '<td>' + (u.maxPerMember != null ? u.maxPerMember : '<span class="badge badge-neutral">Tak dibatasi</span>') + '</td>'
       + '<td>' + vacancyBadge + '</td>'
       + '<td>' + u.sortOrder + '</td>'
-      + '<td><div class="actions-cell">'
-      +   '<button class="btn btn-outline btn-sm" onclick="openEdit(\'' + u.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
-      +   '<button class="btn btn-danger-outline btn-sm" onclick="openDelete(\'' + u.id + '\')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/><path d="M9 7V4h6v3"/></svg> Hapus</button>'
-      + '</div></td>'
+      + '<td><div class="actions-cell">' + actions + '</div></td>'
     + '</tr>';
   }).join('');
 }
@@ -440,13 +471,6 @@ function handleParentChange(){
   document.getElementById('fLevel').value = unitTypeLevelForParent(UNIT_TYPE_LIST, parentId || null);
 }
 
-function populatePeriodeFieldOptions(){
-  var periodeList = periodeLoadList();
-  var sel = document.getElementById('fPeriode');
-  sel.innerHTML = '<option value="">Semua Periode</option>'
-    + periodeList.map(function(p){ return '<option value="' + p.id + '">' + p.nama + '</option>'; }).join('');
-}
-
 // Urutan pilih: Jenis Unit (AKD/Fraksi/Sekre) dulu, lalu dropdown Unit Type menyaring katalog
 // (lihat unitTypeCatalogList() di unit-type-data.js, bersumber dari data/unit_types.json) sesuai
 // Jenis Unit yang dipilih. Domain otomatis mengikuti Jenis Unit. Opsi "Lainnya" pada dropdown Unit
@@ -458,6 +482,9 @@ var UNIT_TYPE_LAINNYA = '__lainnya__';
 function populateJenisOptions(){
   var sel = document.getElementById('fJenisSelect');
   sel.innerHTML = UNIT_TYPE_TABS.map(function(t){ return '<option value="' + t + '">' + UNIT_TYPE_TAB_LABEL[t] + ' (' + t + ')</option>'; }).join('');
+}
+function activePeriode(){
+  return periodeLoadList().find(function(p){ return p.status === 'Aktif'; }) || null;
 }
 function populateKodeSelectOptions(jenis, pinned){
   var sel = document.getElementById('fKodeSelect');
@@ -502,9 +529,11 @@ function handleJenisChange(){
   populateParentOptions(editingId, jenis);
   document.getElementById('fParent').value = '';
   handleParentChange();
-  document.getElementById('fPeriodeWrap').style.display = 'none'; // Periode tidak dikumpulkan saat Tambah (semua jenis) - lihat openEdit() utk tampilan saat Edit
+  document.getElementById('fPeriodeWrap').style.display = jenis === 'FRAKSI' ? 'none' : 'block';
   if(!editingId){
     document.getElementById('fSortOrder').value = unitTypeByType(UNIT_TYPE_LIST, jenis).length + 1;
+    var aktif = activePeriode();
+    document.getElementById('fPeriode').value = aktif ? aktif.nama : 'Semua Periode';
   }
 }
 
@@ -517,8 +546,6 @@ function resetForm(){
   document.getElementById('fMaxPerMember').value = '';
   document.getElementById('fAllowsVacancy').checked = false;
   handleJenisChange();
-  populatePeriodeFieldOptions();
-  document.getElementById('fPeriode').value = '';
 }
 function openAdd(){
   editingId = null;
@@ -552,7 +579,7 @@ function openEdit(id){
   document.getElementById('fParent').value = u.parentId || '';
   handleParentChange();
   document.getElementById('fPeriodeWrap').style.display = u.unitType === 'FRAKSI' ? 'none' : 'block';
-  document.getElementById('fPeriode').value = u.periodeId || '';
+  document.getElementById('fPeriode').value = u.periodeId ? periodeNama(u.periodeId) : 'Semua Periode';
 
   document.getElementById('modalTitle').textContent = 'Edit Unit Type';
   document.getElementById('modalBackdrop').classList.add('open');
@@ -585,7 +612,6 @@ function saveUnitType(e){
   var maxPerMember = maxRaw === '' ? null : parseInt(maxRaw, 10);
   var sortOrder = parseInt(document.getElementById('fSortOrder').value, 10) || 0;
   var allowsVacancy = document.getElementById('fAllowsVacancy').checked;
-  var periodeId = jenis === 'FRAKSI' ? undefined : (document.getElementById('fPeriode').value || null);
 
   if(!kode || !nama){ toast('Kode & Nama Unit wajib diisi'); return false; }
   var dupe = UNIT_TYPE_LIST.some(function(u){ return u.code.toLowerCase() === kode.toLowerCase() && u.id !== editingId; });
@@ -595,14 +621,12 @@ function saveUnitType(e){
     var u = unitTypeFindById(UNIT_TYPE_LIST, editingId);
     u.name = nama; u.parentId = parentId; u.level = level;
     u.maxPerMember = maxPerMember; u.sortOrder = sortOrder; u.allowsVacancy = allowsVacancy;
-    if(periodeId !== undefined) u.periodeId = periodeId;
     toast('Unit Type "' + nama + '" diperbarui (prototipe)');
   } else {
     var newUnit = {
       id: unitTypeNextId(), code: kode, name: nama, unitType: jenis,
       level: level, parentId: parentId, maxPerMember: maxPerMember, allowsVacancy: allowsVacancy, sortOrder: sortOrder
     };
-    if(periodeId !== undefined) newUnit.periodeId = periodeId;
     UNIT_TYPE_LIST.push(newUnit);
     toast('Unit Type "' + nama + '" ditambahkan (prototipe)');
   }

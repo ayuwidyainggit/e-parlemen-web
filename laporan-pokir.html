@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="utf-8">
-<title>Laporan Pokir &middot; Admin e-Parlemen</title>
+<title>Laporan Aspirasi &middot; Admin e-Parlemen</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 
@@ -90,48 +90,32 @@ a{color:inherit;}
 .btn-sm{padding:8px 13px;font-size:11.5px;}
 
 .table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
-table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:920px;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1420px;}
 th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
 td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#fafaf7;}
 .namecell .n{font-weight:800;font-size:12.6px;}
 .namecell .s{font-size:10.5px;color:var(--muted);}
-.actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
 
-.bar-track{height:8px;background:#eceee7;border-radius:6px;overflow:hidden;}
-.bar-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--gold));}
-.progress-cell{display:flex;flex-direction:column;gap:5px;min-width:130px;}
-.progress-cell .pc-top{display:flex;justify-content:space-between;font-size:11.5px;font-weight:800;}
+.evidence-cell{position:relative;display:inline-block;cursor:pointer;}
+.evidence-thumb{width:56px;height:42px;border-radius:8px;object-fit:cover;display:block;border:1px solid var(--border);}
+.evidence-count{position:absolute;bottom:-5px;right:-5px;background:var(--green-dark);color:#fff;font-size:9px;font-weight:800;padding:1px 5px;border-radius:10px;border:1.5px solid #fff;}
 
 .modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
 .modal-backdrop.open{display:flex;}
-.modal-box{background:#fff;border-radius:16px;width:100%;max-width:460px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
-.modal-box.wide{max-width:540px;}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
 .modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:10px;}
-.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
+.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:16px;margin:0;color:var(--ink);}
 .modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
 .modal-close .ic-svg{width:15px;height:15px;}
-.field{margin-bottom:14px;}
-.field:last-child{margin-bottom:0;}
-.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
-.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
-.field textarea{resize:vertical;min-height:72px;}
-.range-row{display:flex;align-items:center;gap:12px;}
-.range-row input[type=range]{flex:1;accent-color:var(--green);}
-.range-row .range-val{font-size:16px;font-weight:800;color:var(--green);min-width:46px;text-align:right;}
-.modal-foot{display:flex;gap:10px;margin-top:18px;}
-.modal-foot .btn{flex:1;}
 
-.timeline{display:flex;flex-direction:column;}
-.timeline-item{position:relative;padding:0 0 18px 22px;border-left:2px solid var(--border);}
-.timeline-item:last-child{border-left-color:transparent;padding-bottom:0;}
-.timeline-item::before{content:'';position:absolute;left:-5px;top:2px;width:10px;height:10px;border-radius:50%;background:var(--green);border:2px solid #fff;box-shadow:0 0 0 1px var(--green);}
-.timeline-item .tl-head{display:flex;justify-content:space-between;align-items:center;gap:10px;}
-.timeline-item .tl-pct{font-size:13.5px;font-weight:800;color:var(--ink);}
-.timeline-item .tl-date{font-size:10.5px;color:var(--muted);margin-top:2px;}
-.timeline-item .tl-note{font-size:12px;color:var(--ink);margin-top:6px;line-height:1.5;}
-.timeline-item .tl-by{font-size:10.5px;color:var(--muted);margin-top:4px;}
+.slider-stage{position:relative;background:#101a14;border-radius:12px;overflow:hidden;}
+.slider-stage img{width:100%;aspect-ratio:3/2;object-fit:contain;display:block;background:#101a14;}
+.slider-nav{position:absolute;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.92);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);}
+.slider-nav.prev{left:10px;}
+.slider-nav.next{right:10px;}
+.slider-counter{text-align:center;font-size:11.5px;color:var(--muted);margin-top:10px;font-weight:700;}
 
 .toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
 
@@ -165,10 +149,8 @@ tr:hover td{background:#fafaf7;}
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
       <div class="snav-label">Reses &amp; Dapil</div>
       <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#reses"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Reses</a>
-      <a class="snav-item" href="laporan-dapil-reses.html#dapil"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil</a>
-      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5L16 9.5"/></svg> Approval Pokir <span class="count" style="background:var(--neutral);">Segera</span></a>
-      <a class="snav-item active" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Pokir</a>
+      <a class="snav-item" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
+      <a class="snav-item active" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Aspirasi</a>
       <div class="snav-label">Persuratan</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
@@ -190,7 +172,7 @@ tr:hover td{background:#fafaf7;}
     <div class="topbar">
       <div style="display:flex;align-items:center;gap:8px;">
         <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
-        <div><h2>Laporan Pokir</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Laporan Pokir</div></div>
+        <div><h2>Laporan Aspirasi</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Laporan Aspirasi</div></div>
       </div>
       <div class="topbar-actions">
         <button class="btn btn-outline btn-sm" onclick="toast('Laporan diunduh sebagai PDF (prototipe)')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v13"/><path d="M6 11l6 6 6-6"/><path d="M5 21h14"/></svg> Unduh Laporan</button>
@@ -256,7 +238,7 @@ tr:hover td{background:#fafaf7;}
       <div class="section-title">Daftar Usulan Pokir</div>
       <div class="table-wrap">
         <table>
-          <thead><tr><th>Usulan Pokir</th><th>Asal Kegiatan</th><th>Dapil</th><th>Kategori</th><th>Status</th><th>Progres Realisasi</th><th>Terakhir Update</th><th>Aksi</th></tr></thead>
+          <thead><tr><th>Usulan Pokir</th><th>Deskripsi</th><th>Alamat</th><th>Asal Kegiatan</th><th>Dapil</th><th>Kategori</th><th>Evidence</th></tr></thead>
           <tbody id="tbodyPokir"></tbody>
         </table>
       </div>
@@ -265,33 +247,16 @@ tr:hover td{background:#fafaf7;}
   </div>
 </div>
 
-<div class="modal-backdrop" id="modalUpdate">
+<!-- Modal: Slider Foto Bukti (Evidence) -->
+<div class="modal-backdrop" id="modalEvidence">
   <div class="modal-box">
-    <div class="modal-head"><h3>Update Progres Realisasi</h3><button class="modal-close" onclick="closeModal('modalUpdate')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <div class="hint" id="updateJudulText" style="margin-bottom:14px;font-weight:700;color:var(--ink);"></div>
-    <form onsubmit="return submitUpdate(event)">
-      <div class="field">
-        <label>Persentase Realisasi</label>
-        <div class="range-row">
-          <input type="range" id="fRange" min="0" max="100" step="5" oninput="document.getElementById('fRangeVal').textContent = this.value + '%'">
-          <span class="range-val" id="fRangeVal">0%</span>
-        </div>
-      </div>
-      <div class="field"><label>Catatan Update</label><textarea id="fCatatan" placeholder="Jelaskan progres tindak lanjut usulan pokir ini..." required></textarea></div>
-      <div class="field"><label>Diperbarui Oleh</label><input type="text" id="fOleh" placeholder="Contoh: Dinas Pekerjaan Umum" required></div>
-      <div class="modal-foot">
-        <button type="button" class="btn btn-outline" onclick="closeModal('modalUpdate')">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan Update</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="modalHistory">
-  <div class="modal-box wide">
-    <div class="modal-head"><h3>Riwayat Update Progres</h3><button class="modal-close" onclick="closeModal('modalHistory')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <div class="hint" id="historyJudulText" style="margin-bottom:14px;font-weight:700;color:var(--ink);"></div>
-    <div class="timeline" id="historyListEl"></div>
+    <div class="modal-head"><h3 id="evidenceTitleText">Foto Bukti Lapangan</h3><button class="modal-close" onclick="closeEvidenceSlider()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="slider-stage">
+      <img id="evidenceImg" src="" alt="Foto bukti">
+      <button type="button" class="slider-nav prev" onclick="sliderStep(-1)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button type="button" class="slider-nav next" onclick="sliderStep(1)"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="slider-counter" id="evidenceCounterText"></div>
   </div>
 </div>
 
@@ -302,67 +267,41 @@ function toast(msg){
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-function closeModal(id){ document.getElementById(id).classList.remove('open'); }
 
-var statusClass = { 'Diajukan':'badge-neutral', 'Diproses':'badge-warn', 'Selesai':'badge-success' };
+// Foto bukti lapangan (prototipe) - belum ada storage upload foto sungguhan di repo ini, jadi
+// di-generate sbg placeholder SVG (data URI, tidak perlu file eksternal) sejumlah p.evidenceCount
+// per usulan. Ganti evidenceImagesFor() dgn URL foto asli begitu fitur upload tersedia.
+var EVIDENCE_COLORS = ['#2f6fb0', '#1f8a4c', '#c8791a', '#7c4fd1', '#d64545'];
+function evidencePlaceholderImage(label, colorIdx){
+  var color = EVIDENCE_COLORS[colorIdx % EVIDENCE_COLORS.length];
+  var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="480" height="320">'
+    + '<rect width="480" height="320" fill="' + color + '"/>'
+    + '<rect x="16" y="16" width="448" height="288" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="6 6" opacity="0.55"/>'
+    + '<text x="240" y="152" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#ffffff" text-anchor="middle">Foto Bukti Lapangan</text>'
+    + '<text x="240" y="182" font-family="Arial, sans-serif" font-size="15" fill="#ffffff" text-anchor="middle" opacity="0.85">' + label + '</text>'
+    + '</svg>';
+  return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
+}
+function evidenceImagesFor(p){
+  var out = [];
+  for(var i = 1; i <= p.evidenceCount; i++){
+    out.push(evidencePlaceholderImage('Foto ' + i + ' / ' + p.evidenceCount, p.id + i));
+  }
+  return out;
+}
 
 var pokirData = [
-  { id:1, judul:'Perbaikan Jalan Dusun Krasak', asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'30 Agu 2026',
-    history:[ {tgl:'30 Agu 2026', persen:0, catatan:'Usulan pokir diajukan berdasarkan hasil reses di Dusun Krasak.', oleh:'Admin Sekretariat'} ] },
-  { id:2, judul:'Bantuan Bibit Pertanian', asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:45, updated:'15 Sep 2026',
-    history:[
-      {tgl:'30 Agu 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses.', oleh:'Admin Sekretariat'},
-      {tgl:'10 Sep 2026', persen:20, catatan:'Verifikasi kebutuhan bibit oleh OPD terkait.', oleh:'Dinas Pertanian'},
-      {tgl:'15 Sep 2026', persen:45, catatan:'Proses pengadaan bibit sedang berjalan, menunggu distribusi ke kelompok tani.', oleh:'Dinas Pertanian'}
-    ] },
-  { id:3, judul:'Perbaikan Atap Pasar Rejowinangun', asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Infrastruktur', status:'Selesai', progres:100, updated:'20 Sep 2026',
-    history:[
-      {tgl:'28 Agu 2026', persen:0, catatan:'Usulan pokir diajukan setelah kunjungan ke Pasar Rejowinangun.', oleh:'Admin Sekretariat'},
-      {tgl:'5 Sep 2026', persen:35, catatan:'Survei lapangan dan penyusunan RAB oleh Dinas Perdagangan.', oleh:'Dinas Perdagangan'},
-      {tgl:'12 Sep 2026', persen:75, catatan:'Pengerjaan perbaikan atap sedang berlangsung.', oleh:'Dinas Perdagangan'},
-      {tgl:'20 Sep 2026', persen:100, catatan:'Perbaikan atap pasar selesai dikerjakan dan diserahterimakan.', oleh:'Dinas Perdagangan'}
-    ] },
-  { id:4, judul:'Penataan Lapak PKL', asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:60, updated:'18 Sep 2026',
-    history:[
-      {tgl:'28 Agu 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
-      {tgl:'8 Sep 2026', persen:30, catatan:'Koordinasi dengan Satpol PP dan perwakilan PKL.', oleh:'Dinas Perdagangan'},
-      {tgl:'18 Sep 2026', persen:60, catatan:'Penataan lapak tahap 1 selesai, tahap 2 menyusul bulan depan.', oleh:'Dinas Perdagangan'}
-    ] },
-  { id:5, judul:'Pembangunan Talud Penahan Longsor', asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diproses', progres:30, updated:'22 Sep 2026',
-    history:[
-      {tgl:'27 Agu 2026', persen:0, catatan:'Usulan pokir diajukan terkait risiko longsor di Jurangombo.', oleh:'Admin Sekretariat'},
-      {tgl:'22 Sep 2026', persen:30, catatan:'Perencanaan teknis & pengukuran lokasi oleh Dinas PUPR.', oleh:'Dinas PUPR'}
-    ] },
-  { id:6, judul:'Rehabilitasi Saluran Irigasi Sawah', asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'27 Agu 2026',
-    history:[ {tgl:'27 Agu 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses di Jurangombo.', oleh:'Admin Sekretariat'} ] },
-  { id:7, judul:'Bantuan Alat Pertanian Kelompok Tani', asal:'RES-2026-039', anggota:'Drs. Ahmad Fauzi, M.Si.', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:55, updated:'14 Sep 2026',
-    history:[
-      {tgl:'25 Agu 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
-      {tgl:'14 Sep 2026', persen:55, catatan:'Proses pengadaan alat pertanian berjalan sesuai RAB.', oleh:'Dinas Pertanian'}
-    ] },
-  { id:8, judul:'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Diproses', progres:70, updated:'19 Sep 2026',
-    history:[
-      {tgl:'16 Mei 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil reses di Sukamaju.', oleh:'Admin Sekretariat'},
-      {tgl:'10 Agu 2026', persen:40, catatan:'Verifikasi kondisi ruang kelas oleh Dinas Pendidikan.', oleh:'Dinas Pendidikan'},
-      {tgl:'19 Sep 2026', persen:70, catatan:'Rehabilitasi ruang kelas tahap konstruksi sedang berjalan.', oleh:'Dinas Pendidikan'}
-    ] },
-  { id:9, judul:'Pengadaan Buku Perpustakaan Desa', asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Selesai', progres:100, updated:'1 Sep 2026',
-    history:[
-      {tgl:'16 Mei 2026', persen:0, catatan:'Usulan pokir diajukan.', oleh:'Admin Sekretariat'},
-      {tgl:'20 Jul 2026', persen:50, catatan:'Daftar judul buku disusun bersama Dinas Pendidikan.', oleh:'Dinas Pendidikan'},
-      {tgl:'1 Sep 2026', persen:100, catatan:'Buku perpustakaan desa telah diserahkan dan diterima.', oleh:'Dinas Pendidikan'}
-    ] },
-  { id:10, judul:'Normalisasi Saluran Drainase', asal:'KJD-2026-011', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'10 Mei 2026',
-    history:[ {tgl:'10 Mei 2026', persen:0, catatan:'Usulan pokir diajukan dari hasil kunjungan lapangan Kel. Wates.', oleh:'Admin Sekretariat'} ] }
+  { id:1, judul:'Perbaikan Jalan Dusun Krasak', deskripsi:'Jalan rusak &amp; berlubang sepanjang &plusmn;800m menghambat akses warga Dusun Krasak ke pusat desa, terutama saat musim hujan.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'30 Agu 2026' },
+  { id:2, judul:'Bantuan Bibit Pertanian', deskripsi:'Kelompok tani membutuhkan bibit padi &amp; sayuran unggul untuk musim tanam berikutnya guna meningkatkan hasil panen.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:45, updated:'15 Sep 2026' },
+  { id:3, judul:'Perbaikan Atap Pasar Rejowinangun', deskripsi:'Atap pasar bocor di beberapa titik sehingga mengganggu aktivitas jual-beli pedagang saat hujan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Infrastruktur', status:'Selesai', progres:100, updated:'20 Sep 2026' },
+  { id:4, judul:'Penataan Lapak PKL', deskripsi:'Lapak PKL di sekitar pasar belum tertata rapi &amp; menyebabkan kemacetan, perlu relokasi &amp; penataan ulang area berjualan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:60, updated:'18 Sep 2026' },
+  { id:5, judul:'Pembangunan Talud Penahan Longsor', deskripsi:'Tebing di sisi permukiman Jurangombo rawan longsor saat musim hujan &amp; mengancam rumah warga di sekitarnya.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diproses', progres:30, updated:'22 Sep 2026' },
+  { id:6, judul:'Rehabilitasi Saluran Irigasi Sawah', deskripsi:'Saluran irigasi tersumbat sedimen sehingga distribusi air ke sawah warga menjadi tidak merata.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'27 Agu 2026' },
+  { id:7, judul:'Bantuan Alat Pertanian Kelompok Tani', deskripsi:'Kelompok tani masih menggunakan alat tradisional, perlu bantuan alat pertanian guna efisiensi pengolahan lahan.', alamat:'Jl. Pertanian RT 01/RW 03, Kel. Potrobangsan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-039', anggota:'Drs. Ahmad Fauzi, M.Si.', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:55, updated:'14 Sep 2026' },
+  { id:8, judul:'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', deskripsi:'Dua ruang kelas mengalami kerusakan pada atap &amp; dinding sehingga mengganggu kegiatan belajar siswa.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Diproses', progres:70, updated:'19 Sep 2026' },
+  { id:9, judul:'Pengadaan Buku Perpustakaan Desa', deskripsi:'Koleksi buku di perpustakaan desa sangat terbatas &amp; sebagian besar sudah usang, perlu penambahan judul baru.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Selesai', progres:100, updated:'1 Sep 2026' },
+  { id:10, judul:'Normalisasi Saluran Drainase', deskripsi:'Saluran drainase dangkal &amp; tersumbat sampah menyebabkan banjir kecil setiap hujan deras di Kel. Wates.', alamat:'Jl. Wates Raya RT 03/RW 01, Kel. Wates, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'KJD-2026-011', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'10 Mei 2026' }
 ];
-
-var activeUpdateId = null;
-
-function statusFromProgres(p){
-  if(p >= 100) return 'Selesai';
-  if(p > 0) return 'Diproses';
-  return 'Diajukan';
-}
 
 function renderTable(){
   var status = document.getElementById('filterStatus').value;
@@ -374,18 +313,15 @@ function renderTable(){
   });
 
   document.getElementById('tbodyPokir').innerHTML = rows.map(function(p){
+    var evidenceThumb = evidenceImagesFor(p)[0];
     return '<tr>'
       + '<td><div class="namecell"><div class="n">' + p.judul + '</div><div class="s">' + p.anggota + '</div></div></td>'
+      + '<td style="max-width:280px;color:var(--muted);">' + p.deskripsi + '</td>'
+      + '<td style="max-width:220px;"><div class="namecell"><div class="n" style="font-size:12px;">' + p.alamat + '</div><div class="s">' + p.kabupaten + ', ' + p.provinsi + '</div></div></td>'
       + '<td>' + p.asal + '</td>'
       + '<td>' + p.dapil + '</td>'
       + '<td><span class="badge badge-info">' + p.kategori + '</span></td>'
-      + '<td><span class="badge ' + statusClass[p.status] + '">' + p.status + '</span></td>'
-      + '<td><div class="progress-cell"><div class="pc-top"><span>' + p.progres + '%</span></div><div class="bar-track"><div class="bar-fill" style="width:' + p.progres + '%;"></div></div></div></td>'
-      + '<td>' + p.updated + '</td>'
-      + '<td><div class="actions-cell">'
-      + '<button class="btn btn-outline btn-sm" onclick="openHistory(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="9"/></svg> Riwayat</button>'
-      + '<button class="btn btn-primary btn-sm" onclick="openUpdate(' + p.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Update Progres</button>'
-      + '</div></td>'
+      + '<td><div class="evidence-cell" onclick="openEvidenceSlider(' + p.id + ')"><img class="evidence-thumb" src="' + evidenceThumb + '" alt="Evidence"><span class="evidence-count">' + p.evidenceCount + '</span></div></td>'
       + '</tr>';
   }).join('');
 
@@ -419,49 +355,28 @@ function resetFilter(){
   renderTable();
 }
 
-function openUpdate(id){
-  activeUpdateId = id;
+// ---------- Slider Foto Bukti (Evidence) ----------
+var sliderImages = [];
+var sliderIndex = 0;
+function openEvidenceSlider(id){
   var p = pokirData.find(function(x){ return x.id === id; });
-  document.getElementById('updateJudulText').textContent = p.judul;
-  document.getElementById('fRange').value = p.progres;
-  document.getElementById('fRangeVal').textContent = p.progres + '%';
-  document.getElementById('fCatatan').value = '';
-  document.getElementById('fOleh').value = '';
-  document.getElementById('modalUpdate').classList.add('open');
+  if(!p) return;
+  sliderImages = evidenceImagesFor(p);
+  sliderIndex = 0;
+  document.getElementById('evidenceTitleText').textContent = 'Foto Bukti - ' + p.judul;
+  renderSliderImage();
+  document.getElementById('modalEvidence').classList.add('open');
 }
-
-function submitUpdate(e){
-  e.preventDefault();
-  var p = pokirData.find(function(x){ return x.id === activeUpdateId; });
-  var persen = parseInt(document.getElementById('fRange').value, 10);
-  var catatan = document.getElementById('fCatatan').value.trim();
-  var oleh = document.getElementById('fOleh').value.trim();
-  var tgl = new Date().toLocaleDateString('id-ID', { day:'numeric', month:'short', year:'numeric' });
-
-  p.history.push({ tgl:tgl, persen:persen, catatan:catatan, oleh:oleh });
-  p.progres = persen;
-  p.status = statusFromProgres(persen);
-  p.updated = tgl;
-
-  renderTable();
-  closeModal('modalUpdate');
-  toast('Progres "' + p.judul + '" diperbarui menjadi ' + persen + '% (prototipe)');
-  return false;
+function renderSliderImage(){
+  document.getElementById('evidenceImg').src = sliderImages[sliderIndex];
+  document.getElementById('evidenceCounterText').textContent = (sliderIndex + 1) + ' / ' + sliderImages.length;
 }
-
-function openHistory(id){
-  var p = pokirData.find(function(x){ return x.id === id; });
-  document.getElementById('historyJudulText').textContent = p.judul;
-  var sorted = p.history.slice().reverse();
-  document.getElementById('historyListEl').innerHTML = sorted.map(function(h){
-    return '<div class="timeline-item">'
-      + '<div class="tl-head"><span class="tl-pct">' + h.persen + '%</span><span class="badge ' + statusClass[statusFromProgres(h.persen)] + '">' + statusFromProgres(h.persen) + '</span></div>'
-      + '<div class="tl-date">' + h.tgl + '</div>'
-      + '<div class="tl-note">' + h.catatan + '</div>'
-      + '<div class="tl-by">Oleh: ' + h.oleh + '</div>'
-      + '</div>';
-  }).join('');
-  document.getElementById('modalHistory').classList.add('open');
+function sliderStep(delta){
+  sliderIndex = (sliderIndex + delta + sliderImages.length) % sliderImages.length;
+  renderSliderImage();
+}
+function closeEvidenceSlider(){
+  document.getElementById('modalEvidence').classList.remove('open');
 }
 
 renderTable();

@@ -24,10 +24,8 @@ var WEB_MENU_CATALOG = [
   ]},
   { group: 'Reses & Dapil', items: [
     { id: 'web-penugasan-dapil-reses', label: 'Penugasan' },
-    { id: 'web-laporan-reses', label: 'Laporan Reses' },
-    { id: 'web-laporan-dapil', label: 'Laporan Dapil' },
-    { id: 'web-approval-pokir', label: 'Approval Pokir' },
-    { id: 'web-laporan-pokir', label: 'Laporan Pokir' }
+    { id: 'web-approval-penugasan', label: 'Approval Penugasan' },
+    { id: 'web-laporan-pokir', label: 'Laporan Aspirasi' }
   ]},
   { group: 'Persuratan', items: [
     { id: 'web-buat-surat', label: 'Buat Surat' },

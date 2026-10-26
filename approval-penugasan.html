@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Approval Penugasan &middot; Admin e-Parlemen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --green-dark:#0f2318; --green:#1b3a2b; --green-mid:#234a37; --green-light:#2f5a44;
+  --gold:#c9a24a; --gold-light:#e4c976; --cream:#f7f6f1; --card:#ffffff;
+  --ink:#182a20; --muted:#707b73; --border:#e7e4dc;
+  --success-bg:#e6f4ea; --success:#1f8a4c;
+  --warn-bg:#fff2df; --warn:#c8791a;
+  --danger-bg:#fbe7e7; --danger:#d64545;
+  --info-bg:#e7f0fb; --info:#2f6fb0;
+  --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+  --purple-bg:#efe6fb; --purple:#7c4fd1;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef0ea;}
+a{color:inherit;}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+
+.admin-shell{display:flex;min-height:100vh;}
+.sidebar{width:232px;background:linear-gradient(180deg,var(--green-dark),var(--green));color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:60;}
+.sidebar-brand{display:flex;gap:10px;align-items:center;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.12);}
+.sidebar-brand .emblem{width:38px;height:38px;flex-shrink:0;}
+.sidebar-brand h1{font-family:Georgia,'Times New Roman',serif;font-size:15.5px;margin:0;}
+.sidebar-brand .sub{font-size:8.8px;color:var(--gold-light);font-weight:700;letter-spacing:.4px;margin-top:1px;}
+.sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.snav-label{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;padding:14px 10px 6px;}
+.snav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:12.6px;font-weight:700;}
+.snav-item .ic-svg{width:17px;height:17px;}
+.snav-item:hover{background:rgba(255,255,255,.08);}
+.snav-item.active{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 var(--gold);}
+.snav-item .count{margin-left:auto;background:var(--danger);color:#fff;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;}
+.sidebar-foot{padding:14px;border-top:1px solid rgba(255,255,255,.12);}
+.sidebar-user{display:flex;gap:10px;align-items:center;}
+.sidebar-user .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dark);font-size:12px;flex-shrink:0;}
+.sidebar-user .name{font-size:12px;font-weight:800;color:#fff;}
+.sidebar-user .role{font-size:10px;color:rgba(255,255,255,.6);}
+.logout-link{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.65);text-decoration:none;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;flex-wrap:wrap;}
+.topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
+.topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
+.topbar-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
+.tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.tb-user{display:flex;align-items:center;gap:8px;}
+.tb-user .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:800;font-size:12px;}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
+.menu-toggle .ic-svg{width:22px;height:22px;}
+
+.content{padding:24px 26px 60px;max-width:1280px;width:100%;}
+
+.hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
+
+.filter-bar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-bottom:18px;}
+.filter-field{display:flex;flex-direction:column;gap:6px;}
+.filter-field label{font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;}
+.filter-field select{padding:10px 12px;border-radius:10px;border:1px solid var(--border);font-size:12.5px;min-width:180px;background:#fff;font-family:inherit;color:var(--ink);}
+
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:20px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:16px;display:flex;gap:12px;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.stat-card .ic{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:var(--neutral-bg);color:var(--green);}
+.stat-card.purple .ic{background:var(--purple-bg);color:var(--purple);}
+.stat-card.success .ic{background:var(--success-bg);color:var(--success);}
+.stat-card .num{font-size:22px;font-weight:800;color:var(--ink);line-height:1.1;}
+.stat-card .lbl{font-size:11px;color:var(--muted);margin-top:2px;}
+
+.badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:20px;font-size:10.5px;font-weight:800;white-space:nowrap;}
+.badge-success{background:var(--success-bg);color:var(--success);}
+.badge-warn{background:var(--warn-bg);color:var(--warn);}
+.badge-danger{background:var(--danger-bg);color:var(--danger);}
+.badge-neutral{background:var(--neutral-bg);color:var(--neutral);}
+.badge-info{background:var(--info-bg);color:var(--info);}
+.badge-purple{background:var(--purple-bg);color:var(--purple);}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:11px 18px;border-radius:10px;font-size:13px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-danger-outline{background:#fff;color:var(--danger);border:1.5px solid var(--danger);}
+.btn-sm{padding:8px 13px;font-size:11.5px;}
+
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;overflow-x:auto;}
+table{width:100%;border-collapse:collapse;font-size:12.5px;min-width:1340px;}
+th{text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);padding:12px 16px;border-bottom:2px solid var(--border);background:#fbfbf9;}
+td{padding:13px 16px;border-bottom:1px solid var(--border);vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafaf7;}
+.namecell .n{font-weight:800;font-size:12.6px;}
+.namecell .s{font-size:10.5px;color:var(--muted);margin-top:1px;}
+.actions-cell{display:flex;gap:6px;flex-wrap:wrap;}
+
+.toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
+
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(15,35,24,.5);z-index:80;align-items:center;justify-content:center;padding:20px;}
+.modal-backdrop.open{display:flex;}
+.modal-box{background:#fff;border-radius:16px;width:100%;max-width:480px;max-height:88vh;overflow-y:auto;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.3);}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.modal-head h3{font-family:Georgia,'Times New Roman',serif;font-size:17px;margin:0;color:var(--ink);}
+.modal-close{width:30px;height:30px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;border:none;cursor:pointer;color:var(--ink);flex-shrink:0;}
+.modal-close .ic-svg{width:15px;height:15px;}
+.field{margin-bottom:14px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
+.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);min-height:66px;resize:vertical;}
+.modal-foot{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.modal-foot .btn{flex:1;min-width:110px;}
+.chk-list{border:1px solid var(--border);border-radius:10px;max-height:190px;overflow-y:auto;background:#fff;}
+.chk-item{display:flex;align-items:center;gap:9px;padding:9px 12px;font-size:12.5px;border-bottom:1px solid var(--border);}
+.chk-item:last-child{border-bottom:none;}
+.chk-empty{padding:16px 10px;text-align:center;color:var(--muted);font-size:11.5px;}
+
+.empty-note{text-align:center;padding:16px 10px;color:var(--muted);font-size:11.5px;}
+
+@media (max-width:960px){
+  .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
+  .sidebar.open{left:0;}
+  .menu-toggle{display:block;}
+}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/><path d="M14 20 C10 24 10 30 13 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M34 20 C38 24 38 30 35 35" stroke="#e4c976" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg></span>
+      <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-label">Menu Utama</div>
+      <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
+      <div class="snav-label">Master Data</div>
+      <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
+      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
+      <a class="snav-item" href="master-unit-type.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M16.5 13v7"/><path d="M13 16.5h7"/></svg> Master Unit Type</a>
+      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
+      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> User Management</a>
+      <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
+      <a class="snav-item" href="master-jenis-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M9 11h6"/><path d="M9 15h4"/></svg> Jenis Penugasan</a>
+      <div class="snav-label">Report</div>
+      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
+      <div class="snav-label">Reses &amp; Dapil</div>
+      <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
+      <a class="snav-item active" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
+      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Aspirasi</a>
+      <div class="snav-label">Persuratan</div>
+      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <div class="snav-label">Rapat</div>
+      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
+      <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
+      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
+      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <div class="snav-label">Lainnya</div>
+      <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user"><span class="av">AS</span><div><div class="name">Admin Sekretariat</div><div class="role">Sekretariat DPRD</div></div></div>
+      <a class="logout-link" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+        <div><h2>Approval Penugasan</h2><div class="crumb">Admin &middot; Reses &amp; Pokir &middot; Approval Penugasan</div></div>
+      </div>
+      <div class="topbar-actions">
+        <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
+        <div class="tb-user"><span class="av">AS</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="hint" style="margin-bottom:16px;">Approval Penugasan menampilkan seluruh Penugasan yang berstatus <strong>Menunggu Approval</strong> &mdash; menunggu keputusan Setujui/Tolak dari Pucuk Pimpinan (Ketua DPRD/Ketua Sekretariat) yang dipilih sebagai approver (lihat Config Approval, approval tidak berjenjang). Tombol <strong>Setujui</strong>/<strong>Tolak</strong> hanya akan berhasil kalau Anda ("login" saat ini) adalah salah satu approver terpilih untuk Penugasan tersebut &mdash; selain itu akan muncul notifikasi "bukan approver". Untuk Edit/Cancel/Delete Penugasan, gunakan halaman Penugasan.</div>
+
+      <div class="stats-grid">
+        <div class="stat-card purple">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
+          <div><div class="num" id="statTotalMenunggu">0</div><div class="lbl">Total Menunggu Approval</div></div>
+        </div>
+        <div class="stat-card success">
+          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
+          <div><div class="num" id="statPerluKeputusan">0</div><div class="lbl">Perlu Keputusan Anda</div></div>
+        </div>
+      </div>
+
+      <div class="filter-bar">
+        <div class="filter-field"><label>Jenis Penugasan</label>
+          <select id="filterJenisPenugasanApproval" onchange="renderApprovalTable()"><option value="">Semua Jenis</option></select>
+        </div>
+        <div class="filter-field"><label>Dapil</label>
+          <select id="filterDapilApproval" onchange="renderApprovalTable()"><option value="">Semua Dapil</option></select>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="resetFilterApproval()">Reset Filter</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>No Penugasan</th><th>Jenis Penugasan</th><th>Kegiatan</th><th>Jenis Lokasi Penugasan</th><th>Lokasi Penugasan</th><th>Jabatan Pemberi Penugasan</th><th>Anggota</th><th>Tanggal/Jam</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbodyApproval"></tbody>
+        </table>
+      </div>
+      <div class="hint" style="margin-top:12px;">Approver menekan Setujui -&gt; status jadi <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, wajib isi alasan). Begitu diputuskan (Setujui/Tolak), Penugasan hilang dari daftar ini karena statusnya tidak lagi Menunggu Approval. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Setujui Penugasan -->
+<div class="modal-backdrop" id="modalApproveJadwalBackdrop">
+  <div class="modal-box" style="max-width:440px;">
+    <div class="modal-head"><h3>Setujui Penugasan</h3><button class="modal-close" onclick="closeApproveJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="approveJadwalText" style="margin-bottom:12px;"></div>
+    <div class="field" id="approveJadwalApprovalField">
+      <label>Approver Terpilih <span class="opt">(approval tidak berjenjang &mdash; cukup salah satu)</span></label>
+      <div class="chk-list" id="approveJadwalApprovers"></div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeApproveJadwal()">Batal</button>
+      <button type="button" class="btn btn-primary" onclick="confirmApproveJadwal()">Setujui Penugasan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tolak (Reject) Penugasan -->
+<div class="modal-backdrop" id="modalRejectJadwalBackdrop">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-head"><h3>Tolak Penugasan</h3><button class="modal-close" onclick="closeRejectJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="rejectJadwalText" style="margin-bottom:10px;"></div>
+    <div class="field"><label>Alasan Penolakan <span class="opt">(wajib diisi)</span></label>
+      <textarea id="rejectJadwalReason" placeholder="Jelaskan alasan menolak penugasan ini&hellip;"></textarea>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeRejectJadwal()">Batal</button>
+      <button type="button" class="btn btn-danger-outline" onclick="confirmRejectJadwal()">Tolak Penugasan</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script src="dapil-data.js"></script>
+<script src="jabatan-data.js"></script>
+<script src="unit-type-data.js"></script>
+<script src="pegawai-data.js"></script>
+<script src="jenis-penugasan-data.js"></script>
+<script src="penugasan-dapil-reses-data.js"></script>
+<script>
+function toast(msg){
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 2600);
+}
+
+var DAPIL_LIST = dapilLoadList();
+var PEGAWAI_LIST = pegawaiLoadList();
+var JABATAN_LIST = jabatanLoadList();
+var JENIS_PENUGASAN_LIST = jenisPenugasanLoadList();
+var JADWAL_RESES_LIST = jadwalResesLoadList();
+
+function politisiList(){ return PEGAWAI_LIST.filter(function(p){ return p.tipePegawai === 'Politisi'; }); }
+var bulanNames = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+function fmtTanggal(iso){
+  if(!iso) return '&mdash;';
+  var p = iso.split('-');
+  return parseInt(p[2],10) + ' ' + bulanNames[parseInt(p[1],10)-1] + ' ' + p[0];
+}
+
+function lokasiLabel(j){
+  if(j.lokasiJenis === 'DALAM_KOTA') return j.lokasiKelurahan ? ('Kel. ' + j.lokasiKelurahan) : '&mdash;';
+  if(j.lokasiJenis === 'LUAR_KOTA') return [j.lokasiKabupaten, j.lokasiProvinsi].filter(Boolean).join(', ') || '&mdash;';
+  if(j.lokasiJenis === 'LUAR_NEGERI') return j.lokasiNegara || '&mdash;';
+  return '&mdash;';
+}
+var LOKASI_JENIS_LABEL = { 'DALAM_KOTA': 'Dalam Kota', 'LUAR_KOTA': 'Luar Kota', 'LUAR_NEGERI': 'Luar Negeri' };
+function lokasiJenisLabel(code){ return LOKASI_JENIS_LABEL[code] || '&mdash;'; }
+// Semua record dengan batchId sama = 1 Penugasan (1 pengajuan utk banyak Anggota sekaligus) -
+// dipakai utk menggabungkan baris tabel per Penugasan & menerapkan aksi Setujui/Tolak ke SELURUH
+// Anggota dalam Penugasan tersebut, bukan hanya satu Anggota. Sama seperti di
+// penugasan-dapil-reses.html (halaman utama Penugasan).
+function jadwalBatchSiblings(batchId){
+  return JADWAL_RESES_LIST.filter(function(j){ return j.batchId === batchId; });
+}
+
+// ---------- Hierarchy & "Login sebagai" (simulasi JWT user login - prototipe, key localStorage
+// SAMA dgn penugasan-dapil-reses.html supaya identitas "login" konsisten antar halaman) ----------
+var SIM_LOGIN_KEY = 'ep_penugasan_sim_login_person_id';
+var UNIT_TYPE_LIST = unitTypeLoadList();
+var KELOMPOK_LEVEL_BY_NAME = {};
+JABATAN_LIST.filter(function(j){ return j.category === 'KELOMPOK'; }).forEach(function(j){ KELOMPOK_LEVEL_BY_NAME[j.name] = j.level; });
+var STRUKTURAL_LEVEL_BY_NAME = {};
+JABATAN_LIST.filter(function(j){ return j.category === 'STRUKTURAL'; }).forEach(function(j){ STRUKTURAL_LEVEL_BY_NAME[j.name] = j.level; });
+var TOP_UNIT_NAMES = UNIT_TYPE_LIST.filter(function(u){
+  return u.level === 0 && (u.unitType === 'AKD' || u.unitType === 'SEKRE');
+}).map(function(u){ return u.name; });
+function unitKerjaIsTopUnit(unitKerja){
+  return !!unitKerja && TOP_UNIT_NAMES.some(function(name){ return unitKerja.indexOf(name) !== -1; });
+}
+function isTopLevelAssignment(a){
+  if(a.kategori === 'KELOMPOK') return KELOMPOK_LEVEL_BY_NAME[a.jabatan] === 1 && unitKerjaIsTopUnit(a.unitKerja);
+  if(a.kategori === 'STRUKTURAL') return STRUKTURAL_LEVEL_BY_NAME[a.jabatan] === 1 && unitKerjaIsTopUnit(a.unitKerja);
+  return false;
+}
+function pucukPimpinanLabel(p){
+  var top = (p.assignments || []).find(isTopLevelAssignment);
+  if(!top) return '';
+  return top.kategori === 'KELOMPOK' ? 'Ketua DPRD' : 'Ketua Sekretariat';
+}
+function getCurrentUser(){
+  var id = parseInt(localStorage.getItem(SIM_LOGIN_KEY), 10);
+  var list = politisiList();
+  var p = list.find(function(p){ return p.id === id; });
+  if(!p && list.length){
+    p = list.slice().sort(function(a,b){ return a.nama.localeCompare(b.nama); })[0];
+    try{ localStorage.setItem(SIM_LOGIN_KEY, String(p.id)); } catch(e){}
+  }
+  return p || null;
+}
+
+var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Cancel':'badge-neutral', 'Reject':'badge-danger', 'Cancel by Anggota':'badge-danger' };
+
+// ---------- Panel: Approval Penugasan (hanya status Menunggu Approval) ----------
+function populateApprovalFilterOptions(){
+  document.getElementById('filterDapilApproval').innerHTML = '<option value="">Semua Dapil</option>' + DAPIL_LIST.map(function(d){ return '<option value="' + d.kode + '">' + d.nama + '</option>'; }).join('');
+  document.getElementById('filterJenisPenugasanApproval').innerHTML = '<option value="">Semua Jenis</option>' + JENIS_PENUGASAN_LIST.map(function(j){ return '<option value="' + j.id + '">' + j.nama + '</option>'; }).join('');
+}
+
+function buildApprovalActionsForRow(j){
+  return '<button class="btn btn-outline btn-sm" onclick="openApproveJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>'
+    + '<button class="btn btn-danger-outline btn-sm" onclick="openRejectJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Tolak</button>';
+}
+
+function renderApprovalTable(){
+  var jenisFilter = document.getElementById('filterJenisPenugasanApproval').value;
+  var dapilFilter = document.getElementById('filterDapilApproval').value;
+
+  var filtered = JADWAL_RESES_LIST.filter(function(j){
+    if(j.status !== 'Menunggu Approval') return false;
+    var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
+    if(!p) return false;
+    if(jenisFilter && String(j.jenisPenugasanId) !== jenisFilter) return false;
+    if(dapilFilter && j.dapilKode !== dapilFilter) return false;
+    return true;
+  });
+
+  var batches = {};
+  var batchOrder = [];
+  filtered.forEach(function(j){
+    if(!batches[j.batchId]){ batches[j.batchId] = []; batchOrder.push(j.batchId); }
+    batches[j.batchId].push(j);
+  });
+  var groups = batchOrder.map(function(bid){ return { records: batches[bid], rep: batches[bid][0] }; })
+    .sort(function(a,b){ return (b.rep.tanggalRencana||'').localeCompare(a.rep.tanggalRencana||''); });
+
+  var tbody = document.getElementById('tbodyApproval');
+  if(!groups.length){
+    tbody.innerHTML = '<tr><td colspan="10"><div class="empty-note">Tidak ada Penugasan yang menunggu approval.</div></td></tr>';
+    updateApprovalStats();
+    return;
+  }
+
+  tbody.innerHTML = groups.map(function(g){
+    var j = g.rep;
+    var anggotaNames = g.records.map(function(r){
+      var p = PEGAWAI_LIST.find(function(p){ return p.id === r.personId; });
+      return p ? p.nama : 'Anggota #' + r.personId;
+    });
+    var jp = JENIS_PENUGASAN_LIST.find(function(x){ return x.id === j.jenisPenugasanId; });
+    var jpBadge = '<span class="badge badge-info">' + (jp ? jp.nama : '&mdash;') + '</span>';
+    var pimpinanLabel = (j.jabatanPimpinanList || []).map(function(a){ return a.jabatan + ' - ' + a.unitKerja; }).join(', ') || '&mdash;';
+    var jamRange = (j.jamMulai && j.jamSelesai) ? j.jamMulai + '&ndash;' + j.jamSelesai : '';
+    var anggotaHtml = '<div class="namecell">' + anggotaNames.map(function(n){ return '<div class="n" style="font-size:12px;">' + n + '</div>'; }).join('') + '</div>';
+    var statusBadge = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + j.status + '</span>';
+    var actions = buildApprovalActionsForRow(j);
+
+    return '<tr>'
+      + '<td>' + (j.noPenugasan || '&mdash;') + '</td>'
+      + '<td>' + jpBadge + '</td>'
+      + '<td><div class="namecell"><div class="n">' + j.kegiatan + '</div></div></td>'
+      + '<td>' + lokasiJenisLabel(j.lokasiJenis) + '</td>'
+      + '<td>' + lokasiLabel(j) + '</td>'
+      + '<td>' + pimpinanLabel + '</td>'
+      + '<td>' + anggotaHtml + '</td>'
+      + '<td>' + fmtTanggal(j.tanggalRencana) + '<br><span class="hint">' + jamRange + '</span></td>'
+      + '<td>' + statusBadge + '</td>'
+      + '<td><div class="actions-cell">' + actions + '</div></td>'
+    + '</tr>';
+  }).join('');
+  updateApprovalStats();
+}
+
+function updateApprovalStats(){
+  var currentUser = getCurrentUser();
+  var batchReps = {};
+  JADWAL_RESES_LIST.forEach(function(j){ if(j.status === 'Menunggu Approval') batchReps[j.batchId] = j; });
+  var reps = Object.keys(batchReps).map(function(k){ return batchReps[k]; });
+  document.getElementById('statTotalMenunggu').textContent = reps.length;
+  var perluKeputusan = reps.filter(function(j){ return currentUser && j.approverIds && j.approverIds.indexOf(currentUser.id) !== -1; }).length;
+  document.getElementById('statPerluKeputusan').textContent = perluKeputusan;
+}
+
+function resetFilterApproval(){
+  document.getElementById('filterJenisPenugasanApproval').value = '';
+  document.getElementById('filterDapilApproval').value = '';
+  renderApprovalTable();
+}
+
+function buildApproverListHtml(j, highlightId, highlightLabel, highlightClass){
+  var approverIds = j.approverIds || [];
+  if(!approverIds.length){
+    return '<div class="chk-empty">Tidak memerlukan approval &mdash; pembuat penugasan ini sudah Pucuk Pimpinan.</div>';
+  }
+  return approverIds.map(function(aid){
+    var p = PEGAWAI_LIST.find(function(p){ return p.id === aid; });
+    var nama = p ? p.nama : 'Pegawai #' + aid;
+    var jabatan = p ? pucukPimpinanLabel(p) : '';
+    var flagHtml = (highlightId != null && highlightId === aid) ? ('<span class="badge ' + highlightClass + '" style="margin-left:8px;">' + highlightLabel + '</span>') : '';
+    return '<div class="chk-item">' + nama + (jabatan ? ' - ' + jabatan : '') + flagHtml + '</div>';
+  }).join('');
+}
+
+// ---------- Setujui Penugasan (approval tidak berjenjang - satu keputusan dari approver manapun yang dipilih cukup) ----------
+var approvingJadwalId = null;
+function openApproveJadwal(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  var currentUser = getCurrentUser();
+  if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
+    toast('Anda bukan approver untuk penugasan ini.');
+    return;
+  }
+  approvingJadwalId = id;
+  var names = jadwalBatchSiblings(j.batchId).map(function(s){ var p = PEGAWAI_LIST.find(function(p){ return p.id === s.personId; }); return p ? p.nama : 'Anggota #' + s.personId; }).join(', ');
+  document.getElementById('approveJadwalText').textContent = 'Setujui penugasan "' + j.kegiatan + '" untuk ' + names + '?';
+  var approvalField = document.getElementById('approveJadwalApprovalField');
+  if(j.approverIds && j.approverIds.length){
+    approvalField.style.display = 'block';
+    document.getElementById('approveJadwalApprovers').innerHTML = buildApproverListHtml(j, currentUser.id, 'Anda', 'badge-info');
+  } else {
+    approvalField.style.display = 'none';
+  }
+  document.getElementById('modalApproveJadwalBackdrop').classList.add('open');
+}
+function closeApproveJadwal(){
+  document.getElementById('modalApproveJadwalBackdrop').classList.remove('open');
+  approvingJadwalId = null;
+}
+function confirmApproveJadwal(){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === approvingJadwalId; });
+  var currentUser = getCurrentUser();
+  if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
+    toast('Anda bukan approver untuk penugasan ini.');
+    closeApproveJadwal();
+    return;
+  }
+  jadwalBatchSiblings(j.batchId).forEach(function(x){ x.status = 'Approve'; x.approvedByUserId = currentUser.id; });
+  jadwalResesSaveList(JADWAL_RESES_LIST);
+  renderApprovalTable();
+  toast('Penugasan disetujui (prototipe)');
+  closeApproveJadwal();
+}
+// ---------- Tolak (Reject) Penugasan - oleh approver, status jadi "Reject" dengan alasan wajib ----------
+var rejectingJadwalId = null;
+function openRejectJadwal(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  var currentUser = getCurrentUser();
+  if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
+    toast('Anda bukan approver untuk penugasan ini.');
+    return;
+  }
+  rejectingJadwalId = id;
+  var names = jadwalBatchSiblings(j.batchId).map(function(s){ var p = PEGAWAI_LIST.find(function(p){ return p.id === s.personId; }); return p ? p.nama : 'Anggota #' + s.personId; }).join(', ');
+  document.getElementById('rejectJadwalText').textContent = 'Tolak penugasan "' + j.kegiatan + '" untuk ' + names + '?';
+  document.getElementById('rejectJadwalReason').value = '';
+  document.getElementById('modalRejectJadwalBackdrop').classList.add('open');
+}
+function closeRejectJadwal(){
+  document.getElementById('modalRejectJadwalBackdrop').classList.remove('open');
+  rejectingJadwalId = null;
+}
+function confirmRejectJadwal(){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === rejectingJadwalId; });
+  var currentUser = getCurrentUser();
+  if(!j || !currentUser || !j.approverIds || j.approverIds.indexOf(currentUser.id) === -1){
+    toast('Anda bukan approver untuk penugasan ini.');
+    closeRejectJadwal();
+    return;
+  }
+  var reason = document.getElementById('rejectJadwalReason').value.trim();
+  if(!reason){ toast('Isi alasan penolakan terlebih dahulu.'); return; }
+  jadwalBatchSiblings(j.batchId).forEach(function(x){ x.status = 'Reject'; x.rejectReason = reason; x.approvedByUserId = currentUser.id; });
+  jadwalResesSaveList(JADWAL_RESES_LIST);
+  renderApprovalTable();
+  toast('Penugasan ditolak (prototipe)');
+  closeRejectJadwal();
+}
+
+// ---------- Init ----------
+populateApprovalFilterOptions();
+renderApprovalTable();
+</script>
+</body>
+</html>
