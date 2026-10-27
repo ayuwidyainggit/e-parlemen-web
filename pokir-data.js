@@ -1,33 +1,16 @@
-// Data referensi usulan Pokok Pikiran (Pokir) (prototipe), ringkasan dari laporan-pokir.html,
-// dipakai di penugasan-dapil-reses.html supaya admin bisa menautkan Penugasan Kunjungan Dapil
-// ke usulan pokir terkait & melihat persentase progres realisasi terakhirnya.
-var POKIR_STORAGE_KEY = 'ep_master_pokir_list';
-var POKIR_STATUS_CLASS = { 'Diajukan': 'badge-neutral', 'Diproses': 'badge-warn', 'Selesai': 'badge-success' };
-var POKIR_DEFAULT_LIST = [
-  { id: 1, judul: 'Perbaikan Jalan Dusun Krasak', dapilKode: 'DAPIL-3', kategori: 'Infrastruktur', status: 'Diajukan', progres: 0, updated: '30 Agu 2026' },
-  { id: 2, judul: 'Bantuan Bibit Pertanian', dapilKode: 'DAPIL-3', kategori: 'Ekonomi & UMKM', status: 'Diproses', progres: 45, updated: '15 Sep 2026' },
-  { id: 3, judul: 'Perbaikan Atap Pasar Rejowinangun', dapilKode: 'DAPIL-1', kategori: 'Infrastruktur', status: 'Selesai', progres: 100, updated: '20 Sep 2026' },
-  { id: 4, judul: 'Penataan Lapak PKL', dapilKode: 'DAPIL-1', kategori: 'Ekonomi & UMKM', status: 'Diproses', progres: 60, updated: '18 Sep 2026' },
-  { id: 5, judul: 'Pembangunan Talud Penahan Longsor', dapilKode: 'DAPIL-2', kategori: 'Infrastruktur', status: 'Diproses', progres: 30, updated: '22 Sep 2026' },
-  { id: 6, judul: 'Rehabilitasi Saluran Irigasi Sawah', dapilKode: 'DAPIL-2', kategori: 'Infrastruktur', status: 'Diajukan', progres: 0, updated: '27 Agu 2026' },
-  { id: 7, judul: 'Bantuan Alat Pertanian Kelompok Tani', dapilKode: 'DAPIL-3', kategori: 'Ekonomi & UMKM', status: 'Diproses', progres: 55, updated: '14 Sep 2026' },
-  { id: 8, judul: 'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', dapilKode: 'DAPIL-1', kategori: 'Pendidikan', status: 'Diproses', progres: 70, updated: '19 Sep 2026' },
-  { id: 9, judul: 'Pengadaan Buku Perpustakaan Desa', dapilKode: 'DAPIL-1', kategori: 'Pendidikan', status: 'Selesai', progres: 100, updated: '1 Sep 2026' },
-  { id: 10, judul: 'Normalisasi Saluran Drainase', dapilKode: 'DAPIL-2', kategori: 'Infrastruktur', status: 'Diajukan', progres: 0, updated: '10 Mei 2026' }
+// Data Usulan Pokir (prototipe), dipakai oleh laporan-pokir.html & modal "Lihat Penugasan"
+// (status Selesai) di penugasan-dapil-reses.html. Field `dapil` memakai label yang sama dgn
+// dapilNamaByKode() di dapil-data.js (mis. 'Dapil 1') supaya bisa dicocokkan dgn dapilKode
+// penugasan reses/kunjungan.
+var pokirData = [
+  { id:1, judul:'Perbaikan Jalan Dusun Krasak', deskripsi:'Jalan rusak &amp; berlubang sepanjang &plusmn;800m menghambat akses warga Dusun Krasak ke pusat desa, terutama saat musim hujan.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'30 Agu 2026' },
+  { id:2, judul:'Bantuan Bibit Pertanian', deskripsi:'Kelompok tani membutuhkan bibit padi &amp; sayuran unggul untuk musim tanam berikutnya guna meningkatkan hasil panen.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:45, updated:'15 Sep 2026' },
+  { id:3, judul:'Perbaikan Atap Pasar Rejowinangun', deskripsi:'Atap pasar bocor di beberapa titik sehingga mengganggu aktivitas jual-beli pedagang saat hujan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Infrastruktur', status:'Selesai', progres:100, updated:'20 Sep 2026' },
+  { id:4, judul:'Penataan Lapak PKL', deskripsi:'Lapak PKL di sekitar pasar belum tertata rapi &amp; menyebabkan kemacetan, perlu relokasi &amp; penataan ulang area berjualan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:60, updated:'18 Sep 2026' },
+  { id:5, judul:'Pembangunan Talud Penahan Longsor', deskripsi:'Tebing di sisi permukiman Jurangombo rawan longsor saat musim hujan &amp; mengancam rumah warga di sekitarnya.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diproses', progres:30, updated:'22 Sep 2026' },
+  { id:6, judul:'Rehabilitasi Saluran Irigasi Sawah', deskripsi:'Saluran irigasi tersumbat sedimen sehingga distribusi air ke sawah warga menjadi tidak merata.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'27 Agu 2026' },
+  { id:7, judul:'Bantuan Alat Pertanian Kelompok Tani', deskripsi:'Kelompok tani masih menggunakan alat tradisional, perlu bantuan alat pertanian guna efisiensi pengolahan lahan.', alamat:'Jl. Pertanian RT 01/RW 03, Kel. Potrobangsan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-039', anggota:'Drs. Ahmad Fauzi, M.Si.', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:55, updated:'14 Sep 2026' },
+  { id:8, judul:'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', deskripsi:'Dua ruang kelas mengalami kerusakan pada atap &amp; dinding sehingga mengganggu kegiatan belajar siswa.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Diproses', progres:70, updated:'19 Sep 2026' },
+  { id:9, judul:'Pengadaan Buku Perpustakaan Desa', deskripsi:'Koleksi buku di perpustakaan desa sangat terbatas &amp; sebagian besar sudah usang, perlu penambahan judul baru.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Selesai', progres:100, updated:'1 Sep 2026' },
+  { id:10, judul:'Normalisasi Saluran Drainase', deskripsi:'Saluran drainase dangkal &amp; tersumbat sampah menyebabkan banjir kecil setiap hujan deras di Kel. Wates.', alamat:'Jl. Wates Raya RT 03/RW 01, Kel. Wates, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'KJD-2026-011', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'10 Mei 2026' }
 ];
-
-function pokirLoadList(){
-  try{
-    var raw = localStorage.getItem(POKIR_STORAGE_KEY);
-    if(raw){
-      var parsed = JSON.parse(raw);
-      if(Array.isArray(parsed) && parsed.length) return parsed;
-    }
-  } catch(e){}
-  var seed = JSON.parse(JSON.stringify(POKIR_DEFAULT_LIST));
-  pokirSaveList(seed);
-  return seed;
-}
-function pokirSaveList(list){
-  try{ localStorage.setItem(POKIR_STORAGE_KEY, JSON.stringify(list)); } catch(e){}
-}

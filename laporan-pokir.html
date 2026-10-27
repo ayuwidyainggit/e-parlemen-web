@@ -147,10 +147,9 @@ tr:hover td{background:#fafaf7;}
       <div class="snav-label">Report</div>
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
-      <div class="snav-label">Reses &amp; Dapil</div>
+      <div class="snav-label">Penugasan</div>
       <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
       <a class="snav-item" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
-      <a class="snav-item active" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Aspirasi</a>
       <div class="snav-label">Persuratan</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
@@ -261,6 +260,7 @@ tr:hover td{background:#fafaf7;}
 </div>
 
 <div class="toast" id="toast"></div>
+<script src="pokir-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -289,19 +289,6 @@ function evidenceImagesFor(p){
   }
   return out;
 }
-
-var pokirData = [
-  { id:1, judul:'Perbaikan Jalan Dusun Krasak', deskripsi:'Jalan rusak &amp; berlubang sepanjang &plusmn;800m menghambat akses warga Dusun Krasak ke pusat desa, terutama saat musim hujan.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'30 Agu 2026' },
-  { id:2, judul:'Bantuan Bibit Pertanian', deskripsi:'Kelompok tani membutuhkan bibit padi &amp; sayuran unggul untuk musim tanam berikutnya guna meningkatkan hasil panen.', alamat:'Jl. Krasak Raya RT 02/RW 05, Dusun Krasak, Kel. Kramat Selatan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-041', anggota:'Hj. Siti Rahmawati', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:45, updated:'15 Sep 2026' },
-  { id:3, judul:'Perbaikan Atap Pasar Rejowinangun', deskripsi:'Atap pasar bocor di beberapa titik sehingga mengganggu aktivitas jual-beli pedagang saat hujan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Infrastruktur', status:'Selesai', progres:100, updated:'20 Sep 2026' },
-  { id:4, judul:'Penataan Lapak PKL', deskripsi:'Lapak PKL di sekitar pasar belum tertata rapi &amp; menyebabkan kemacetan, perlu relokasi &amp; penataan ulang area berjualan.', alamat:'Jl. Pasar Rejowinangun No. 12, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'KJD-2026-018', anggota:'Ir. Budi Santoso, M.T.', dapil:'Dapil 1', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:60, updated:'18 Sep 2026' },
-  { id:5, judul:'Pembangunan Talud Penahan Longsor', deskripsi:'Tebing di sisi permukiman Jurangombo rawan longsor saat musim hujan &amp; mengancam rumah warga di sekitarnya.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diproses', progres:30, updated:'22 Sep 2026' },
-  { id:6, judul:'Rehabilitasi Saluran Irigasi Sawah', deskripsi:'Saluran irigasi tersumbat sedimen sehingga distribusi air ke sawah warga menjadi tidak merata.', alamat:'Jl. Jurangombo Raya RT 04/RW 02, Kel. Jurangombo Utara, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-040', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'27 Agu 2026' },
-  { id:7, judul:'Bantuan Alat Pertanian Kelompok Tani', deskripsi:'Kelompok tani masih menggunakan alat tradisional, perlu bantuan alat pertanian guna efisiensi pengolahan lahan.', alamat:'Jl. Pertanian RT 01/RW 03, Kel. Potrobangsan, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'RES-2026-039', anggota:'Drs. Ahmad Fauzi, M.Si.', dapil:'Dapil 3', kategori:'Ekonomi &amp; UMKM', status:'Diproses', progres:55, updated:'14 Sep 2026' },
-  { id:8, judul:'Rehabilitasi Ruang Kelas SDN 2 Rejowinangun', deskripsi:'Dua ruang kelas mengalami kerusakan pada atap &amp; dinding sehingga mengganggu kegiatan belajar siswa.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:4, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Diproses', progres:70, updated:'19 Sep 2026' },
-  { id:9, judul:'Pengadaan Buku Perpustakaan Desa', deskripsi:'Koleksi buku di perpustakaan desa sangat terbatas &amp; sebagian besar sudah usang, perlu penambahan judul baru.', alamat:'Jl. Sukamaju No. 8, Kel. Rejowinangun Selatan, Kec. Magelang Selatan', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:2, asal:'RES-2026-027', anggota:'M. Yusuf Ridwan', dapil:'Dapil 1', kategori:'Pendidikan', status:'Selesai', progres:100, updated:'1 Sep 2026' },
-  { id:10, judul:'Normalisasi Saluran Drainase', deskripsi:'Saluran drainase dangkal &amp; tersumbat sampah menyebabkan banjir kecil setiap hujan deras di Kel. Wates.', alamat:'Jl. Wates Raya RT 03/RW 01, Kel. Wates, Kec. Magelang Utara', kabupaten:'Kota Magelang', provinsi:'Jawa Tengah', evidenceCount:3, asal:'KJD-2026-011', anggota:'R. Hendra Wijaya, S.H.', dapil:'Dapil 2', kategori:'Infrastruktur', status:'Diajukan', progres:0, updated:'10 Mei 2026' }
-];
 
 function renderTable(){
   var status = document.getElementById('filterStatus').value;

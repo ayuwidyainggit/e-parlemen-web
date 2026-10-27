@@ -131,6 +131,11 @@ tr:hover td{background:#fafaf7;}
 .chip{padding:7px 13px;border-radius:20px;background:#eceee7;font-size:11.5px;font-weight:700;color:var(--ink);border:1px solid transparent;cursor:pointer;font-family:inherit;}
 .chip.active{background:var(--green);color:#fff;}
 .approval-box{border:1px solid var(--border);border-radius:10px;padding:12px;background:#fbfbf9;}
+.upload-box{border:2px dashed var(--border);border-radius:12px;padding:20px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;display:block;}
+.upload-box .ic{display:block;margin-bottom:6px;color:var(--muted);}
+.upload-box:hover{border-color:var(--gold);}
+.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
+.upload-box.filled .ic{color:var(--success);}
 
 .empty-note{text-align:center;padding:16px 10px;color:var(--muted);font-size:11.5px;}
 
@@ -162,10 +167,9 @@ tr:hover td{background:#fafaf7;}
       <div class="snav-label">Report</div>
       <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
       <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
-      <div class="snav-label">Reses &amp; Dapil</div>
+      <div class="snav-label">Penugasan</div>
       <a class="snav-item active" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
       <a class="snav-item" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
-      <a class="snav-item" href="laporan-pokir.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Laporan Aspirasi</a>
       <div class="snav-label">Persuratan</div>
       <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 20h4L19.5 8.5a2.1 2.1 0 0 0-3-3L5 17v3z"/><path d="M14 6l3 3"/></svg> Buat Surat <span class="count" style="background:var(--neutral);">Segera</span></a>
       <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
@@ -218,6 +222,10 @@ tr:hover td{background:#fafaf7;}
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
             <div><div class="num" id="statApprove">0</div><div class="lbl">Approve</div></div>
           </div>
+          <div class="stat-card info">
+            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
+            <div><div class="num" id="statSelesai">0</div><div class="lbl">Selesai</div></div>
+          </div>
           <div class="stat-card">
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
             <div><div class="num" id="statCancel">0</div><div class="lbl">Cancel</div></div>
@@ -245,6 +253,7 @@ tr:hover td{background:#fafaf7;}
               <option value="Draft">Draft</option>
               <option value="Menunggu Approval">Menunggu Approval</option>
               <option value="Approve">Approve</option>
+              <option value="Selesai">Selesai</option>
               <option value="Cancel">Cancel</option>
               <option value="Reject">Reject</option>
               <option value="Cancel by Anggota">Cancel by Anggota</option>
@@ -259,7 +268,7 @@ tr:hover td{background:#fafaf7;}
             <tbody id="tbodyJadwal"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (Edit/Cancel oleh pembuat, Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status); pembuat menekan Cancel -&gt; <strong>Cancel</strong> (TERMINAL, view only, tanpa alasan). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (Edit/Cancel oleh pembuat, Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status); pembuat menekan Cancel -&gt; <strong>Cancel</strong> (TERMINAL, view only, tanpa alasan). Dari <strong>Approve</strong>, admin bisa menekan "Tandai Selesai" setelah kegiatannya benar-benar dilaksanakan -&gt; status jadi <strong>Selesai</strong> (TERMINAL, view only). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
       </div>
 
     </div>
@@ -307,12 +316,31 @@ tr:hover td{background:#fafaf7;}
         <div class="chk-count" id="jAnggotaCount"></div>
       </div>
 
-      <div class="field"><label>Tanggal Kegiatan</label><input type="date" id="jTanggalRencana" required></div>
-      <div class="field-row">
-        <div class="field"><label>Jam Mulai</label><input type="time" id="jJamMulai" required></div>
-        <div class="field"><label>Jam Selesai</label><input type="time" id="jJamSelesai" required></div>
+      <div class="field"><label>Tipe Tanggal</label>
+        <div class="chip-row" id="jTanggalModeChips">
+          <button type="button" class="chip active" data-mode="SINGLE" onclick="setTanggalMode('SINGLE')">Tanggal Tunggal</button>
+          <button type="button" class="chip" data-mode="RANGE" onclick="setTanggalMode('RANGE')">Rentang Tanggal</button>
+        </div>
+      </div>
+      <div class="field" id="jTanggalSingleField"><label>Tanggal Kegiatan</label><input type="date" id="jTanggalRencana"></div>
+      <div class="field-row" id="jTanggalRangeField" style="display:none;">
+        <div class="field"><label>Tanggal Mulai</label><input type="date" id="jTanggalMulai"></div>
+        <div class="field"><label>Tanggal Selesai</label><input type="date" id="jTanggalSelesai"></div>
+      </div>
+      <div class="field-row" id="jJamField">
+        <div class="field"><label>Jam Mulai</label><input type="time" id="jJamMulai"></div>
+        <div class="field"><label>Jam Selesai</label><input type="time" id="jJamSelesai"></div>
       </div>
       <div class="field"><label>Catatan <span class="opt">(opsional)</span></label><textarea id="jCatatan" placeholder="Catatan tambahan&hellip;"></textarea></div>
+
+      <div class="field"><label>Lampiran Penugasan <span class="opt">(opsional, PDF maks 5 MB)</span></label>
+        <label class="upload-box" id="jLampiranBox" for="jLampiranInput">
+          <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:22px;height:22px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+          <span id="jLampiranLabel">Klik untuk memilih berkas PDF, atau seret berkas ke sini</span>
+        </label>
+        <input type="file" id="jLampiranInput" accept="application/pdf" style="display:none;" onchange="onLampiranChosen(this)">
+        <div class="hint" id="jLampiranActions" style="margin-top:6px;display:none;"><a href="#" id="jLampiranViewLink" target="_blank" rel="noopener">Lihat berkas</a> &middot; <a href="#" onclick="removeLampiran();return false;">Hapus</a></div>
+      </div>
 
       <div class="field" id="jApprovalSection" style="display:none;">
         <label>Config Approval <span class="opt">(pilih 1&ndash;2 orang &mdash; Ketua DPRD / Ketua Sekretariat)</span></label>
@@ -344,6 +372,18 @@ tr:hover td{background:#fafaf7;}
     <div class="modal-foot">
       <button type="button" class="btn btn-outline" onclick="closeApproveJadwal()">Batal</button>
       <button type="button" class="btn btn-primary" onclick="confirmApproveJadwal()">Setujui Penugasan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Tandai Selesai Penugasan -->
+<div class="modal-backdrop" id="modalSelesaiJadwalBackdrop">
+  <div class="modal-box" style="max-width:420px;">
+    <div class="modal-head"><h3>Tandai Selesai</h3><button class="modal-close" onclick="closeSelesaiJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="selesaiJadwalText" style="margin-bottom:4px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeSelesaiJadwal()">Batal</button>
+      <button type="button" class="btn btn-primary" onclick="confirmSelesaiJadwal()">Tandai Selesai</button>
     </div>
   </div>
 </div>
@@ -394,11 +434,55 @@ tr:hover td{background:#fafaf7;}
     <div class="hint" id="approvalDetailKegiatan" style="margin-bottom:12px;"></div>
     <div class="field"><label>Status</label><div id="approvalDetailStatus"></div></div>
     <div class="field" id="approvalDetailRejectField" style="display:none;"><label>Alasan Penolakan</label><div class="hint" id="approvalDetailRejectReason"></div></div>
+    <div class="field" id="approvalDetailLampiranField" style="display:none;"><label>Lampiran</label><div class="hint"><a href="#" id="approvalDetailLampiranLink" target="_blank" rel="noopener">Lihat berkas &mdash; <span id="approvalDetailLampiranNama"></span></a></div></div>
     <div class="field"><label>Approver Terpilih <span class="opt">(approval tidak berjenjang &mdash; cukup salah satu)</span></label>
       <div class="chk-list" id="approvalDetailApprovers"></div>
     </div>
     <div class="modal-foot">
       <button type="button" class="btn btn-outline" onclick="closeApprovalDetail()">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Bentrok Jadwal Sebagian (Case 1 - sebagian Anggota sudah punya penugasan di tgl/jam yang sama, tetap bisa lanjut Simpan) -->
+<div class="modal-backdrop" id="modalConflictWarnBackdrop">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-head"><h3>Bentrok Jadwal Terdeteksi</h3><button class="modal-close" onclick="closeConflictWarnModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="conflictWarnText" style="margin-bottom:10px;"></div>
+    <div class="chk-list" id="conflictWarnList" style="max-height:220px;"></div>
+    <div class="hint" style="margin-top:10px;">Anda tetap bisa melanjutkan "Simpan Penugasan" untuk SELURUH Anggota yang dipilih (termasuk yang bentrok), atau tutup pop-up ini dulu untuk menyesuaikan (uncheck) Anggota yang bentrok pada daftar Anggota DPRD.</div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeConflictWarnModal()">Assign Ulang Anggota</button>
+      <button type="button" class="btn btn-primary" onclick="confirmProceedConflictWarn()">Lanjutkan Simpan</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Bentrok Jadwal Seluruh Anggota (Case 2 - SEMUA Anggota yang dipilih sudah punya penugasan di tgl/jam yang sama, tidak bisa disimpan) -->
+<div class="modal-backdrop" id="modalConflictBlockBackdrop">
+  <div class="modal-box" style="max-width:480px;">
+    <div class="modal-head"><h3>Penugasan Tidak Dapat Disimpan</h3><button class="modal-close" onclick="closeConflictBlockModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="conflictBlockText" style="margin-bottom:10px;"></div>
+    <div class="chk-list" id="conflictBlockList" style="max-height:220px;"></div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closeConflictBlockModal()">Tutup &amp; Sesuaikan Anggota</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Lihat Penugasan (daftar Usulan Pokir/Aspirasi terkait, utk penugasan status Selesai - VIEW ONLY, tanpa filter) -->
+<div class="modal-backdrop" id="modalPokirListBackdrop">
+  <div class="modal-box" style="max-width:560px;">
+    <div class="modal-head"><h3 id="pokirListTitle">Laporan Aspirasi</h3><button class="modal-close" onclick="closePokirListModal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
+    <div class="hint" id="pokirListSubtitle" style="margin-bottom:12px;"></div>
+    <div class="field"><label>Kehadiran Anggota</label>
+      <div class="chk-list" id="pokirListAttendance" style="max-height:160px;"></div>
+    </div>
+    <div class="field"><label>Usulan Pokir Terkait</label>
+      <div class="chk-list" id="pokirListItems" style="max-height:300px;"></div>
+    </div>
+    <div class="modal-foot">
+      <button type="button" class="btn btn-outline" onclick="closePokirListModal()">Tutup</button>
     </div>
   </div>
 </div>
@@ -410,6 +494,7 @@ tr:hover td{background:#fafaf7;}
 <script src="pegawai-data.js"></script>
 <script src="jenis-penugasan-data.js"></script>
 <script src="penugasan-dapil-reses-data.js"></script>
+<script src="pokir-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -517,6 +602,16 @@ function lokasiLabel(j){
 }
 var LOKASI_JENIS_LABEL = { 'DALAM_KOTA': 'Dalam Kota', 'LUAR_KOTA': 'Luar Kota', 'LUAR_NEGERI': 'Luar Negeri' };
 function lokasiJenisLabel(code){ return LOKASI_JENIS_LABEL[code] || '&mdash;'; }
+// Tanggal Kegiatan: 'SINGLE' (1 tanggal + Jam Mulai/Selesai) atau 'RANGE' (Tanggal Mulai-Selesai,
+// tanpa jam - lihat setTanggalMode() & saveJadwal() di bawah). Record lama (sebelum field ini ada)
+// dianggap 'SINGLE' lewat fallback di sini supaya tampilan tabel tetap konsisten.
+function tanggalJamCellForRow(j){
+  if(j.tanggalMode === 'RANGE'){
+    return fmtTanggal(j.tanggalRencana) + ' &ndash; ' + fmtTanggal(j.tanggalSelesai);
+  }
+  var jamRange = (j.jamMulai && j.jamSelesai) ? j.jamMulai + '&ndash;' + j.jamSelesai : '';
+  return fmtTanggal(j.tanggalRencana) + (jamRange ? ('<br><span class="hint">' + jamRange + '</span>') : '');
+}
 // Dapil (j.dapilKode) ikut dapilId pembuat penugasan saat record dibuat (lihat saveJadwal()) -
 // dipakai jg oleh filter "Dapil" di atas tabel, kolom ini cuma menampilkan nama dapilnya.
 function dapilLabel(kode){ return dapilNamaByKode(kode) || '&mdash;'; }
@@ -596,8 +691,11 @@ function populateJadwalFilterOptions(){
   document.getElementById('filterJenisPenugasanJadwal').innerHTML = '<option value="">Semua Jenis</option>' + JENIS_PENUGASAN_LIST.map(function(j){ return '<option value="' + j.id + '">' + j.nama + '</option>'; }).join('');
 }
 
-// Status (j.status), 6 nilai literal, tidak ada progres otomatis berbasis tanggal:
-// 'Draft' | 'Menunggu Approval' | 'Approve' | 'Cancel' | 'Reject' | 'Cancel by Anggota'.
+// Status (j.status), 7 nilai literal, tidak ada progres otomatis berbasis tanggal (kecuali
+// syncCancelByAnggota()): 'Draft' | 'Menunggu Approval' | 'Approve' | 'Selesai' | 'Cancel' |
+// 'Reject' | 'Cancel by Anggota'. 'Selesai' (TERMINAL, view only) HANYA dicapai manual lewat
+// tombol "Tandai Selesai" (lihat openSelesaiJadwal()) pada penugasan yang sudah 'Approve' -
+// menandakan kegiatannya sudah benar-benar dilaksanakan.
 function jadwalIsEditable(j){
   return j.status === 'Draft' || j.status === 'Menunggu Approval';
 }
@@ -607,10 +705,47 @@ function jadwalIsDeletable(j){
 function jadwalIsCancelable(j){
   return j.status === 'Menunggu Approval';
 }
-var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Cancel':'badge-neutral', 'Reject':'badge-danger', 'Cancel by Anggota':'badge-danger' };
+function jadwalIsSelesaiable(j){
+  return j.status === 'Approve';
+}
+var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Selesai':'badge-info', 'Cancel':'badge-neutral', 'Reject':'badge-danger', 'Cancel by Anggota':'badge-danger' };
+
+// Lampiran (PDF): kalau penugasan memang punya berkas (lihat lampiranNama/lampiranData di
+// attemptSaveJadwal() pada modal Tambah/Edit Penugasan), "Lihat File" membuka berkas itu.
+// Penugasan yang belum punya lampiran tetap dapat tombol "Lihat File" (prototipe) yang membuka
+// PDF placeholder digenerate on-the-fly (data URI) berisi ringkasan penugasan - ganti logic ini
+// begitu SEMUA penugasan wajib punya berkas sungguhan.
+function pdfEscape(text){
+  return String(text).replace(/([()\\])/g, '\\$1');
+}
+function jadwalFilePlaceholderDataUri(j){
+  var line1 = pdfEscape(j.noPenugasan + ' - ' + j.kegiatan);
+  var line2 = pdfEscape('Dokumen prototipe, belum ada lampiran berkas sungguhan untuk penugasan ini.');
+  var objs = [];
+  objs[1] = '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n';
+  objs[2] = '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n';
+  objs[3] = '3 0 obj\n<< /Type /Page /Parent 2 0 R /Resources << /Font << /F1 4 0 R >> >> /MediaBox [0 0 380 160] /Contents 5 0 R >>\nendobj\n';
+  objs[4] = '4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n';
+  var stream = 'BT /F1 15 Tf 20 110 Td (' + line1 + ') Tj ET\nBT /F1 10 Tf 20 85 Td (' + line2 + ') Tj ET';
+  objs[5] = '5 0 obj\n<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream\nendobj\n';
+  var body = '%PDF-1.4\n';
+  var offsets = [0];
+  for(var i = 1; i <= 5; i++){ offsets[i] = body.length; body += objs[i]; }
+  var xrefStart = body.length;
+  var xref = 'xref\n0 6\n0000000000 65535 f \n';
+  for(var i = 1; i <= 5; i++){ xref += ('0000000000' + offsets[i]).slice(-10) + ' 00000 n \n'; }
+  var pdf = body + xref + 'trailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n' + xrefStart + '\n%%EOF';
+  return 'data:application/pdf;base64,' + btoa(pdf);
+}
+function viewJadwalFile(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  if(!j) return;
+  window.open((j.lampiranNama && j.lampiranData) ? j.lampiranData : jadwalFilePlaceholderDataUri(j), '_blank');
+}
 
 function buildActionsForRow(j, currentUser){
   var detailBtn = '<button class="btn btn-outline btn-sm" onclick="openApprovalDetail(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg> Detail Approval</button>';
+  detailBtn += '<button class="btn btn-outline btn-sm" onclick="viewJadwalFile(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/></svg> Lihat File</button>';
   if(currentUser && j.approverIds && j.approverIds.indexOf(currentUser.id) !== -1 && j.status === 'Menunggu Approval'){
     return detailBtn
       + '<button class="btn btn-outline btn-sm" onclick="openApproveJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Setujui</button>'
@@ -625,6 +760,14 @@ function buildActionsForRow(j, currentUser){
     return detailBtn
       + '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
       + '<button class="btn btn-danger-outline btn-sm" onclick="openCancelJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Cancel</button>';
+  }
+  if(j.status === 'Approve'){
+    return detailBtn
+      + '<button class="btn btn-outline btn-sm" onclick="openSelesaiJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Tandai Selesai</button>';
+  }
+  if(j.status === 'Selesai'){
+    return detailBtn
+      + '<button class="btn btn-outline btn-sm" onclick="openPokirListModal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Lihat Penugasan</button>';
   }
   return detailBtn;
 }
@@ -641,7 +784,7 @@ function anggotaResponseLabel(j){
   return 'Sebagian Menolak';
 }
 function buildRespondCellForRow(j){
-  if(j.status !== 'Approve' && j.status !== 'Cancel by Anggota'){
+  if(j.status !== 'Approve' && j.status !== 'Selesai' && j.status !== 'Cancel by Anggota'){
     return '<span class="hint">&mdash;</span>';
   }
   var label = anggotaResponseLabel(j);
@@ -706,7 +849,6 @@ function renderJadwalTable(){
     var jp = JENIS_PENUGASAN_LIST.find(function(x){ return x.id === j.jenisPenugasanId; });
     var jpBadge = '<span class="badge badge-info">' + (jp ? jp.nama : '&mdash;') + '</span>';
     var pimpinanLabel = (j.jabatanPimpinanList || []).map(function(a){ return a.jabatan + ' - ' + a.unitKerja; }).join(', ') || '&mdash;';
-    var jamRange = (j.jamMulai && j.jamSelesai) ? j.jamMulai + '&ndash;' + j.jamSelesai : '';
     var statusBadge = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + j.status + '</span>'
       + (j.status === 'Reject' && j.rejectReason ? '<div class="hint" style="margin-top:4px;">' + j.rejectReason + '</div>' : '');
     var actions = buildActionsForRow(j, currentUser);
@@ -722,7 +864,7 @@ function renderJadwalTable(){
       + '<td>' + lokasiLabel(j) + '</td>'
       + '<td>' + pimpinanLabel + '</td>'
       + '<td>' + anggotaHtml + '</td>'
-      + '<td>' + fmtTanggal(j.tanggalRencana) + '<br><span class="hint">' + jamRange + '</span></td>'
+      + '<td>' + tanggalJamCellForRow(j) + '</td>'
       + '<td>' + statusBadge + '</td>'
       + '<td>' + respond + '</td>'
       + '<td><div class="actions-cell">' + actions + '</div></td>'
@@ -743,6 +885,7 @@ function updateStatsJadwal(){
   document.getElementById('statDraft').textContent = byStatus['Draft'] || 0;
   document.getElementById('statMenunggu').textContent = byStatus['Menunggu Approval'] || 0;
   document.getElementById('statApprove').textContent = byStatus['Approve'] || 0;
+  document.getElementById('statSelesai').textContent = byStatus['Selesai'] || 0;
   document.getElementById('statCancel').textContent = byStatus['Cancel'] || 0;
   document.getElementById('statReject').textContent = byStatus['Reject'] || 0;
   document.getElementById('statCancelAnggota').textContent = byStatus['Cancel by Anggota'] || 0;
@@ -864,6 +1007,131 @@ function getSelectedApproverIds(){
   return Array.prototype.map.call(document.querySelectorAll('#jApproverList input[type="checkbox"]:checked'), function(cb){ return parseInt(cb.value, 10); });
 }
 
+// ---------- Tanggal Kegiatan: Tunggal (perlu Jam Mulai/Selesai) atau Rentang (tanpa Jam) ----------
+var currentTanggalMode = 'SINGLE';
+function setTanggalMode(mode){
+  currentTanggalMode = mode;
+  Array.prototype.forEach.call(document.querySelectorAll('#jTanggalModeChips .chip'), function(btn){
+    btn.classList.toggle('active', btn.dataset.mode === mode);
+  });
+  document.getElementById('jTanggalSingleField').style.display = mode === 'RANGE' ? 'none' : 'block';
+  document.getElementById('jTanggalRangeField').style.display = mode === 'RANGE' ? 'flex' : 'none';
+  document.getElementById('jJamField').style.display = mode === 'RANGE' ? 'none' : 'flex';
+}
+
+// ---------- Deteksi Bentrok Jadwal (dijalankan saat Simpan Penugasan, lihat attemptSaveJadwal()) ----------
+// Anggota dianggap "sudah punya penugasan" kalau overlap tanggal (+jam, kalau keduanya SINGLE)
+// dengan record AKTIF (bukan Cancel/Reject/Cancel by Anggota) selain batch yang sedang diedit.
+// Penugasan RANGE dianggap memblokir SELURUH hari dalam rentangnya (tanpa jam spesifik), jadi
+// overlap tanggal saja sudah cukup kalau salah satu pihak (baru/lama) bermode RANGE.
+var CONFLICT_IGNORED_STATUSES = ['Cancel', 'Reject', 'Cancel by Anggota', 'Selesai'];
+function dateRangeOverlap(aStart, aEnd, bStart, bEnd){
+  return aStart <= bEnd && bStart <= aEnd;
+}
+function timeRangeOverlap(aStart, aEnd, bStart, bEnd){
+  return aStart < bEnd && bStart < aEnd;
+}
+function findScheduleConflicts(personIds, tanggalMode, tanggalRencana, tanggalSelesai, jamMulai, jamSelesai, excludeBatchId){
+  var newStart = tanggalRencana;
+  var newEnd = tanggalMode === 'RANGE' ? (tanggalSelesai || tanggalRencana) : tanggalRencana;
+  var conflicts = {};
+  personIds.forEach(function(pid){
+    var hits = JADWAL_RESES_LIST.filter(function(r){
+      if(r.personId !== pid) return false;
+      if(excludeBatchId != null && r.batchId === excludeBatchId) return false;
+      if(CONFLICT_IGNORED_STATUSES.indexOf(r.status) !== -1) return false;
+      var exStart = r.tanggalRencana;
+      var exEnd = r.tanggalMode === 'RANGE' ? (r.tanggalSelesai || r.tanggalRencana) : r.tanggalRencana;
+      if(!exStart || !dateRangeOverlap(newStart, newEnd, exStart, exEnd)) return false;
+      if(tanggalMode === 'RANGE' || r.tanggalMode === 'RANGE') return true;
+      return timeRangeOverlap(jamMulai, jamSelesai, r.jamMulai, r.jamSelesai);
+    });
+    if(hits.length) conflicts[pid] = hits;
+  });
+  return conflicts;
+}
+function buildConflictListHtml(conflicts, personIds){
+  var rows = [];
+  personIds.forEach(function(pid){
+    var hits = conflicts[pid];
+    if(!hits || !hits.length) return;
+    var p = PEGAWAI_LIST.find(function(p){ return p.id === pid; });
+    var nama = p ? p.nama : 'Anggota #' + pid;
+    hits.forEach(function(r){
+      rows.push('<div class="chk-item" style="display:block;"><div class="n" style="font-weight:800;">' + nama + '</div><div class="hint" style="margin-top:2px;">' + tanggalJamCellForRow(r) + ' &middot; ' + r.kegiatan + ' (No. ' + (r.noPenugasan || '&mdash;') + ')</div></div>');
+    });
+  });
+  return rows.join('') || '<div class="chk-empty">Tidak ada detail bentrok.</div>';
+}
+function openConflictWarnModal(conflicts, personIds){
+  var conflictedCount = Object.keys(conflicts).length;
+  document.getElementById('conflictWarnText').textContent = conflictedCount + ' dari ' + personIds.length + ' Anggota yang dipilih sudah memiliki penugasan lain pada tanggal & waktu yang sama/overlap:';
+  document.getElementById('conflictWarnList').innerHTML = buildConflictListHtml(conflicts, personIds);
+  document.getElementById('modalConflictWarnBackdrop').classList.add('open');
+}
+function closeConflictWarnModal(){
+  document.getElementById('modalConflictWarnBackdrop').classList.remove('open');
+}
+function confirmProceedConflictWarn(){
+  closeConflictWarnModal();
+  attemptSaveJadwal(true);
+}
+function openConflictBlockModal(conflicts, personIds){
+  document.getElementById('conflictBlockText').textContent = 'SELURUH (' + personIds.length + ') Anggota yang dipilih sudah memiliki penugasan lain pada tanggal & waktu yang sama/overlap, sehingga penugasan ini tidak dapat disimpan:';
+  document.getElementById('conflictBlockList').innerHTML = buildConflictListHtml(conflicts, personIds);
+  document.getElementById('modalConflictBlockBackdrop').classList.add('open');
+}
+function closeConflictBlockModal(){
+  document.getElementById('modalConflictBlockBackdrop').classList.remove('open');
+}
+
+// ---------- Lampiran Penugasan (upload PDF - prototipe, disimpan sbg data URL di localStorage
+// bersama record, lihat baseFields.lampiranData di attemptSaveJadwal()) ----------
+var currentLampiranNama = null;
+var currentLampiranDataUrl = null;
+function renderLampiranState(){
+  var box = document.getElementById('jLampiranBox');
+  var label = document.getElementById('jLampiranLabel');
+  var actions = document.getElementById('jLampiranActions');
+  if(currentLampiranNama){
+    box.classList.add('filled');
+    label.textContent = 'Berkas dipilih: ' + currentLampiranNama;
+    actions.style.display = 'block';
+    document.getElementById('jLampiranViewLink').href = currentLampiranDataUrl || '#';
+  } else {
+    box.classList.remove('filled');
+    label.textContent = 'Klik untuk memilih berkas PDF, atau seret berkas ke sini';
+    actions.style.display = 'none';
+  }
+}
+function onLampiranChosen(input){
+  var file = input.files && input.files[0];
+  if(!file) return;
+  if(file.type !== 'application/pdf' && !/\.pdf$/i.test(file.name)){
+    toast('Berkas lampiran harus berformat PDF.');
+    input.value = '';
+    return;
+  }
+  if(file.size > 5 * 1024 * 1024){
+    toast('Ukuran berkas lampiran maksimal 5 MB.');
+    input.value = '';
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(){
+    currentLampiranNama = file.name;
+    currentLampiranDataUrl = reader.result;
+    renderLampiranState();
+  };
+  reader.readAsDataURL(file);
+}
+function removeLampiran(){
+  currentLampiranNama = null;
+  currentLampiranDataUrl = null;
+  document.getElementById('jLampiranInput').value = '';
+  renderLampiranState();
+}
+
 var editingJadwalId = null;
 function openAddJadwal(){
   var currentUser = getCurrentUser();
@@ -880,10 +1148,17 @@ function openAddJadwal(){
   populateLokasiNegaraSelect(null);
   toggleLokasiFields();
   buildJabatanPimpinanChips([]);
+  setTanggalMode('SINGLE');
   document.getElementById('jTanggalRencana').value = '';
+  document.getElementById('jTanggalMulai').value = '';
+  document.getElementById('jTanggalSelesai').value = '';
   document.getElementById('jJamMulai').value = '';
   document.getElementById('jJamSelesai').value = '';
   document.getElementById('jCatatan').value = '';
+  currentLampiranNama = null;
+  currentLampiranDataUrl = null;
+  document.getElementById('jLampiranInput').value = '';
+  renderLampiranState();
   refreshApprovalSection([]);
   document.getElementById('modalJadwalBackdrop').classList.add('open');
 }
@@ -907,10 +1182,23 @@ function openEditJadwal(id){
   toggleLokasiFields();
   var siblingPersonIds = jadwalBatchSiblings(j.batchId).map(function(s){ return s.personId; });
   buildJabatanPimpinanChips(j.jabatanPimpinanList || [], siblingPersonIds);
-  document.getElementById('jTanggalRencana').value = j.tanggalRencana;
+  setTanggalMode(j.tanggalMode === 'RANGE' ? 'RANGE' : 'SINGLE');
+  if(j.tanggalMode === 'RANGE'){
+    document.getElementById('jTanggalRencana').value = '';
+    document.getElementById('jTanggalMulai').value = j.tanggalRencana;
+    document.getElementById('jTanggalSelesai').value = j.tanggalSelesai || '';
+  } else {
+    document.getElementById('jTanggalRencana').value = j.tanggalRencana;
+    document.getElementById('jTanggalMulai').value = '';
+    document.getElementById('jTanggalSelesai').value = '';
+  }
   document.getElementById('jJamMulai').value = j.jamMulai || '';
   document.getElementById('jJamSelesai').value = j.jamSelesai || '';
   document.getElementById('jCatatan').value = j.catatan || '';
+  currentLampiranNama = j.lampiranNama || null;
+  currentLampiranDataUrl = j.lampiranData || null;
+  document.getElementById('jLampiranInput').value = '';
+  renderLampiranState();
   refreshApprovalSection(j.approverIds || []);
   document.getElementById('modalJadwalBackdrop').classList.add('open');
 }
@@ -921,6 +1209,10 @@ function closeModalJadwal(){
 var pendingJadwalStatus = 'Final';
 function saveJadwal(e){
   e.preventDefault();
+  attemptSaveJadwal(false);
+  return false;
+}
+function attemptSaveJadwal(skipConflictCheck){
   var currentUser = getCurrentUser();
   if(!currentUser){ toast('Tidak ada data "Login sebagai" yang valid.'); return false; }
 
@@ -934,9 +1226,19 @@ function saveJadwal(e){
   var lokasiNegara = lokasiJenis === 'LUAR_NEGERI' ? (document.getElementById('jLokasiNegara').value || null) : null;
   var jabatanPimpinanList = getSelectedJabatanPimpinan();
   var personIds = getSelectedAnggotaIds();
-  var tanggalRencana = document.getElementById('jTanggalRencana').value;
-  var jamMulai = document.getElementById('jJamMulai').value;
-  var jamSelesai = document.getElementById('jJamSelesai').value;
+  var tanggalMode = currentTanggalMode;
+  var tanggalRencana, tanggalSelesai, jamMulai, jamSelesai;
+  if(tanggalMode === 'RANGE'){
+    tanggalRencana = document.getElementById('jTanggalMulai').value;
+    tanggalSelesai = document.getElementById('jTanggalSelesai').value;
+    jamMulai = null;
+    jamSelesai = null;
+  } else {
+    tanggalRencana = document.getElementById('jTanggalRencana').value;
+    tanggalSelesai = null;
+    jamMulai = document.getElementById('jJamMulai').value;
+    jamSelesai = document.getElementById('jJamSelesai').value;
+  }
   var catatan = document.getElementById('jCatatan').value.trim();
   var status = pendingJadwalStatus;
 
@@ -951,9 +1253,27 @@ function saveJadwal(e){
   if(lokasiJenis === 'LUAR_NEGERI' && !lokasiNegara){ toast('Pilih Negara terlebih dahulu.'); return false; }
   if(!jabatanPimpinanList.length){ toast('Pilih minimal satu Jabatan Pimpinan.'); return false; }
   if(!personIds.length){ toast('Pilih minimal satu Anggota DPRD.'); return false; }
-  if(!tanggalRencana){ toast('Isi Tanggal Kegiatan terlebih dahulu.'); return false; }
-  if(!jamMulai || !jamSelesai){ toast('Isi Jam Mulai & Jam Selesai.'); return false; }
-  if(jamSelesai <= jamMulai){ toast('Jam Selesai harus setelah Jam Mulai.'); return false; }
+  if(tanggalMode === 'RANGE'){
+    if(!tanggalRencana || !tanggalSelesai){ toast('Isi Tanggal Mulai & Tanggal Selesai.'); return false; }
+    if(tanggalSelesai < tanggalRencana){ toast('Tanggal Selesai harus setelah atau sama dengan Tanggal Mulai.'); return false; }
+  } else {
+    if(!tanggalRencana){ toast('Isi Tanggal Kegiatan terlebih dahulu.'); return false; }
+    if(!jamMulai || !jamSelesai){ toast('Isi Jam Mulai & Jam Selesai.'); return false; }
+    if(jamSelesai <= jamMulai){ toast('Jam Selesai harus setelah Jam Mulai.'); return false; }
+  }
+
+  if(!skipConflictCheck){
+    var conflicts = findScheduleConflicts(personIds, tanggalMode, tanggalRencana, tanggalSelesai, jamMulai, jamSelesai, editingBatchId);
+    var conflictedPersonIds = Object.keys(conflicts).map(function(k){ return parseInt(k, 10); });
+    if(conflictedPersonIds.length){
+      if(conflictedPersonIds.length === personIds.length){
+        openConflictBlockModal(conflicts, personIds);
+      } else {
+        openConflictWarnModal(conflicts, personIds);
+      }
+      return false;
+    }
+  }
 
   var needsApproval = approvalNeededFor(currentUser);
   var approverIds = needsApproval ? getSelectedApproverIds() : [];
@@ -967,8 +1287,9 @@ function saveJadwal(e){
   var baseFields = {
     noPenugasan: noPenugasan, dapilKode: currentUser.dapilId, jenisPenugasanId: jenisPenugasanId, jabatanPimpinanList: jabatanPimpinanList,
     kegiatan: kegiatan, lokasiJenis: lokasiJenis, lokasiKelurahan: lokasiKelurahan, lokasiKabupaten: lokasiKabupaten,
-    lokasiProvinsi: lokasiProvinsi, lokasiNegara: lokasiNegara, tanggalRencana: tanggalRencana, jamMulai: jamMulai,
-    jamSelesai: jamSelesai, catatan: catatan, status: finalStatus,
+    lokasiProvinsi: lokasiProvinsi, lokasiNegara: lokasiNegara, tanggalMode: tanggalMode, tanggalRencana: tanggalRencana,
+    tanggalSelesai: tanggalSelesai, jamMulai: jamMulai, jamSelesai: jamSelesai, catatan: catatan, status: finalStatus,
+    lampiranNama: currentLampiranNama, lampiranData: currentLampiranDataUrl,
     anggotaResponse: null, rejectReason: null, approverIds: approverIds, approvedByUserId: null
   };
 
@@ -1043,6 +1364,76 @@ function confirmDeleteJadwal(){
   renderJadwalTable();
   toast('Penugasan dihapus (prototipe)');
   closeDeleteJadwal();
+}
+
+// ---------- Tandai Selesai (hanya dari status Approve, menandakan kegiatan sudah benar-benar dilaksanakan - TERMINAL, view only setelahnya) ----------
+var selesaiJadwalId = null;
+function openSelesaiJadwal(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  if(!j || !jadwalIsSelesaiable(j)) return;
+  selesaiJadwalId = id;
+  var names = jadwalBatchSiblings(j.batchId).map(function(s){ var p = PEGAWAI_LIST.find(function(p){ return p.id === s.personId; }); return p ? p.nama : 'Anggota #' + s.personId; }).join(', ');
+  document.getElementById('selesaiJadwalText').textContent = 'Tandai penugasan "' + j.kegiatan + '" untuk ' + names + ' sebagai Selesai? Gunakan ini setelah kegiatan benar-benar dilaksanakan. Status akan menjadi Selesai (TERMINAL, view only).';
+  document.getElementById('modalSelesaiJadwalBackdrop').classList.add('open');
+}
+function closeSelesaiJadwal(){
+  document.getElementById('modalSelesaiJadwalBackdrop').classList.remove('open');
+  selesaiJadwalId = null;
+}
+function confirmSelesaiJadwal(){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === selesaiJadwalId; });
+  if(!j){ closeSelesaiJadwal(); return; }
+  if(!jadwalIsSelesaiable(j)){
+    toast('Penugasan ini sudah ' + j.status + ' sehingga tidak dapat ditandai Selesai.');
+    closeSelesaiJadwal();
+    return;
+  }
+  jadwalBatchSiblings(j.batchId).forEach(function(x){ x.status = 'Selesai'; });
+  jadwalResesSaveList(JADWAL_RESES_LIST);
+  renderJadwalTable();
+  toast('Penugasan ditandai Selesai (prototipe)');
+  closeSelesaiJadwal();
+}
+
+// ---------- Lihat Penugasan (daftar Usulan Pokir/Aspirasi terkait, utk penugasan status
+// Selesai - cocokkan lewat j.dapilKode vs pokirData.dapil, VIEW ONLY tanpa filter, lihat
+// pokir-data.js) ----------
+function openPokirListModal(id){
+  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
+  if(!j) return;
+  var dapilNama = dapilLabel(j.dapilKode);
+  var items = (typeof pokirData !== 'undefined' ? pokirData : []).filter(function(p){ return p.dapil === dapilNama; });
+  document.getElementById('pokirListTitle').textContent = 'Laporan Aspirasi';
+  document.getElementById('pokirListSubtitle').textContent = 'Usulan Pokir hasil reses &amp; kunjungan dapil di ' + dapilNama + '.';
+
+  var attendanceList = document.getElementById('pokirListAttendance');
+  var siblings = jadwalBatchSiblings(j.batchId);
+  attendanceList.innerHTML = siblings.map(function(s){
+    var p = PEGAWAI_LIST.find(function(p){ return p.id === s.personId; });
+    var nama = p ? p.nama : 'Anggota #' + s.personId;
+    var hadir = s.kehadiran === 'Hadir';
+    return '<div class="chk-item" style="justify-content:space-between;">'
+      + '<span>' + nama + '</span>'
+      + '<span class="badge ' + (hadir ? 'badge-success' : 'badge-danger') + '">' + (s.kehadiran || 'Tidak Hadir') + '</span>'
+      + '</div>';
+  }).join('');
+
+  var list = document.getElementById('pokirListItems');
+  if(!items.length){
+    list.innerHTML = '<div class="chk-empty">Belum ada usulan Pokir untuk ' + dapilNama + '.</div>';
+  } else {
+    list.innerHTML = items.map(function(p){
+      return '<div class="field" style="margin-bottom:10px;">'
+        + '<div class="namecell"><div class="n">' + p.judul + '</div><div class="s">' + p.anggota + '</div></div>'
+        + '<div class="hint" style="margin-top:4px;">' + p.deskripsi + '</div>'
+        + '<div class="hint" style="margin-top:4px;">Progres: ' + p.progres + '% &middot; Diperbarui ' + p.updated + '</div>'
+        + '</div>';
+    }).join('');
+  }
+  document.getElementById('modalPokirListBackdrop').classList.add('open');
+}
+function closePokirListModal(){
+  document.getElementById('modalPokirListBackdrop').classList.remove('open');
 }
 
 // ---------- Cancel Penugasan (hanya dari status Menunggu Approval, oleh pembuat - langsung "Cancel", tidak ada approval lagi) ----------
@@ -1181,6 +1572,14 @@ function openApprovalDetail(id){
     document.getElementById('approvalDetailRejectReason').textContent = j.rejectReason;
   } else {
     rejectField.style.display = 'none';
+  }
+  var lampiranField = document.getElementById('approvalDetailLampiranField');
+  if(j.lampiranNama && j.lampiranData){
+    lampiranField.style.display = 'block';
+    document.getElementById('approvalDetailLampiranNama').textContent = j.lampiranNama;
+    document.getElementById('approvalDetailLampiranLink').href = j.lampiranData;
+  } else {
+    lampiranField.style.display = 'none';
   }
   // Approval tidak berjenjang: SEMUA approver yg dipilih ditampilkan, tapi hanya SATU (yg id-nya
   // cocok dgn approvedByUserId - diisi saat confirmApproveJadwal()/confirmRejectJadwal()) yg
