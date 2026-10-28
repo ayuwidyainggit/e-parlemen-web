@@ -268,7 +268,7 @@ tr:hover td{background:#fafaf7;}
             <tbody id="tbodyJadwal"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (Edit/Cancel oleh pembuat, Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status); pembuat menekan Cancel -&gt; <strong>Cancel</strong> (TERMINAL, view only, tanpa alasan). Dari <strong>Approve</strong>, admin bisa menekan "Tandai Selesai" setelah kegiatannya benar-benar dilaksanakan -&gt; status jadi <strong>Selesai</strong> (TERMINAL, view only). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (VIEW ONLY bagi pembuat - tidak bisa diedit/dihapus/dibatalkan lagi, hanya Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status). Dari <strong>Approve</strong>, admin bisa menekan "Tandai Selesai" setelah kegiatannya benar-benar dilaksanakan -&gt; status jadi <strong>Selesai</strong> (TERMINAL, view only). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
       </div>
 
     </div>
@@ -384,18 +384,6 @@ tr:hover td{background:#fafaf7;}
     <div class="modal-foot">
       <button type="button" class="btn btn-outline" onclick="closeSelesaiJadwal()">Batal</button>
       <button type="button" class="btn btn-primary" onclick="confirmSelesaiJadwal()">Tandai Selesai</button>
-    </div>
-  </div>
-</div>
-
-<!-- Modal: Batalkan Penugasan -->
-<div class="modal-backdrop" id="modalCancelJadwalBackdrop">
-  <div class="modal-box" style="max-width:420px;">
-    <div class="modal-head"><h3>Batalkan Penugasan</h3><button class="modal-close" onclick="closeCancelJadwal()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg></button></div>
-    <div class="hint" id="cancelJadwalText" style="margin-bottom:4px;"></div>
-    <div class="modal-foot">
-      <button type="button" class="btn btn-outline" onclick="closeCancelJadwal()">Batal</button>
-      <button type="button" class="btn btn-danger-outline" onclick="confirmCancelJadwal()">Ajukan Pembatalan</button>
     </div>
   </div>
 </div>
@@ -695,15 +683,14 @@ function populateJadwalFilterOptions(){
 // syncCancelByAnggota()): 'Draft' | 'Menunggu Approval' | 'Approve' | 'Selesai' | 'Cancel' |
 // 'Reject' | 'Cancel by Anggota'. 'Selesai' (TERMINAL, view only) HANYA dicapai manual lewat
 // tombol "Tandai Selesai" (lihat openSelesaiJadwal()) pada penugasan yang sudah 'Approve' -
-// menandakan kegiatannya sudah benar-benar dilaksanakan.
+// menandakan kegiatannya sudah benar-benar dilaksanakan. 'Menunggu Approval' TIDAK bisa
+// diedit/dihapus/dibatalkan lagi oleh siapapun (termasuk pembuat) - satu-satunya aksi yang
+// tersedia adalah Setujui/Tolak oleh approver terpilih (lihat buildActionsForRow()).
 function jadwalIsEditable(j){
-  return j.status === 'Draft' || j.status === 'Menunggu Approval';
+  return j.status === 'Draft';
 }
 function jadwalIsDeletable(j){
   return j.status === 'Draft';
-}
-function jadwalIsCancelable(j){
-  return j.status === 'Menunggu Approval';
 }
 function jadwalIsSelesaiable(j){
   return j.status === 'Approve';
@@ -755,11 +742,6 @@ function buildActionsForRow(j, currentUser){
     return detailBtn
       + '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
       + '<button class="btn btn-danger-outline btn-sm" onclick="openDeleteJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg> Delete</button>';
-  }
-  if(j.status === 'Menunggu Approval'){
-    return detailBtn
-      + '<button class="btn btn-outline btn-sm" onclick="openEditJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg> Edit</button>'
-      + '<button class="btn btn-danger-outline btn-sm" onclick="openCancelJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg> Cancel</button>';
   }
   if(j.status === 'Approve'){
     return detailBtn
@@ -1434,35 +1416,6 @@ function openPokirListModal(id){
 }
 function closePokirListModal(){
   document.getElementById('modalPokirListBackdrop').classList.remove('open');
-}
-
-// ---------- Cancel Penugasan (hanya dari status Menunggu Approval, oleh pembuat - langsung "Cancel", tidak ada approval lagi) ----------
-var cancelingJadwalId = null;
-function openCancelJadwal(id){
-  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
-  if(!j || !jadwalIsCancelable(j)) return;
-  cancelingJadwalId = id;
-  var names = jadwalBatchSiblings(j.batchId).map(function(s){ var p = PEGAWAI_LIST.find(function(p){ return p.id === s.personId; }); return p ? p.nama : 'Anggota #' + s.personId; }).join(', ');
-  document.getElementById('cancelJadwalText').textContent = 'Batalkan (Cancel) penugasan "' + j.kegiatan + '" untuk ' + names + '? Status akan langsung menjadi Cancel.';
-  document.getElementById('modalCancelJadwalBackdrop').classList.add('open');
-}
-function closeCancelJadwal(){
-  document.getElementById('modalCancelJadwalBackdrop').classList.remove('open');
-  cancelingJadwalId = null;
-}
-function confirmCancelJadwal(){
-  var j = JADWAL_RESES_LIST.find(function(j){ return j.id === cancelingJadwalId; });
-  if(!j){ closeCancelJadwal(); return; }
-  if(!jadwalIsCancelable(j)){
-    toast('Penugasan ini sudah ' + j.status + ' sehingga tidak dapat dibatalkan.');
-    closeCancelJadwal();
-    return;
-  }
-  jadwalBatchSiblings(j.batchId).forEach(function(x){ x.status = 'Cancel'; });
-  jadwalResesSaveList(JADWAL_RESES_LIST);
-  renderJadwalTable();
-  toast('Penugasan dibatalkan (prototipe)');
-  closeCancelJadwal();
 }
 
 // Daftar approver (Nama - Jabatan) yang dipakai bersama di popup Setujui & popup Detail Approval -
