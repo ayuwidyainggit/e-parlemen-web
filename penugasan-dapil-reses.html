@@ -220,23 +220,15 @@ tr:hover td{background:#fafaf7;}
           </div>
           <div class="stat-card success">
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-            <div><div class="num" id="statApprove">0</div><div class="lbl">Approve</div></div>
+            <div><div class="num" id="statApprove">0</div><div class="lbl">Disetujui</div></div>
           </div>
           <div class="stat-card info">
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
             <div><div class="num" id="statSelesai">0</div><div class="lbl">Selesai</div></div>
           </div>
-          <div class="stat-card">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
-            <div><div class="num" id="statCancel">0</div><div class="lbl">Cancel</div></div>
-          </div>
           <div class="stat-card danger">
             <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
-            <div><div class="num" id="statReject">0</div><div class="lbl">Reject</div></div>
-          </div>
-          <div class="stat-card danger">
-            <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></div>
-            <div><div class="num" id="statCancelAnggota">0</div><div class="lbl">Cancel by Anggota</div></div>
+            <div><div class="num" id="statReject">0</div><div class="lbl">Ditolak</div></div>
           </div>
         </div>
 
@@ -252,11 +244,9 @@ tr:hover td{background:#fafaf7;}
               <option value="">Semua Status</option>
               <option value="Draft">Draft</option>
               <option value="Menunggu Approval">Menunggu Approval</option>
-              <option value="Approve">Approve</option>
+              <option value="Approve">Disetujui</option>
               <option value="Selesai">Selesai</option>
-              <option value="Cancel">Cancel</option>
-              <option value="Reject">Reject</option>
-              <option value="Cancel by Anggota">Cancel by Anggota</option>
+              <option value="Reject">Ditolak</option>
             </select>
           </div>
           <button class="btn btn-outline btn-sm" onclick="resetFilterJadwal()">Reset Filter</button>
@@ -268,7 +258,7 @@ tr:hover td{background:#fafaf7;}
             <tbody id="tbodyJadwal"></tbody>
           </table>
         </div>
-        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (VIEW ONLY bagi pembuat - tidak bisa diedit/dihapus/dibatalkan lagi, hanya Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Approve</strong>. Approver menekan Setujui -&gt; <strong>Approve</strong>; Tolak akan meminta alasan lalu status jadi <strong>Reject</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status). Dari <strong>Approve</strong>, admin bisa menekan "Tandai Selesai" setelah kegiatannya benar-benar dilaksanakan -&gt; status jadi <strong>Selesai</strong> (TERMINAL, view only). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) menampilkan <strong>Menerima</strong>, <strong>Sebagian Menolak</strong>, atau <strong>Menolak</strong> berdasarkan respon seluruh Anggota pada penugasan yang sama &mdash; begitu respon <strong>Menolak</strong> (SEMUA Anggota menolak), status otomatis jadi <strong>Cancel by Anggota</strong> (TERMINAL, view only). Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
+        <div class="hint" style="margin-top:12px;">Alur status: <strong>Draft</strong> (Edit/Delete) &rarr; klik "Simpan Penugasan" &rarr; kalau "Login sebagai" belum level paling atas, status jadi <strong>Menunggu Approval</strong> (VIEW ONLY bagi pembuat - tidak bisa diedit/dihapus/dibatalkan lagi, hanya Setujui/Tolak oleh approver terpilih); kalau sudah level paling atas, langsung <strong>Disetujui</strong>. Approver menekan Setujui -&gt; <strong>Disetujui</strong>; Tolak akan meminta alasan lalu status jadi <strong>Ditolak</strong> (TERMINAL, view only, alasan ditampilkan di bawah badge status). Dari <strong>Disetujui</strong>, admin bisa menekan "Tandai Selesai" setelah kegiatannya benar-benar dilaksanakan -&gt; status jadi <strong>Selesai</strong> (TERMINAL, view only). Kolom <strong>Respon Anggota</strong> (VIEW ONLY, dari aplikasi mobile, bukan tombol aksi di halaman ini) hanya terisi saat status <strong>Disetujui</strong>/<strong>Selesai</strong>, menampilkan <strong>Pending</strong> (belum ada yang merespon), <strong>Disetujui</strong> (semua menerima), <strong>Sebagian Disetujui</strong> (campuran menerima/menolak, semua sudah merespon), <strong>Ditolak</strong> (sudah ada yang menolak, sebagian belum merespon), atau <strong>Cancel by System</strong> (SEMUA Anggota menolak) &mdash; status Penugasan itu sendiri TIDAK berubah otomatis oleh respon ini, tombol "Lihat Penugasan" hanya tersedia saat respon <strong>Disetujui</strong>/<strong>Sebagian Disetujui</strong> atau status sudah <strong>Selesai</strong>. Perubahan pada halaman ini bersifat contoh (prototipe) dan berjalan di sisi klien tanpa tersimpan ke server.</div>
       </div>
 
     </div>
@@ -295,8 +285,9 @@ tr:hover td{background:#fafaf7;}
           <option value="LUAR_NEGERI">Luar Negeri</option>
         </select>
       </div>
-      <div class="field" id="jLokasiKelurahanField"><label>Kelurahan</label>
-        <select id="jLokasiKelurahan"></select>
+      <div class="field" id="jLokasiKelurahanField"><label>Kelurahan <span class="opt">(bisa pilih lebih dari satu)</span></label>
+        <div class="chk-list" id="jLokasiKelurahanList"></div>
+        <div class="chk-count" id="jLokasiKelurahanCount"></div>
       </div>
       <div class="field-row" id="jLokasiKabupatenProvinsiField" style="display:none;">
         <div class="field"><label>Provinsi</label><select id="jLokasiProvinsi" onchange="onLokasiProvinsiChange()"></select></div>
@@ -304,16 +295,6 @@ tr:hover td{background:#fafaf7;}
       </div>
       <div class="field" id="jLokasiNegaraField" style="display:none;"><label>Negara</label>
         <select id="jLokasiNegara"></select>
-      </div>
-
-      <div class="field"><label>Jabatan Pimpinan <span class="opt">(bisa pilih lebih dari satu, sesuai yang Anda pegang)</span></label>
-        <div class="chip-row" id="jJabatanPimpinanChips"></div>
-      </div>
-      <div class="field"><label>Anggota DPRD <span class="opt">(bisa pilih lebih dari satu)</span></label>
-        <input type="text" id="jAnggotaSearch" placeholder="Cari nama anggota&hellip;" oninput="filterAnggotaChecklist()" autocomplete="off" style="margin-bottom:8px;">
-        <div class="chk-list" id="jAnggotaList"><div class="chk-empty">Pilih Jabatan Pimpinan terlebih dahulu untuk menampilkan daftar Anggota DPRD.</div></div>
-        <div class="chk-empty" id="jAnggotaNoMatch" style="display:none;">Tidak ada anggota yang cocok dengan pencarian.</div>
-        <div class="chk-count" id="jAnggotaCount"></div>
       </div>
 
       <div class="field"><label>Tipe Tanggal</label>
@@ -331,6 +312,17 @@ tr:hover td{background:#fafaf7;}
         <div class="field"><label>Jam Mulai</label><input type="time" id="jJamMulai"></div>
         <div class="field"><label>Jam Selesai</label><input type="time" id="jJamSelesai"></div>
       </div>
+
+      <div class="field"><label>Jabatan Pimpinan <span class="opt">(bisa pilih lebih dari satu, sesuai yang Anda pegang)</span></label>
+        <div class="chk-list" id="jJabatanPimpinanChips"></div>
+      </div>
+      <div class="field"><label>Anggota DPRD <span class="opt">(bisa pilih lebih dari satu)</span></label>
+        <input type="text" id="jAnggotaSearch" placeholder="Cari nama anggota&hellip;" oninput="filterAnggotaChecklist()" autocomplete="off" style="margin-bottom:8px;">
+        <div class="chk-list" id="jAnggotaList"><div class="chk-empty">Pilih Jabatan Pimpinan terlebih dahulu untuk menampilkan daftar Anggota DPRD.</div></div>
+        <div class="chk-empty" id="jAnggotaNoMatch" style="display:none;">Tidak ada anggota yang cocok dengan pencarian.</div>
+        <div class="chk-count" id="jAnggotaCount"></div>
+      </div>
+
       <div class="field"><label>Catatan <span class="opt">(opsional)</span></label><textarea id="jCatatan" placeholder="Catatan tambahan&hellip;"></textarea></div>
 
       <div class="field"><label>Lampiran Penugasan <span class="opt">(opsional, PDF maks 5 MB)</span></label>
@@ -543,10 +535,26 @@ var LOKASI_KABUPATEN_BY_PROVINSI = {
 };
 var LOKASI_NEGARA_LIST = ['Singapura','Malaysia','Thailand','Filipina','Vietnam','Brunei Darussalam','Kamboja','Laos','Myanmar','Timor Leste','Jepang','Korea Selatan','Tiongkok','India','Australia','Selandia Baru','Amerika Serikat','Kanada','Inggris','Jerman','Prancis','Belanda','Belgia','Swiss','Spanyol','Italia','Uni Emirat Arab','Arab Saudi','Turki','Mesir','Afrika Selatan','Lainnya'];
 
+function normalizeLokasiKelurahanList(selected){
+  if(!selected) return [];
+  return Array.isArray(selected) ? selected.slice() : [selected];
+}
 function populateLokasiKelurahanSelect(selected){
   var opts = allKelurahanOptions();
-  document.getElementById('jLokasiKelurahan').innerHTML = '<option value="">Pilih kelurahan&hellip;</option>' + opts.map(function(o){ return '<option value="' + o.nama + '">' + o.nama + ' (Kec. ' + o.kecamatan + ')</option>'; }).join('');
-  document.getElementById('jLokasiKelurahan').value = selected || '';
+  var selectedList = normalizeLokasiKelurahanList(selected);
+  var box = document.getElementById('jLokasiKelurahanList');
+  box.innerHTML = opts.map(function(o){
+    var checked = selectedList.indexOf(o.nama) !== -1 ? ' checked' : '';
+    return '<label class="chk-item"><input type="checkbox" value="' + o.nama + '" onchange="updateLokasiKelurahanCount()"' + checked + '> ' + o.nama + ' <span class="cs">Kec. ' + o.kecamatan + '</span></label>';
+  }).join('');
+  updateLokasiKelurahanCount();
+}
+function getSelectedLokasiKelurahan(){
+  return Array.prototype.map.call(document.querySelectorAll('#jLokasiKelurahanList input[type="checkbox"]:checked'), function(cb){ return cb.value; });
+}
+function updateLokasiKelurahanCount(){
+  var n = getSelectedLokasiKelurahan().length;
+  document.getElementById('jLokasiKelurahanCount').textContent = n ? n + ' kelurahan dipilih' : '';
 }
 function populateLokasiKabupatenSelect(selected, provinsi){
   var sel = document.getElementById('jLokasiKabupaten');
@@ -577,13 +585,15 @@ function toggleLokasiFields(){
   document.getElementById('jLokasiKelurahanField').style.display = val === 'DALAM_KOTA' ? 'block' : 'none';
   document.getElementById('jLokasiKabupatenProvinsiField').style.display = val === 'LUAR_KOTA' ? 'flex' : 'none';
   document.getElementById('jLokasiNegaraField').style.display = val === 'LUAR_NEGERI' ? 'block' : 'none';
-  document.getElementById('jLokasiKelurahan').required = val === 'DALAM_KOTA';
   document.getElementById('jLokasiKabupaten').required = val === 'LUAR_KOTA';
   document.getElementById('jLokasiProvinsi').required = val === 'LUAR_KOTA';
   document.getElementById('jLokasiNegara').required = val === 'LUAR_NEGERI';
 }
 function lokasiLabel(j){
-  if(j.lokasiJenis === 'DALAM_KOTA') return j.lokasiKelurahan ? ('Kel. ' + j.lokasiKelurahan) : '&mdash;';
+  if(j.lokasiJenis === 'DALAM_KOTA'){
+    var kelList = normalizeLokasiKelurahanList(j.lokasiKelurahan);
+    return kelList.length ? ('Kel. ' + kelList.join(', ')) : '&mdash;';
+  }
   if(j.lokasiJenis === 'LUAR_KOTA') return [j.lokasiKabupaten, j.lokasiProvinsi].filter(Boolean).join(', ') || '&mdash;';
   if(j.lokasiJenis === 'LUAR_NEGERI') return j.lokasiNegara || '&mdash;';
   return '&mdash;';
@@ -679,13 +689,15 @@ function populateJadwalFilterOptions(){
   document.getElementById('filterJenisPenugasanJadwal').innerHTML = '<option value="">Semua Jenis</option>' + JENIS_PENUGASAN_LIST.map(function(j){ return '<option value="' + j.id + '">' + j.nama + '</option>'; }).join('');
 }
 
-// Status (j.status), 7 nilai literal, tidak ada progres otomatis berbasis tanggal (kecuali
-// syncCancelByAnggota()): 'Draft' | 'Menunggu Approval' | 'Approve' | 'Selesai' | 'Cancel' |
-// 'Reject' | 'Cancel by Anggota'. 'Selesai' (TERMINAL, view only) HANYA dicapai manual lewat
-// tombol "Tandai Selesai" (lihat openSelesaiJadwal()) pada penugasan yang sudah 'Approve' -
-// menandakan kegiatannya sudah benar-benar dilaksanakan. 'Menunggu Approval' TIDAK bisa
-// diedit/dihapus/dibatalkan lagi oleh siapapun (termasuk pembuat) - satu-satunya aksi yang
-// tersedia adalah Setujui/Tolak oleh approver terpilih (lihat buildActionsForRow()).
+// Status (j.status), nilai literal internal, tidak ada progres otomatis berbasis tanggal:
+// 'Draft' | 'Menunggu Approval' | 'Approve' | 'Selesai' | 'Cancel' | 'Reject'. 'Selesai'
+// (TERMINAL, view only) HANYA dicapai manual lewat tombol "Tandai Selesai" (lihat
+// openSelesaiJadwal()) pada penugasan yang sudah 'Approve' - menandakan kegiatannya sudah
+// benar-benar dilaksanakan. 'Menunggu Approval' TIDAK bisa diedit/dihapus/dibatalkan lagi oleh
+// siapapun (termasuk pembuat) - satu-satunya aksi yang tersedia adalah Setujui/Tolak oleh
+// approver terpilih (lihat buildActionsForRow()). Nilai internal 'Approve'/'Reject' ditampilkan
+// ke user sebagai "Disetujui"/"Ditolak" (lihat statusLabel()) - tidak diganti di seluruh kode
+// supaya logic yang sudah membandingkan j.status === 'Approve'/'Reject' tetap jalan.
 function jadwalIsEditable(j){
   return j.status === 'Draft';
 }
@@ -695,7 +707,9 @@ function jadwalIsDeletable(j){
 function jadwalIsSelesaiable(j){
   return j.status === 'Approve';
 }
-var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Selesai':'badge-info', 'Cancel':'badge-neutral', 'Reject':'badge-danger', 'Cancel by Anggota':'badge-danger' };
+var jadwalStatusClass = { 'Draft':'badge-neutral', 'Menunggu Approval':'badge-purple', 'Approve':'badge-success', 'Selesai':'badge-info', 'Cancel':'badge-neutral', 'Reject':'badge-danger' };
+var JADWAL_STATUS_DISPLAY_LABEL = { 'Approve':'Disetujui', 'Reject':'Ditolak' };
+function statusLabel(status){ return JADWAL_STATUS_DISPLAY_LABEL[status] || status; }
 
 // Lampiran (PDF): kalau penugasan memang punya berkas (lihat lampiranNama/lampiranData di
 // attemptSaveJadwal() pada modal Tambah/Edit Penugasan), "Lihat File" membuka berkas itu.
@@ -744,8 +758,11 @@ function buildActionsForRow(j, currentUser){
       + '<button class="btn btn-danger-outline btn-sm" onclick="openDeleteJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 7h16"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"/></svg> Delete</button>';
   }
   if(j.status === 'Approve'){
-    return detailBtn
-      + '<button class="btn btn-outline btn-sm" onclick="openSelesaiJadwal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Tandai Selesai</button>';
+    var respLabelForActions = anggotaResponseLabel(j);
+    var lihatPenugasanBtn = (respLabelForActions === 'Disetujui' || respLabelForActions === 'Sebagian Disetujui')
+      ? '<button class="btn btn-outline btn-sm" onclick="openPokirListModal(' + j.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg> Lihat Penugasan</button>'
+      : '';
+    return detailBtn + lihatPenugasanBtn;
   }
   if(j.status === 'Selesai'){
     return detailBtn
@@ -754,44 +771,40 @@ function buildActionsForRow(j, currentUser){
   return detailBtn;
 }
 
-// Respon Anggota: VIEW ONLY, dihitung dari anggotaResponse seluruh record satu batchId -
-// 'Menerima' (tidak ada yang menolak) | 'Sebagian Menolak' (sebagian menolak, belum semua) |
-// 'Menolak' (SEMUA menolak - lihat syncCancelByAnggota(), status record otomatis jadi
-// 'Cancel by Anggota' begitu kondisi ini terpenuhi, tidak perlu aksi apapun dari admin).
+// Respon Anggota: VIEW ONLY, dihitung dari anggotaResponse (null | 'Terima' | 'Tolak') seluruh
+// record satu batchId - 'Pending' (belum ada yang merespon) | 'Disetujui' (semua menerima) |
+// 'Sebagian Disetujui' (campuran menerima/menolak, SEMUA sudah merespon) | 'Ditolak' (sudah ada
+// yang menolak, tapi sebagian lain belum merespon) | 'Cancel by System' (SEMUA menolak). Respon
+// ini TIDAK mengubah status Penugasan (j.status) - status Disetujui/Selesai tetap apa adanya,
+// hanya tombol "Lihat Penugasan" yang mengikuti label ini (lihat buildActionsForRow()).
 function anggotaResponseLabel(j){
   var siblings = JADWAL_RESES_LIST.filter(function(x){ return x.batchId === j.batchId; });
-  var totalTolak = siblings.filter(function(x){ return x.anggotaResponse === 'Tolak'; }).length;
-  if(totalTolak === 0) return 'Menerima';
-  if(totalTolak === siblings.length) return 'Menolak';
-  return 'Sebagian Menolak';
+  var total = siblings.length;
+  var countNull = siblings.filter(function(x){ return !x.anggotaResponse; }).length;
+  var countTerima = siblings.filter(function(x){ return x.anggotaResponse === 'Terima'; }).length;
+  var countTolak = siblings.filter(function(x){ return x.anggotaResponse === 'Tolak'; }).length;
+  if(countNull === total) return 'Pending';
+  if(countTerima === total) return 'Disetujui';
+  if(countTolak === total) return 'Cancel by System';
+  if(countNull === 0) return 'Sebagian Disetujui';
+  if(countTolak > 0) return 'Ditolak';
+  return 'Pending';
 }
 function buildRespondCellForRow(j){
-  if(j.status !== 'Approve' && j.status !== 'Selesai' && j.status !== 'Cancel by Anggota'){
+  if(j.status !== 'Approve' && j.status !== 'Selesai'){
     return '<span class="hint">&mdash;</span>';
   }
   var label = anggotaResponseLabel(j);
-  var cls = label === 'Menerima' ? 'badge-success' : (label === 'Menolak' ? 'badge-danger' : 'badge-warn');
+  var cls = label === 'Disetujui' ? 'badge-success'
+    : (label === 'Pending' ? 'badge-neutral'
+    : (label === 'Sebagian Disetujui' ? 'badge-warn' : 'badge-danger'));
   return '<span class="badge ' + cls + '">' + label + '</span>';
-}
-function syncCancelByAnggota(){
-  var changed = false;
-  var batches = {};
-  JADWAL_RESES_LIST.forEach(function(j){ if(j.status === 'Approve'){ (batches[j.batchId] = batches[j.batchId] || []).push(j); } });
-  Object.keys(batches).forEach(function(batchId){
-    var siblings = batches[batchId];
-    if(siblings.every(function(x){ return x.anggotaResponse === 'Tolak'; })){
-      siblings.forEach(function(x){ x.status = 'Cancel by Anggota'; });
-      changed = true;
-    }
-  });
-  if(changed) jadwalResesSaveList(JADWAL_RESES_LIST);
 }
 
 // Tabel ditampilkan per Penugasan (1 baris = 1 batchId, bisa mewakili banyak Anggota sekaligus -
 // lihat kolom Anggota) - BUKAN per-record seperti sebelumnya, karena 1 Penugasan yang ditugaskan
 // ke banyak Anggota tetap 1 pengajuan/1 keputusan approval yang sama (lihat jadwalBatchSiblings()).
 function renderJadwalTable(){
-  syncCancelByAnggota();
   var currentUser = getCurrentUser();
   var jenisFilter = document.getElementById('filterJenisPenugasanJadwal').value;
   var dapilFilter = document.getElementById('filterDapilJadwal').value;
@@ -800,6 +813,7 @@ function renderJadwalTable(){
   var filtered = JADWAL_RESES_LIST.filter(function(j){
     var p = PEGAWAI_LIST.find(function(p){ return p.id === j.personId; });
     if(!p) return false;
+    if(j.status === 'Cancel') return false;
     if(jenisFilter && String(j.jenisPenugasanId) !== jenisFilter) return false;
     if(dapilFilter && j.dapilKode !== dapilFilter) return false;
     if(statusFilter && j.status !== statusFilter) return false;
@@ -831,7 +845,7 @@ function renderJadwalTable(){
     var jp = JENIS_PENUGASAN_LIST.find(function(x){ return x.id === j.jenisPenugasanId; });
     var jpBadge = '<span class="badge badge-info">' + (jp ? jp.nama : '&mdash;') + '</span>';
     var pimpinanLabel = (j.jabatanPimpinanList || []).map(function(a){ return a.jabatan + ' - ' + a.unitKerja; }).join(', ') || '&mdash;';
-    var statusBadge = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + j.status + '</span>'
+    var statusBadge = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + statusLabel(j.status) + '</span>'
       + (j.status === 'Reject' && j.rejectReason ? '<div class="hint" style="margin-top:4px;">' + j.rejectReason + '</div>' : '');
     var actions = buildActionsForRow(j, currentUser);
     var respond = buildRespondCellForRow(j);
@@ -860,7 +874,7 @@ function renderJadwalTable(){
 function updateStatsJadwal(){
   var batchReps = {};
   JADWAL_RESES_LIST.forEach(function(j){ batchReps[j.batchId] = j; });
-  var reps = Object.keys(batchReps).map(function(k){ return batchReps[k]; });
+  var reps = Object.keys(batchReps).map(function(k){ return batchReps[k]; }).filter(function(j){ return j.status !== 'Cancel'; });
   document.getElementById('statTotalJadwal').textContent = reps.length;
   var byStatus = {};
   reps.forEach(function(j){ byStatus[j.status] = (byStatus[j.status] || 0) + 1; });
@@ -868,9 +882,7 @@ function updateStatsJadwal(){
   document.getElementById('statMenunggu').textContent = byStatus['Menunggu Approval'] || 0;
   document.getElementById('statApprove').textContent = byStatus['Approve'] || 0;
   document.getElementById('statSelesai').textContent = byStatus['Selesai'] || 0;
-  document.getElementById('statCancel').textContent = byStatus['Cancel'] || 0;
   document.getElementById('statReject').textContent = byStatus['Reject'] || 0;
-  document.getElementById('statCancelAnggota').textContent = byStatus['Cancel by Anggota'] || 0;
 }
 
 function resetFilterJadwal(){
@@ -886,30 +898,30 @@ function populateJenisPenugasanSelect(selected){
   document.getElementById('jJenisPenugasanId').value = selected || '';
 }
 
-// ---------- Jabatan Pimpinan (chip multi-select, sesuai jabatan milik user "login") & Anggota (checkbox, difilter oleh unitKerja Jabatan Pimpinan terpilih) ----------
+// ---------- Jabatan Pimpinan (checkbox list, sesuai jabatan milik user "login") & Anggota (checkbox, difilter oleh unitKerja Jabatan Pimpinan terpilih) ----------
 var currentJabatanPimpinanOptions = [];
 function buildJabatanPimpinanChips(selectedPairs, checkedAnggotaIds){
   var currentUser = getCurrentUser();
   currentJabatanPimpinanOptions = currentUser ? personPimpinanAssignments(currentUser) : [];
   var box = document.getElementById('jJabatanPimpinanChips');
   if(!currentJabatanPimpinanOptions.length){
-    box.innerHTML = '<div class="hint">' + (currentUser ? ('"' + currentUser.nama + '" belum') : 'Anda belum') + ' memiliki Jabatan Pimpinan (Ketua/Wakil Ketua) yang tercatat.</div>';
+    var msg = (currentUser ? ('"' + currentUser.nama + '" belum') : 'Anda belum') + ' memiliki Jabatan Pimpinan (Ketua/Wakil Ketua) yang tercatat.';
+    box.innerHTML = '<div class="chk-empty">' + msg + '</div>';
     onJabatanPimpinanChange([], checkedAnggotaIds);
     return;
   }
   box.innerHTML = currentJabatanPimpinanOptions.map(function(a, idx){
-    var isSel = (selectedPairs || []).some(function(s){ return s.jabatan === a.jabatan && s.unitKerja === a.unitKerja; });
-    return '<button type="button" class="chip' + (isSel ? ' active' : '') + '" data-idx="' + idx + '" onclick="toggleJabatanPimpinanChip(this)">' + a.jabatan + ' &middot; ' + a.unitKerja + '</button>';
+    var isSel = currentJabatanPimpinanOptions.length === 1 || (selectedPairs || []).some(function(s){ return s.jabatan === a.jabatan && s.unitKerja === a.unitKerja; });
+    return '<label class="chk-item"><input type="checkbox" value="' + idx + '" onchange="onJabatanPimpinanSelectChange()"' + (isSel ? ' checked' : '') + '> ' + a.jabatan + ' &middot; ' + a.unitKerja + '</label>';
   }).join('');
   onJabatanPimpinanChange(getSelectedJabatanPimpinan(), checkedAnggotaIds);
 }
-function toggleJabatanPimpinanChip(btn){
-  btn.classList.toggle('active');
+function onJabatanPimpinanSelectChange(){
   onJabatanPimpinanChange(getSelectedJabatanPimpinan());
 }
 function getSelectedJabatanPimpinan(){
-  return Array.prototype.map.call(document.querySelectorAll('#jJabatanPimpinanChips .chip.active'), function(btn){
-    return currentJabatanPimpinanOptions[parseInt(btn.dataset.idx, 10)];
+  return Array.prototype.map.call(document.querySelectorAll('#jJabatanPimpinanChips input[type="checkbox"]:checked'), function(cb){
+    return currentJabatanPimpinanOptions[parseInt(cb.value, 10)];
   });
 }
 function onJabatanPimpinanChange(selected, checkedAnggotaIds){
@@ -1003,10 +1015,10 @@ function setTanggalMode(mode){
 
 // ---------- Deteksi Bentrok Jadwal (dijalankan saat Simpan Penugasan, lihat attemptSaveJadwal()) ----------
 // Anggota dianggap "sudah punya penugasan" kalau overlap tanggal (+jam, kalau keduanya SINGLE)
-// dengan record AKTIF (bukan Cancel/Reject/Cancel by Anggota) selain batch yang sedang diedit.
+// dengan record AKTIF (bukan Cancel/Reject/Selesai) selain batch yang sedang diedit.
 // Penugasan RANGE dianggap memblokir SELURUH hari dalam rentangnya (tanpa jam spesifik), jadi
 // overlap tanggal saja sudah cukup kalau salah satu pihak (baru/lama) bermode RANGE.
-var CONFLICT_IGNORED_STATUSES = ['Cancel', 'Reject', 'Cancel by Anggota', 'Selesai'];
+var CONFLICT_IGNORED_STATUSES = ['Cancel', 'Reject', 'Selesai'];
 function dateRangeOverlap(aStart, aEnd, bStart, bEnd){
   return aStart <= bEnd && bStart <= aEnd;
 }
@@ -1202,7 +1214,7 @@ function attemptSaveJadwal(skipConflictCheck){
   var jenisPenugasanId = parseInt(document.getElementById('jJenisPenugasanId').value, 10) || null;
   var kegiatan = document.getElementById('jKegiatan').value.trim();
   var lokasiJenis = document.getElementById('jLokasiJenis').value;
-  var lokasiKelurahan = lokasiJenis === 'DALAM_KOTA' ? (document.getElementById('jLokasiKelurahan').value || null) : null;
+  var lokasiKelurahan = lokasiJenis === 'DALAM_KOTA' ? getSelectedLokasiKelurahan() : [];
   var lokasiKabupaten = lokasiJenis === 'LUAR_KOTA' ? (document.getElementById('jLokasiKabupaten').value || null) : null;
   var lokasiProvinsi = lokasiJenis === 'LUAR_KOTA' ? (document.getElementById('jLokasiProvinsi').value || null) : null;
   var lokasiNegara = lokasiJenis === 'LUAR_NEGERI' ? (document.getElementById('jLokasiNegara').value || null) : null;
@@ -1230,7 +1242,7 @@ function attemptSaveJadwal(skipConflictCheck){
   if(isDuplicateNoPenugasan){ toast('No Penugasan "' + noPenugasan + '" sudah digunakan, gunakan nomor lain.'); return false; }
   if(!jenisPenugasanId){ toast('Pilih Jenis Penugasan terlebih dahulu.'); return false; }
   if(!kegiatan){ toast('Isi nama Kegiatan terlebih dahulu.'); return false; }
-  if(lokasiJenis === 'DALAM_KOTA' && !lokasiKelurahan){ toast('Pilih Kelurahan terlebih dahulu.'); return false; }
+  if(lokasiJenis === 'DALAM_KOTA' && !lokasiKelurahan.length){ toast('Pilih minimal satu Kelurahan terlebih dahulu.'); return false; }
   if(lokasiJenis === 'LUAR_KOTA' && (!lokasiKabupaten || !lokasiProvinsi)){ toast('Pilih Kabupaten/Kota & Provinsi terlebih dahulu.'); return false; }
   if(lokasiJenis === 'LUAR_NEGERI' && !lokasiNegara){ toast('Pilih Negara terlebih dahulu.'); return false; }
   if(!jabatanPimpinanList.length){ toast('Pilih minimal satu Jabatan Pimpinan.'); return false; }
@@ -1518,7 +1530,7 @@ function openApprovalDetail(id){
   var j = JADWAL_RESES_LIST.find(function(j){ return j.id === id; });
   if(!j) return;
   document.getElementById('approvalDetailKegiatan').textContent = j.kegiatan + (j.noPenugasan ? ' (No. ' + j.noPenugasan + ')' : '');
-  document.getElementById('approvalDetailStatus').innerHTML = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + j.status + '</span>';
+  document.getElementById('approvalDetailStatus').innerHTML = '<span class="badge ' + (jadwalStatusClass[j.status] || 'badge-neutral') + '">' + statusLabel(j.status) + '</span>';
   var rejectField = document.getElementById('approvalDetailRejectField');
   if(j.status === 'Reject' && j.rejectReason){
     rejectField.style.display = 'block';
