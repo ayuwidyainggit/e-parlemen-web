@@ -35,3 +35,8 @@ function periodeNama(id){
   var p = list.find(function(p){ return p.id === id; });
   return p ? p.nama : '—';
 }
+function periodeActiveId(){
+  var list = periodeLoadList();
+  var active = list.find(function(p){ return p.status === 'Aktif'; });
+  return active ? active.id : (list[0] ? list[0].id : null);
+}

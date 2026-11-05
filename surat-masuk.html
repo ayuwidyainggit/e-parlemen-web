@@ -1,0 +1,1492 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <title>Surat Masuk &middot; Admin e-Parlemen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --green-dark: #0f2318;
+        --green: #1b3a2b;
+        --green-mid: #234a37;
+        --green-light: #2f5a44;
+        --gold: #c9a24a;
+        --gold-light: #e4c976;
+        --cream: #f7f6f1;
+        --card: #ffffff;
+        --ink: #182a20;
+        --muted: #707b73;
+        --border: #e7e4dc;
+        --success-bg: #e6f4ea;
+        --success: #1f8a4c;
+        --warn-bg: #fff2df;
+        --warn: #c8791a;
+        --danger-bg: #fbe7e7;
+        --danger: #d64545;
+        --info-bg: #e7f0fb;
+        --info: #2f6fb0;
+        --neutral-bg: #eef0ec;
+        --neutral: #5b6a5e;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        color: var(--ink);
+        background: #eef0ea;
+      }
+      a {
+        color: inherit;
+      }
+      .ic-svg {
+        width: 1em;
+        height: 1em;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        flex-shrink: 0;
+        vertical-align: -0.15em;
+      }
+      .crest-svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .admin-shell {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 232px;
+        background: linear-gradient(180deg, var(--green-dark), var(--green));
+        color: #fff;
+        flex-shrink: 0;
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        z-index: 60;
+      }
+      .sidebar-brand {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 20px 18px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .sidebar-brand .emblem {
+        width: 38px;
+        height: 38px;
+        flex-shrink: 0;
+      }
+      .sidebar-brand h1 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 15.5px;
+        margin: 0;
+      }
+      .sidebar-brand .sub {
+        font-size: 8.8px;
+        color: var(--gold-light);
+        font-weight: 700;
+        letter-spacing: 0.4px;
+        margin-top: 1px;
+      }
+      .sidebar-nav {
+        flex: 1;
+        padding: 14px 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        overflow-y: auto;
+      }
+      .snav-label {
+        font-size: 9.5px;
+        font-weight: 800;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.6px;
+        padding: 14px 10px 6px;
+      }
+      .snav-item {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: rgba(255, 255, 255, 0.82);
+        text-decoration: none;
+        font-size: 12.6px;
+        font-weight: 700;
+      }
+      .snav-item .ic-svg {
+        width: 17px;
+        height: 17px;
+      }
+      .snav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+      }
+      .snav-item.active {
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        box-shadow: inset 3px 0 0 var(--gold);
+      }
+      .snav-item .count {
+        margin-left: auto;
+        background: var(--danger);
+        color: #fff;
+        font-size: 9.5px;
+        font-weight: 800;
+        padding: 2px 7px;
+        border-radius: 20px;
+      }
+      .sidebar-foot {
+        padding: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+      }
+      .sidebar-user {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .sidebar-user .av {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, var(--gold-light), var(--gold));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        color: var(--green-dark);
+        font-size: 12px;
+        flex-shrink: 0;
+      }
+      .sidebar-user .name {
+        font-size: 12px;
+        font-weight: 800;
+        color: #fff;
+      }
+      .sidebar-user .role {
+        font-size: 10px;
+        color: rgba(255, 255, 255, 0.6);
+      }
+      .logout-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 11.5px;
+        color: rgba(255, 255, 255, 0.65);
+        text-decoration: none;
+      }
+
+      .main {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: #fff;
+        border-bottom: 1px solid var(--border);
+        padding: 14px 26px;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        gap: 14px;
+      }
+      .topbar h2 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 19px;
+        margin: 0;
+        color: var(--ink);
+      }
+      .topbar .crumb {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+      .topbar-actions {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+      }
+      .tb-bell {
+        position: relative;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: var(--neutral-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--ink);
+        text-decoration: none;
+        flex-shrink: 0;
+      }
+      .tb-bell .dot {
+        position: absolute;
+        top: -2px;
+        right: -2px;
+        background: var(--danger);
+        color: #fff;
+        font-size: 9px;
+        font-weight: 800;
+        min-width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid #fff;
+      }
+      .tb-user {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .tb-user .av {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(145deg, var(--green), var(--green-dark));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold-light);
+        font-weight: 800;
+        font-size: 12px;
+      }
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--ink);
+        padding: 6px;
+      }
+      .menu-toggle .ic-svg {
+        width: 22px;
+        height: 22px;
+      }
+
+      .content {
+        padding: 24px 26px 60px;
+        max-width: 1280px;
+        width: 100%;
+      }
+
+      .card {
+        background: var(--card);
+        border-radius: 14px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        margin-bottom: 18px;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--ink);
+        margin: 0 0 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .hint {
+        font-size: 11.5px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 10.5px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+      .badge-success {
+        background: var(--success-bg);
+        color: var(--success);
+      }
+      .badge-warn {
+        background: var(--warn-bg);
+        color: var(--warn);
+      }
+      .badge-danger {
+        background: var(--danger-bg);
+        color: var(--danger);
+      }
+      .badge-info {
+        background: var(--info-bg);
+        color: var(--info);
+      }
+      .badge-neutral {
+        background: var(--neutral-bg);
+        color: var(--neutral);
+      }
+      .badge-gold {
+        background: #fbf1dc;
+        color: #9a7b1f;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 11px 18px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 800;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--green-dark), var(--green));
+        color: #fff;
+        box-shadow: inset 0 0 0 1.5px var(--gold);
+      }
+      .btn-outline {
+        background: #fff;
+        color: var(--green);
+        border: 1.5px solid var(--green);
+      }
+      .btn-danger-outline {
+        background: #fff;
+        color: var(--danger);
+        border: 1.5px solid var(--danger);
+      }
+      .btn-sm {
+        padding: 8px 13px;
+        font-size: 11.5px;
+      }
+      .row-actions {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .modal-backdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(15, 35, 24, 0.5);
+        z-index: 80;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+      .modal-backdrop.open {
+        display: flex;
+      }
+      .modal-box {
+        background: #fff;
+        border-radius: 16px;
+        width: 100%;
+        max-width: 460px;
+        max-height: 88vh;
+        overflow-y: auto;
+        padding: 22px;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      }
+      .modal-box.sm {
+        max-width: 380px;
+      }
+      .modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+      .modal-head h3 {
+        font-family: Georgia, "Times New Roman", serif;
+        font-size: 17px;
+        margin: 0;
+        color: var(--ink);
+      }
+      .modal-close {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: var(--neutral-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        cursor: pointer;
+        color: var(--ink);
+        flex-shrink: 0;
+      }
+      .modal-close .ic-svg {
+        width: 15px;
+        height: 15px;
+      }
+      .modal-foot {
+        display: flex;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .modal-foot .btn {
+        flex: 1;
+      }
+
+      .toast {
+        display: none;
+        position: fixed;
+        bottom: 26px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--green-dark);
+        color: #fff;
+        padding: 12px 20px;
+        border-radius: 30px;
+        font-size: 12.5px;
+        font-weight: 700;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        z-index: 90;
+        white-space: nowrap;
+      }
+
+      .tabs {
+        display: inline-flex;
+        gap: 4px;
+        background: #eceee7;
+        padding: 4px;
+        border-radius: 12px;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+      }
+      .tab {
+        padding: 9px 16px;
+        border-radius: 9px;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--muted);
+        text-decoration: none;
+        white-space: nowrap;
+        background: transparent;
+        border: none;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .tab.active {
+        background: #fff;
+        color: var(--green);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.09);
+      }
+      .tab .count {
+        margin-left: 6px;
+        background: var(--neutral-bg);
+        color: var(--neutral);
+        border-radius: 20px;
+        padding: 1px 7px;
+        font-size: 10px;
+      }
+      .tab.active .count {
+        background: var(--gold);
+        color: #fff;
+      }
+
+      .toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+        align-items: center;
+      }
+      .toolbar input[type="text"],
+      .toolbar input[type="date"],
+      .toolbar select {
+        padding: 9px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        font-size: 12.5px;
+        font-family: inherit;
+        background: #fff;
+        color: var(--ink);
+      }
+      .toolbar input[type="text"] {
+        flex: 1;
+        min-width: 180px;
+      }
+      .toolbar .reset-link {
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--green);
+        text-decoration: none;
+        white-space: nowrap;
+      }
+
+      .table-wrap {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px;
+        min-width: 820px;
+      }
+      th {
+        text-align: left;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--muted);
+        padding: 12px 16px;
+        border-bottom: 2px solid var(--border);
+        background: #fbfbf9;
+      }
+      td {
+        padding: 13px 16px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: #fafaf7;
+      }
+      .namecell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .namecell .av {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--neutral-bg);
+        color: var(--green);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 11px;
+        flex-shrink: 0;
+      }
+      .namecell .n {
+        font-weight: 800;
+        font-size: 12.6px;
+      }
+      .namecell .s {
+        font-size: 10.5px;
+        color: var(--muted);
+      }
+      .lettertitle {
+        font-weight: 800;
+        font-size: 12.6px;
+      }
+      .letterno {
+        font-size: 10.5px;
+        color: var(--muted);
+        margin-top: 1px;
+      }
+      .empty {
+        text-align: center;
+        padding: 40px 10px;
+        color: var(--muted);
+      }
+      .empty .ic {
+        font-size: 36px;
+        display: block;
+        margin-bottom: 10px;
+      }
+
+      @media (max-width: 960px) {
+        .sidebar {
+          position: fixed;
+          left: -232px;
+          transition: left 0.2s;
+          box-shadow: 6px 0 24px rgba(0, 0, 0, 0.25);
+        }
+        .sidebar.open {
+          left: 0;
+        }
+        .menu-toggle {
+          display: block;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="admin-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <span class="emblem"
+            ><svg
+              viewBox="0 0 48 54"
+              class="crest-svg"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z"
+                fill="#0f2318"
+                stroke="#e4c976"
+                stroke-width="2"
+              />
+              <path
+                d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z"
+                fill="none"
+                stroke="#c9a24a"
+                stroke-width="1"
+              />
+              <path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a" />
+              <path d="M17 33 H31 L29 39 H19 Z" fill="#d64545" /></svg
+          ></span>
+          <div>
+            <h1>e-Parlemen</h1>
+            <div class="sub">ADMIN SEKRETARIAT</div>
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <div class="snav-label">Menu Utama</div>
+          <a class="snav-item" href="dashboard.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M3 11l9-8 9 8" />
+              <path d="M5 10v10h14V10" />
+              <path d="M9 20v-6h6v6" />
+            </svg>
+            Dashboard</a
+          >
+          <div class="snav-label">Master Data</div>
+          <a class="snav-item" href="master-periode.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M3 10h18" />
+              <path d="M8 3v4" />
+              <path d="M16 3v4" />
+            </svg>
+            Master Periode</a
+          >
+          <a class="snav-item" href="master-jabatan.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="8" r="5" />
+              <path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5" />
+            </svg>
+            Master Jabatan</a
+          >
+          <a class="snav-item" href="master-unit-type.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="4" y="4" width="7" height="7" rx="1.5" />
+              <rect x="13" y="4" width="7" height="7" rx="1.5" />
+              <rect x="4" y="13" width="7" height="7" rx="1.5" />
+              <path d="M16.5 13v7" />
+              <path d="M13 16.5h7" />
+            </svg>
+            Master Unit Type</a
+          >
+          <a class="snav-item" href="master-rbac.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="5" y="11" width="14" height="9" rx="2" />
+              <path d="M8 11V7a4 4 0 1 1 8 0v4" />
+            </svg>
+            Role &amp; RBAC</a
+          >
+          <a class="snav-item" href="pengguna.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="9" cy="8" r="3.5" />
+              <path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2" />
+              <path d="M17 8h5" />
+              <path d="M19.5 5.5v5" />
+            </svg>
+            User Management</a
+          >
+          <a class="snav-item" href="master-dapil.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="10" r="3" />
+              <path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z" />
+            </svg>
+            Master Dapil</a
+          >
+          <a class="snav-item" href="master-jenis-penugasan.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="5" y="4" width="14" height="17" rx="2" />
+              <path d="M9 4h6v2H9z" />
+              <path d="M9 11h6" />
+              <path d="M9 15h4" />
+            </svg>
+            Jenis Penugasan</a
+          >
+          <div class="snav-label">Report</div>
+          <a class="snav-item" href="struktur-organisasi.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="9" y="3" width="6" height="5" rx="1" />
+              <rect x="3" y="16" width="6" height="5" rx="1" />
+              <rect x="15" y="16" width="6" height="5" rx="1" />
+              <path d="M12 8v4" />
+              <path d="M6 16v-2h12v2" />
+            </svg>
+            Struktur Organisasi</a
+          >
+          <a class="snav-item" href="master-alat-kelengkapan.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="3" width="8" height="8" rx="1.5" />
+              <rect x="13" y="3" width="8" height="8" rx="1.5" />
+              <rect x="3" y="13" width="8" height="8" rx="1.5" />
+              <rect x="13" y="13" width="8" height="8" rx="1.5" />
+            </svg>
+            Alat Kelengkapan DPRD</a
+          >
+          <div class="snav-label">Penugasan</div>
+          <a class="snav-item" href="penugasan-dapil-reses.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="5" y="4" width="14" height="17" rx="2" />
+              <path d="M9 4h6v2H9z" />
+              <path d="M8.5 13l2 2 4-4" />
+            </svg>
+            Penugasan</a
+          >
+          <a class="snav-item" href="approval-penugasan.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="12" cy="12" r="9" />
+              <path d="M8 12.5l2.5 2.5 5.5-6" />
+            </svg>
+            Approval Penugasan</a
+          >
+          <div class="snav-label">Persuratan</div>
+          <a class="snav-item active" href="surat-masuk.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M22 12h-6l-2 3h-4l-2-3H2" />
+              <path
+                d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"
+              />
+            </svg>
+            Surat Masuk <span class="count">3</span></a
+          >
+          <a class="snav-item" href="surat-keluar.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="5" width="18" height="14" rx="2" />
+              <path d="M3 6.5l9 6.5 9-6.5" />
+            </svg>
+            Surat Keluar <span class="count">3</span></a
+          >
+          <div class="snav-label">Rapat</div>
+          <a class="snav-item" href="jadwal-rapat.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M3 10h18" />
+              <path d="M8 3v4" />
+              <path d="M16 3v4" />
+            </svg>
+            Jadwal Rapat</a
+          >
+          <a class="snav-item" href="jadwal-rapat-buat.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="5" width="18" height="16" rx="2" />
+              <path d="M3 10h18" />
+              <path d="M8 3v4" />
+              <path d="M16 3v4" />
+              <path d="M12 14v4" />
+              <path d="M10 16h4" />
+            </svg>
+            Create Rapat (Generate QR)</a
+          >
+          <a class="snav-item" href="absensi.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1" />
+              <rect x="14" y="3" width="7" height="7" rx="1" />
+              <rect x="3" y="14" width="7" height="7" rx="1" />
+              <rect x="14" y="14" width="3" height="3" rx="0.6" />
+              <rect x="18" y="14" width="3" height="3" rx="0.6" />
+              <rect x="14" y="18" width="3" height="3" rx="0.6" />
+              <rect x="18" y="18" width="3" height="3" rx="0.6" />
+            </svg>
+            Presensi (Tampilkan QR)</a
+          >
+          <a class="snav-item" href="#"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M3 3v18h18" />
+              <rect x="7" y="12" width="3" height="6" rx="0.6" />
+              <rect x="12" y="8" width="3" height="10" rx="0.6" />
+              <rect x="17" y="5" width="3" height="13" rx="0.6" />
+            </svg>
+            Laporan Rapat
+            <span class="count" style="background: var(--neutral)"
+              >Segera</span
+            ></a
+          >
+          <div class="snav-label">Lainnya</div>
+          <a class="snav-item" href="notifikasi.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.7 21a2 2 0 0 1-3.4 0" />
+            </svg>
+            Notifikasi <span class="count">5</span></a
+          >
+        </nav>
+        <div class="sidebar-foot">
+          <div class="sidebar-user">
+            <span class="av">AS</span>
+            <div>
+              <div class="name">Admin Sekretariat</div>
+              <div class="role">Sekretariat DPRD</div>
+            </div>
+          </div>
+          <a class="logout-link" href="login.html"
+            ><svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <path d="M16 17l5-5-5-5" />
+              <path d="M21 12H9" />
+            </svg>
+            Keluar</a
+          >
+        </div>
+      </aside>
+
+      <div class="main">
+        <div class="topbar">
+          <div style="display: flex; align-items: center; gap: 8px">
+            <button
+              class="menu-toggle"
+              onclick="
+                document.getElementById('sidebar').classList.toggle('open')
+              "
+            >
+              <svg
+                class="ic-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M4 6h16" />
+                <path d="M4 12h16" />
+                <path d="M4 18h16" />
+              </svg>
+            </button>
+            <div>
+              <h2>Surat Masuk</h2>
+              <div class="crumb">
+                Admin &middot; Persuratan &middot; Surat Masuk
+              </div>
+            </div>
+          </div>
+          <div class="topbar-actions">
+            <a class="tb-bell" href="notifikasi.html"
+              ><svg
+                class="ic-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.7 21a2 2 0 0 1-3.4 0" /></svg
+              ><span class="dot">5</span></a
+            >
+            <div class="tb-user"><span class="av">AS</span></div>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="section-title" style="margin-bottom: 6px">
+            <span></span>
+            <a class="btn btn-primary btn-sm" href="surat-masuk-buat.html"
+              ><svg
+                class="ic-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+              </svg>
+              Buat Surat Masuk</a
+            >
+          </div>
+          <div class="hint" style="margin-bottom: 16px">
+            Sekretariat membuat &amp; menugaskan surat masuk ke Anggota Dewan
+            tujuan melalui aplikasi mobile. Surat jadi
+            <strong>SELESAI</strong> setelah ada penerima yang klik Terima;
+            penerima juga bisa mendisposisikan ke anggota lain terlebih dulu.
+          </div>
+
+          <div class="toolbar">
+            <input
+              type="text"
+              id="fSearch"
+              placeholder="Cari no. surat atau judul..."
+              oninput="applySuratMasukFilter()"
+            />
+            <select id="fStatus" onchange="applySuratMasukFilter()">
+              <option value="">Semua Status</option>
+              <option value="DRAFT">Draft</option>
+              <option value="SUBMIT">Berjalan (SUBMIT)</option>
+              <option value="SELESAI">Selesai</option>
+            </select>
+            <select id="fPeriode" onchange="applySuratMasukFilter()"></select>
+            <a
+              href="#"
+              class="reset-link"
+              onclick="
+                resetSuratMasukFilter();
+                return false;
+              "
+              >Reset Filter</a
+            >
+          </div>
+
+          <div id="sm-list" data-panel-group="sm">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>No. Surat</th>
+                    <th>Periode</th>
+                    <th>Tujuan</th>
+                    <th>Tgl Surat</th>
+                    <th>Dibuat</th>
+                    <th>Status</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    id="draftRow-sm001"
+                    data-draft-id="draft-sm001"
+                    data-status="DRAFT"
+                    data-search="draft surat undangan audiensi warga dapil 3"
+                    data-date=""
+                    data-periode="prd-2024"
+                    data-title="Draft Surat Undangan Audiensi Warga Dapil 3"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Draft Surat Undangan Audiensi Warga Dapil 3
+                      </div>
+                      <div class="letterno">Belum diisi</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td><span class="muted">&mdash; belum dipilih</span></td>
+                    <td><span class="muted">&mdash;</span></td>
+                    <td>Hari ini, 08.20 WIB</td>
+                    <td><span class="badge badge-neutral">Draft</span></td>
+                    <td>
+                      <div class="row-actions">
+                        <a
+                          class="btn btn-outline btn-sm"
+                          href="surat-masuk-buat.html?draftId=draft-sm001"
+                          >Lanjutkan &rsaquo;</a
+                        >
+                        <button
+                          type="button"
+                          class="btn btn-danger-outline btn-sm"
+                          onclick="openDeleteDraft('draftRow-sm001')"
+                        >
+                          <svg
+                            class="ic-svg"
+                            viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path d="M4 7h16" />
+                            <path d="M10 11v6" />
+                            <path d="M14 11v6" />
+                            <path
+                              d="M6 7l1 13a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-13"
+                            />
+                            <path d="M9 7V4h6v3" />
+                          </svg>
+                          Hapus
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr
+                    data-status="SUBMIT"
+                    data-search="undangan rapat paripurna pembahasan apbd 2027 005/123/dprd/2026"
+                    data-date="2026-10-28"
+                    data-periode="prd-2024"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Undangan Rapat Paripurna Pembahasan APBD 2027
+                      </div>
+                      <div class="letterno">005/123/DPRD/2026</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td>
+                      <div class="namecell">
+                        <span class="av">NQ</span>
+                        <div>
+                          <div class="n">Narisqa</div>
+                          <div class="s">Ketua DPRD</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>28 Okt 2026, 09.00 WIB</td>
+                    <td>26 Okt 2026, 08.30 WIB</td>
+                    <td>
+                      <span class="badge badge-danger"
+                        >SUBMIT &middot; Lewat Hari H</span
+                      >
+                    </td>
+                    <td>
+                      <a
+                        class="btn btn-outline btn-sm"
+                        href="surat-masuk-detail.html?id=SM-001"
+                        >Lihat &rsaquo;</a
+                      >
+                    </td>
+                  </tr>
+                  <tr
+                    data-status="SUBMIT"
+                    data-search="undangan rapat koordinasi komisi i 004/118/dprd/2026"
+                    data-date="2026-11-06"
+                    data-periode="prd-2024"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Undangan Rapat Koordinasi Komisi I
+                      </div>
+                      <div class="letterno">004/118/DPRD/2026</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td>
+                      <div class="namecell">
+                        <span class="av">BS</span>
+                        <div>
+                          <div class="n">Ir. Budi Santoso, M.T.</div>
+                          <div class="s">Ketua Komisi I</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>6 Nov 2026, 10.00 WIB</td>
+                    <td>1 Nov 2026, 14.10 WIB</td>
+                    <td><span class="badge badge-warn">SUBMIT</span></td>
+                    <td>
+                      <a
+                        class="btn btn-outline btn-sm"
+                        href="surat-masuk-detail.html?id=SM-002"
+                        >Lihat &rsaquo;</a
+                      >
+                    </td>
+                  </tr>
+                  <tr
+                    data-status="SUBMIT"
+                    data-search="pemberitahuan jadwal reses tahap ii 006/130/dprd/2026"
+                    data-date="2026-11-12"
+                    data-periode="prd-2024"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Pemberitahuan Jadwal Reses Tahap II
+                      </div>
+                      <div class="letterno">006/130/DPRD/2026</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td>
+                      <div class="namecell">
+                        <span class="av">AF</span>
+                        <div>
+                          <div class="n">Drs. Ahmad Fauzi</div>
+                          <div class="s">Anggota Komisi III</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>12 Nov 2026, 13.00 WIB</td>
+                    <td>Hari ini, 09.45 WIB</td>
+                    <td><span class="badge badge-warn">SUBMIT</span></td>
+                    <td>
+                      <a
+                        class="btn btn-outline btn-sm"
+                        href="surat-masuk-detail.html?id=SM-005"
+                        >Lihat &rsaquo;</a
+                      >
+                    </td>
+                  </tr>
+                  <tr
+                    data-status="SELESAI"
+                    data-search="permohonan data dukung reses dapil 2 003/101/dprd/2026"
+                    data-date="2026-10-28"
+                    data-periode="prd-2024"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Permohonan Data Dukung Reses Dapil 2
+                      </div>
+                      <div class="letterno">003/101/DPRD/2026</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td>
+                      <div class="namecell">
+                        <span class="av">SR</span>
+                        <div>
+                          <div class="n">Hj. Siti Rahmawati</div>
+                          <div class="s">Anggota Komisi IV</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>28 Okt 2026, 09.00 WIB</td>
+                    <td>27 Okt 2026, 09.10 WIB</td>
+                    <td><span class="badge badge-neutral">SELESAI</span></td>
+                    <td>
+                      <a
+                        class="btn btn-outline btn-sm"
+                        href="surat-masuk-detail.html?id=SM-004"
+                        >Lihat &rsaquo;</a
+                      >
+                    </td>
+                  </tr>
+                  <tr
+                    data-status="SELESAI"
+                    data-search="undangan rapat kerja komisi ii dengan dinas pu 002/095/dprd/2026"
+                    data-date="2026-10-20"
+                    data-periode="prd-2024"
+                  >
+                    <td>
+                      <div class="lettertitle">
+                        Undangan Rapat Kerja Komisi II dengan Dinas PU
+                      </div>
+                      <div class="letterno">002/095/DPRD/2026</div>
+                    </td>
+                    <td>2024 - 2029</td>
+                    <td>
+                      <div class="namecell">
+                        <span class="av">RH</span>
+                        <div>
+                          <div class="n">R. Hendra Wijaya, S.H.</div>
+                          <div class="s">Anggota Komisi II</div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>20 Okt 2026, 09.30 WIB</td>
+                    <td>19 Okt 2026, 15.00 WIB</td>
+                    <td><span class="badge badge-neutral">SELESAI</span></td>
+                    <td>
+                      <a
+                        class="btn btn-outline btn-sm"
+                        href="surat-masuk-detail.html?id=SM-006"
+                        >Lihat &rsaquo;</a
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="deleteDraftModalBackdrop">
+      <div class="modal-box sm">
+        <div class="modal-head">
+          <h3>Hapus Draft</h3>
+          <button class="modal-close" onclick="closeDeleteDraftModal()">
+            <svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 6l12 12" />
+              <path d="M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <div
+          class="hint"
+          id="deleteDraftModalText"
+          style="margin-bottom: 4px"
+        ></div>
+        <div class="modal-foot">
+          <button
+            type="button"
+            class="btn btn-outline"
+            onclick="closeDeleteDraftModal()"
+          >
+            Batal
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger-outline"
+            onclick="confirmDeleteDraft()"
+          >
+            Hapus
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+    <script src="periode-data.js"></script>
+    <script>
+      function toast(msg) {
+        var el = document.getElementById("toast");
+        if (!el) return;
+        el.textContent = msg;
+        el.style.display = "block";
+        setTimeout(function () {
+          el.style.display = "none";
+        }, 2400);
+      }
+
+      // Penyimpanan draft (prototipe, localStorage) supaya "Lanjutkan" di surat-masuk-buat.html
+      // bisa memuat ulang data yang pernah diisi (G-07) - lihat juga §18.4/§18.5
+      // Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md.
+      var SURAT_MASUK_DRAFT_KEY = "ep_surat_masuk_drafts";
+      function loadDraftsFromStorage() {
+        try {
+          return JSON.parse(localStorage.getItem(SURAT_MASUK_DRAFT_KEY)) || {};
+        } catch (e) {
+          return {};
+        }
+      }
+      function saveDraftsToStorage(drafts) {
+        try {
+          localStorage.setItem(SURAT_MASUK_DRAFT_KEY, JSON.stringify(drafts));
+        } catch (e) {}
+      }
+      function seedDemoDraft() {
+        var drafts = loadDraftsFromStorage();
+        if (!drafts["draft-sm001"]) {
+          drafts["draft-sm001"] = {
+            periodId:
+              typeof periodeActiveId === "function"
+                ? periodeActiveId()
+                : null,
+            nomor: "",
+            judul: "Draft Surat Undangan Audiensi Warga Dapil 3",
+            tgl: "",
+            waktuMulai: "",
+            waktuSelesai: "",
+            tempat: "",
+            notes: "",
+            orgUnitId: "",
+            recipientId: "",
+            attachments: [],
+          };
+          saveDraftsToStorage(drafts);
+        }
+      }
+      seedDemoDraft();
+
+      // Hapus draft sesuai BR-03 & DELETE /web/incoming-letters/{id} (§18.5
+      // Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md) - hanya berlaku untuk status DRAFT.
+      var pendingDeleteDraftRowId = null;
+      function openDeleteDraft(rowId) {
+        var row = document.getElementById(rowId);
+        if (!row) return;
+        pendingDeleteDraftRowId = rowId;
+        document.getElementById("deleteDraftModalText").textContent =
+          'Hapus "' +
+          row.dataset.title +
+          '"? Draft yang sudah dihapus tidak dapat dikembalikan.';
+        document
+          .getElementById("deleteDraftModalBackdrop")
+          .classList.add("open");
+      }
+      function closeDeleteDraftModal() {
+        document
+          .getElementById("deleteDraftModalBackdrop")
+          .classList.remove("open");
+        pendingDeleteDraftRowId = null;
+      }
+      function confirmDeleteDraft() {
+        if (!pendingDeleteDraftRowId) return;
+        var row = document.getElementById(pendingDeleteDraftRowId);
+        if (row) {
+          if (row.dataset.draftId) {
+            var drafts = loadDraftsFromStorage();
+            delete drafts[row.dataset.draftId];
+            saveDraftsToStorage(drafts);
+          }
+          row.remove();
+        }
+        closeDeleteDraftModal();
+        updateSuratMasukEmptyStates();
+        toast("Draft berhasil dihapus");
+      }
+
+      /* Filter sesuai parameter GET /api/v1/web/incoming-letters (§18.1):
+   search (no surat / judul), status, period_id, date_from, date_to.
+   Dropdown Status mengganti tab Draft/Berjalan/Selesai - default "Semua Status". */
+      function populateFPeriodeSelect() {
+        var sel = document.getElementById("fPeriode");
+        if (!sel) return;
+        var list =
+          typeof periodeLoadList === "function" ? periodeLoadList() : [];
+        var activeId =
+          typeof periodeActiveId === "function" ? periodeActiveId() : "";
+        sel.innerHTML =
+          '<option value="">Semua Periode</option>' +
+          list
+            .map(function (p) {
+              return '<option value="' + p.id + '">' + p.nama + "</option>";
+            })
+            .join("");
+        sel.value = activeId || "";
+      }
+      function applySuratMasukFilter() {
+        var search = document
+          .getElementById("fSearch")
+          .value.trim()
+          .toLowerCase();
+        var status = document.getElementById("fStatus").value;
+        var periode = document.getElementById("fPeriode").value;
+
+        document
+          .querySelectorAll("tbody tr[data-search]")
+          .forEach(function (row) {
+            var matchesSearch =
+              !search || row.dataset.search.indexOf(search) !== -1;
+            var matchesStatus = !status || row.dataset.status === status;
+            var matchesPeriode =
+              !periode || row.dataset.periode === periode;
+            row.style.display =
+              matchesSearch && matchesStatus && matchesPeriode ? "" : "none";
+          });
+
+        updateSuratMasukEmptyStates();
+      }
+
+      function updateSuratMasukEmptyStates() {
+        document
+          .querySelectorAll('[data-panel-group="sm"] tbody')
+          .forEach(function (tbody) {
+            var existingEmpty = tbody.querySelector("tr.filter-empty-row");
+            if (existingEmpty) {
+              existingEmpty.remove();
+            }
+            var visible = Array.prototype.filter.call(
+              tbody.querySelectorAll("tr[data-search]"),
+              function (r) {
+                return r.style.display !== "none";
+              },
+            );
+            if (visible.length === 0) {
+              var colCount = tbody
+                .closest("table")
+                .querySelectorAll("thead th").length;
+              var tr = document.createElement("tr");
+              tr.className = "filter-empty-row";
+              tr.innerHTML =
+                '<td colspan="' +
+                colCount +
+                '"><div class="empty"><span class="ic">&#128269;</span>Tidak ada surat yang cocok dengan filter.</div></td>';
+              tbody.appendChild(tr);
+            }
+          });
+      }
+
+      function resetSuratMasukFilter() {
+        document.getElementById("fSearch").value = "";
+        document.getElementById("fStatus").value = "";
+        var periodeSel = document.getElementById("fPeriode");
+        if (periodeSel) {
+          periodeSel.value =
+            typeof periodeActiveId === "function" ? periodeActiveId() : "";
+        }
+        applySuratMasukFilter();
+      }
+
+      populateFPeriodeSelect();
+      applySuratMasukFilter();
+    </script>
+  </body>
+</html>

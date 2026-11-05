@@ -28,7 +28,7 @@ var WEB_MENU_CATALOG = [
     { id: 'web-laporan-pokir', label: 'Laporan Aspirasi' }
   ]},
   { group: 'Persuratan', items: [
-    { id: 'web-buat-surat', label: 'Buat Surat' },
+    { id: 'web-surat-masuk', label: 'Surat Masuk' },
     { id: 'web-surat-keluar', label: 'Surat Keluar' }
   ]},
   { group: 'Rapat', items: [

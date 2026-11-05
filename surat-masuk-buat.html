@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>Buat Surat Masuk &middot; Admin e-Parlemen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+
+:root{
+  --green-dark:#0f2318; --green:#1b3a2b; --green-mid:#234a37; --green-light:#2f5a44;
+  --gold:#c9a24a; --gold-light:#e4c976; --cream:#f7f6f1; --card:#ffffff;
+  --ink:#182a20; --muted:#707b73; --border:#e7e4dc;
+  --success-bg:#e6f4ea; --success:#1f8a4c;
+  --warn-bg:#fff2df; --warn:#c8791a;
+  --danger-bg:#fbe7e7; --danger:#d64545;
+  --info-bg:#e7f0fb; --info:#2f6fb0;
+  --neutral-bg:#eef0ec; --neutral:#5b6a5e;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:#eef0ea;}
+a{color:inherit;}
+.ic-svg{width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;vertical-align:-0.15em;}
+.crest-svg{width:100%;height:100%;display:block;}
+
+.admin-shell{display:flex;min-height:100vh;}
+.sidebar{width:232px;background:linear-gradient(180deg,var(--green-dark),var(--green));color:#fff;flex-shrink:0;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;z-index:60;}
+.sidebar-brand{display:flex;gap:10px;align-items:center;padding:20px 18px;border-bottom:1px solid rgba(255,255,255,.12);}
+.sidebar-brand .emblem{width:38px;height:38px;flex-shrink:0;}
+.sidebar-brand h1{font-family:Georgia,'Times New Roman',serif;font-size:15.5px;margin:0;}
+.sidebar-brand .sub{font-size:8.8px;color:var(--gold-light);font-weight:700;letter-spacing:.4px;margin-top:1px;}
+.sidebar-nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;}
+.snav-label{font-size:9.5px;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;padding:14px 10px 6px;}
+.snav-item{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;color:rgba(255,255,255,.82);text-decoration:none;font-size:12.6px;font-weight:700;}
+.snav-item .ic-svg{width:17px;height:17px;}
+.snav-item:hover{background:rgba(255,255,255,.08);}
+.snav-item.active{background:rgba(255,255,255,.14);color:#fff;box-shadow:inset 3px 0 0 var(--gold);}
+.snav-item .count{margin-left:auto;background:var(--danger);color:#fff;font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:20px;}
+.sidebar-foot{padding:14px;border-top:1px solid rgba(255,255,255,.12);}
+.sidebar-user{display:flex;gap:10px;align-items:center;}
+.sidebar-user .av{width:34px;height:34px;border-radius:50%;background:linear-gradient(145deg,var(--gold-light),var(--gold));display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--green-dark);font-size:12px;flex-shrink:0;}
+.sidebar-user .name{font-size:12px;font-weight:800;color:#fff;}
+.sidebar-user .role{font-size:10px;color:rgba(255,255,255,.6);}
+.logout-link{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:11.5px;color:rgba(255,255,255,.65);text-decoration:none;}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column;}
+.topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border-bottom:1px solid var(--border);padding:14px 26px;position:sticky;top:0;z-index:5;gap:14px;}
+.topbar h2{font-family:Georgia,'Times New Roman',serif;font-size:19px;margin:0;color:var(--ink);}
+.topbar .crumb{font-size:11px;color:var(--muted);margin-top:2px;}
+.topbar .crumb a{color:var(--green);text-decoration:none;font-weight:700;}
+.topbar-actions{display:flex;gap:14px;align-items:center;}
+.tb-bell{position:relative;width:38px;height:38px;border-radius:50%;background:var(--neutral-bg);display:flex;align-items:center;justify-content:center;color:var(--ink);text-decoration:none;flex-shrink:0;}
+.tb-bell .dot{position:absolute;top:-2px;right:-2px;background:var(--danger);color:#fff;font-size:9px;font-weight:800;min-width:15px;height:15px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff;}
+.tb-user{display:flex;align-items:center;gap:8px;}
+.tb-user .av{width:32px;height:32px;border-radius:50%;background:linear-gradient(145deg,var(--green),var(--green-dark));display:flex;align-items:center;justify-content:center;color:var(--gold-light);font-weight:800;font-size:12px;}
+.menu-toggle{display:none;background:none;border:none;cursor:pointer;color:var(--ink);padding:6px;}
+.menu-toggle .ic-svg{width:22px;height:22px;}
+
+.content{padding:24px 26px 60px;max-width:900px;width:100%;}
+
+.card{background:var(--card);border-radius:14px;padding:22px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
+.section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 4px;}
+.hint{font-size:11.5px;color:var(--muted);line-height:1.55;margin-bottom:18px;}
+
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
+.field input,.field select,.field textarea{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field textarea{min-height:90px;resize:vertical;}
+.field .err{display:none;color:var(--danger);font-size:10.8px;font-weight:700;margin-top:5px;}
+.field.invalid input,.field.invalid select{border-color:var(--danger);}
+.field.invalid .err{display:block;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.field-row-3{display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:14px;}
+.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:22px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
+.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
+.upload-box:hover{border-color:var(--gold);}
+.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
+.filelist{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.filecell{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;font-size:12px;}
+.filecell .fc-ic{color:var(--green);flex-shrink:0;}
+.filecell .fc-name{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.filecell .fc-size{color:var(--muted);font-size:10.5px;flex-shrink:0;}
+.filecell .fc-remove{background:none;border:none;color:var(--danger);cursor:pointer;font-size:15px;line-height:1;padding:2px 4px;flex-shrink:0;font-family:inherit;}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 20px;border-radius:10px;font-size:13.5px;font-weight:800;text-decoration:none;border:none;cursor:pointer;font-family:inherit;}
+.btn-primary{background:linear-gradient(135deg,var(--green-dark),var(--green));color:#fff;box-shadow:inset 0 0 0 1.5px var(--gold);}
+.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green);}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px;}
+
+.info-box{background:var(--info-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#2a5583;display:flex;gap:9px;align-items:flex-start;line-height:1.55;margin-bottom:18px;}
+.success-box{background:var(--success-bg);border-radius:12px;padding:13px 14px;font-size:12px;color:#1c6b3d;display:flex;gap:9px;align-items:flex-start;line-height:1.55;}
+
+.toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
+
+@media (max-width:960px){
+  .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
+  .sidebar.open{left:0;}
+  .menu-toggle{display:block;}
+  .field-row,.field-row-3{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="admin-shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <span class="emblem"><svg viewBox="0 0 48 54" class="crest-svg" xmlns="http://www.w3.org/2000/svg"><path d="M24 2 L44 9 V24 C44 37 36 47 24 52 C12 47 4 37 4 24 V9 Z" fill="#0f2318" stroke="#e4c976" stroke-width="2"/><path d="M24 6 L40 11.5 V24 C40 34.5 33.5 42.5 24 47 C14.5 42.5 8 34.5 8 24 V11.5 Z" fill="none" stroke="#c9a24a" stroke-width="1"/><path d="M15 33 L19 18 L24 26 L29 18 L33 33 Z" fill="#c9a24a"/><path d="M17 33 H31 L29 39 H19 Z" fill="#d64545"/></svg></span>
+      <div><h1>e-Parlemen</h1><div class="sub">ADMIN SEKRETARIAT</div></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="snav-label">Menu Utama</div>
+      <a class="snav-item" href="dashboard.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg> Dashboard</a>
+      <div class="snav-label">Master Data</div>
+      <a class="snav-item" href="master-periode.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Master Periode</a>
+      <a class="snav-item" href="master-jabatan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="8" r="5"/><path d="M8.5 12.5L7 22l5-3 5 3-1.5-9.5"/></svg> Master Jabatan</a>
+      <a class="snav-item" href="master-unit-type.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><path d="M16.5 13v7"/><path d="M13 16.5h7"/></svg> Master Unit Type</a>
+      <a class="snav-item" href="master-rbac.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg> Role &amp; RBAC</a>
+      <a class="snav-item" href="pengguna.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg> User Management</a>
+      <a class="snav-item" href="master-dapil.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="10" r="3"/><path d="M12 21s7-6.5 7-11.5a7 7 0 1 0-14 0c0 5 7 11.5 7 11.5z"/></svg> Master Dapil</a>
+      <a class="snav-item" href="master-jenis-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M9 11h6"/><path d="M9 15h4"/></svg> Jenis Penugasan</a>
+      <div class="snav-label">Report</div>
+      <a class="snav-item" href="struktur-organisasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path d="M6 16v-2h12v2"/></svg> Struktur Organisasi</a>
+      <a class="snav-item" href="master-alat-kelengkapan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></svg> Alat Kelengkapan DPRD</a>
+      <div class="snav-label">Penugasan</div>
+      <a class="snav-item" href="penugasan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v2H9z"/><path d="M8.5 13l2 2 4-4"/></svg> Penugasan</a>
+      <a class="snav-item" href="approval-penugasan.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Approval Penugasan</a>
+      <div class="snav-label">Persuratan</div>
+      <a class="snav-item active" href="surat-masuk.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg> Surat Masuk <span class="count">3</span></a>
+      <a class="snav-item" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Surat Keluar <span class="count">3</span></a>
+      <div class="snav-label">Rapat</div>
+      <a class="snav-item" href="jadwal-rapat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg> Jadwal Rapat</a>
+      <a class="snav-item" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/><path d="M12 14v4"/><path d="M10 16h4"/></svg> Create Rapat (Generate QR)</a>
+      <a class="snav-item" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="3" height="3" rx="0.6"/><rect x="18" y="14" width="3" height="3" rx="0.6"/><rect x="14" y="18" width="3" height="3" rx="0.6"/><rect x="18" y="18" width="3" height="3" rx="0.6"/></svg> Presensi (Tampilkan QR)</a>
+      <a class="snav-item" href="#"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Rapat <span class="count" style="background:var(--neutral);">Segera</span></a>
+      <div class="snav-label">Lainnya</div>
+      <a class="snav-item" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg> Notifikasi <span class="count">5</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <div class="sidebar-user"><span class="av">AS</span><div><div class="name">Admin Sekretariat</div><div class="role">Sekretariat DPRD</div></div></div>
+      <a class="logout-link" href="login.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg> Keluar</a>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M4 6h16"/><path d="M4 12h16"/><path d="M4 18h16"/></svg></button>
+        <div><h2 id="pageTitle">Buat Surat Masuk</h2><div class="crumb" id="pageCrumb"><a href="surat-masuk.html">Surat Masuk</a> &rsaquo; Buat Baru</div></div>
+      </div>
+      <div class="topbar-actions">
+        <a class="tb-bell" href="notifikasi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="dot">5</span></a>
+        <div class="tb-user"><span class="av">AS</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="success-box" id="draftResumeBanner" style="display:none;margin-bottom:18px;">
+        <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></span>
+        <span>Melanjutkan draft yang sudah pernah diisi sebelumnya. Data di bawah ini dimuat ulang dari draft tersimpan.</span>
+      </div>
+      <div class="info-box">
+        <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
+        <span>Setelah di-<strong>Submit</strong>, Anggota Dewan tujuan menerima notifikasi &amp; surat tampil di aplikasi mobile dengan status PENDING. Anggota dapat langsung <strong>Terima</strong> surat, atau <strong>Disposisi</strong>-kan ke anggota lain. Surat berstatus SELESAI setelah ada penerima yang klik Terima. Simpan sebagai <strong>Draft</strong> kalau belum siap dikirim &mdash; draft tidak terlihat oleh anggota.</span>
+      </div>
+
+      <form id="suratMasukForm" onsubmit="return submitForm(event,'SUBMIT')">
+        <div class="card">
+          <div class="section-title">Informasi Surat</div>
+          <div class="hint">Data utama surat masuk yang diterima Sekretariat.</div>
+          <div class="hint" style="margin-bottom:16px;">Periode: <strong id="periodeAktifLabel">&mdash;</strong> <span class="opt">(otomatis sesuai periode DPRD yang aktif, bukan pilihan manual)</span></div>
+
+          <div class="field-row">
+            <div class="field" id="f-nomor">
+              <label>No. Surat <span class="opt">(wajib, alfanumerik &amp; unik, maks 20 karakter)</span></label>
+              <input type="text" id="nomorSurat" placeholder="Contoh: 005/123/DPRD/2026" pattern="[A-Za-z0-9./\-]+" maxlength="20" required>
+              <div class="err">No. surat wajib diisi, maks 20 karakter, &amp; hanya boleh huruf, angka, titik, garis miring, atau tanda hubung.</div>
+            </div>
+            <div class="field" id="f-judul">
+              <label>Judul Surat <span class="opt">(maks 255 karakter)</span></label>
+              <input type="text" id="judulSurat" placeholder="Contoh: Undangan Rapat Paripurna" maxlength="255" required>
+              <div class="err">Judul surat wajib diisi, maks 255 karakter.</div>
+            </div>
+          </div>
+
+          <div class="field-row-3">
+            <div class="field"><label>Tanggal Surat</label><input type="date" id="tglSurat" required onchange="updateBatasAksiPreview()"></div>
+            <div class="field"><label>Waktu Mulai <span class="opt">(opsional)</span></label><input type="time" id="waktuMulai" onchange="updateBatasAksiPreview()"></div>
+            <div class="field" id="f-waktu-selesai">
+              <label>Waktu Selesai <span class="opt">(opsional)</span></label>
+              <input type="time" id="waktuSelesai" onchange="updateBatasAksiPreview()">
+              <div class="err">Waktu selesai harus lebih besar dari waktu mulai.</div>
+            </div>
+          </div>
+          <div class="hint" id="batasAksiPreview" style="margin-top:-8px;">Batas aksi anggota = tanggal surat + waktu selesai. Jika waktu selesai dikosongkan, batas aksi otomatis sampai 23.59 WIB pada tanggal surat.</div>
+
+          <div class="field" id="f-tempat">
+            <label>Tempat <span class="opt">(opsional, maks 255 karakter)</span></label>
+            <input type="text" id="tempatSurat" placeholder="Contoh: Ruang Paripurna DPRD" maxlength="255">
+            <div class="err">Tempat maks 255 karakter.</div>
+          </div>
+
+          <div class="field">
+            <label>Catatan <span class="opt">(opsional)</span></label>
+            <textarea id="notesSurat" placeholder="Catatan tambahan untuk penerima surat"></textarea>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Tujuan Surat</div>
+          <div class="hint">Pilih Unit Type (org unit periode aktif) untuk menyaring anggota, lalu pilih satu anggota penerima pertama. Jika perlu, anggota ini masih bisa mendisposisikan surat ke anggota lain melalui aplikasi mobile.</div>
+          <div class="field-row">
+            <div class="field" id="f-unit-type">
+              <label>Unit Type</label>
+              <select id="unitTypeSelect" onchange="handleUnitTypeChange(this.value)" required>
+                <option value="">&mdash; Pilih Unit Type &mdash;</option>
+              </select>
+              <div class="err">Unit Type wajib dipilih.</div>
+            </div>
+            <div class="field" id="f-tujuan">
+              <label>Anggota Tujuan</label>
+              <select id="tujuanAnggota" disabled required>
+                <option value="">Pilih Unit Type dahulu...</option>
+              </select>
+              <div class="err">Anggota tujuan wajib dipilih.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="section-title">Lampiran <span class="opt" style="font-weight:600;">(opsional)</span></div>
+          <div class="hint">Unggah berkas pendukung, mis. salinan surat asli. Tipe yang didukung: PDF, JPG, PNG, DOCX, XLSX &mdash; maks 10 MB per berkas, maks 10 berkas per surat. Bisa lebih dari satu berkas &mdash; pilih beberapa sekaligus, atau klik lagi untuk menambahkan.</div>
+          <label class="upload-box" id="uploadBox" for="lampiranInput">
+            <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:24px;height:24px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
+            <span id="uploadLabel">Klik untuk memilih berkas, atau seret berkas ke sini</span>
+          </label>
+          <input type="file" id="lampiranInput" accept=".pdf,.jpg,.jpeg,.png,.docx,.xlsx" multiple style="display:none;" onchange="onFileChosen(this)">
+          <div class="filelist" id="fileList"></div>
+        </div>
+
+        <div class="btn-row">
+          <button type="submit" class="btn btn-primary"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Submit &amp; Kirim ke Mobile</button>
+          <button type="button" class="btn btn-outline" onclick="return submitForm(event,'DRAFT')">Simpan sebagai Draft</button>
+          <a class="btn btn-outline" href="surat-masuk.html">Batal</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script src="periode-data.js"></script>
+<script>
+function toast(msg){
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 2400);
+}
+var selectedFiles = [];
+function formatSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+function renderFileList(){
+  var listEl = document.getElementById('fileList');
+  listEl.innerHTML = selectedFiles.map(function(f, i){
+    return '<div class="filecell">'
+      + '<svg class="ic-svg fc-ic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>'
+      + '<span class="fc-name">' + f.name + '</span>'
+      + '<span class="fc-size">' + formatSize(f.size) + '</span>'
+      + '<button type="button" class="fc-remove" onclick="removeFile(' + i + ')" aria-label="Hapus berkas">&times;</button>'
+      + '</div>';
+  }).join('');
+  var box = document.getElementById('uploadBox');
+  var label = document.getElementById('uploadLabel');
+  if(selectedFiles.length){
+    box.classList.add('filled');
+    label.textContent = selectedFiles.length + ' berkas dipilih — klik untuk menambahkan lagi';
+  } else {
+    box.classList.remove('filled');
+    label.textContent = 'Klik untuk memilih berkas, atau seret berkas ke sini';
+  }
+}
+function removeFile(index){
+  selectedFiles.splice(index, 1);
+  renderFileList();
+}
+
+// Batasan lampiran mengikuti §2.1 & §18.7 Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md:
+// tipe pdf/jpg/jpeg/png/docx/xlsx, maks 10 MB per file, maks 10 file per surat.
+var ALLOWED_FILE_EXT = ['pdf', 'jpg', 'jpeg', 'png', 'docx', 'xlsx'];
+var MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024;
+var MAX_FILE_COUNT = 10;
+function getFileExt(name){
+  var parts = name.split('.');
+  return parts.length > 1 ? parts.pop().toLowerCase() : '';
+}
+function onFileChosen(input){
+  if(!input.files || !input.files.length){ return; }
+  var skipped = [];
+  Array.prototype.forEach.call(input.files, function(f){
+    if(selectedFiles.length >= MAX_FILE_COUNT){
+      skipped.push(f.name + ' (maks ' + MAX_FILE_COUNT + ' berkas)');
+      return;
+    }
+    if(ALLOWED_FILE_EXT.indexOf(getFileExt(f.name)) === -1){
+      skipped.push(f.name + ' (tipe tidak didukung)');
+      return;
+    }
+    if(f.size > MAX_FILE_SIZE_BYTES){
+      skipped.push(f.name + ' (lebih dari 10 MB)');
+      return;
+    }
+    var isDuplicate = selectedFiles.some(function(sf){ return sf.name === f.name && sf.size === f.size; });
+    if(!isDuplicate){ selectedFiles.push(f); }
+  });
+  input.value = '';
+  renderFileList();
+  if(skipped.length){
+    toast('Dilewati: ' + skipped.join(', '));
+  }
+}
+function setInvalid(fieldId, invalid){
+  var el = document.getElementById(fieldId);
+  if(el){ el.classList.toggle('invalid', invalid); }
+}
+
+/* Waktu mulai/selesai mengikuti §2.1 & §9.5 Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md:
+   keduanya opsional, end_time > start_time bila keduanya diisi, dan end_time menjadi basis
+   batas aksi (action_deadline = letter_date + end_time, atau 23:59:59 bila end_time kosong). */
+function isWaktuRangeValid(){
+  var mulai = document.getElementById('waktuMulai').value;
+  var selesai = document.getElementById('waktuSelesai').value;
+  if(!mulai || !selesai){ return true; }
+  return selesai > mulai;
+}
+function formatTanggalLabel(tglValue){
+  if(!tglValue) return '';
+  var parts = tglValue.split('-');
+  var bulanList = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  return parseInt(parts[2], 10) + ' ' + bulanList[parseInt(parts[1], 10) - 1] + ' ' + parts[0];
+}
+function updateBatasAksiPreview(){
+  var tgl = document.getElementById('tglSurat').value;
+  var selesai = document.getElementById('waktuSelesai').value;
+  setInvalid('f-waktu-selesai', !isWaktuRangeValid());
+  var el = document.getElementById('batasAksiPreview');
+  if(!el) return;
+  if(!tgl){
+    el.textContent = 'Batas aksi anggota = tanggal surat + waktu selesai. Jika waktu selesai dikosongkan, batas aksi otomatis sampai 23.59 WIB pada tanggal surat.';
+    return;
+  }
+  var label = formatTanggalLabel(tgl);
+  el.textContent = 'Batas aksi anggota: ' + label + ', ' + (selesai || '23.59') + ' WIB.';
+}
+
+/* Unit Type (org unit periode aktif) & anggota per Unit Type - sumber GET /org-units
+   dan GET /org-units/{orgUnitId}/members (Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md
+   §20.1-20.2), dipakai di form create sesuai §2.1 & BR-04. */
+var ORG_UNITS = [
+  {id: 'ou-pimpinan', name: 'Pimpinan DPRD'},
+  {id: 'ou-komisi-1', name: 'Komisi I'},
+  {id: 'ou-komisi-2', name: 'Komisi II'},
+  {id: 'ou-komisi-3', name: 'Komisi III'},
+  {id: 'ou-komisi-4', name: 'Komisi IV'}
+];
+var MEMBERS_BY_ORG_UNIT = {
+  'ou-pimpinan': [
+    {id: 'm-narisqa', name: 'Narisqa', position: 'Ketua DPRD', orgUnit: 'Pimpinan DPRD'}
+  ],
+  'ou-komisi-1': [
+    {id: 'm-budi', name: 'Ir. Budi Santoso, M.T.', position: 'Ketua', orgUnit: 'Komisi I'},
+    {id: 'm-yusuf', name: 'M. Yusuf Ridwan', position: 'Anggota', orgUnit: 'Komisi I'}
+  ],
+  'ou-komisi-2': [
+    {id: 'm-hendra', name: 'R. Hendra Wijaya, S.H.', position: 'Anggota', orgUnit: 'Komisi II'}
+  ],
+  'ou-komisi-3': [
+    {id: 'm-ahmad', name: 'Drs. Ahmad Fauzi', position: 'Anggota', orgUnit: 'Komisi III'}
+  ],
+  'ou-komisi-4': [
+    {id: 'm-siti', name: 'Hj. Siti Rahmawati', position: 'Anggota', orgUnit: 'Komisi IV'}
+  ]
+};
+function populateUnitTypeSelect(){
+  var sel = document.getElementById('unitTypeSelect');
+  sel.innerHTML = '<option value="">&mdash; Pilih Unit Type &mdash;</option>' + ORG_UNITS.map(function(ou){
+    return '<option value="' + ou.id + '">' + ou.name + '</option>';
+  }).join('');
+}
+function handleUnitTypeChange(orgUnitId){
+  var recSel = document.getElementById('tujuanAnggota');
+  var members = MEMBERS_BY_ORG_UNIT[orgUnitId] || [];
+  setInvalid('f-unit-type', false);
+  if(!orgUnitId || !members.length){
+    recSel.innerHTML = '<option value="">Pilih Unit Type dahulu...</option>';
+    recSel.disabled = true;
+    return;
+  }
+  recSel.disabled = false;
+  recSel.innerHTML = '<option value="">&mdash; Pilih anggota &mdash;</option>' + members.map(function(m){
+    return '<option value="' + m.id + '">' + m.name + ', ' + m.position + ' &ndash; ' + m.orgUnit + '</option>';
+  }).join('');
+}
+function findSelectedMember(orgUnitId, recipientId){
+  var members = MEMBERS_BY_ORG_UNIT[orgUnitId] || [];
+  return members.filter(function(m){ return m.id === recipientId; })[0] || null;
+}
+
+// Penyimpanan draft (prototipe) - meniru PUT /web/incoming-letters/{id} (§18.4) supaya draft
+// yang pernah diisi bisa dimuat ulang saat "Lanjutkan" diklik dari surat-masuk.html (G-07).
+var SURAT_MASUK_DRAFT_KEY = 'ep_surat_masuk_drafts';
+var currentDraftId = null;
+function loadDraftsFromStorage(){
+  try { return JSON.parse(localStorage.getItem(SURAT_MASUK_DRAFT_KEY)) || {}; } catch(e){ return {}; }
+}
+function saveDraftsToStorage(drafts){
+  try { localStorage.setItem(SURAT_MASUK_DRAFT_KEY, JSON.stringify(drafts)); } catch(e){}
+}
+function getQueryParam(name){
+  var m = new RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+  return m ? decodeURIComponent(m[1]) : null;
+}
+function prefillFromDraft(draft){
+  document.getElementById('nomorSurat').value = draft.nomor || '';
+  document.getElementById('judulSurat').value = draft.judul || '';
+  document.getElementById('tglSurat').value = draft.tgl || '';
+  document.getElementById('waktuMulai').value = draft.waktuMulai || '';
+  document.getElementById('waktuSelesai').value = draft.waktuSelesai || '';
+  document.getElementById('tempatSurat').value = draft.tempat || '';
+  document.getElementById('notesSurat').value = draft.notes || '';
+  if(draft.orgUnitId){
+    document.getElementById('unitTypeSelect').value = draft.orgUnitId;
+    handleUnitTypeChange(draft.orgUnitId);
+    document.getElementById('tujuanAnggota').value = draft.recipientId || '';
+  }
+  selectedFiles = (draft.attachments || []).slice();
+  renderFileList();
+  updateBatasAksiPreview();
+
+  document.getElementById('pageTitle').textContent = 'Lanjutkan Draft Surat Masuk';
+  document.getElementById('pageCrumb').innerHTML = '<a href="surat-masuk.html">Surat Masuk</a> &rsaquo; Lanjutkan Draft';
+  document.getElementById('draftResumeBanner').style.display = 'flex';
+}
+function initDraftPrefill(){
+  var draftId = getQueryParam('draftId');
+  if(!draftId) return;
+  var drafts = loadDraftsFromStorage();
+  var draft = drafts[draftId];
+  if(!draft){
+    toast('Draft tidak ditemukan, memulai surat baru');
+    return;
+  }
+  currentDraftId = draftId;
+  prefillFromDraft(draft);
+}
+// period_id tidak pernah jadi input Sekretariat (§2.1, §18.2 Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md
+// v0.5) - diisi otomatis dari periode DPRD aktif, dan jadi snapshot: draft yang sudah punya
+// periodId tidak berubah lagi meski periode aktif berganti saat draft itu dibuka kembali.
+function getLetterPeriodId(){
+  if(currentDraftId){
+    var drafts = loadDraftsFromStorage();
+    var existing = drafts[currentDraftId];
+    if(existing && existing.periodId) return existing.periodId;
+  }
+  return (typeof periodeActiveId === 'function') ? periodeActiveId() : null;
+}
+function updatePeriodeAktifLabel(){
+  var el = document.getElementById('periodeAktifLabel');
+  if(!el) return;
+  var pid = getLetterPeriodId();
+  el.textContent = (typeof periodeNama === 'function' && pid) ? periodeNama(pid) : '—';
+}
+function collectFormDataForDraft(){
+  return {
+    periodId: getLetterPeriodId(),
+    nomor: document.getElementById('nomorSurat').value.trim(),
+    judul: document.getElementById('judulSurat').value.trim(),
+    tgl: document.getElementById('tglSurat').value,
+    waktuMulai: document.getElementById('waktuMulai').value,
+    waktuSelesai: document.getElementById('waktuSelesai').value,
+    tempat: document.getElementById('tempatSurat').value.trim(),
+    notes: document.getElementById('notesSurat').value.trim(),
+    orgUnitId: document.getElementById('unitTypeSelect').value,
+    recipientId: document.getElementById('tujuanAnggota').value,
+    attachments: selectedFiles.map(function(f){ return {name: f.name, size: f.size}; })
+  };
+}
+
+function submitForm(e, mode){
+  e.preventDefault();
+  var nomor = document.getElementById('nomorSurat').value.trim();
+  var judul = document.getElementById('judulSurat').value.trim();
+  var tempat = document.getElementById('tempatSurat').value.trim();
+  var tgl = document.getElementById('tglSurat').value;
+  var orgUnitId = document.getElementById('unitTypeSelect').value;
+  var recipientId = document.getElementById('tujuanAnggota').value;
+  // BR-01 / §2.1 Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md: no surat maks 20 karakter,
+  // judul maks 255 karakter, tempat maks 255 karakter (opsional).
+  var nomorOk = /^[A-Za-z0-9./-]+$/.test(nomor) && nomor.length <= 20;
+  var judulOk = judul.length > 0 && judul.length <= 255;
+  var tempatOk = tempat.length <= 255;
+
+  if(mode === 'DRAFT'){
+    // Draft belum perlu lengkap - sekadar menyimpan progres, belum berdampak ke anggota.
+    var drafts = loadDraftsFromStorage();
+    var draftId = currentDraftId || ('draft-' + Date.now());
+    drafts[draftId] = collectFormDataForDraft();
+    saveDraftsToStorage(drafts);
+    currentDraftId = draftId;
+    toast('Tersimpan sebagai Draft');
+    setTimeout(function(){ window.location.href = 'surat-masuk.html'; }, 900);
+    return false;
+  }
+
+  var waktuOk = isWaktuRangeValid();
+
+  setInvalid('f-nomor', !nomorOk);
+  setInvalid('f-judul', !judulOk);
+  setInvalid('f-tempat', !tempatOk);
+  setInvalid('f-unit-type', !orgUnitId);
+  setInvalid('f-tujuan', !recipientId);
+  setInvalid('f-waktu-selesai', !waktuOk);
+  if(!nomorOk || !judulOk || !tempatOk || !tgl || !orgUnitId || !recipientId || !waktuOk){
+    var msg = 'Lengkapi data wajib sebelum submit';
+    if(!waktuOk){ msg = 'Waktu selesai harus lebih besar dari waktu mulai'; }
+    else if(!nomorOk){ msg = 'No. surat tidak valid atau lebih dari 20 karakter'; }
+    else if(!judulOk){ msg = 'Judul surat wajib diisi, maks 255 karakter'; }
+    else if(!tempatOk){ msg = 'Tempat maks 255 karakter'; }
+    toast(msg);
+    return false;
+  }
+  var member = findSelectedMember(orgUnitId, recipientId);
+  if(currentDraftId){
+    // Draft yang di-Submit tidak lagi berstatus DRAFT - hapus dari penyimpanan draft.
+    var remainingDrafts = loadDraftsFromStorage();
+    delete remainingDrafts[currentDraftId];
+    saveDraftsToStorage(remainingDrafts);
+  }
+  toast('Surat masuk dikirim ke aplikasi mobile ' + (member ? member.name : 'anggota terpilih'));
+  setTimeout(function(){ window.location.href = 'surat-masuk.html'; }, 900);
+  return false;
+}
+populateUnitTypeSelect();
+initDraftPrefill();
+updatePeriodeAktifLabel();
+</script>
+</body>
+</html>
