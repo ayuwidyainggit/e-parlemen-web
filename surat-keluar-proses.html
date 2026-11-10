@@ -80,11 +80,6 @@ a{color:inherit;}
 .btn-row{display:flex;gap:10px;flex-wrap:wrap;}
 .btn:disabled{opacity:.5;cursor:not-allowed;}
 
-.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:26px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
-.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
-.upload-box:hover{border-color:var(--gold);}
-.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
-
 .timeline{position:relative;padding-left:22px;}
 .timeline::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--border);}
 .t-item{position:relative;margin-bottom:18px;}
@@ -104,6 +99,28 @@ a{color:inherit;}
 .kv-row:last-child{border-bottom:none;}
 .kv-row .k{color:var(--muted);flex-shrink:0;}
 .kv-row .v{font-weight:700;text-align:right;}
+
+.addr-block{white-space:pre-line;font-size:12.5px;line-height:1.65;color:var(--ink);}
+.letter-body{font-size:12.5px;line-height:1.65;color:var(--ink);}
+.letter-body p{margin:0 0 10px;}
+.letter-body p:last-child{margin-bottom:0;}
+.letter-body ul,.letter-body ol{margin:0 0 10px;padding-left:18px;}
+.signer-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px dashed var(--border);}
+.signer-item:last-child{border-bottom:none;}
+.signer-level-badge{width:26px;height:26px;border-radius:50%;background:var(--neutral-bg);color:var(--ink);font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.signer-item .sname{font-weight:800;font-size:12.6px;}
+.signer-item .srole{font-size:10.8px;color:var(--muted);margin-top:1px;}
+
+.upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:26px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
+.upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
+.upload-box:hover{border-color:var(--gold);}
+.upload-box.filled{border-style:solid;border-color:var(--success);color:var(--ink);background:var(--success-bg);}
+.filelist{margin-top:12px;display:flex;flex-direction:column;gap:8px;}
+.filecell{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--border);border-radius:10px;font-size:12px;}
+.filecell .fc-ic{color:var(--green);flex-shrink:0;}
+.filecell .fc-name{flex:1;min-width:0;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.filecell .fc-size{color:var(--muted);font-size:10.5px;flex-shrink:0;}
+.filecell .fc-remove{background:none;border:none;color:var(--danger);cursor:pointer;font-size:15px;line-height:1;padding:2px 4px;flex-shrink:0;font-family:inherit;}
 
 .namecell{display:flex;align-items:center;gap:10px;}
 .namecell .av{width:40px;height:40px;border-radius:50%;background:var(--neutral-bg);color:var(--green);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex-shrink:0;}
@@ -175,87 +192,26 @@ a{color:inherit;}
 
     <div class="content">
 
-      <div class="card">
-        <div class="section-title">
-          <div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">Anggota Komisi I &middot; Fraksi Golkar</div></div></div>
-          <span class="badge badge-warn" id="statusBadge">Permintaan Baru</span>
-        </div>
-        <div class="kv-row"><span class="k">Jenis Surat</span><span class="v">Surat Keterangan Tugas</span></div>
-        <div class="kv-row"><span class="k">Perihal / Keperluan</span><span class="v">Penugasan menghadiri Rapat Koordinasi Provinsi Jawa Tengah</span></div>
-        <div class="kv-row"><span class="k">Tanggal Digunakan</span><span class="v">27 Mei 2025</span></div>
-        <div class="kv-row"><span class="k">Diajukan</span><span class="v">Hari ini, 09.12 WIB</span></div>
-        <div class="kv-row"><span class="k">Catatan Pemohon</span><span class="v">Mohon diproses sebelum tanggal 26 Mei untuk keperluan administrasi perjalanan dinas.</span></div>
-      </div>
-
       <div class="two-col-layout">
         <div>
-          <div class="card" id="uploadCard">
-            <div class="section-title">1. Unggah Draf &amp; Kirim ke Aplikasi Mobile</div>
-            <div class="hint" style="margin-bottom:12px;">Unggah draf surat dalam format PDF. Setelah dikirim, Anggota Dewan akan menerima notifikasi untuk meninjau &amp; menyetujui surat melalui aplikasi mobile.</div>
-            <label class="upload-box" id="uploadBox" for="pdfInput">
-              <span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span>
-              <span id="uploadLabel">Klik untuk memilih berkas PDF draf surat, atau seret berkas ke sini</span>
-            </label>
-            <input type="file" id="pdfInput" accept="application/pdf" style="display:none;" onchange="onFileChosen(this)">
-            <div class="btn-row" style="margin-top:14px;">
-              <button class="btn btn-primary" id="sendBtn" onclick="sendDraft()" disabled><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Kirim Draf ke Anggota</button>
-            </div>
-          </div>
-
-          <div class="card" id="waitingCard" style="display:none;">
-            <div class="section-title">2. Menunggu Persetujuan Anggota</div>
-            <div class="info-box">
+          <div class="card">
+            <div class="section-title">Detail Surat</div>
+            <div class="info-box" style="margin-bottom:14px;">
               <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v5h1"/></svg></span>
-              <span>Draf PDF telah terkirim ke aplikasi mobile Ir. Budi Santoso, M.T. Admin akan menerima notifikasi otomatis segera setelah surat disetujui.</span>
+              <span>Detail surat di bawah ini diisi Anggota saat mengajukan permintaan melalui aplikasi mobile &mdash; tidak dapat diubah dari sisi Admin.</span>
             </div>
-            <div class="hint" style="margin-top:10px;">Mode prototipe &mdash; simulasikan tanggapan Anggota Dewan pada aplikasi mobile:</div>
-            <div class="btn-row" style="margin-top:8px;">
-              <button class="btn btn-outline btn-sm" onclick="simulateApproval()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Simulasikan: Disetujui Anggota</button>
-            </div>
+            <div id="suratDetailArea"></div>
           </div>
 
-          <div class="card" id="approvedCard" style="display:none;">
-            <div class="section-title">3. Disetujui &middot; Siap Dikirim/Dicetak</div>
-            <div class="success-box" id="approvalNotif">
-              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-              <span><strong>Surat disetujui oleh Ir. Budi Santoso, M.T.</strong><br>Disetujui melalui aplikasi mobile, hari ini pukul 10.24 WIB. Surat siap dicetak &amp; dikirim ke pemohon.</span>
-            </div>
-            <div class="hint" style="margin:12px 0;">Setelah surat fisik/PDF final dikirimkan kepada pemohon, tandai permintaan ini sebagai selesai.</div>
-            <div class="btn-row">
-              <button class="btn btn-primary" onclick="markDone()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Tandai Sudah Dikirim (Selesai)</button>
-            </div>
-          </div>
-
-          <div class="card" id="doneCard" style="display:none;">
-            <div class="success-box">
-              <span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span>
-              <span><strong>Permintaan selesai.</strong> Surat telah dikirim kepada pemohon &amp; status diperbarui menjadi Selesai.</span>
-            </div>
-          </div>
+          <div id="actionArea"></div>
         </div>
 
         <div>
+          <div id="claimAreaRight"></div>
+
           <div class="card">
-            <div class="section-title">Riwayat Status</div>
-            <div class="timeline" id="statusTimeline">
-              <div class="t-item done">
-                <div class="t-title">Permintaan diterima</div>
-                <div class="t-time">Hari ini, 09.12 WIB</div>
-                <div class="t-desc">Diajukan oleh Ir. Budi Santoso, M.T. melalui aplikasi mobile.</div>
-              </div>
-              <div class="t-item pending" id="tl-kirim">
-                <div class="t-title">Draf dikirim untuk persetujuan</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-              <div class="t-item pending" id="tl-setuju">
-                <div class="t-title">Disetujui Anggota</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-              <div class="t-item pending" id="tl-selesai">
-                <div class="t-title">Selesai &amp; dikirim ke pemohon</div>
-                <div class="t-time">&mdash;</div>
-              </div>
-            </div>
+            <div class="section-title">Status Permintaan</div>
+            <div class="timeline" id="statusTimeline"></div>
           </div>
         </div>
       </div>
@@ -270,43 +226,310 @@ function toast(msg){
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-function onFileChosen(input){
-  if(input.files && input.files[0]){
-    document.getElementById('uploadLabel').textContent = 'Berkas dipilih: ' + input.files[0].name;
-    document.getElementById('uploadBox').classList.add('filled');
-    document.getElementById('sendBtn').disabled = false;
+
+// Admin yang sedang login di prototipe ini (dipakai utk cek "user sama dengan user yang
+// klaim" - menentukan apakah form unggah file & submit boleh ditampilkan).
+var CURRENT_ADMIN_NAME = 'Sri Wahyuni';
+
+// Data permintaan surat keluar (prototipe) - 9 entri sesuai 3 tab di surat-keluar.html
+// (3 Permintaan Baru, 2 Sedang Diproses, 4 Selesai). Seluruh detail surat (Jabatan Dituju,
+// Sifat, Hal, Deadline, Tujuan Surat, Isi Surat, Penandatanganan, Stempel) merepresentasikan
+// data yang diisi Anggota saat submit via aplikasi mobile.
+var SURAT_KELUAR_DATA = {
+  '1': {
+    status: 'baru', claimedBy: null,
+    diajukanTime: 'Hari ini, 09.12 WIB', klaimTime: null, selesaiTime: null,
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Biasa',
+      hal: 'Surat Keterangan Kunjungan Kerja ke Kecamatan Magelang Utara',
+      deadlineLabel: '24 Mei 2025, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Camat Magelang Utara\nJabatan: Camat\nAlamat: Jl. Jenderal Sudirman No. 10, Magelang Utara, Kota Magelang',
+      isiSurat: '<p>Sehubungan dengan pelaksanaan kunjungan kerja dalam rangka monitoring pembangunan di wilayah Kecamatan Magelang Utara, dengan ini kami sampaikan permohonan izin kunjungan sebagai berikut:</p>'
+        + '<ul><li>Hari/Tanggal: Selasa, 27 Mei 2025</li><li>Waktu: 09.00 WIB &ndash; selesai</li><li>Agenda: Peninjauan lokasi pembangunan &amp; dialog dengan warga</li></ul>'
+        + '<p>Demikian surat ini kami sampaikan, atas perhatian dan kerja sama yang baik kami ucapkan terima kasih.</p>',
+      signers: [{level:1, nama:'Ir. Budi Santoso, M.T.', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi I'}]
+    }
+  },
+  '2': {
+    status: 'baru', claimedBy: null,
+    diajukanTime: 'Hari ini, 08.05 WIB', klaimTime: null, selesaiTime: null,
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Tata Usaha &amp; Kepegawaian &mdash; Sekretariat DPRD',
+      sifat: 'Penting',
+      hal: 'Surat Pengantar Reses Masa Sidang II Tahun 2026',
+      deadlineLabel: '10 Nov 2026, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Kepala Desa/Kelurahan se-Dapil Komisi III\nJabatan: Kepala Desa/Kelurahan\nAlamat: Wilayah Dapil Komisi III, Kota Magelang',
+      isiSurat: '<p>Sehubungan dengan pelaksanaan reses Masa Sidang II Tahun 2026, dengan ini kami mohon bantuan fasilitasi pertemuan dengan warga di wilayah Bapak/Ibu.</p><p>Demikian surat pengantar ini kami sampaikan, atas kerja sama yang baik kami ucapkan terima kasih.</p>',
+      signers: [{level:1, nama:'Drs. Ahmad Fauzi', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi III'}]
+    }
+  },
+  '3': {
+    status: 'baru', claimedBy: null,
+    diajukanTime: 'Kemarin, 15.30 WIB', klaimTime: null, selesaiTime: null,
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Biasa',
+      hal: 'Surat Keterangan Domisili Fraksi Partai Golkar',
+      deadlineLabel: '10 Nov 2026, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Ketua DPC Partai Golkar Kota Magelang\nJabatan: Ketua DPC\nAlamat: Kota Magelang',
+      isiSurat: '<p>Dengan ini kami terangkan bahwa yang bersangkutan benar berdomisili dan aktif sebagai bagian dari Fraksi Partai Golkar DPRD Kota Magelang.</p><p>Demikian surat keterangan ini dibuat untuk dipergunakan sebagaimana mestinya.</p>',
+      signers: [{level:1, nama:'R. Hendra Wijaya, S.H.', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi II'}]
+    }
+  },
+  '4': {
+    status: 'proses', claimedBy: 'Sri Wahyuni',
+    diajukanTime: 'Kemarin, 14.40 WIB', klaimTime: 'Hari ini, 08.30 WIB', selesaiTime: null,
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Segera',
+      hal: 'Surat Undangan Kunjungan Dapil IV',
+      deadlineLabel: '9 Nov 2026, 23.59 WIB',
+      stempel: false,
+      tujuanSurat: 'Yth. Camat Magelang Selatan\nJabatan: Camat\nAlamat: Magelang Selatan, Kota Magelang',
+      isiSurat: '<p>Sehubungan dengan agenda kunjungan Dapil IV, dengan ini kami mengundang Bapak/Ibu untuk hadir mendampingi &amp; memfasilitasi kegiatan dimaksud.</p><p>Atas perhatian &amp; kerja sama yang baik, kami ucapkan terima kasih.</p>',
+      signers: [{level:1, nama:'Hj. Siti Rahmawati', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi IV'}]
+    }
+  },
+  '5': {
+    status: 'proses', claimedBy: 'Dedi Kurniawan',
+    diajukanTime: '2 hari lalu, 11.00 WIB', klaimTime: 'Kemarin, 09.15 WIB', selesaiTime: null,
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Tata Usaha &amp; Kepegawaian &mdash; Sekretariat DPRD',
+      sifat: 'Biasa',
+      hal: 'Surat Keterangan Tugas Rapat Koordinasi',
+      deadlineLabel: '10 Nov 2026, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Kepala Badan Kepegawaian Daerah Kota Magelang\nJabatan: Kepala Badan\nAlamat: Kota Magelang',
+      isiSurat: '<p>Dengan ini diterangkan bahwa yang bersangkutan ditugaskan untuk menghadiri rapat koordinasi terkait kepegawaian daerah.</p><p>Demikian surat keterangan tugas ini dibuat untuk dipergunakan sebagaimana mestinya.</p>',
+      signers: [{level:1, nama:'M. Yusuf Ridwan', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi I'}]
+    }
+  },
+  '6': {
+    status: 'selesai', claimedBy: 'Sri Wahyuni',
+    diajukanTime: 'Hari ini, 06.40 WIB', klaimTime: 'Hari ini, 07.10 WIB', selesaiTime: 'Hari ini, 07.50 WIB',
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Penting',
+      hal: 'Surat Rekomendasi Hasil Reses Masa Sidang I 2025',
+      deadlineLabel: '9 Nov 2026, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Kepala Dinas PUPR Kota Magelang\nJabatan: Kepala Dinas\nAlamat: Kota Magelang',
+      isiSurat: '<p>Berdasarkan hasil reses Masa Sidang I 2025, dengan ini kami rekomendasikan agar usulan perbaikan infrastruktur dari warga segera ditindaklanjuti.</p><p>Demikian surat rekomendasi ini kami sampaikan, atas perhatiannya kami ucapkan terima kasih.</p>',
+      signers: [{level:1, nama:'Drs. Ahmad Fauzi', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi III'}]
+    }
+  },
+  '7': {
+    status: 'selesai', claimedBy: 'Sri Wahyuni',
+    diajukanTime: '16 Mei 2025, 09.00 WIB', klaimTime: '17 Mei 2025, 10.00 WIB', selesaiTime: '18 Mei 2025',
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Biasa',
+      hal: 'Surat Keterangan Tugas Kunjungan Kerja',
+      deadlineLabel: '17 Mei 2025, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Kepala Dinas Perhubungan Kota Magelang\nJabatan: Kepala Dinas\nAlamat: Kota Magelang',
+      isiSurat: '<p>Dengan ini diterangkan bahwa yang bersangkutan ditugaskan untuk melaksanakan kunjungan kerja terkait evaluasi layanan transportasi publik.</p><p>Demikian surat keterangan tugas ini dibuat untuk dipergunakan sebagaimana mestinya.</p>',
+      signers: [{level:1, nama:'Ir. Budi Santoso, M.T.', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi I'}]
+    }
+  },
+  '8': {
+    status: 'selesai', claimedBy: 'Dedi Kurniawan',
+    diajukanTime: '13 Mei 2025, 13.20 WIB', klaimTime: '14 Mei 2025, 09.00 WIB', selesaiTime: '15 Mei 2025',
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Tata Usaha &amp; Kepegawaian &mdash; Sekretariat DPRD',
+      sifat: 'Biasa',
+      hal: 'Surat Pengantar Reses Dapil IV',
+      deadlineLabel: '14 Mei 2025, 23.59 WIB',
+      stempel: false,
+      tujuanSurat: 'Yth. Kepala Desa/Kelurahan se-Dapil IV\nJabatan: Kepala Desa/Kelurahan\nAlamat: Wilayah Dapil IV, Kota Magelang',
+      isiSurat: '<p>Sehubungan dengan pelaksanaan reses, dengan ini kami mohon bantuan fasilitasi pertemuan dengan warga di wilayah Bapak/Ibu.</p><p>Demikian surat pengantar ini kami sampaikan, atas kerja sama yang baik kami ucapkan terima kasih.</p>',
+      signers: [{level:1, nama:'Hj. Siti Rahmawati', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi IV'}]
+    }
+  },
+  '9': {
+    status: 'selesai', claimedBy: 'Sri Wahyuni',
+    diajukanTime: '10 Mei 2025, 10.15 WIB', klaimTime: '11 Mei 2025, 08.40 WIB', selesaiTime: '12 Mei 2025',
+    suratDetail: {
+      jabatanDituju: 'Kasubbag Persuratan &amp; Kearsipan &mdash; Sekretariat DPRD',
+      sifat: 'Penting',
+      hal: 'Surat Keterangan Tugas Rapat Dengar Pendapat',
+      deadlineLabel: '11 Mei 2025, 23.59 WIB',
+      stempel: true,
+      tujuanSurat: 'Yth. Kepala Dinas Kesehatan Kota Magelang\nJabatan: Kepala Dinas\nAlamat: Kota Magelang',
+      isiSurat: '<p>Dengan ini diterangkan bahwa yang bersangkutan ditugaskan untuk menghadiri Rapat Dengar Pendapat terkait layanan kesehatan masyarakat.</p><p>Demikian surat keterangan tugas ini dibuat untuk dipergunakan sebagaimana mestinya.</p>',
+      signers: [{level:1, nama:'R. Hendra Wijaya, S.H.', jabatan:'Anggota DPRD Kota Magelang', unitType:'Komisi II'}]
+    }
   }
+};
+
+var currentRecordId = '1';
+
+function renderSuratDetail(d){
+  var signersHtml = d.signers.map(function(s){
+    return '<div class="signer-item"><div class="signer-level-badge">' + s.level + '</div><div><div class="sname">' + s.nama + '</div><div class="srole">' + s.jabatan + ' &ndash; ' + s.unitType + '</div></div></div>';
+  }).join('');
+  document.getElementById('suratDetailArea').innerHTML = ''
+    + '<div class="kv-row"><span class="k">Jabatan yang Dituju</span><span class="v">' + d.jabatanDituju + '</span></div>'
+    + '<div class="kv-row"><span class="k">Sifat</span><span class="v">' + d.sifat + '</span></div>'
+    + '<div class="kv-row"><span class="k">Hal</span><span class="v">' + d.hal + '</span></div>'
+    + '<div class="kv-row"><span class="k">Deadline</span><span class="v">' + d.deadlineLabel + '</span></div>'
+    + '<div class="kv-row"><span class="k">Stempel</span><span class="v"><span class="badge ' + (d.stempel ? 'badge-success' : 'badge-neutral') + '">' + (d.stempel ? 'Digunakan' : 'Tidak Digunakan') + '</span></span></div>'
+    + '<div class="section-title" style="margin-top:18px;">Tujuan Surat</div>'
+    + '<div class="addr-block">' + d.tujuanSurat + '</div>'
+    + '<div class="section-title" style="margin-top:18px;">Isi Surat</div>'
+    + '<div class="letter-body">' + d.isiSurat + '</div>'
+    + '<div class="section-title" style="margin-top:18px;">Penandatanganan</div>'
+    + signersHtml;
 }
-function sendDraft(){
-  document.getElementById('uploadCard').style.display = 'none';
-  document.getElementById('waitingCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Menunggu Persetujuan';
-  document.getElementById('statusBadge').className = 'badge badge-info';
-  var tl = document.getElementById('tl-kirim');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 09.40 WIB';
-  toast('Draf PDF terkirim ke aplikasi mobile anggota');
+
+function renderTimeline(record){
+  var steps = [{state:'done', title:'Surat Keluar Disubmit', time: record.diajukanTime}];
+  if(record.status === 'baru'){
+    steps.push({state:'pending', title:'Surat Keluar Diklaim oleh Anggota Sekretariat', desc:'Permintaan sudah masuk ke daftar seluruh Admin Sekretariat (SETWAN), menunggu diklaim.'});
+    steps.push({state:'pending', title:'Surat Keluar Diupload (Selesai)'});
+  } else {
+    steps.push({state:'done', title:'Surat Keluar Diklaim oleh Anggota Sekretariat', time: record.klaimTime, desc:'Diklaim oleh ' + record.claimedBy + '.'});
+    if(record.status === 'proses'){
+      steps.push({state:'pending', title:'Surat Keluar Diupload (Selesai)'});
+    } else {
+      steps.push({state:'done', title:'Surat Keluar Diupload (Selesai)', time: record.selesaiTime});
+    }
+  }
+  document.getElementById('statusTimeline').innerHTML = steps.map(function(s){
+    var extra = '';
+    if(s.time){ extra += '<div class="t-time">' + s.time + '</div>'; }
+    if(s.desc){ extra += '<div class="t-desc">' + s.desc + '</div>'; }
+    return '<div class="t-item ' + s.state + '"><div class="t-title">' + s.title + '</div>' + extra + '</div>';
+  }).join('');
 }
-function simulateApproval(){
-  document.getElementById('waitingCard').style.display = 'none';
-  document.getElementById('approvedCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Disetujui';
-  document.getElementById('statusBadge').className = 'badge badge-success';
-  var tl = document.getElementById('tl-setuju');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 10.24 WIB';
-  toast('Notifikasi diterima: surat disetujui anggota');
+
+// "Klaim & Mulai Proses" hanya tampil utk status Permintaan Baru - sekali diklaim, card ini
+// hilang (bukan lagi area aksi; aksi berpindah ke actionArea sesuai siapa yang mengklaim).
+function renderClaimArea(record){
+  var el = document.getElementById('claimAreaRight');
+  if(record.status !== 'baru'){ el.innerHTML = ''; return; }
+  el.innerHTML = '<div class="card" id="claimCard">'
+    + '<div class="section-title">Klaim Permintaan Ini</div>'
+    + '<div class="hint" style="margin-bottom:12px;">Klaim permintaan ini agar berstatus In Progress. Anggota SETWAN lain tetap bisa melihat permintaan ini di daftar, namun tidak mendapat notifikasi saat Anda mengklaim.</div>'
+    + '<div class="btn-row"><button class="btn btn-primary" id="claimBtn" onclick="claimRequest()"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg> Klaim &amp; Mulai Proses</button></div>'
+    + '</div>';
 }
-function markDone(){
-  document.getElementById('approvedCard').style.display = 'none';
-  document.getElementById('doneCard').style.display = 'block';
-  document.getElementById('statusBadge').textContent = 'Selesai';
-  document.getElementById('statusBadge').className = 'badge badge-neutral';
-  var tl = document.getElementById('tl-selesai');
-  tl.classList.remove('pending'); tl.classList.add('done');
-  tl.querySelector('.t-time').textContent = 'Hari ini, 10.35 WIB';
-  toast('Status diperbarui menjadi Selesai');
+
+// Area aksi di kolom kiri, berbeda per status:
+// - baru: kosong (satu-satunya aksi adalah tombol Klaim di kolom kanan)
+// - proses + diklaim oleh user ini: form unggah file (multiple) & tombol submit
+// - proses + diklaim admin lain: pesan info, tidak ada aksi
+// - selesai: ringkasan read-only, tidak ada aksi
+function renderActionArea(record){
+  var el = document.getElementById('actionArea');
+  if(record.status === 'baru'){
+    el.innerHTML = '';
+    return;
+  }
+  if(record.status === 'proses'){
+    if(record.claimedBy === CURRENT_ADMIN_NAME){
+      el.innerHTML = '<div class="card" id="uploadCard">'
+        + '<div class="section-title">Unggah File Surat Final &amp; Submit</div>'
+        + '<div class="hint" style="margin-bottom:12px;">Unggah berkas surat final (bisa lebih dari satu), lalu submit untuk menyelesaikan permintaan.</div>'
+        + '<label class="upload-box" id="uploadBox" for="pdfInput"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span id="uploadLabel">Klik untuk memilih berkas, atau seret berkas ke sini</span></label>'
+        + '<input type="file" id="pdfInput" accept=".pdf,.jpg,.jpeg,.png,.docx" multiple style="display:none;" onchange="onFileChosen(this.files)">'
+        + '<div class="filelist" id="fileList"></div>'
+        + '<div class="btn-row" style="margin-top:14px;"><button class="btn btn-primary" id="sendBtn" onclick="submitFinal()" disabled><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg> Submit &amp; Selesaikan</button></div>'
+        + '</div>';
+      selectedFiles = [];
+      renderFileList();
+    } else {
+      el.innerHTML = '<div class="card"><div class="warn-box"><span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.5 17a2 2 0 0 0 1.7 3h15.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></span><span>Permintaan ini sedang diproses oleh <strong>' + record.claimedBy + '</strong>. Anda tidak dapat menindaklanjuti permintaan yang sedang diklaim admin lain.</span></div></div>';
+    }
+    return;
+  }
+  // selesai
+  el.innerHTML = '<div class="card"><div class="success-box"><span><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></span><span><strong>Permintaan selesai.</strong> Diproses oleh ' + record.claimedBy + '. Data di atas bersifat final (read-only).</span></div></div>';
 }
+
+function render(){
+  var record = SURAT_KELUAR_DATA[currentRecordId];
+  renderSuratDetail(record.suratDetail);
+  renderTimeline(record);
+  renderClaimArea(record);
+  renderActionArea(record);
+}
+
+function claimRequest(){
+  var record = SURAT_KELUAR_DATA[currentRecordId];
+  record.status = 'proses';
+  record.claimedBy = CURRENT_ADMIN_NAME;
+  record.klaimTime = 'Hari ini, 09.40 WIB';
+  render();
+  toast('Permintaan diklaim, status menjadi In Progress');
+}
+
+// Upload file surat final (multiple) - hanya relevan saat status proses & diklaim user ini.
+var selectedFiles = [];
+function formatSize(bytes){
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+function renderFileList(){
+  var listEl = document.getElementById('fileList');
+  if(!listEl) return;
+  listEl.innerHTML = selectedFiles.map(function(f, i){
+    return '<div class="filecell">'
+      + '<svg class="ic-svg fc-ic" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg>'
+      + '<span class="fc-name">' + f.name + '</span>'
+      + '<span class="fc-size">' + formatSize(f.size) + '</span>'
+      + '<button type="button" class="fc-remove" onclick="removeFile(' + i + ')" aria-label="Hapus berkas">&times;</button>'
+      + '</div>';
+  }).join('');
+  var box = document.getElementById('uploadBox');
+  var label = document.getElementById('uploadLabel');
+  if(selectedFiles.length){
+    box.classList.add('filled');
+    label.textContent = selectedFiles.length + ' berkas dipilih — klik untuk menambahkan lagi';
+  } else {
+    box.classList.remove('filled');
+    label.textContent = 'Klik untuk memilih berkas, atau seret berkas ke sini';
+  }
+  document.getElementById('sendBtn').disabled = selectedFiles.length === 0;
+}
+function removeFile(index){
+  selectedFiles.splice(index, 1);
+  renderFileList();
+}
+function onFileChosen(files){
+  if(!files || !files.length){ return; }
+  Array.prototype.forEach.call(files, function(f){
+    var isDuplicate = selectedFiles.some(function(sf){ return sf.name === f.name && sf.size === f.size; });
+    if(!isDuplicate){ selectedFiles.push(f); }
+  });
+  document.getElementById('pdfInput').value = '';
+  renderFileList();
+}
+
+function submitFinal(){
+  if(!selectedFiles.length){
+    toast('Pilih minimal satu berkas surat final sebelum submit');
+    return;
+  }
+  var record = SURAT_KELUAR_DATA[currentRecordId];
+  record.status = 'selesai';
+  record.selesaiTime = 'Hari ini, 10.24 WIB';
+  render();
+  toast(selectedFiles.length + ' berkas surat disubmit, status otomatis menjadi Selesai');
+}
+
+function initFromQuery(){
+  var m = new RegExp('[?&]id=([^&]*)').exec(window.location.search);
+  var id = m ? decodeURIComponent(m[1]) : '1';
+  currentRecordId = SURAT_KELUAR_DATA[id] ? id : '1';
+  render();
+}
+initFromQuery();
 </script>
 </body>
 </html>

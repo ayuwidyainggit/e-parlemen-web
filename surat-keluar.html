@@ -155,81 +155,77 @@ tr:hover td{background:#fafaf7;}
     </div>
 
     <div class="content">
-      <div class="hint" style="margin-bottom:16px;">Permintaan surat keluar diajukan Anggota Dewan melalui aplikasi mobile. Admin mengunggah draf PDF &amp; mengirimkannya untuk disetujui, lalu menandai selesai setelah surat fisik dikirim/dicetak.</div>
+      <div class="section-title" style="margin-bottom:6px;">
+        <span></span>
+        <a class="btn btn-primary btn-sm" href="surat-keluar-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Buat Surat Keluar</a>
+      </div>
+      <div class="hint" style="margin-bottom:16px;">Permintaan surat keluar diajukan Anggota Dewan melalui aplikasi mobile dan masuk ke seluruh Admin Sekretariat (SETWAN). Satu admin mengklaim permintaan (In Progress), mengunggah file surat, lalu submit &mdash; surat langsung berstatus Selesai tanpa perlu persetujuan balik dari Anggota. Admin juga dapat membuat surat keluar langsung dari web untuk surat yang sudah jadi di luar sistem &mdash; statusnya langsung tercatat Selesai.</div>
 
       <div class="tabs">
         <button class="tab active" data-tabgroup="sk" onclick="showTab('sk','baru',this)">Permintaan Baru <span class="count">3</span></button>
-        <button class="tab" data-tabgroup="sk" onclick="showTab('sk','menunggu',this)">Menunggu Persetujuan <span class="count">2</span></button>
-        <button class="tab" data-tabgroup="sk" onclick="showTab('sk','disetujui',this)">Disetujui &middot; Siap Kirim <span class="count">1</span></button>
-        <button class="tab" data-tabgroup="sk" onclick="showTab('sk','selesai',this)">Selesai <span class="count">12</span></button>
+        <button class="tab" data-tabgroup="sk" onclick="showTab('sk','progress',this)">Sedang Diproses <span class="count">2</span></button>
+        <button class="tab" data-tabgroup="sk" onclick="showTab('sk','selesai',this)">Selesai <span class="count">4</span></button>
       </div>
 
       <div id="sk-baru" data-panel-group="sk" style="display:block;">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Pemohon</th><th>Jenis Surat</th><th>Diajukan</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Pemohon</th><th>Hal / Perihal</th><th>Sifat</th><th>Deadline</th><th>Diajukan</th><th>Status</th><th></th></tr></thead>
             <tbody>
               <tr>
                 <td><div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">Anggota Komisi I</div></div></div></td>
-                <td>Surat Keterangan Tugas</td>
+                <td>Surat Keterangan Kunjungan Kerja ke Kecamatan Magelang Utara</td>
+                <td>Biasa</td>
+                <td>24 Mei 2025</td>
                 <td>Hari ini, 09.12 WIB</td>
                 <td><span class="badge badge-warn">Permintaan Baru</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Proses &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=1">Proses &rsaquo;</a></td>
               </tr>
               <tr>
                 <td><div class="namecell"><span class="av">AF</span><div><div class="n">Drs. Ahmad Fauzi</div><div class="s">Anggota Komisi III</div></div></div></td>
                 <td>Surat Pengantar Reses</td>
+                <td>Penting</td>
+                <td>10 Nov 2026</td>
                 <td>Hari ini, 08.05 WIB</td>
                 <td><span class="badge badge-warn">Permintaan Baru</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Proses &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=2">Proses &rsaquo;</a></td>
               </tr>
               <tr>
                 <td><div class="namecell"><span class="av">RH</span><div><div class="n">R. Hendra Wijaya, S.H.</div><div class="s">Anggota Komisi II</div></div></div></td>
                 <td>Surat Keterangan Domisili Fraksi</td>
+                <td>Biasa</td>
+                <td>10 Nov 2026</td>
                 <td>Kemarin, 15.30 WIB</td>
                 <td><span class="badge badge-warn">Permintaan Baru</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Proses &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=3">Proses &rsaquo;</a></td>
               </tr>
             </tbody>
           </table>
         </div>
       </div>
 
-      <div id="sk-menunggu" data-panel-group="sk" style="display:none;">
+      <div id="sk-progress" data-panel-group="sk" style="display:none;">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Pemohon</th><th>Jenis Surat</th><th>Dikirim ke Mobile</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Pemohon</th><th>Hal / Perihal</th><th>Sifat</th><th>Deadline</th><th>Diklaim</th><th>Status</th><th></th></tr></thead>
             <tbody>
               <tr>
                 <td><div class="namecell"><span class="av">SR</span><div><div class="n">Hj. Siti Rahmawati</div><div class="s">Anggota Komisi IV</div></div></div></td>
                 <td>Surat Undangan Kunjungan Dapil</td>
+                <td>Segera</td>
+                <td>9 Nov 2026</td>
                 <td>Kemarin, 14.40 WIB</td>
-                <td><span class="badge badge-info">Menunggu Persetujuan</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Lihat &rsaquo;</a></td>
+                <td><span class="badge badge-info">Sedang Diproses</span></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=4">Upload File &rsaquo;</a></td>
               </tr>
               <tr>
                 <td><div class="namecell"><span class="av">MY</span><div><div class="n">M. Yusuf Ridwan</div><div class="s">Anggota Komisi I</div></div></div></td>
                 <td>Surat Keterangan Tugas</td>
+                <td>Biasa</td>
+                <td>10 Nov 2026</td>
                 <td>2 hari lalu, 11.00 WIB</td>
-                <td><span class="badge badge-info">Menunggu Persetujuan</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Lihat &rsaquo;</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div id="sk-disetujui" data-panel-group="sk" style="display:none;">
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Pemohon</th><th>Jenis Surat</th><th>Disetujui</th><th>Status</th><th></th></tr></thead>
-            <tbody>
-              <tr>
-                <td><div class="namecell"><span class="av">AF</span><div><div class="n">Drs. Ahmad Fauzi</div><div class="s">Anggota Komisi III</div></div></div></td>
-                <td>Surat Rekomendasi Reses</td>
-                <td>Hari ini, 07.50 WIB</td>
-                <td><span class="badge badge-success">Disetujui</span></td>
-                <td><a class="btn btn-primary btn-sm" href="surat-keluar-proses.html">Tandai Selesai &rsaquo;</a></td>
+                <td><span class="badge badge-info">Sedang Diproses</span></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=5">Upload File &rsaquo;</a></td>
               </tr>
             </tbody>
           </table>
@@ -239,28 +235,43 @@ tr:hover td{background:#fafaf7;}
       <div id="sk-selesai" data-panel-group="sk" style="display:none;">
         <div class="table-wrap">
           <table>
-            <thead><tr><th>Pemohon</th><th>Jenis Surat</th><th>Selesai</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Pemohon</th><th>Hal / Perihal</th><th>Sifat</th><th>Deadline</th><th>Selesai</th><th>Status</th><th></th></tr></thead>
             <tbody>
+              <tr>
+                <td><div class="namecell"><span class="av">AF</span><div><div class="n">Drs. Ahmad Fauzi</div><div class="s">Anggota Komisi III</div></div></div></td>
+                <td>Surat Rekomendasi Reses</td>
+                <td>Penting</td>
+                <td>9 Nov 2026</td>
+                <td>Hari ini, 07.50 WIB</td>
+                <td><span class="badge badge-neutral">Selesai</span></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=6">Lihat &rsaquo;</a></td>
+              </tr>
               <tr>
                 <td><div class="namecell"><span class="av">BS</span><div><div class="n">Ir. Budi Santoso, M.T.</div><div class="s">Anggota Komisi I</div></div></div></td>
                 <td>Surat Keterangan Tugas</td>
+                <td>Biasa</td>
+                <td>17 Mei 2025</td>
                 <td>18 Mei 2025</td>
                 <td><span class="badge badge-neutral">Selesai</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Lihat &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=7">Lihat &rsaquo;</a></td>
               </tr>
               <tr>
                 <td><div class="namecell"><span class="av">SR</span><div><div class="n">Hj. Siti Rahmawati</div><div class="s">Anggota Komisi IV</div></div></div></td>
                 <td>Surat Pengantar Reses</td>
+                <td>Biasa</td>
+                <td>14 Mei 2025</td>
                 <td>15 Mei 2025</td>
                 <td><span class="badge badge-neutral">Selesai</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Lihat &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=8">Lihat &rsaquo;</a></td>
               </tr>
               <tr>
                 <td><div class="namecell"><span class="av">RH</span><div><div class="n">R. Hendra Wijaya, S.H.</div><div class="s">Anggota Komisi II</div></div></div></td>
                 <td>Surat Keterangan Tugas</td>
+                <td>Penting</td>
+                <td>11 Mei 2025</td>
                 <td>12 Mei 2025</td>
                 <td><span class="badge badge-neutral">Selesai</span></td>
-                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html">Lihat &rsaquo;</a></td>
+                <td><a class="btn btn-outline btn-sm" href="surat-keluar-proses.html?id=9">Lihat &rsaquo;</a></td>
               </tr>
             </tbody>
           </table>
@@ -277,6 +288,40 @@ function showTab(group, name, btn){
   if(target){ target.style.display = 'block'; }
   document.querySelectorAll('[data-tabgroup="' + group + '"]').forEach(function(t){ t.classList.remove('active'); });
   if(btn){ btn.classList.add('active'); }
+}
+
+// Surat keluar yang dibuat langsung oleh admin (surat-keluar-buat.html) masuk sini -
+// flow tersebut sengaja melewati Permintaan Baru/Sedang Diproses & langsung berstatus Selesai.
+var SURAT_KELUAR_ADMIN_KEY = 'ep_surat_keluar_admin_created';
+function loadAdminLettersFromStorage(){
+  try { return JSON.parse(localStorage.getItem(SURAT_KELUAR_ADMIN_KEY)) || []; } catch(e){ return []; }
+}
+function renderAdminCreatedLetters(){
+  var list = loadAdminLettersFromStorage();
+  if(!list.length) return;
+  var tbody = document.querySelector('#sk-selesai tbody');
+  if(!tbody) return;
+  var rowsHtml = list.map(function(entry){
+    return '<tr>'
+      + '<td><div class="namecell"><span class="av">' + entry.initials + '</span><div><div class="n">' + entry.nama + '</div><div class="s">' + entry.sub + '</div></div></div></td>'
+      + '<td>' + entry.jenis + '</td>'
+      + '<td><span class="muted">&mdash;</span></td>'
+      + '<td><span class="muted">&mdash;</span></td>'
+      + '<td>' + entry.tglLabel + '</td>'
+      + '<td><span class="badge badge-neutral">Selesai</span></td>'
+      + '<td><a class="btn btn-outline btn-sm" href="surat-keluar.html">Lihat &rsaquo;</a></td>'
+      + '</tr>';
+  }).join('');
+  tbody.insertAdjacentHTML('afterbegin', rowsHtml);
+  document.querySelectorAll('[data-tabgroup="sk"] .count').forEach(function(c, i){
+    if(i === 2){ c.textContent = parseInt(c.textContent, 10) + list.length; }
+  });
+  // Badge sidebar & tab "Permintaan Baru" merepresentasikan item yang butuh aksi admin -
+  // surat yang dibuat langsung lewat flow ini sudah Selesai, jadi sengaja tidak menambah badge itu.
+}
+renderAdminCreatedLetters();
+if(/[?&]created=1/.test(window.location.search)){
+  showTab('sk', 'selesai', document.querySelectorAll('[data-tabgroup="sk"]')[2]);
 }
 </script>
 </body>

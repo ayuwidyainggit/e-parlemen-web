@@ -195,9 +195,9 @@ a{color:inherit;}
           <div class="hint" id="batasAksiPreview" style="margin-top:-8px;">Batas aksi anggota = tanggal surat + waktu selesai. Jika waktu selesai dikosongkan, batas aksi otomatis sampai 23.59 WIB pada tanggal surat.</div>
 
           <div class="field" id="f-tempat">
-            <label>Tempat <span class="opt">(opsional, maks 255 karakter)</span></label>
-            <input type="text" id="tempatSurat" placeholder="Contoh: Ruang Paripurna DPRD" maxlength="255">
-            <div class="err">Tempat maks 255 karakter.</div>
+            <label>Tempat <span class="opt">(maks 255 karakter)</span></label>
+            <input type="text" id="tempatSurat" placeholder="Contoh: Ruang Paripurna DPRD" maxlength="255" required>
+            <div class="err">Tempat wajib diisi, maks 255 karakter.</div>
           </div>
 
           <div class="field">
@@ -496,10 +496,11 @@ function submitForm(e, mode){
   var orgUnitId = document.getElementById('unitTypeSelect').value;
   var recipientId = document.getElementById('tujuanAnggota').value;
   // BR-01 / §2.1 Surat_Masuk_Spesifikasi_TRD_API_Contract_v0.3.md: no surat maks 20 karakter,
-  // judul maks 255 karakter, tempat maks 255 karakter (opsional).
+  // judul maks 255 karakter, tempat maks 255 karakter. Catatan: di spec tempat bersifat opsional,
+  // namun di form ini sengaja dibuat wajib diisi.
   var nomorOk = /^[A-Za-z0-9./-]+$/.test(nomor) && nomor.length <= 20;
   var judulOk = judul.length > 0 && judul.length <= 255;
-  var tempatOk = tempat.length <= 255;
+  var tempatOk = tempat.length > 0 && tempat.length <= 255;
 
   if(mode === 'DRAFT'){
     // Draft belum perlu lengkap - sekadar menyimpan progres, belum berdampak ke anggota.
@@ -526,7 +527,7 @@ function submitForm(e, mode){
     if(!waktuOk){ msg = 'Waktu selesai harus lebih besar dari waktu mulai'; }
     else if(!nomorOk){ msg = 'No. surat tidak valid atau lebih dari 20 karakter'; }
     else if(!judulOk){ msg = 'Judul surat wajib diisi, maks 255 karakter'; }
-    else if(!tempatOk){ msg = 'Tempat maks 255 karakter'; }
+    else if(!tempatOk){ msg = 'Tempat wajib diisi, maks 255 karakter'; }
     toast(msg);
     return false;
   }
