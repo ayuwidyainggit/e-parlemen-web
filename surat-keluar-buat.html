@@ -190,12 +190,24 @@ a{color:inherit;}
             <input type="text" id="jenisSuratLain" placeholder="Contoh: Surat Keterangan Aktif Berfraksi" maxlength="255">
           </div>
 
+          <div class="field" id="f-sifat">
+            <label>Sifat Surat <span class="opt">(wajib)</span></label>
+            <input type="text" id="sifatSurat" placeholder="Contoh: Biasa, Penting, Rahasia" maxlength="30" required>
+            <div class="err">Sifat surat wajib diisi.</div>
+          </div>
+
           <div class="field-row">
-            <div class="field"><label>Tanggal Surat</label><input type="date" id="tglSurat" required></div>
-            <div class="field">
-              <label>Ditujukan Kepada <span class="opt">(wajib, maks 255 karakter)</span></label>
-              <input type="text" id="tujuanSurat" placeholder="Contoh: Gubernur Jawa Tengah / Ir. Budi Santoso, M.T." maxlength="255" required>
+            <div class="field" id="f-kota">
+              <label>Kota <span class="opt">(wajib)</span></label>
+              <input type="text" id="kotaSurat" placeholder="Contoh: Semarang" maxlength="60" required>
+              <div class="err">Kota wajib diisi.</div>
             </div>
+            <div class="field"><label>Tanggal Surat</label><input type="date" id="tglSurat" required></div>
+          </div>
+
+          <div class="field">
+            <label>Ditujukan Kepada <span class="opt">(wajib, maks 255 karakter)</span></label>
+            <input type="text" id="tujuanSurat" placeholder="Contoh: Gubernur Jawa Tengah / Ir. Budi Santoso, M.T." maxlength="255" required>
           </div>
 
           <div class="field">
@@ -401,6 +413,8 @@ function submitForm(e){
   var nomor = document.getElementById('nomorSurat').value.trim();
   var jenisValue = document.getElementById('jenisSurat').value;
   var jenisLain = document.getElementById('jenisSuratLain').value.trim();
+  var sifat = document.getElementById('sifatSurat').value.trim();
+  var kota = document.getElementById('kotaSurat').value.trim();
   var tgl = document.getElementById('tglSurat').value;
   var tujuan = document.getElementById('tujuanSurat').value.trim();
   var perihal = document.getElementById('perihalSurat').value.trim();
@@ -409,17 +423,23 @@ function submitForm(e){
 
   var nomorOk = /^[A-Za-z0-9./-]+$/.test(nomor) && nomor.length <= 20;
   var jenisOk = !!jenisValue && (jenisValue !== '__lainnya' || jenisLain.length > 0);
+  var sifatOk = sifat.length > 0;
+  var kotaOk = kota.length > 0;
   var tujuanOk = tujuan.length > 0 && tujuan.length <= 255;
   var perihalOk = perihal.length > 0;
 
   setInvalid('f-nomor', !nomorOk);
   setInvalid('f-jenis', !jenisOk);
+  setInvalid('f-sifat', !sifatOk);
+  setInvalid('f-kota', !kotaOk);
   document.getElementById('err-perihal').style.display = perihalOk ? 'none' : 'block';
 
-  if(!nomorOk || !jenisOk || !tgl || !tujuanOk || !perihalOk){
+  if(!nomorOk || !jenisOk || !sifatOk || !kotaOk || !tgl || !tujuanOk || !perihalOk){
     var msg = 'Lengkapi data wajib sebelum menyimpan';
     if(!nomorOk){ msg = 'No. surat tidak valid atau lebih dari 20 karakter'; }
     else if(!jenisOk){ msg = 'Jenis surat wajib dipilih/diisi'; }
+    else if(!sifatOk){ msg = 'Sifat surat wajib diisi'; }
+    else if(!kotaOk){ msg = 'Kota wajib diisi'; }
     else if(!tgl){ msg = 'Tanggal surat wajib diisi'; }
     else if(!tujuanOk){ msg = 'Ditujukan Kepada wajib diisi, maks 255 karakter'; }
     else if(!perihalOk){ msg = 'Perihal wajib diisi'; }
@@ -439,6 +459,8 @@ function submitForm(e){
     sub: displaySub,
     jenis: jenisFinal,
     nomor: nomor,
+    sifat: sifat,
+    kota: kota,
     tujuan: tujuan,
     perihal: perihal,
     tglLabel: formatTanggalLabel(tgl),
