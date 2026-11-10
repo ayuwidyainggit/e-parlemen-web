@@ -111,6 +111,14 @@ a{color:inherit;}
 .signer-item .sname{font-weight:800;font-size:12.6px;}
 .signer-item .srole{font-size:10.8px;color:var(--muted);margin-top:1px;}
 
+.field{margin-bottom:16px;}
+.field label{display:block;font-size:11.8px;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.field .opt{font-weight:600;color:var(--muted);font-size:10.5px;}
+.field input{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--border);font-size:13px;background:#fff;font-family:inherit;color:var(--ink);}
+.field .err{display:none;color:var(--danger);font-size:10.8px;font-weight:700;margin-top:5px;}
+.field.invalid input{border-color:var(--danger);}
+.field.invalid .err{display:block;}
+
 .upload-box{border:2px dashed #cfcabb;border-radius:12px;padding:26px 14px;text-align:center;color:var(--muted);font-size:11.8px;cursor:pointer;}
 .upload-box .ic{font-size:24px;display:block;margin-bottom:8px;}
 .upload-box:hover{border-color:var(--gold);}
@@ -435,6 +443,11 @@ function renderActionArea(record){
       el.innerHTML = '<div class="card" id="uploadCard">'
         + '<div class="section-title">Unggah File Surat Final &amp; Submit</div>'
         + '<div class="hint" style="margin-bottom:12px;">Unggah berkas surat final (bisa lebih dari satu), lalu submit untuk menyelesaikan permintaan.</div>'
+        + '<div class="field" id="f-nomor-surat">'
+        +   '<label>Nomor Surat <span class="opt">(wajib, alfanumerik)</span></label>'
+        +   '<input type="text" id="nomorSuratFinal" placeholder="Contoh: 012/456/DPRD/2026" maxlength="30" oninput="this.closest(\'.field\').classList.remove(\'invalid\')">'
+        +   '<div class="err">Nomor surat wajib diisi &amp; hanya boleh berisi huruf dan angka (boleh disertai titik, garis miring, atau tanda hubung).</div>'
+        + '</div>'
         + '<label class="upload-box" id="uploadBox" for="pdfInput"><span class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:26px;height:26px;"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3"/></svg></span><span id="uploadLabel">Klik untuk memilih berkas, atau seret berkas ke sini</span></label>'
         + '<input type="file" id="pdfInput" accept=".pdf,.jpg,.jpeg,.png,.docx" multiple style="display:none;" onchange="onFileChosen(this.files)">'
         + '<div class="filelist" id="fileList"></div>'
@@ -512,6 +525,15 @@ function onFileChosen(files){
 }
 
 function submitFinal(){
+  var nomorEl = document.getElementById('nomorSuratFinal');
+  var nomorField = nomorEl ? nomorEl.closest('.field') : null;
+  var nomorVal = nomorEl ? nomorEl.value.trim() : '';
+  var nomorValid = /^[A-Za-z0-9./-]+$/.test(nomorVal);
+  if(!nomorValid){
+    if(nomorField) nomorField.classList.add('invalid');
+    toast('Nomor Surat wajib diisi & hanya boleh alfanumerik');
+    return;
+  }
   if(!selectedFiles.length){
     toast('Pilih minimal satu berkas surat final sebelum submit');
     return;
@@ -519,6 +541,7 @@ function submitFinal(){
   var record = SURAT_KELUAR_DATA[currentRecordId];
   record.status = 'selesai';
   record.selesaiTime = 'Hari ini, 10.24 WIB';
+  record.nomorSurat = nomorVal;
   render();
   toast(selectedFiles.length + ' berkas surat disubmit, status otomatis menjadi Selesai');
 }
