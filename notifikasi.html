@@ -89,6 +89,9 @@ a{color:inherit;}
 .list-item .content .meta{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.5;}
 .list-item .side{text-align:right;font-size:10.5px;color:var(--muted);flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
 .unread-dot{width:8px;height:8px;border-radius:50%;background:var(--danger);flex-shrink:0;margin-top:5px;}
+.list-item .inline-actions{display:flex;gap:8px;margin-top:8px;}
+.list-item .inline-actions .btn{padding:7px 12px;font-size:10.5px;}
+.toast{display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;}
 
 @media (max-width:960px){
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
@@ -156,6 +159,7 @@ a{color:inherit;}
         <button class="tab" data-tabgroup="nt" onclick="showTab('nt','penugasan',this)">Penugasan</button>
         <button class="tab" data-tabgroup="nt" onclick="showTab('nt','surat',this)">Surat Keluar</button>
         <button class="tab" data-tabgroup="nt" onclick="showTab('nt','rapat',this)">Rapat</button>
+        <button class="tab" data-tabgroup="nt" onclick="showTab('nt','export',this)">Export Laporan</button>
       </div>
 
       <div id="nt-semua" data-panel-group="nt" style="display:block;">
@@ -305,10 +309,25 @@ a{color:inherit;}
         </a>
       </div>
 
+      <div id="nt-export" data-panel-group="nt" style="display:none;">
+        <div class="hint" style="margin-bottom:14px;">Notifikasi Export Laporan Penugasan muncul begitu job export selesai (berhasil/gagal) &mdash; tidak ada halaman redirect, unduh langsung lewat tombol di bawah (BR-16/§2.7).</div>
+        <div id="nt-export-list"></div>
+        <div class="hint" id="nt-export-empty" style="display:none;">Belum ada export laporan untuk user ini.</div>
+      </div>
+
     </div>
   </div>
 </div>
+<div class="toast" id="toast"></div>
+<script src="pegawai-data.js"></script>
+<script src="export-download.js"></script>
+<script src="notifikasi-data.js"></script>
 <script>
+function toast(msg){
+  var el = document.getElementById('toast');
+  el.textContent = msg; el.style.display = 'block';
+  setTimeout(function(){ el.style.display = 'none'; }, 2600);
+}
 function showTab(group, name, btn){
   document.querySelectorAll('[data-panel-group="' + group + '"]').forEach(function(p){ p.style.display = 'none'; });
   var target = document.getElementById(group + '-' + name);
@@ -319,7 +338,86 @@ function showTab(group, name, btn){
 function markAllRead(){
   document.querySelectorAll('.unread-dot').forEach(function(d){ d.style.visibility = 'hidden'; });
   document.querySelectorAll('.list-item.unread').forEach(function(li){ li.classList.remove('unread'); });
+  if(typeof notifMarkAllReadFor === 'function' && typeof notifCurrentUserId === 'function'){
+    var userId = notifCurrentUserId();
+    if(userId != null) notifMarkAllReadFor(userId);
+  }
+  updateNotifSidebarCount();
 }
+
+// ---------- Notifikasi Export Laporan (channel `database`, §2.7/BR-16/BR-17) ----------
+// Ditulis oleh penugasan-dapil-reses.html lewat notifikasi-data.js (localStorage bersama) begitu
+// job export DONE/FAILED - halaman ini HANYA menampilkan, discoped ke user yang sedang "login"
+// (BR-17). Sesuai spesifikasi notifikasi: List Notification TIDAK redirect ke halaman lain -
+// hanya ada tombol "Unduh" & "Tutup" langsung pada item-nya; klik Unduh memicu FE hit API unduh
+// dokumen (downloadExportById, export-download.js) di tempat, tanpa pindah halaman.
+function exportNotifItemHtml(n){
+  var isFail = n.status === 'FAILED';
+  var cls = isFail ? 'bl-danger' : 'bl-success';
+  var bg = isFail ? 'var(--danger-bg)' : 'var(--success-bg)';
+  var icon = isFail
+    ? '<path d="M18 6L6 18"/><path d="M6 6l12 12"/>'
+    : '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/>';
+  var unreadCls = n.read ? '' : ' unread';
+  var dotHtml = n.read ? '' : '<span class="unread-dot"></span>';
+  var timeLbl = new Date(n.createdAtMs).toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+  var actionsHtml = isFail
+    ? ('<button type="button" class="btn btn-outline" onclick="notifReexport(&quot;' + n.id + '&quot;)">Export Ulang</button>'
+      + '<button type="button" class="btn btn-outline" onclick="notifDismiss(&quot;' + n.id + '&quot;)">Tutup</button>')
+    : ('<button type="button" class="btn btn-outline" onclick="notifDownload(&quot;' + n.id + '&quot;,' + n.exportId + ')">Unduh</button>'
+      + '<button type="button" class="btn btn-outline" onclick="notifDismiss(&quot;' + n.id + '&quot;)">Tutup</button>');
+  return '<div class="list-item ' + cls + unreadCls + '" data-notif-id="' + n.id + '">'
+    + dotHtml
+    + '<div class="icon-box" style="background:' + bg + ';"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' + icon + '</svg></div>'
+    + '<div class="content"><div class="title">' + n.title + '</div><div class="meta">' + n.meta + '</div>'
+    + '<div class="inline-actions">' + actionsHtml + '</div></div>'
+    + '<div class="side">' + timeLbl + '</div>'
+    + '</div>';
+}
+function renderExportNotifications(){
+  var userId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
+  var list = (userId != null && typeof notifListFor === 'function') ? notifListFor(userId, 'PENUGASAN_EXPORT') : [];
+  if(list.length){
+    document.getElementById('nt-semua').insertAdjacentHTML('afterbegin', '<div class="section-title">Export Laporan</div>' + list.map(exportNotifItemHtml).join(''));
+    document.getElementById('nt-export-list').innerHTML = list.map(exportNotifItemHtml).join('');
+    document.getElementById('nt-export-empty').style.display = 'none';
+  } else {
+    document.getElementById('nt-export-empty').style.display = 'block';
+  }
+  updateNotifSidebarCount();
+}
+// Satu notifikasi tampil di DUA tempat (tab "Semua" & tab "Export Laporan") sebagai elemen DOM
+// terpisah dgn data-notif-id yang sama - dismiss/unduh harus menghapus status unread di KEDUANYA.
+function markNotifItemReadInDom(notifId){
+  document.querySelectorAll('[data-notif-id="' + notifId + '"]').forEach(function(item){
+    item.classList.remove('unread');
+    var dot = item.querySelector('.unread-dot');
+    if(dot) dot.remove();
+  });
+  updateNotifSidebarCount();
+}
+function notifDownload(notifId, exportId){
+  var userId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
+  var res = downloadExportById(exportId, userId);
+  if(res.ok){ notifMarkRead(notifId); markNotifItemReadInDom(notifId); }
+  toast(res.message);
+}
+function notifReexport(notifId){
+  notifMarkRead(notifId);
+  location.href = 'penugasan-dapil-reses.html?openExportHistory=1';
+}
+function notifDismiss(notifId){
+  notifMarkRead(notifId);
+  markNotifItemReadInDom(notifId);
+}
+// Badge sidebar "Notifikasi" dihitung ULANG dari DOM (bukan angka statis "5" di markup) supaya
+// otomatis naik/turun begitu notifikasi export masuk atau ditandai dibaca.
+function updateNotifSidebarCount(){
+  var n = document.querySelectorAll('#nt-semua .list-item.unread').length;
+  var el = document.querySelector('.sidebar-nav a.snav-item.active .count');
+  if(el) el.textContent = String(n);
+}
+renderExportNotifications();
 </script>
 </body>
 </html>
