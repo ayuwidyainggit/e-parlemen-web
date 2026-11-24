@@ -907,21 +907,8 @@ function closeExportJadwal(){
   document.getElementById('modalExportBackdrop').classList.remove('open');
 }
 
-// Workbook dibangun sebagai HTML 3-<table> dgn namespace "mso" (trik lawas, dibuka Excel sebagai
-// 3 sheet terpisah sesuai nama di x:ExcelWorksheet) - dipilih krn seluruh halaman proyek ini
-// berjalan 100% offline tanpa dependency CDN/library ZIP utk membangun .xlsx (OOXML) asli dari
-// nol. File diunduh dgn ekstensi .xls, bukan .xlsx seperti target akhir TRD §2.6.
-function xlsEscape(v){
-  if(v === null || v === undefined) return '';
-  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-function xlsSheetTable(headers, rows){
-  var thead = '<tr>' + headers.map(function(h){ return '<th style="background:#1b3a2b;color:#fff;font-weight:bold;border:1px solid #ccc;padding:4px 8px;">' + xlsEscape(h) + '</th>'; }).join('') + '</tr>';
-  var tbody = rows.map(function(r){
-    return '<tr>' + r.map(function(v){ return '<td style="border:1px solid #ccc;padding:4px 8px;mso-number-format:\\@;">' + xlsEscape(v) + '</td>'; }).join('') + '</tr>';
-  }).join('');
-  return '<table>' + thead + tbody + '</table>';
-}
+// xlsEscape/xlsSheetTable sekarang disediakan export-download.js (dipakai bersama Surat Masuk,
+// §6.1 docs/surat_masuk.md - infrastruktur export lintas modul yang sama, bukan masing2 define).
 function buildAssignmentWorkbookHtml(periode, dapilKode, dataset){
   var sheet1Headers = ['No. Penugasan','Kegiatan','Jenis Penugasan','Status Penugasan','Jenis Lokasi','Lokasi','Tanggal Mulai','Tanggal Selesai','Jam Mulai','Jam Selesai','Dapil Tujuan','Periode','Jabatan Pemberi Penugasan','Jumlah Anggota Ditugaskan','Dibuat Oleh','Tanggal Dibuat','Catatan'];
   var sheet1Rows = dataset.sheet1.map(function(j){
@@ -1021,6 +1008,7 @@ function reconcileExportHistory(){
   var now = Date.now(), changed = false;
   var resolved = [];
   EXPORT_HISTORY_LIST.forEach(function(r){
+    if(!isPenugasanExportRow(r)) return; // baris Surat Masuk diproses oleh reconcile-nya sendiri
     if(r.status === 'PENDING' && now >= r.simProcessingAt){ r.status = 'PROCESSING'; changed = true; }
     if(r.status === 'PROCESSING' && now >= r.simResolveAt){
       if(r.forceFail){
@@ -1039,21 +1027,26 @@ function reconcileExportHistory(){
   resolved.forEach(notifyExportResolved);
   return changed;
 }
+// `type` membedakan baris Penugasan dari baris Surat Masuk pada tabel `assignment_report_exports`
+// yang sama (§6.3/BR-15 docs/surat_masuk.md) - baris lama tanpa field `type` dianggap PENUGASAN
+// (backward-compat), supaya riwayat & anti-spam modul ini TIDAK ikut melihat/terblokir oleh
+// export Surat Masuk milik user yang sama.
+function isPenugasanExportRow(r){ return !r.type || r.type === 'PENUGASAN'; }
 function userExportHistory(userId){
-  return EXPORT_HISTORY_LIST.filter(function(r){ return r.userId === userId; })
+  return EXPORT_HISTORY_LIST.filter(function(r){ return r.userId === userId && isPenugasanExportRow(r); })
     .sort(function(a,b){ return b.createdAtMs - a.createdAtMs; });
 }
 // Anti-spam aturan #1: HANYA SATU export aktif (PENDING/PROCESSING) per user pada satu waktu -
 // request export baru ditolak selama ada job yang belum selesai, bukan diantrekan lagi.
 function hasActiveExportJob(userId){
-  return EXPORT_HISTORY_LIST.some(function(r){ return r.userId === userId && (r.status === 'PENDING' || r.status === 'PROCESSING'); });
+  return EXPORT_HISTORY_LIST.some(function(r){ return r.userId === userId && isPenugasanExportRow(r) && (r.status === 'PENDING' || r.status === 'PROCESSING'); });
 }
 // Anti-spam aturan #2: rate limit per user dalam jendela waktu bergulir, meniru
 // `throttle:assignment-export` (§11.2) - mencegah klik Export berulang kali dlm waktu singkat
 // begitu job sebelumnya SUDAH selesai (aturan #1 saja tidak menahan spam setelah job kelar).
 function recentExportTimestamps(userId, windowMs){
   var now = Date.now();
-  return EXPORT_HISTORY_LIST.filter(function(r){ return r.userId === userId && (now - r.createdAtMs) < windowMs; }).map(function(r){ return r.createdAtMs; });
+  return EXPORT_HISTORY_LIST.filter(function(r){ return r.userId === userId && isPenugasanExportRow(r) && (now - r.createdAtMs) < windowMs; }).map(function(r){ return r.createdAtMs; });
 }
 var EXPORT_STATUS_BADGE_CLASS = { PENDING: 'badge-purple', PROCESSING: 'badge-warn', DONE: 'badge-success', FAILED: 'badge-danger' };
 var EXPORT_STATUS_DISPLAY_LABEL = { PENDING: 'Menunggu', PROCESSING: 'Diproses', DONE: 'Selesai', FAILED: 'Gagal' };
@@ -1094,6 +1087,7 @@ function submitExportJadwal(){
   var nowMs = Date.now();
   var record = {
     id: exportHistoryNextId(EXPORT_HISTORY_LIST),
+    type: 'PENUGASAN', // §6.3/IT-SM-01 docs/surat_masuk.md: partisi tabel bersama per modul
     userId: currentUser.id, userName: currentUser.nama,
     periodeId: periodeId, periodeNama: periode.nama,
     dapilKode: dapilKode || null, dapilNama: dapilKode ? dapilLabel(dapilKode).replace(/&mdash;/g,'') : 'Semua Dapil',

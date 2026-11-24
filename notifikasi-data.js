@@ -9,6 +9,12 @@
 // supaya "user yang sedang login" konsisten lintas halaman).
 var NOTIF_STORAGE_KEY = 'ep_notifications';
 var NOTIF_SIM_LOGIN_KEY = 'ep_penugasan_sim_login_person_id';
+// Aktor export Surat Masuk adalah Admin/Staf Sekretariat (BR-13 docs/surat_masuk.md), BUKAN
+// Anggota DPRD seperti pengekspor Penugasan - halaman admin (surat-masuk.html dkk) tidak punya
+// switcher "Login sebagai" seperti penugasan-dapil-reses.html, jadi dipakai satu id tetap supaya
+// notifikasi export-nya (BR-16/17: hanya ke pengekspor) tetap bisa discoped & ditemukan balik oleh
+// notifikasi.html tanpa ikut skema simulasi login per-Politisi di atas.
+var NOTIF_ADMIN_USER_ID = 'admin-sekretariat';
 
 function notifLoadList(){
   try{

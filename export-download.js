@@ -21,6 +21,22 @@ function exportHistorySave(list){
 function exportHistoryNextId(list){
   var max = 0; list.forEach(function(r){ if(r.id > max) max = r.id; }); return max + 1;
 }
+// Workbook dibangun sebagai HTML 3-<table> dgn namespace "mso" (trik lawas, dibuka Excel sebagai
+// 3 sheet terpisah sesuai nama di x:ExcelWorksheet) - dipilih krn seluruh halaman proyek ini
+// berjalan 100% offline tanpa dependency CDN/library ZIP utk membangun .xlsx (OOXML) asli dari
+// nol. File diunduh dgn ekstensi .xls, bukan .xlsx seperti target akhir TRD §2.6. Generik lintas
+// modul (Penugasan & Surat Masuk pakai fungsi yang SAMA, bukan masing-masing define sendiri).
+function xlsEscape(v){
+  if(v === null || v === undefined) return '';
+  return String(v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function xlsSheetTable(headers, rows){
+  var thead = '<tr>' + headers.map(function(h){ return '<th style="background:#1b3a2b;color:#fff;font-weight:bold;border:1px solid #ccc;padding:4px 8px;">' + xlsEscape(h) + '</th>'; }).join('') + '</tr>';
+  var tbody = rows.map(function(r){
+    return '<tr>' + r.map(function(v){ return '<td style="border:1px solid #ccc;padding:4px 8px;mso-number-format:\\@;">' + xlsEscape(v) + '</td>'; }).join('') + '</tr>';
+  }).join('');
+  return '<table>' + thead + tbody + '</table>';
+}
 function triggerBlobDownload(fileName, htmlContent){
   var blob = new Blob(['﻿' + htmlContent], { type: 'application/vnd.ms-excel' });
   var url = URL.createObjectURL(blob);

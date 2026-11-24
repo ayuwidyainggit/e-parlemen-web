@@ -310,7 +310,7 @@ a{color:inherit;}
       </div>
 
       <div id="nt-export" data-panel-group="nt" style="display:none;">
-        <div class="hint" style="margin-bottom:14px;">Notifikasi Export Laporan Penugasan muncul begitu job export selesai (berhasil/gagal) &mdash; tidak ada halaman redirect, unduh langsung lewat tombol di bawah (BR-16/§2.7).</div>
+        <div class="hint" style="margin-bottom:14px;">Notifikasi Export Laporan (Penugasan maupun Surat Masuk) muncul begitu job export selesai (berhasil/gagal) &mdash; tidak ada halaman redirect, unduh langsung lewat tombol di bawah (BR-16/§2.7).</div>
         <div id="nt-export-list"></div>
         <div class="hint" id="nt-export-empty" style="display:none;">Belum ada export laporan untuk user ini.</div>
       </div>
@@ -361,10 +361,11 @@ function exportNotifItemHtml(n){
   var unreadCls = n.read ? '' : ' unread';
   var dotHtml = n.read ? '' : '<span class="unread-dot"></span>';
   var timeLbl = new Date(n.createdAtMs).toLocaleString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ' WIB';
+  var userIdAttr = JSON.stringify(n.userId);
   var actionsHtml = isFail
-    ? ('<button type="button" class="btn btn-outline" onclick="notifReexport(&quot;' + n.id + '&quot;)">Export Ulang</button>'
+    ? ('<button type="button" class="btn btn-outline" onclick="notifReexport(&quot;' + n.id + '&quot;,&quot;' + n.link + '&quot;)">Export Ulang</button>'
       + '<button type="button" class="btn btn-outline" onclick="notifDismiss(&quot;' + n.id + '&quot;)">Tutup</button>')
-    : ('<button type="button" class="btn btn-outline" onclick="notifDownload(&quot;' + n.id + '&quot;,' + n.exportId + ')">Unduh</button>'
+    : ('<button type="button" class="btn btn-outline" onclick=\'notifDownload("' + n.id + '",' + n.exportId + ',' + userIdAttr + ')\'>Unduh</button>'
       + '<button type="button" class="btn btn-outline" onclick="notifDismiss(&quot;' + n.id + '&quot;)">Tutup</button>');
   return '<div class="list-item ' + cls + unreadCls + '" data-notif-id="' + n.id + '">'
     + dotHtml
@@ -374,9 +375,21 @@ function exportNotifItemHtml(n){
     + '<div class="side">' + timeLbl + '</div>'
     + '</div>';
 }
+// Notifikasi export digabung dari DUA aktor berbeda (BR-16/17 scoped per pengekspor): Penugasan
+// dipicu oleh Anggota/Pimpinan yang sedang "login" (notifCurrentUserId, simulasi politisi -
+// penugasan-dapil-reses.html), Surat Masuk dipicu oleh identitas Admin tetap (NOTIF_ADMIN_USER_ID -
+// surat-masuk.html tidak punya switcher login). Digabung & diurutkan supaya tab "Semua"/"Export
+// Laporan" tetap satu linimasa, bukan dua daftar terpisah.
 function renderExportNotifications(){
-  var userId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
-  var list = (userId != null && typeof notifListFor === 'function') ? notifListFor(userId, 'PENUGASAN_EXPORT') : [];
+  var politisiUserId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
+  var list = [];
+  if(politisiUserId != null && typeof notifListFor === 'function'){
+    list = list.concat(notifListFor(politisiUserId, 'PENUGASAN_EXPORT'));
+  }
+  if(typeof notifListFor === 'function' && typeof NOTIF_ADMIN_USER_ID !== 'undefined'){
+    list = list.concat(notifListFor(NOTIF_ADMIN_USER_ID, 'SURAT_MASUK_EXPORT'));
+  }
+  list.sort(function(a, b){ return b.createdAtMs - a.createdAtMs; });
   if(list.length){
     document.getElementById('nt-semua').insertAdjacentHTML('afterbegin', '<div class="section-title">Export Laporan</div>' + list.map(exportNotifItemHtml).join(''));
     document.getElementById('nt-export-list').innerHTML = list.map(exportNotifItemHtml).join('');
@@ -396,15 +409,16 @@ function markNotifItemReadInDom(notifId){
   });
   updateNotifSidebarCount();
 }
-function notifDownload(notifId, exportId){
-  var userId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
+function notifDownload(notifId, exportId, userId){
   var res = downloadExportById(exportId, userId);
   if(res.ok){ notifMarkRead(notifId); markNotifItemReadInDom(notifId); }
   toast(res.message);
 }
-function notifReexport(notifId){
+// Tujuan "Export Ulang" berbeda per modul (Penugasan vs Surat Masuk) - dibawa langsung dari
+// n.link yang disimpan saat notifikasi dibuat (notifPush), bukan di-hardcode ke satu halaman.
+function notifReexport(notifId, link){
   notifMarkRead(notifId);
-  location.href = 'penugasan-dapil-reses.html?openExportHistory=1';
+  location.href = link || 'notifikasi.html';
 }
 function notifDismiss(notifId){
   notifMarkRead(notifId);

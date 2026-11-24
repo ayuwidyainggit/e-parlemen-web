@@ -180,75 +180,12 @@ a{color:inherit;}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<script src="surat-masuk-data.js"></script>
 <script>
-// Data prototipe surat masuk - meniru struktur incoming_letters + incoming_letter_dispositions
-// (lihat docs/persuratan-design.md). parentIdx merujuk index baris disposisi sebelumnya di
-// array dispositions yang sama, meniru kolom parent_id di skema.
-var SURAT_MASUK_DATA = {
-  'SM-001': {
-    periode: 'Periode 2024 - 2029',
-    letterNumber: '005/123/DPRD/2026', title: 'Undangan Rapat Paripurna Pembahasan APBD 2027',
-    place: 'Ruang Paripurna DPRD', letterDate: '28 Okt 2026, 09.00 WIB', letterPast: true,
-    notes: 'Mohon kehadiran tepat waktu, agenda pembahasan Rancangan APBD TA 2027.',
-    status: 'SUBMIT', submittedAt: '26 Okt 2026, 08.30 WIB', completedAt: null,
-    attachments: ['Draft-Agenda-APBD-2027.pdf'],
-    dispositions: [
-      { parent: null, assigner: 'Admin Sekretariat', recipient: 'Narisqa', recipientRole: 'Ketua DPRD',
-        status: 'PENDING', createdAt: '26 Okt 2026, 08.35 WIB', actionedAt: null, idle: true, note: null }
-    ]
-  },
-  'SM-002': {
-    periode: 'Periode 2024 - 2029',
-    letterNumber: '004/118/DPRD/2026', title: 'Undangan Rapat Koordinasi Komisi I',
-    place: 'Ruang Rapat Komisi I', letterDate: '6 Nov 2026, 10.00 WIB', letterPast: false,
-    notes: 'Koordinasi agenda reses tahap II bersama anggota Komisi I.',
-    status: 'SUBMIT', submittedAt: '1 Nov 2026, 14.10 WIB', completedAt: null,
-    attachments: [],
-    dispositions: [
-      { parent: null, assigner: 'Admin Sekretariat', recipient: 'Ir. Budi Santoso, M.T.', recipientRole: 'Ketua Komisi I',
-        status: 'DISPOSISI', createdAt: '1 Nov 2026, 14.12 WIB', actionedAt: '2 Nov 2026, 09.00 WIB', idle: false, note: null },
-      { parent: 0, assigner: 'Ir. Budi Santoso, M.T.', recipient: 'M. Yusuf Ridwan', recipientRole: 'Anggota Komisi I',
-        status: 'PENDING', createdAt: '2 Nov 2026, 09.00 WIB', actionedAt: null, idle: false,
-        note: 'Mohon diwakili menghadiri rapat koordinasi, saya ada kegiatan dinas luar kota.' }
-    ]
-  },
-  'SM-004': {
-    periode: 'Periode 2024 - 2029',
-    letterNumber: '003/101/DPRD/2026', title: 'Permohonan Data Dukung Reses Dapil 2',
-    place: 'Kantor Sekretariat DPRD', letterDate: '28 Okt 2026, 09.00 WIB', letterPast: true,
-    notes: 'Mohon dilengkapi sebelum rapat reses tahap berikutnya.',
-    status: 'SELESAI', submittedAt: '27 Okt 2026, 09.10 WIB', completedAt: '29 Okt 2026, 10.12 WIB',
-    attachments: ['Form-Data-Dukung-Reses.pdf'],
-    dispositions: [
-      { parent: null, assigner: 'Admin Sekretariat', recipient: 'Hj. Siti Rahmawati', recipientRole: 'Anggota Komisi IV',
-        status: 'TERIMA', createdAt: '27 Okt 2026, 09.12 WIB', actionedAt: '29 Okt 2026, 10.12 WIB', idle: false, note: null }
-    ]
-  },
-  'SM-005': {
-    periode: 'Periode 2024 - 2029',
-    letterNumber: '006/130/DPRD/2026', title: 'Pemberitahuan Jadwal Reses Tahap II',
-    place: '-', letterDate: '12 Nov 2026, 13.00 WIB', letterPast: false,
-    notes: '',
-    status: 'SUBMIT', submittedAt: 'Hari ini, 09.45 WIB', completedAt: null,
-    attachments: [],
-    dispositions: [
-      { parent: null, assigner: 'Admin Sekretariat', recipient: 'Drs. Ahmad Fauzi', recipientRole: 'Anggota Komisi III',
-        status: 'PENDING', createdAt: 'Hari ini, 09.46 WIB', actionedAt: null, idle: false, note: null }
-    ]
-  },
-  'SM-006': {
-    periode: 'Periode 2024 - 2029',
-    letterNumber: '002/095/DPRD/2026', title: 'Undangan Rapat Kerja Komisi II dengan Dinas PU',
-    place: 'Ruang Rapat Komisi II', letterDate: '20 Okt 2026, 09.30 WIB', letterPast: true,
-    notes: '',
-    status: 'SELESAI', submittedAt: '19 Okt 2026, 15.00 WIB', completedAt: '20 Okt 2026, 08.00 WIB',
-    attachments: [],
-    dispositions: [
-      { parent: null, assigner: 'Admin Sekretariat', recipient: 'R. Hendra Wijaya, S.H.', recipientRole: 'Anggota Komisi II',
-        status: 'TERIMA', createdAt: '19 Okt 2026, 15.02 WIB', actionedAt: '20 Okt 2026, 08.00 WIB', idle: false, note: null }
-    ]
-  }
-};
+// SURAT_MASUK_DATA kini dipasok surat-masuk-data.js (dipakai bersama fitur Export Laporan di
+// surat-masuk.html) - lihat file tsb utk sumber data & field tambahan (periodId/orgUnitId/dst).
+// attachments di sana berupa objek {fileName,...}; halaman ini hanya butuh nama berkasnya.
+function attachmentFileName(a){ return typeof a === 'string' ? a : a.fileName; }
 
 function initials(name){
   var parts = (name || '').replace(/[.,]/g,'').trim().split(/\s+/).filter(Boolean).slice(0,2);
@@ -298,7 +235,7 @@ function render(){
   html += '      <div class="section-title">Lampiran</div>';
   if(letter.attachments.length){
     letter.attachments.forEach(function(f){
-      html += '<div class="filecell"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> ' + f + '</div>';
+      html += '<div class="filecell"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg> ' + attachmentFileName(f) + '</div>';
     });
   } else {
     html += '<div class="hint">Tidak ada lampiran pada surat ini.</div>';

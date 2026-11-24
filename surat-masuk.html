@@ -27,6 +27,8 @@
         --info: #2f6fb0;
         --neutral-bg: #eef0ec;
         --neutral: #5b6a5e;
+        --purple-bg: #efe6fb;
+        --purple: #7c4fd1;
       }
       * {
         box-sizing: border-box;
@@ -352,6 +354,132 @@
       .badge-gold {
         background: #fbf1dc;
         color: #9a7b1f;
+      }
+      .badge-purple {
+        background: var(--purple-bg);
+        color: var(--purple);
+      }
+
+      .field {
+        margin-bottom: 14px;
+      }
+      .field:last-child {
+        margin-bottom: 0;
+      }
+      .field label {
+        display: block;
+        font-size: 11.8px;
+        font-weight: 800;
+        color: var(--ink);
+        margin-bottom: 6px;
+      }
+      .field .opt {
+        font-weight: 600;
+        color: var(--muted);
+        font-size: 10.5px;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        width: 100%;
+        padding: 11px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        font-size: 13px;
+        background: #fff;
+        font-family: inherit;
+        color: var(--ink);
+      }
+      .field-row {
+        display: flex;
+        gap: 12px;
+      }
+      .field-row .field {
+        flex: 1;
+      }
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        padding: 7px 13px;
+        border-radius: 20px;
+        background: #eceee7;
+        font-size: 11.5px;
+        font-weight: 700;
+        color: var(--ink);
+        border: 1px solid transparent;
+        cursor: pointer;
+        font-family: inherit;
+      }
+      .chip.active {
+        background: var(--green);
+        color: #fff;
+      }
+      .actions-cell {
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .empty-note {
+        text-align: center;
+        padding: 16px 10px;
+        color: var(--muted);
+        font-size: 11.5px;
+      }
+      .push-banner {
+        position: fixed;
+        top: 18px;
+        right: 18px;
+        z-index: 95;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        max-width: 320px;
+      }
+      .push-card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-left: 4px solid var(--success);
+        border-radius: 12px;
+        padding: 13px 14px;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.18);
+      }
+      .push-card.failed {
+        border-left-color: var(--danger);
+      }
+      .push-card .pc-title {
+        font-size: 11.5px;
+        font-weight: 800;
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .push-card .pc-title .ic-svg {
+        width: 15px;
+        height: 15px;
+        color: var(--success);
+      }
+      .push-card.failed .pc-title .ic-svg {
+        color: var(--danger);
+      }
+      .push-card .pc-body {
+        font-size: 11.5px;
+        color: var(--muted);
+        margin-top: 4px;
+        line-height: 1.5;
+      }
+      .push-card .pc-actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .push-card .pc-actions .btn {
+        flex: 1;
+        padding: 7px 10px;
+        font-size: 11px;
       }
 
       .btn {
@@ -972,6 +1100,37 @@
             </div>
           </div>
           <div class="topbar-actions">
+            <button
+              class="btn btn-outline btn-sm"
+              id="btnExportSuratMasuk"
+              onclick="openExportSuratMasuk()"
+            >
+              <svg
+                class="ic-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M12 3v12" />
+                <path d="M7 10l5 5 5-5" />
+                <path d="M5 19h14" />
+              </svg>
+              Export Laporan
+            </button>
+            <button
+              class="btn btn-outline btn-sm"
+              id="btnRiwayatExportSuratMasuk"
+              onclick="openExportHistoryModalSM()"
+            >
+              <svg
+                class="ic-svg"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3.2 2" />
+              </svg>
+              Riwayat Export
+            </button>
             <a class="tb-bell" href="notifikasi.html"
               ><svg
                 class="ic-svg"
@@ -1051,6 +1210,8 @@
                   <tr
                     id="draftRow-sm001"
                     data-draft-id="draft-sm001"
+                    data-id="draft-sm001"
+                    data-org-unit=""
                     data-status="DRAFT"
                     data-search="draft surat undangan audiensi warga dapil 3"
                     data-date=""
@@ -1099,6 +1260,8 @@
                     </td>
                   </tr>
                   <tr
+                    data-id="SM-001"
+                    data-org-unit="ou-pimpinan"
                     data-status="SUBMIT"
                     data-search="undangan rapat paripurna pembahasan apbd 2027 005/123/dprd/2026"
                     data-date="2026-10-28"
@@ -1136,6 +1299,8 @@
                     </td>
                   </tr>
                   <tr
+                    data-id="SM-002"
+                    data-org-unit="ou-komisi-1"
                     data-status="SUBMIT"
                     data-search="undangan rapat koordinasi komisi i 004/118/dprd/2026"
                     data-date="2026-11-06"
@@ -1169,6 +1334,8 @@
                     </td>
                   </tr>
                   <tr
+                    data-id="SM-005"
+                    data-org-unit="ou-komisi-3"
                     data-status="SUBMIT"
                     data-search="pemberitahuan jadwal reses tahap ii 006/130/dprd/2026"
                     data-date="2026-11-12"
@@ -1202,6 +1369,8 @@
                     </td>
                   </tr>
                   <tr
+                    data-id="SM-004"
+                    data-org-unit="ou-komisi-4"
                     data-status="SELESAI"
                     data-search="permohonan data dukung reses dapil 2 003/101/dprd/2026"
                     data-date="2026-10-28"
@@ -1235,6 +1404,8 @@
                     </td>
                   </tr>
                   <tr
+                    data-id="SM-006"
+                    data-org-unit="ou-komisi-2"
                     data-status="SELESAI"
                     data-search="undangan rapat kerja komisi ii dengan dinas pu 002/095/dprd/2026"
                     data-date="2026-10-20"
@@ -1313,8 +1484,211 @@
         </div>
       </div>
     </div>
+    <!-- Modal: Export Laporan Surat Masuk (asinkron-only, lihat docs/surat_masuk.md §2.1/§2.7) -->
+    <div class="modal-backdrop" id="modalExportSMBackdrop">
+      <div class="modal-box" style="max-width: 460px">
+        <div class="modal-head">
+          <h3>Export Laporan Surat Masuk</h3>
+          <button class="modal-close" onclick="closeExportSuratMasuk()">
+            <svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 6l12 12" />
+              <path d="M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <div class="hint" style="margin-bottom: 14px">
+          Unduh workbook Excel 3 sheet (Ringkasan Surat Masuk, Detail Riwayat
+          Disposisi, Detail Lampiran). Export selalu diproses asinkron di
+          background &mdash; begitu selesai/gagal Anda diberi tahu lewat
+          notifikasi (bel &amp; push), bukan dengan menunggu di halaman ini.
+        </div>
+        <div class="field">
+          <label>Periode <span class="opt">(wajib)</span></label>
+          <select id="exSMPeriode" onchange="onExportPeriodeChangeSM()"></select>
+        </div>
+        <div class="field">
+          <label>Unit Organisasi <span class="opt">(opsional)</span></label>
+          <select id="exSMOrgUnit" onchange="updateExportEstimateSM()"></select>
+        </div>
+        <div class="field">
+          <label>Status <span class="opt">(opsional)</span></label>
+          <select id="exSMStatus" onchange="updateExportEstimateSM()">
+            <option value="">Semua Status</option>
+            <option value="DRAFT">Draft</option>
+            <option value="SUBMIT">Berjalan (SUBMIT)</option>
+            <option value="SELESAI">Selesai</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label>Tanggal Mulai <span class="opt">(opsional)</span></label>
+            <input
+              type="date"
+              id="exSMStartDate"
+              onchange="updateExportEstimateSM()"
+            />
+          </div>
+          <div class="field">
+            <label>Tanggal Selesai <span class="opt">(opsional)</span></label>
+            <input
+              type="date"
+              id="exSMEndDate"
+              onchange="updateExportEstimateSM()"
+            />
+          </div>
+        </div>
+        <div
+          class="hint"
+          id="exSMDateRangeHint"
+          style="margin-top: -6px; margin-bottom: 12px"
+        >
+          Opsional, mempersempit Periode yang sudah dipilih di atas &mdash;
+          keduanya harus berada di dalam rentang tanggal periode tersebut
+          (BR-06).
+        </div>
+        <div class="field">
+          <label
+            >Simulasi Hasil Job
+            <span class="opt"
+              >(demo UI, menggantikan worker antrean sungguhan)</span
+            ></label
+          >
+          <div class="chip-row" id="exSMModeChips">
+            <button
+              type="button"
+              class="chip active"
+              data-mode="NORMAL"
+              onclick="setExportOutcomeSM('NORMAL')"
+            >
+              Berhasil
+            </button>
+            <button
+              type="button"
+              class="chip"
+              data-mode="FAIL"
+              onclick="setExportOutcomeSM('FAIL')"
+            >
+              Paksa Gagal
+            </button>
+          </div>
+        </div>
+        <div class="hint" id="exSMEstimateText" style="margin-top: 4px">
+          Pilih Periode untuk melihat estimasi jumlah baris.
+        </div>
+        <div class="modal-foot">
+          <button
+            type="button"
+            class="btn btn-outline"
+            onclick="closeExportSuratMasuk()"
+          >
+            Batal
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            id="btnDoExportSM"
+            onclick="submitExportSuratMasuk()"
+            disabled
+          >
+            Export Laporan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Status Export (fallback manual - GET /report/export/history §14.2, BUKAN di-poll) -->
+    <div class="modal-backdrop" id="modalExportStatusSMBackdrop">
+      <div class="modal-box" style="max-width: 420px">
+        <div class="modal-head">
+          <h3>Status Export</h3>
+          <button class="modal-close" onclick="closeExportStatusModalSM()">
+            <svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 6l12 12" />
+              <path d="M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <div id="exSMStatusBody"></div>
+        <div class="modal-foot">
+          <button
+            type="button"
+            class="btn btn-outline"
+            onclick="closeExportStatusModalSM()"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Riwayat Export (audit trail assignment_report_exports type=SURAT_MASUK, §7.2/§14.2) -->
+    <div class="modal-backdrop" id="modalExportHistorySMBackdrop">
+      <div class="modal-box" style="max-width: 860px">
+        <div class="modal-head">
+          <h3>Riwayat Export Laporan Surat Masuk</h3>
+          <button class="modal-close" onclick="closeExportHistoryModalSM()">
+            <svg
+              class="ic-svg"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path d="M6 6l12 12" />
+              <path d="M18 6L6 18" />
+            </svg>
+          </button>
+        </div>
+        <div class="hint" style="margin-bottom: 12px">
+          Riwayat permintaan export laporan Surat Masuk (maks 1 export aktif
+          &amp; 3 permintaan/menit, §11.2). Fallback manual bila notifikasi
+          push terlewat &mdash; seluruh export diproses asinkron dan tautan
+          unduhnya <strong>tidak kedaluwarsa</strong> (BR-14), divalidasi ulang
+          setiap kali diunduh.
+        </div>
+        <div class="table-wrap">
+          <table style="min-width: 760px">
+            <thead>
+              <tr>
+                <th>Waktu</th>
+                <th>Periode</th>
+                <th>Unit Organisasi</th>
+                <th>Status Surat</th>
+                <th>Rentang Tanggal</th>
+                <th>Status Export</th>
+                <th>Baris</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tbodyExportHistorySM"></tbody>
+          </table>
+        </div>
+        <div class="modal-foot">
+          <button
+            type="button"
+            class="btn btn-outline"
+            onclick="closeExportHistoryModalSM()"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifikasi push (simulasi FCM + database, §2.7/BR-16) - banner muncul begitu job DONE/FAILED -->
+    <div class="push-banner" id="exportPushBannerSM"></div>
+
     <div class="toast" id="toast"></div>
     <script src="periode-data.js"></script>
+    <script src="surat-masuk-data.js"></script>
+    <script src="export-download.js"></script>
+    <script src="notifikasi-data.js"></script>
     <script>
       function toast(msg) {
         var el = document.getElementById("toast");
@@ -1483,6 +1857,540 @@
             typeof periodeActiveId === "function" ? periodeActiveId() : "";
         }
         applySuratMasukFilter();
+      }
+
+      // ---------- Export Laporan Surat Masuk (lihat docs/surat_masuk.md) ----------
+      // Aktor export adalah Admin/Staf Sekretariat (BR-13), bukan Anggota DPRD - halaman ini tidak
+      // punya switcher "Login sebagai" seperti penugasan-dapil-reses.html, jadi dipakai satu
+      // identitas tetap yang sama dgn avatar "AS"/"Admin Sekretariat" di sidebar/topbar. Dipakai
+      // sebagai userId pada tabel riwayat export (assignment_report_exports bersama, type =
+      // SURAT_MASUK) & sebagai penerima notifikasi (BR-16/17: hanya ke pengekspor sendiri).
+      var SM_EXPORT_USER_ID =
+        typeof NOTIF_ADMIN_USER_ID !== "undefined"
+          ? NOTIF_ADMIN_USER_ID
+          : "admin-sekretariat";
+      var SM_EXPORT_USER_NAME = "Admin Sekretariat";
+      var bulanNamesSM = [
+        "Jan", "Feb", "Mar", "Apr", "Mei", "Jun",
+        "Jul", "Agu", "Sep", "Okt", "Nov", "Des",
+      ];
+      function fmtTanggalSM(iso) {
+        if (!iso) return "&mdash;";
+        var p = iso.split("-");
+        return (
+          parseInt(p[2], 10) + " " + bulanNamesSM[parseInt(p[1], 10) - 1] + " " + p[0]
+        );
+      }
+      var EXPORT_HISTORY_LIST = exportHistoryLoad();
+      // `type` memisahkan baris Surat Masuk dari baris Penugasan pada tabel bersama yang sama
+      // (§6.3/BR-15 docs/surat_masuk.md) - lihat juga perbaikan sejenis di penugasan-dapil-reses.html.
+      function isSuratMasukExportRow(r) {
+        return r.type === "SURAT_MASUK";
+      }
+      var EXPORT_ASYNC_PROCESSING_DELAY_MS_SM = 900;
+      var EXPORT_ASYNC_RESOLVE_DELAY_MS_SM = 2200;
+      var EXPORT_RATE_LIMIT_WINDOW_MS_SM = 60000; // §11.2: throttle:incoming-letter-export
+      var EXPORT_RATE_LIMIT_MAX_SM = 3;
+      var exportOutcomeSM = "NORMAL"; // 'NORMAL' | 'FAIL' - demo UI utk memperagakan status DONE/FAILED
+      var currentStatusExportIdSM = null;
+
+      function populateExportFilterOptionsSM() {
+        var periodeList =
+          typeof periodeLoadList === "function" ? periodeLoadList() : [];
+        document.getElementById("exSMPeriode").innerHTML =
+          '<option value="">Pilih periode&hellip;</option>' +
+          periodeList
+            .map(function (p) {
+              return (
+                '<option value="' +
+                p.id +
+                '">' +
+                p.nama +
+                (p.status === "Aktif" ? " (Aktif)" : "") +
+                "</option>"
+              );
+            })
+            .join("");
+        document.getElementById("exSMOrgUnit").innerHTML =
+          '<option value="">Semua Unit Organisasi</option>' +
+          ORG_UNITS.map(function (ou) {
+            return '<option value="' + ou.id + '">' + ou.name + "</option>";
+          }).join("");
+      }
+      // BR-06: start_date/end_date (bila diisi) mempersempit Periode yang sudah dipilih - keduanya
+      // wajib di dalam rentang periods.start_date-end_date, dan end_date >= start_date.
+      function exportDateRangeErrorSM(periode, startDate, endDate) {
+        if (!periode) return null;
+        if (startDate && endDate && endDate < startDate)
+          return "Tanggal Selesai harus setelah atau sama dengan Tanggal Mulai.";
+        if (
+          startDate &&
+          (startDate < periode.mulai || startDate > periode.selesai)
+        )
+          return (
+            "Tanggal Mulai harus di dalam rentang Periode (" +
+            fmtTanggalSM(periode.mulai) +
+            " &ndash; " +
+            fmtTanggalSM(periode.selesai) +
+            ")."
+          );
+        if (endDate && (endDate < periode.mulai || endDate > periode.selesai))
+          return (
+            "Tanggal Selesai harus di dalam rentang Periode (" +
+            fmtTanggalSM(periode.mulai) +
+            " &ndash; " +
+            fmtTanggalSM(periode.selesai) +
+            ")."
+          );
+        return null;
+      }
+      function periodeByIdSM(id) {
+        var list =
+          typeof periodeLoadList === "function" ? periodeLoadList() : [];
+        return list.find(function (p) {
+          return p.id === id;
+        });
+      }
+      function onExportPeriodeChangeSM() {
+        var periode = periodeByIdSM(document.getElementById("exSMPeriode").value);
+        var startInput = document.getElementById("exSMStartDate"),
+          endInput = document.getElementById("exSMEndDate");
+        startInput.min = endInput.min = periode ? periode.mulai : "";
+        startInput.max = endInput.max = periode ? periode.selesai : "";
+        updateExportEstimateSM();
+      }
+      // Dataset dibaca langsung dari baris tabel #sm-list (data-id/data-org-unit/data-status/
+      // data-date/data-periode) digabung SURAT_MASUK_DATA (surat-masuk-data.js) utk detail
+      // disposisi/lampiran - prototipe ini tidak punya API list surat masuk sungguhan, meniru
+      // behaviour GET /incoming-letters dgn filter yang sama dgn §9.1 docs/surat_masuk.md.
+      // DRAFT (belum punya tanggal surat) otomatis tidak match bila filter tanggal diisi - sama
+      // seperti NULL di SQL yang gagal pada perbandingan `letter_date >= :start_date` (§7.4.c).
+      function exportMatchingLettersSM(periodId, orgUnitId, status, startDate, endDate) {
+        var rows = Array.prototype.slice.call(
+          document.querySelectorAll("#sm-list tbody tr[data-id]"),
+        );
+        return rows.filter(function (row) {
+          var d = row.dataset;
+          if (d.periode !== periodId) return false;
+          if (orgUnitId && d.orgUnit !== orgUnitId) return false;
+          if (status && d.status !== status) return false;
+          if ((startDate || endDate) && !d.date) return false;
+          if (startDate && d.date < startDate) return false;
+          if (endDate && d.date > endDate) return false;
+          return true;
+        });
+      }
+      function exportDatasetForSM(periodId, orgUnitId, status, startDate, endDate) {
+        var rows = exportMatchingLettersSM(periodId, orgUnitId, status, startDate, endDate);
+        var sheet1 = [], sheet2 = [], sheet3 = [];
+        rows.forEach(function (row) {
+          var id = row.dataset.id;
+          var detail = SURAT_MASUK_DATA[id];
+          var title = detail ? detail.title : row.dataset.title || "";
+          var letterNumber = detail ? detail.letterNumber : "";
+          var firstDisp = detail && detail.dispositions.length ? detail.dispositions[0] : null;
+          var lastDisp = detail && detail.dispositions.length ? detail.dispositions[detail.dispositions.length - 1] : null;
+          sheet1.push({
+            id: id,
+            noSurat: letterNumber,
+            perihal: title,
+            tanggalSurat: detail ? detail.letterDateISO : "",
+            tempat: detail ? detail.place : "",
+            orgUnitId: row.dataset.orgUnit || "",
+            statusSurat: row.dataset.status,
+            penerimaAwal: firstDisp ? firstDisp.recipient : "",
+            jabatanPenerimaAwal: firstDisp ? firstDisp.recipientRole : "",
+            dibuatOleh: detail ? detail.createdBy : "",
+            tanggalDibuat: detail ? detail.submittedAtISO : "",
+            diselesaikanOleh: detail && detail.status === "SELESAI" ? lastDisp.recipient : "",
+            tanggalSelesai: detail ? detail.completedAtISO : "",
+            jumlahDisposisi: detail ? detail.dispositions.length : 0,
+            jumlahLampiran: detail ? detail.attachments.length : 0,
+            catatan: detail ? detail.notes : "",
+          });
+          if (detail) {
+            detail.dispositions.forEach(function (dsp, i) {
+              sheet2.push({
+                noSurat: letterNumber, perihal: title, statusSurat: row.dataset.status,
+                tanggalSurat: detail.letterDateISO, urutan: i + 1,
+                diteruskanDari: dsp.parent === null ? "" : detail.dispositions[dsp.parent].recipient,
+                diteruskanKe: dsp.recipient, jabatanPenerima: dsp.recipientRole,
+                statusDisposisi: dsp.status, catatan: dsp.note || "",
+                waktuDibuat: dsp.createdAtISO, waktuDibaca: dsp.readAtISO || "",
+                waktuDitindaklanjuti: dsp.actionedAtISO || "",
+              });
+            });
+            detail.attachments.forEach(function (a) {
+              sheet3.push({
+                noSurat: letterNumber, perihal: title, namaFile: a.fileName, mime: a.mime,
+                ukuranKb: Math.round((a.sizeBytes / 1024) * 10) / 10,
+                diunggahOleh: detail.createdBy, tanggalUnggah: a.uploadedAt,
+              });
+            });
+          }
+        });
+        sheet1.sort(function (a, b) { return (a.tanggalSurat || "").localeCompare(b.tanggalSurat || "") || a.noSurat.localeCompare(b.noSurat); });
+        sheet2.sort(function (a, b) { return (a.tanggalSurat || "").localeCompare(b.tanggalSurat || "") || a.noSurat.localeCompare(b.noSurat); });
+        sheet3.sort(function (a, b) { return a.noSurat.localeCompare(b.noSurat); });
+        return { sheet1: sheet1, sheet2: sheet2, sheet3: sheet3 };
+      }
+      var SM_STATUS_LABEL = { DRAFT: "Draf", SUBMIT: "Terkirim", SELESAI: "Selesai" };
+      var SM_DISP_STATUS_LABEL = { PENDING: "Menunggu", TERIMA: "Diterima", DISPOSISI: "Diteruskan" };
+      // Workbook 3 sheet sesuai §2.3-2.5 docs/surat_masuk.md - xlsSheetTable/xlsEscape dipakai
+      // bersama dari export-download.js (sama persis dgn yang dipakai penugasan-dapil-reses.html).
+      function buildIncomingLetterWorkbookHtml(periode, orgUnitId, dataset) {
+        var sheet1Headers = ["No. Surat","Perihal","Tanggal Surat","Tempat","Unit Organisasi Tujuan","Periode","Status Surat","Penerima Awal","Jabatan Penerima Awal","Dibuat Oleh","Tanggal Dibuat","Diselesaikan Oleh","Tanggal Selesai","Jumlah Disposisi","Jumlah Lampiran","Catatan"];
+        var sheet1Rows = dataset.sheet1.map(function (r) {
+          return [r.noSurat, r.perihal, r.tanggalSurat, r.tempat, orgUnitName(r.orgUnitId), periode.nama, SM_STATUS_LABEL[r.statusSurat] || r.statusSurat, r.penerimaAwal, r.jabatanPenerimaAwal, r.dibuatOleh, r.tanggalDibuat, r.diselesaikanOleh, r.tanggalSelesai, r.jumlahDisposisi, r.jumlahLampiran, r.catatan];
+        });
+        var sheet2Headers = ["No. Surat","Perihal","Status Surat","Tanggal Surat","Urutan Disposisi","Diteruskan Dari","Diteruskan Ke","Jabatan Penerima Disposisi","Status Disposisi","Catatan Disposisi","Waktu Dibuat Leg","Waktu Dibaca","Waktu Ditindaklanjuti"];
+        var sheet2Rows = dataset.sheet2.map(function (r) {
+          return [r.noSurat, r.perihal, SM_STATUS_LABEL[r.statusSurat] || r.statusSurat, r.tanggalSurat, r.urutan, r.diteruskanDari, r.diteruskanKe, r.jabatanPenerima, SM_DISP_STATUS_LABEL[r.statusDisposisi] || r.statusDisposisi, r.catatan, r.waktuDibuat, r.waktuDibaca, r.waktuDitindaklanjuti];
+        });
+        var sheet3Headers = ["No. Surat","Perihal","Nama File","Tipe File","Ukuran File (KB)","Diunggah Oleh","Tanggal Diunggah"];
+        var sheet3Rows = dataset.sheet3.map(function (r) {
+          return [r.noSurat, r.perihal, r.namaFile, r.mime, r.ukuranKb, r.diunggahOleh, r.tanggalUnggah];
+        });
+        return (
+          '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">' +
+          '<head><meta charset="utf-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets>' +
+          "<x:ExcelWorksheet><x:Name>Ringkasan Surat Masuk</x:Name><x:WorksheetOptions></x:WorksheetOptions></x:ExcelWorksheet>" +
+          "<x:ExcelWorksheet><x:Name>Detail Riwayat Disposisi</x:Name><x:WorksheetOptions></x:WorksheetOptions></x:ExcelWorksheet>" +
+          "<x:ExcelWorksheet><x:Name>Detail Lampiran</x:Name><x:WorksheetOptions></x:WorksheetOptions></x:ExcelWorksheet>" +
+          "</x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->" +
+          "<style>table{border-collapse:collapse;font-family:Calibri,Arial,sans-serif;font-size:12px;}</style></head><body>" +
+          xlsSheetTable(sheet1Headers, sheet1Rows) +
+          "<br>" + xlsSheetTable(sheet2Headers, sheet2Rows) +
+          "<br>" + xlsSheetTable(sheet3Headers, sheet3Rows) +
+          "</body></html>"
+        );
+      }
+      function slugPeriodeNamaSM(nama) {
+        return String(nama || "").replace(/^Periode\s*/i, "").trim().replace(/\s*-\s*/g, "-").replace(/\s+/g, "");
+      }
+      function slugOrgUnitNameSM(name) {
+        return String(name || "").replace(/\s+/g, "-");
+      }
+      // Penamaan sesuai §2.6 docs/surat_masuk.md.
+      function exportFileNameSM(periode, orgUnitId) {
+        var name = "Laporan-SuratMasuk_" + slugPeriodeNamaSM(periode.nama);
+        if (orgUnitId) name += "_" + slugOrgUnitNameSM(orgUnitName(orgUnitId));
+        return name + ".xls";
+      }
+      function setExportOutcomeSM(mode) {
+        exportOutcomeSM = mode;
+        Array.prototype.forEach.call(
+          document.querySelectorAll("#exSMModeChips .chip"),
+          function (c) {
+            c.classList.toggle("active", c.getAttribute("data-mode") === mode);
+          },
+        );
+      }
+      function userExportHistorySM(userId) {
+        return EXPORT_HISTORY_LIST.filter(function (r) {
+          return r.userId === userId && isSuratMasukExportRow(r);
+        }).sort(function (a, b) { return b.createdAtMs - a.createdAtMs; });
+      }
+      // Anti-spam #1 (§11.2): hanya satu export aktif (PENDING/PROCESSING) per user pada satu waktu.
+      function hasActiveExportJobSM(userId) {
+        return EXPORT_HISTORY_LIST.some(function (r) {
+          return r.userId === userId && isSuratMasukExportRow(r) && (r.status === "PENDING" || r.status === "PROCESSING");
+        });
+      }
+      // Anti-spam #2: rate limit per user dalam jendela waktu bergulir, meniru
+      // `throttle:incoming-letter-export` (§11.2).
+      function recentExportTimestampsSM(userId, windowMs) {
+        var now = Date.now();
+        return EXPORT_HISTORY_LIST.filter(function (r) {
+          return r.userId === userId && isSuratMasukExportRow(r) && now - r.createdAtMs < windowMs;
+        }).map(function (r) { return r.createdAtMs; });
+      }
+      function updateExportEstimateSM() {
+        var periodeId = document.getElementById("exSMPeriode").value;
+        var orgUnitId = document.getElementById("exSMOrgUnit").value;
+        var status = document.getElementById("exSMStatus").value;
+        var startDate = document.getElementById("exSMStartDate").value || null;
+        var endDate = document.getElementById("exSMEndDate").value || null;
+        var btn = document.getElementById("btnDoExportSM");
+        var hint = document.getElementById("exSMEstimateText");
+        reconcileExportHistorySM();
+        if (hasActiveExportJobSM(SM_EXPORT_USER_ID)) {
+          btn.disabled = true;
+          hint.innerHTML = 'Masih ada export yang sedang diproses &mdash; tunggu hingga selesai sebelum membuat export baru (lihat <a href="#" onclick="closeExportSuratMasuk();openExportHistoryModalSM();return false;">Riwayat Export</a>).';
+          return;
+        }
+        if (!periodeId) {
+          btn.disabled = true;
+          hint.textContent = "Pilih Periode untuk melihat estimasi jumlah baris.";
+          return;
+        }
+        var periode = periodeByIdSM(periodeId);
+        var rangeErr = exportDateRangeErrorSM(periode, startDate, endDate);
+        if (rangeErr) {
+          btn.disabled = true;
+          hint.innerHTML = rangeErr;
+          return;
+        }
+        var d = exportDatasetForSM(periodeId, orgUnitId, status, startDate, endDate);
+        var n = d.sheet1.length + d.sheet2.length + d.sheet3.length;
+        hint.innerHTML = "Estimasi <strong>" + n + " baris</strong> gabungan 3 sheet (Ringkasan " + d.sheet1.length + ", Disposisi " + d.sheet2.length + ", Lampiran " + d.sheet3.length + ") &mdash; diproses asinkron di background. Maks " + EXPORT_RATE_LIMIT_MAX_SM + " permintaan export/menit.";
+        btn.disabled = false;
+      }
+      function openExportSuratMasuk() {
+        populateExportFilterOptionsSM();
+        document.getElementById("exSMPeriode").value =
+          typeof periodeActiveId === "function" ? periodeActiveId() || "" : "";
+        document.getElementById("exSMOrgUnit").value = "";
+        document.getElementById("exSMStatus").value = "";
+        document.getElementById("exSMStartDate").value = "";
+        document.getElementById("exSMEndDate").value = "";
+        setExportOutcomeSM("NORMAL");
+        onExportPeriodeChangeSM();
+        document.getElementById("modalExportSMBackdrop").classList.add("open");
+      }
+      function closeExportSuratMasuk() {
+        document.getElementById("modalExportSMBackdrop").classList.remove("open");
+      }
+      // BR-14: link download TIDAK kedaluwarsa - divalidasi (kepemilikan + status DONE) setiap
+      // request lewat downloadExportById() (export-download.js, dipakai bersama Penugasan).
+      function downloadExportHistoryRowSM(id) {
+        var res = downloadExportById(id, SM_EXPORT_USER_ID);
+        toast(res.message);
+      }
+      function reexportFromHistorySM(id) {
+        var r = EXPORT_HISTORY_LIST.find(function (x) { return x.id === id; });
+        if (!r) return;
+        closeExportHistoryModalSM();
+        openExportSuratMasuk();
+        document.getElementById("exSMPeriode").value = r.periodeId;
+        document.getElementById("exSMOrgUnit").value = r.orgUnitId || "";
+        onExportPeriodeChangeSM();
+        document.getElementById("exSMStatus").value = r.statusFilter || "";
+        document.getElementById("exSMStartDate").value = r.startDate || "";
+        document.getElementById("exSMEndDate").value = r.endDate || "";
+        setExportOutcomeSM("NORMAL");
+        updateExportEstimateSM();
+      }
+      function submitExportSuratMasuk() {
+        var periodeId = document.getElementById("exSMPeriode").value;
+        var orgUnitId = document.getElementById("exSMOrgUnit").value;
+        var status = document.getElementById("exSMStatus").value;
+        var startDate = document.getElementById("exSMStartDate").value || null;
+        var endDate = document.getElementById("exSMEndDate").value || null;
+        if (!periodeId) { toast("Pilih Periode terlebih dahulu"); return; }
+
+        var periode = periodeByIdSM(periodeId);
+        var rangeErr = exportDateRangeErrorSM(periode, startDate, endDate);
+        if (rangeErr) { toast(rangeErr.replace(/<[^>]+>/g, "")); return; }
+
+        reconcileExportHistorySM();
+        if (hasActiveExportJobSM(SM_EXPORT_USER_ID)) {
+          toast("Masih ada export yang sedang diproses - tunggu hingga selesai sebelum membuat export baru.");
+          return;
+        }
+        var recent = recentExportTimestampsSM(SM_EXPORT_USER_ID, EXPORT_RATE_LIMIT_WINDOW_MS_SM);
+        if (recent.length >= EXPORT_RATE_LIMIT_MAX_SM) {
+          var oldest = Math.min.apply(null, recent);
+          var waitSec = Math.max(1, Math.ceil((oldest + EXPORT_RATE_LIMIT_WINDOW_MS_SM - Date.now()) / 1000));
+          toast("Terlalu banyak permintaan export (maks " + EXPORT_RATE_LIMIT_MAX_SM + "/menit). Coba lagi dalam " + waitSec + " detik.");
+          return;
+        }
+
+        var dataset = exportDatasetForSM(periodeId, orgUnitId, status, startDate, endDate);
+        var n = dataset.sheet1.length + dataset.sheet2.length + dataset.sheet3.length;
+        var nowMs = Date.now();
+        var record = {
+          id: exportHistoryNextId(EXPORT_HISTORY_LIST),
+          type: "SURAT_MASUK",
+          userId: SM_EXPORT_USER_ID, userName: SM_EXPORT_USER_NAME,
+          periodeId: periodeId, periodeNama: periode.nama,
+          orgUnitId: orgUnitId || null, orgUnitNama: orgUnitId ? orgUnitName(orgUnitId) : "Semua Unit",
+          statusFilter: status || null,
+          startDate: startDate, endDate: endDate,
+          status: "PENDING",
+          rowCount: n, sheet1Count: dataset.sheet1.length, sheet2Count: dataset.sheet2.length, sheet3Count: dataset.sheet3.length,
+          fileName: exportFileNameSM(periode, orgUnitId),
+          createdAtMs: nowMs,
+          simProcessingAt: nowMs + EXPORT_ASYNC_PROCESSING_DELAY_MS_SM,
+          simResolveAt: nowMs + EXPORT_ASYNC_RESOLVE_DELAY_MS_SM,
+          forceFail: exportOutcomeSM === "FAIL",
+          errorMessage: null,
+        };
+        EXPORT_HISTORY_LIST.push(record);
+        exportHistorySave(EXPORT_HISTORY_LIST);
+        refreshExportButtonStateSM();
+
+        closeExportSuratMasuk();
+        toast("Laporan sedang diproses, Anda akan diberi tahu saat selesai");
+      }
+      function openExportStatusModalSM(exportId) {
+        currentStatusExportIdSM = exportId;
+        renderExportStatusModalSM();
+        document.getElementById("modalExportStatusSMBackdrop").classList.add("open");
+      }
+      function renderExportStatusModalSM() {
+        var body = document.getElementById("exSMStatusBody");
+        var r = EXPORT_HISTORY_LIST.find(function (x) { return x.id === currentStatusExportIdSM; });
+        if (!r) { body.innerHTML = '<div class="hint">Data export tidak ditemukan.</div>'; return; }
+        if (r.status === "PENDING") {
+          body.innerHTML = '<div class="hint"><span class="badge badge-purple">PENDING</span> Permintaan export diterima &amp; dimasukkan ke antrean (estimasi ' + r.rowCount + " baris).</div>";
+        } else if (r.status === "PROCESSING") {
+          body.innerHTML = '<div class="hint"><span class="badge badge-warn">PROCESSING</span> Worker sedang membangun workbook 3 sheet&hellip;</div>';
+        } else if (r.status === "DONE") {
+          body.innerHTML = '<div class="hint" style="margin-bottom:10px;"><span class="badge badge-success">DONE</span> File siap diunduh (' + r.rowCount + " baris).</div>" +
+            '<div class="hint" style="margin-bottom:10px;">Tautan unduh tidak kedaluwarsa (BR-14) &mdash; divalidasi ulang setiap kali diunduh.</div>' +
+            '<button type="button" class="btn btn-primary" style="width:100%;" onclick="downloadExportHistoryRowSM(' + r.id + ')"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg> Unduh File</button>';
+        } else if (r.status === "FAILED") {
+          body.innerHTML = '<div class="hint" style="margin-bottom:10px;"><span class="badge badge-danger">FAILED</span> ' + (r.errorMessage || "Export gagal diproses.") + "</div>" +
+            '<button type="button" class="btn btn-outline" style="width:100%;" onclick="reexportFromHistorySM(' + r.id + ')">Export Ulang</button>';
+        }
+      }
+      function closeExportStatusModalSM() {
+        document.getElementById("modalExportStatusSMBackdrop").classList.remove("open");
+      }
+      function openExportHistoryModalSM() {
+        reconcileExportHistorySM();
+        renderExportHistoryModalSM();
+        document.getElementById("modalExportHistorySMBackdrop").classList.add("open");
+      }
+      function closeExportHistoryModalSM() {
+        document.getElementById("modalExportHistorySMBackdrop").classList.remove("open");
+      }
+      var EXPORT_STATUS_BADGE_CLASS_SM = { PENDING: "badge-purple", PROCESSING: "badge-warn", DONE: "badge-success", FAILED: "badge-danger" };
+      var EXPORT_STATUS_DISPLAY_LABEL_SM = { PENDING: "Menunggu", PROCESSING: "Diproses", DONE: "Selesai", FAILED: "Gagal" };
+      function renderExportHistoryModalSM() {
+        var rows = userExportHistorySM(SM_EXPORT_USER_ID);
+        var tbody = document.getElementById("tbodyExportHistorySM");
+        if (!rows.length) {
+          tbody.innerHTML = '<tr><td colspan="8"><div class="empty-note">Belum ada riwayat export laporan Surat Masuk.</div></td></tr>';
+          return;
+        }
+        tbody.innerHTML = rows.map(function (r) {
+          var statusLbl = EXPORT_STATUS_DISPLAY_LABEL_SM[r.status] || r.status;
+          var statusCls = EXPORT_STATUS_BADGE_CLASS_SM[r.status] || "badge-neutral";
+          var statusBadge = '<span class="badge ' + statusCls + '">' + statusLbl + "</span>";
+          var rangeCell = r.startDate || r.endDate ? fmtTanggalSM(r.startDate) + " &ndash; " + fmtTanggalSM(r.endDate) : "&mdash;";
+          var actions = "";
+          if (r.status === "DONE") {
+            actions = '<button class="btn btn-outline btn-sm" onclick="downloadExportHistoryRowSM(' + r.id + ')">Unduh</button>';
+          } else if (r.status === "FAILED") {
+            actions = '<button class="btn btn-outline btn-sm" onclick="reexportFromHistorySM(' + r.id + ')">Export Ulang</button>';
+          } else {
+            actions = '<button class="btn btn-outline btn-sm" onclick="openExportStatusModalSM(' + r.id + ')">Lihat Status</button>';
+          }
+          return "<tr>" +
+            "<td>" + new Date(r.createdAtMs).toLocaleString("id-ID") + "</td>" +
+            "<td>" + xlsEscape(r.periodeNama) + "</td>" +
+            "<td>" + xlsEscape(r.orgUnitNama) + "</td>" +
+            "<td>" + xlsEscape(SM_STATUS_LABEL[r.statusFilter] || "Semua Status") + "</td>" +
+            "<td>" + rangeCell + "</td>" +
+            "<td>" + statusBadge + "</td>" +
+            "<td>" + r.rowCount + "</td>" +
+            '<td><div class="actions-cell">' + actions + "</div></td>" +
+          "</tr>";
+        }).join("");
+      }
+      // Timestamp absolut (bukan setTimeout relatif) supaya job tetap maju benar walau modal
+      // ditutup-buka atau halaman di-reload - sama dgn pola penugasan-dapil-reses.html.
+      function reconcileExportHistorySM() {
+        var now = Date.now(), changed = false, resolved = [];
+        EXPORT_HISTORY_LIST.forEach(function (r) {
+          if (!isSuratMasukExportRow(r)) return; // baris Penugasan diproses reconcile-nya sendiri
+          if (r.status === "PENDING" && now >= r.simProcessingAt) { r.status = "PROCESSING"; changed = true; }
+          if (r.status === "PROCESSING" && now >= r.simResolveAt) {
+            if (r.forceFail) {
+              r.status = "FAILED"; r.errorMessage = "Export gagal diproses (simulasi demo).";
+            } else {
+              r.status = "DONE";
+              var periode = periodeByIdSM(r.periodeId);
+              var dataset = exportDatasetForSM(r.periodeId, r.orgUnitId, r.statusFilter, r.startDate, r.endDate);
+              r.fileHtml = buildIncomingLetterWorkbookHtml(periode, r.orgUnitId, dataset);
+            }
+            changed = true;
+            resolved.push(r);
+          }
+        });
+        if (changed) exportHistorySave(EXPORT_HISTORY_LIST);
+        resolved.forEach(notifyExportResolvedSM);
+        return changed;
+      }
+      // ---------- Notifikasi (simulasi database + FcmChannel, §2.7, BR-16/17) ----------
+      function notifyExportResolvedSM(r) {
+        showExportPushNotificationSM(r);
+        if (typeof notifPush === "function") {
+          var isFail = r.status === "FAILED";
+          notifPush({
+            userId: r.userId,
+            type: "SURAT_MASUK_EXPORT",
+            status: r.status,
+            title: isFail ? "Export laporan gagal" : "Laporan surat masuk siap diunduh",
+            meta: isFail ? (r.errorMessage || "Export gagal diproses.") : r.fileName + " sudah siap di unduh.",
+            link: "surat-masuk.html?openExportHistory=1",
+            exportId: r.id,
+          });
+        }
+        refreshExportButtonStateSM();
+      }
+      function showExportPushNotificationSM(r) {
+        var box = document.getElementById("exportPushBannerSM");
+        var cardId = "pushCardSM" + r.id + "_" + Date.now();
+        var isFail = r.status === "FAILED";
+        var title = isFail ? "Export laporan gagal" : "Laporan surat masuk siap diunduh";
+        var body = isFail ? (r.errorMessage || "Export gagal diproses.") : r.fileName + " sudah siap di unduh.";
+        var actions = isFail
+          ? '<button type="button" class="btn btn-outline" onclick="reexportFromHistorySM(' + r.id + ');dismissPushCardSM(&quot;' + cardId + '&quot;)">Export Ulang</button>'
+          : '<button type="button" class="btn btn-primary" onclick="downloadExportHistoryRowSM(' + r.id + ');dismissPushCardSM(&quot;' + cardId + '&quot;)">Unduh</button>';
+        var card = document.createElement("div");
+        card.className = "push-card" + (isFail ? " failed" : "");
+        card.id = cardId;
+        card.innerHTML = '<div class="pc-title"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">' +
+          (isFail ? '<circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6"/><path d="M9 9l6 6"/>' : '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/>') +
+          "</svg>" + title + "</div>" +
+          '<div class="pc-body">' + xlsEscape(body) + "</div>" +
+          '<div class="pc-actions">' + actions + '<button type="button" class="btn btn-outline" onclick="dismissPushCardSM(&quot;' + cardId + '&quot;)">Tutup</button></div>';
+        box.appendChild(card);
+        setTimeout(function () { dismissPushCardSM(cardId); }, 10000);
+      }
+      function dismissPushCardSM(cardId) {
+        var el = document.getElementById(cardId);
+        if (el) el.remove();
+      }
+      function refreshExportButtonStateSM() {
+        var btn = document.getElementById("btnExportSuratMasuk");
+        if (!btn) return;
+        if (hasActiveExportJobSM(SM_EXPORT_USER_ID)) {
+          btn.disabled = true;
+          btn.innerHTML = '<svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg> Export Diproses&hellip;';
+        } else {
+          btn.disabled = false;
+          btn.innerHTML = '<svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg> Export Laporan';
+        }
+      }
+      // Bel notifikasi (topbar) & badge sidebar "Notifikasi" - gabungan baseline mock lintas-modul
+      // (5) + notifikasi export Surat Masuk yang belum dibaca milik identitas Admin (BR-17, scoped).
+      var NOTIF_LEGACY_BASELINE_SM = 5;
+      function updateNotifBadgesSM() {
+        if (typeof notifUnreadCountFor !== "function") return;
+        var n = NOTIF_LEGACY_BASELINE_SM + notifUnreadCountFor(SM_EXPORT_USER_ID);
+        var bellDot = document.querySelector(".tb-bell .dot");
+        if (bellDot) bellDot.textContent = String(n);
+        var sideCount = document.querySelector('a.snav-item[href="notifikasi.html"] .count');
+        if (sideCount) sideCount.textContent = String(n);
+      }
+      function exportHeartbeatSM() {
+        reconcileExportHistorySM();
+        refreshExportButtonStateSM();
+        updateNotifBadgesSM();
+        if (document.getElementById("modalExportStatusSMBackdrop").classList.contains("open")) renderExportStatusModalSM();
+        if (document.getElementById("modalExportHistorySMBackdrop").classList.contains("open")) renderExportHistoryModalSM();
+      }
+      setInterval(exportHeartbeatSM, 500);
+      refreshExportButtonStateSM();
+      updateNotifBadgesSM();
+      // Notifikasi "Export Ulang" (notifikasi.html) membawa ?openExportHistory=1 - buka langsung
+      // modal Riwayat Export di halaman ini (link tujuan yang sama persis dgn Penugasan).
+      if (/[?&]openExportHistory=1\b/.test(window.location.search)) {
+        openExportHistoryModalSM();
       }
 
       populateFPeriodeSelect();
