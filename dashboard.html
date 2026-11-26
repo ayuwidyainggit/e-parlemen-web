@@ -487,10 +487,12 @@ var LIFECYCLE_RAMP = [
   { key: 'pending', color: 'var(--chart-pending)' },
   { key: 'bad', color: 'var(--chart-bad)' }
 ];
-function stackedBar(items){
-  // items: [{key:'good'|'neutral'|'pending'|'bad', label, count}], urutan output ikut LIFECYCLE_RAMP tetap.
+function stackedBar(items, orderKeys){
+  // items: [{key:'good'|'neutral'|'pending'|'bad', label, count}], urutan output ikut LIFECYCLE_RAMP tetap
+  // kecuali orderKeys diberikan (override urutan tampil per widget; warna tetap ikut key, tidak diputar).
   var total = items.reduce(function(s, it){ return s + it.count; }, 0);
-  var ordered = LIFECYCLE_RAMP.map(function(step){ return items.find(function(it){ return it.key === step.key; }); }).filter(Boolean);
+  var keyOrder = orderKeys || LIFECYCLE_RAMP.map(function(step){ return step.key; });
+  var ordered = keyOrder.map(function(key){ return items.find(function(it){ return it.key === key; }); }).filter(Boolean);
   var segs = ordered.map(function(it){
     var pct = total > 0 ? Math.round((it.count / total) * 100) : 0;
     var color = LIFECYCLE_RAMP.find(function(s){ return s.key === it.key; }).color;
@@ -698,9 +700,10 @@ function renderPenugasanRecent(){
 var RAPAT_STATUS_KEY = { COMPLETED: 'good', DRAFT: 'neutral', SCHEDULED: 'pending', CANCELLED: 'bad' };
 
 function renderRapat(){
+  // Urutan tampil diminta: Draft, Dijadwalkan, Selesai, Dibatalkan (bukan urutan ramp good/neutral/pending/bad).
   document.getElementById('widgetRapatStatus').innerHTML = stackedBar(Object.keys(RAPAT_STATUS_LABEL).filter(function(k){ return k !== 'ONGOING'; }).map(function(k){
     return { key: RAPAT_STATUS_KEY[k], label: RAPAT_STATUS_LABEL[k], count: RAPAT_STATIC.by_status[k] || 0 };
-  }));
+  }), ['neutral', 'pending', 'good', 'bad']);
   document.getElementById('rapatUpcoming30').textContent = RAPAT_STATIC.upcoming_30_days;
 }
 
