@@ -261,6 +261,7 @@ a{color:inherit;}
   </div>
 </div>
 <div class="toast" id="toast"></div>
+<script src="periode-data.js"></script>
 <script>
 function toast(msg){
   var el = document.getElementById('toast');
@@ -452,6 +453,11 @@ function submitForm(e){
   var displayName = member ? member.name : 'Sekretariat DPRD';
   var displaySub = member ? (member.position + ' ' + member.orgUnit) : ('Ditujukan: ' + tujuan);
 
+  // periodId/orgUnitId/tglISO/origin/status ditambahkan (tidak ada di versi lama) supaya baris
+  // surat keluar langsung (lajur DIRECT) ini ikut tercakup filter Export Laporan di
+  // surat-keluar.html (Periode wajib, Unit Organisasi Tujuan & rentang tanggal opsional) -
+  // lihat docs/Surat_Keluar.md §2.1/BR-01/BR-07. relatedNama/Jabatan/Unit meniru kolom
+  // "Penempatan Terkait" (§2.3) yang hanya relevan utk lajur DIRECT (BR-08).
   var entry = {
     id: 'sk-admin-' + Date.now(),
     initials: initialsOf(displayName),
@@ -464,6 +470,14 @@ function submitForm(e){
     tujuan: tujuan,
     perihal: perihal,
     tglLabel: formatTanggalLabel(tgl),
+    tglISO: tgl,
+    periodId: typeof periodeActiveId === 'function' ? (periodeActiveId() || 'prd-2024') : 'prd-2024',
+    orgUnitId: orgUnitId || null,
+    origin: 'DIRECT',
+    status: 'DONE',
+    relatedNama: member ? member.name : null,
+    relatedJabatan: member ? member.position : null,
+    relatedUnit: member ? member.orgUnit : null,
     attachments: selectedFiles.map(function(f){ return {name: f.name, size: f.size}; })
   };
 

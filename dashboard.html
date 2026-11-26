@@ -113,10 +113,38 @@ a{color:inherit;}
 .legend .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .tag-row{display:flex;gap:5px;flex-wrap:wrap;}
 
+/* ---- Dashboard chart kit (docs/dashboard.md) ---- */
+/* Status "lifecycle" ramp dipakai KHUSUS utk stacked-bar part-to-whole (Pengguna/Rapat) - urutan
+   good->neutral->pending->bad TETAP, tervalidasi CVD-safe lewat skill dataviz validate_palette.js
+   (hijau tidak pernah bersebelahan dgn merah MAUPUN kuning-tua sekaligus). Jangan diputar/di-cycle. */
+:root{
+  --chart-good:#1f8a4c; --chart-neutral:#3d6ea8; --chart-pending:#9a7b1f; --chart-bad:#a4373a;
+}
+/* Ranking magnitude (bar/column) - satu hue sequential, gelap=terbanyak, memakai ramp hijau yg
+   sudah ada (--green-dark...--green-light) - bukan warna baru (job "Compare magnitude" §2 dataviz). */
+.rank-list{display:flex;flex-direction:column;gap:10px;}
+.rank-row{display:flex;align-items:center;gap:10px;}
+.rank-row .rank-lbl{flex:0 0 auto;width:min(42%,230px);font-size:12px;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rank-row .rank-track{flex:1;height:14px;background:#eceee7;border-radius:5px;overflow:hidden;}
+.rank-row .rank-fill{height:100%;border-radius:5px;transition:width .3s ease;}
+.rank-row .rank-val{flex:0 0 auto;min-width:30px;text-align:right;font-size:12px;font-weight:800;color:var(--ink);}
+
+
+/* Part-to-whole (stacked bar) - satu bar dibagi beberapa segmen, gap 2px antar segmen (bukan
+   stroke) per spesifikasi marks-and-anatomy.md. Dipakai utk Jumlah per Status (<=4 kategori). */
+.stacked-bar{display:flex;height:26px;border-radius:7px;overflow:hidden;gap:2px;background:var(--border);}
+.stacked-bar .seg{height:100%;display:flex;align-items:center;justify-content:center;min-width:0;}
+.stacked-bar .seg .sv{font-size:10.5px;font-weight:800;color:#fff;white-space:nowrap;padding:0 4px;}
+.chip-legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:10px;}
+.chip-legend .chip{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink);}
+.chip-legend .chip .sw{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+.chip-legend .chip .cv{color:var(--muted);font-weight:700;}
+
 .card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--border);box-shadow:0 1px 3px rgba(0,0,0,.04);margin-bottom:18px;}
 .section-title{font-size:15px;font-weight:800;color:var(--ink);margin:0 0 14px;display:flex;justify-content:space-between;align-items:center;}
 .section-title .more{font-size:11.5px;font-weight:700;color:var(--green);text-decoration:none;}
 .two-col-layout{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;align-items:start;}
+.three-col-layout{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;align-items:start;}
 .muted{color:var(--muted);}
 .hint{font-size:11.5px;color:var(--muted);line-height:1.55;}
 
@@ -148,6 +176,17 @@ a{color:inherit;}
 .list-item .content .meta{font-size:11px;color:var(--muted);display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:2px;}
 .list-item .side{text-align:right;font-size:10.5px;color:var(--muted);flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:6px;}
 
+/* Aktivitas Terbaru - satu section, 2 kolom x 2 baris (satu tabel per modul): Surat Masuk |
+   Surat Keluar pada baris pertama, Penugasan | Rapat pada baris kedua (urutan HTML menentukan
+   posisi grid). Masing-masing kolom tetap disaring permission-nya sendiri lewat data-widget-gate
+   pada .quad-col (lihat applyActiveRole()). */
+.quad-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+.quad-col{min-width:0;}
+.quad-title{font-size:13px;font-weight:800;color:var(--ink);margin-bottom:10px;display:flex;justify-content:space-between;align-items:baseline;gap:6px;}
+.quad-title .more{font-size:11px;font-weight:700;color:var(--green);text-decoration:none;flex-shrink:0;}
+.quad-col table.table-compact{min-width:0;}
+.quad-col th, .quad-col td{padding:10px 12px;}
+
 .timeline{position:relative;padding-left:22px;}
 .timeline::before{content:"";position:absolute;left:5px;top:4px;bottom:4px;width:2px;background:var(--border);}
 .t-item{position:relative;margin-bottom:18px;}
@@ -168,11 +207,18 @@ tr:hover td{background:#fafaf7;}
 .namecell .n{font-weight:800;font-size:12.6px;}
 .namecell .s{font-size:10.5px;color:var(--muted);}
 
+@media (max-width:1100px){
+  .three-col-layout{grid-template-columns:1fr 1fr;}
+}
 @media (max-width:960px){
   .sidebar{position:fixed;left:-232px;transition:left .2s;box-shadow:6px 0 24px rgba(0,0,0,.25);}
   .sidebar.open{left:0;}
   .menu-toggle{display:block;}
   .two-col-layout{grid-template-columns:1fr;}
+}
+@media (max-width:620px){
+  .quad-grid{grid-template-columns:1fr;}
+  .three-col-layout{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -244,312 +290,106 @@ tr:hover td{background:#fafaf7;}
     <div class="content">
       <div class="role-banner" id="roleAccessBanner"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9L2.8 17a2 2 0 0 0 1.7 3h15a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg><span class="rb-text"></span></div>
 
-      <div class="stats-grid">
-        <a class="stat-card info" href="surat-masuk.html" style="text-decoration:none;color:inherit;">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 3h7l4 4v14H7z"/><path d="M14 3v4h4"/></svg></div>
-          <div><div class="num">18</div><div class="lbl">Surat Masuk (Bulan Ini)</div></div>
-        </a>
-        <div class="stat-card warn">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg></div>
-          <div><div class="num">3</div><div class="lbl">Permintaan Surat Keluar Baru</div></div>
-        </div>
-        <div class="stat-card success">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-          <div><div class="num">12</div><div class="lbl">Surat Keluar Selesai (Bulan Ini)</div></div>
-        </div>
-        <div class="stat-card">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></div>
-          <div><div class="num">5</div><div class="lbl">Rapat Mendatang</div></div>
-        </div>
-        <div class="stat-card danger">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="3.2"/><circle cx="17" cy="9" r="2.6"/><path d="M2.5 20c1-3.6 3.6-5.5 5.5-5.5s4.5 1.9 5.5 5.5"/></svg></div>
-          <div><div class="num">86%</div><div class="lbl">Rata-rata Kehadiran Rapat</div></div>
-        </div>
-      </div>
-
-      <div class="two-col-layout">
-        <div>
-          <div class="card">
-            <div class="section-title">Surat Masuk Terbaru <a class="more" href="surat-masuk.html">Lihat semua &rsaquo;</a></div>
-
-            <a class="list-item bl-warn" href="surat-masuk-detail.html?id=SM-002">
-              <div class="icon-box" style="background:var(--warn-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
-              <div class="content">
-                <div class="title">Undangan Rapat Koordinasi Komisi I &mdash; 004/118/DPRD/2026</div>
-                <div class="meta">Didisposisikan ke Ir. Budi Santoso, M.T. &middot; menunggu diterima</div>
-              </div>
-              <div class="side"><span class="badge badge-warn">SUBMIT</span></div>
-            </a>
-
-            <a class="list-item bl-danger" href="surat-masuk-detail.html?id=SM-001">
-              <div class="icon-box" style="background:var(--danger-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
-              <div class="content">
-                <div class="title">Undangan Rapat Paripurna Pembahasan APBD 2027 &mdash; 005/123/DPRD/2026</div>
-                <div class="meta">Belum direspon Ketua DPRD &middot; lewat tanggal surat</div>
-              </div>
-              <div class="side"><span class="badge badge-danger">Lewat Hari H</span></div>
-            </a>
-
-            <a class="list-item bl-success" href="surat-masuk-detail.html?id=SM-004">
-              <div class="icon-box" style="background:var(--success-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg></div>
-              <div class="content">
-                <div class="title">Permohonan Data Dukung Reses Dapil 2 &mdash; 003/101/DPRD/2026</div>
-                <div class="meta">Diterima Hj. Siti Rahmawati &middot; selesai 29 Okt 2026</div>
-              </div>
-              <div class="side"><span class="badge badge-neutral">SELESAI</span></div>
-            </a>
-
-            <div style="margin-top:6px;"><a class="btn btn-outline btn-sm" href="surat-masuk.html">Kelola Semua Surat Masuk</a></div>
-          </div>
-
-          <div class="card">
-            <div class="section-title">Permintaan Surat Keluar Terbaru <a class="more" href="surat-keluar.html">Lihat semua &rsaquo;</a></div>
-
-            <a class="list-item bl-warn" href="surat-keluar-proses.html">
-              <div class="icon-box" style="background:var(--warn-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg></div>
-              <div class="content">
-                <div class="title">Surat Keterangan Tugas &mdash; Ir. Budi Santoso, M.T.</div>
-                <div class="meta">Diminta hari ini, 09.12 WIB &middot; Anggota Komisi I</div>
-              </div>
-              <div class="side"><span class="badge badge-warn">Permintaan Baru</span></div>
-            </a>
-
-            <a class="list-item bl-info" href="surat-keluar-proses.html">
-              <div class="icon-box" style="background:var(--info-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg></div>
-              <div class="content">
-                <div class="title">Surat Undangan Kunjungan Dapil &mdash; Hj. Siti Rahmawati</div>
-                <div class="meta">Diklaim, sedang disusun &middot; kemarin, 14.40 WIB</div>
-              </div>
-              <div class="side"><span class="badge badge-info">Sedang Diproses</span></div>
-            </a>
-
-            <a class="list-item bl-success" href="surat-keluar-proses.html">
-              <div class="icon-box" style="background:var(--success-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-              <div class="content">
-                <div class="title">Surat Rekomendasi Reses &mdash; Drs. Ahmad Fauzi</div>
-                <div class="meta">File surat sudah disubmit &amp; selesai</div>
-              </div>
-              <div class="side"><span class="badge badge-neutral">Selesai</span></div>
-            </a>
-
-            <div style="margin-top:6px;"><a class="btn btn-outline btn-sm" href="surat-keluar.html">Kelola Semua Permintaan</a></div>
-          </div>
-
-          <div class="card">
-            <div class="section-title">Jadwal Rapat Mendatang <a class="more" href="jadwal-rapat.html">Lihat semua &rsaquo;</a></div>
-            <a class="list-item bl-warn" href="absensi.html">
-              <div class="icon-box" style="background:var(--warn-bg);"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
-              <div class="content">
-                <div class="title">Rapat Badan Anggaran</div>
-                <div class="meta">Ruang Rapat Banggar &middot; 10.00 WIB &middot; 25 Anggota diundang</div>
-              </div>
-              <div class="side"><span class="badge badge-danger">Hari Ini</span></div>
-            </a>
-            <a class="list-item" href="absensi.html">
-              <div class="icon-box"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
-              <div class="content">
-                <div class="title">Rapat Komisi II</div>
-                <div class="meta">Ruang Rapat Komisi II &middot; 26 Mei, 10.00 WIB</div>
-              </div>
-              <div class="side"><span class="badge badge-neutral">2 hari lagi</span></div>
-            </a>
-            <div style="margin-top:6px;"><a class="btn btn-outline btn-sm" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Buat Jadwal Rapat</a></div>
-          </div>
-        </div>
-
-        <div>
-          <div class="card">
-            <div class="section-title">Aktivitas Terbaru</div>
-            <div class="timeline">
-              <div class="t-item done">
-                <div class="t-title">Surat disetujui oleh Hj. Siti Rahmawati</div>
-                <div class="t-time">Hari ini, 08.20 WIB</div>
-                <div class="t-desc">Surat Undangan Kunjungan Dapil telah disetujui melalui aplikasi mobile.</div>
-              </div>
-              <div class="t-item done">
-                <div class="t-title">15 anggota presensi Rapat Komisi I</div>
-                <div class="t-time">Kemarin, 09.45 WIB</div>
-                <div class="t-desc">Presensi tercatat melalui pemindaian QR sesi rapat.</div>
-              </div>
-              <div class="t-item pending">
-                <div class="t-title">Permintaan surat keluar baru</div>
-                <div class="t-time">Hari ini, 09.12 WIB</div>
-                <div class="t-desc">Ir. Budi Santoso, M.T. mengajukan Surat Keterangan Tugas.</div>
-              </div>
-              <div class="t-item pending">
-                <div class="t-title">Jadwal Rapat Komisi II diterbitkan</div>
-                <div class="t-time">2 hari lalu</div>
-                <div class="t-desc">Notifikasi undangan telah dikirim ke aplikasi mobile anggota.</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="text-align:center;">
-            <div class="section-title" style="justify-content:center;">Aksi Cepat</div>
-            <div class="btn-row" style="flex-direction:column;">
-              <a class="btn btn-primary" href="jadwal-rapat-buat.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 5v14"/><path d="M5 12h14"/></svg> Buat Jadwal Rapat</a>
-              <a class="btn btn-outline" href="absensi.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg> Buka Presensi Rapat</a>
-              <a class="btn btn-outline" href="surat-keluar.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 6.5l9 6.5 9-6.5"/></svg> Proses Surat Keluar</a>
-              <a class="btn btn-outline" href="laporan-dapil-reses.html"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6" rx="0.6"/><rect x="12" y="8" width="3" height="10" rx="0.6"/><rect x="17" y="5" width="3" height="13" rx="0.6"/></svg> Laporan Dapil &amp; Reses</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="divider" style="height:1px;background:var(--border);margin:8px 0 24px;"></div>
-
-      <div class="section-title" style="margin-bottom:4px;">Ringkasan Pokok Pikiran (Pokir)</div>
-      <div class="hint" style="margin-bottom:16px;">Ringkasan usulan Pokok Pikiran (Pokir) seluruh Anggota DPRD &mdash; hasil dari kegiatan reses, kunjungan dapil, aduan masyarakat, maupun inisiatif pribadi &mdash; untuk memantau status tindak lanjut menuju Musrenbang/RKPD.</div>
+      <div class="hint" style="margin-bottom:16px;">Ringkasan data lintas modul sesuai permission Anda. Dashboard ini bersifat <strong>baca saja</strong> &mdash; setiap angka menaut ke halaman daftar modul terkait untuk detail (lihat <code>docs/dashboard.md</code>).</div>
 
       <div class="filter-bar">
-        <div class="filter-field"><label>Dapil</label>
-          <select id="filterDapil" onchange="applyFilter()">
-            <option value="">Semua Dapil</option>
-            <option value="Dapil 1">Dapil 1</option>
-            <option value="Dapil 2">Dapil 2</option>
-            <option value="Dapil 3">Dapil 3</option>
-          </select>
+        <div class="filter-field"><label>Periode</label>
+          <select id="filterPeriode" onchange="onPeriodeChange()"></select>
         </div>
-        <div class="filter-field"><label>Status</label>
-          <select id="filterStatus" onchange="applyFilter()">
-            <option value="">Semua Status</option>
-            <option value="Diterima">Diterima</option>
-            <option value="Dalam Proses">Dalam Proses</option>
-            <option value="Ditolak">Ditolak</option>
-          </select>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="resetFilter()">Reset Filter</button>
+        <div class="hint" style="align-self:center;max-width:460px;">Filter ini hanya berlaku untuk widget <strong>berbasis periode</strong>: Surat Masuk, Surat Keluar, Penugasan &amp; Representasi Dapil. Widget lain (Pengguna, Rapat, Info Periode Aktif) tidak terikat satu periode (BR-10).</div>
       </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.6.5 1.1 1.3 1.2 2.2h4.8c.1-.9.6-1.7 1.2-2.2A6 6 0 0 0 12 3z"/></svg></div>
-          <div><div class="num">96</div><div class="lbl">Total Usulan Pokir</div></div>
-        </div>
-        <div class="stat-card success">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div>
-          <div><div class="num">34</div><div class="lbl">Diterima</div></div>
-        </div>
-        <div class="stat-card warn">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div>
-          <div><div class="num">46</div><div class="lbl">Dalam Proses</div></div>
-        </div>
-        <div class="stat-card danger">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5 5l14 14"/><path d="M19 5L5 19"/></svg></div>
-          <div><div class="num">16</div><div class="lbl">Ditolak</div></div>
-        </div>
-        <div class="stat-card gold">
-          <div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.6 7.1.7-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7-5.4-4.7 7.1-.7z"/></svg></div>
-          <div><div class="num">22</div><div class="lbl">Ditandai Prioritas</div></div>
-        </div>
+      <div class="card">
+        <div class="section-title">Info Periode Aktif <span class="badge badge-neutral">Tanpa Filter Periode</span></div>
+        <div id="widgetPeriodeAktif"></div>
       </div>
 
-      <div class="two-col-layout">
-        <div>
-          <div class="card">
-            <div class="section-title">Kategori Pokir Terbanyak</div>
-            <div class="bar-row"><div class="bar-label"><span>Infrastruktur</span><span>40 (42%)</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Ekonomi &amp; UMKM</span><span>18 (19%)</span></div><div class="bar-track"><div class="bar-fill" style="width:45%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Pendidikan</span><span>16 (17%)</span></div><div class="bar-track"><div class="bar-fill" style="width:40%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Kesehatan</span><span>12 (12%)</span></div><div class="bar-track"><div class="bar-fill" style="width:30%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Olahraga</span><span>6 (6%)</span></div><div class="bar-track"><div class="bar-fill" style="width:15%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Lainnya</span><span>4 (4%)</span></div><div class="bar-track"><div class="bar-fill" style="width:10%;"></div></div></div>
+      <div class="card" data-widget-gate="web-akun-pengguna-mobile,web-penugasan-dapil-reses">
+        <div class="section-title">Ringkasan Pengguna <span class="badge badge-neutral">Tanpa Filter Periode</span><a class="more" href="pengguna.html">Lihat semua &rsaquo;</a></div>
+        <div class="stats-grid" data-widget-gate="web-akun-pengguna-mobile">
+          <div class="stat-card"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c1-4 3.8-6.2 6.5-6.2s5.5 2.2 6.5 6.2"/><path d="M17 8h5"/><path d="M19.5 5.5v5"/></svg></div><div><div class="num" id="userTotal">0</div><div class="lbl">Total Pengguna</div></div></div>
+        </div>
+        <div class="three-col-layout">
+          <div data-widget-gate="web-akun-pengguna-mobile">
+            <div class="hint" style="margin-bottom:8px;font-weight:800;color:var(--ink);">Jumlah per Status Akun</div>
+            <div id="userByStatus"></div>
           </div>
-
-          <div class="card">
-            <div class="section-title">Pokir per Dapil</div>
-            <div class="bar-row"><div class="bar-label"><span>Dapil 1</span><span>34 usulan</span></div><div class="bar-track"><div class="bar-fill" style="width:100%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Dapil 3</span><span>32 usulan</span></div><div class="bar-track"><div class="bar-fill" style="width:94%;"></div></div></div>
-            <div class="bar-row"><div class="bar-label"><span>Dapil 2</span><span>30 usulan</span></div><div class="bar-track"><div class="bar-fill" style="width:88%;"></div></div></div>
+          <div data-widget-gate="web-akun-pengguna-mobile">
+            <div class="hint" style="margin-bottom:8px;font-weight:800;color:var(--ink);">Jumlah per Jenis Orang</div>
+            <div id="userByType"></div>
+          </div>
+          <div>
+            <div class="hint" style="margin-bottom:4px;font-weight:800;color:var(--ink);">Representasi Dapil <span class="badge badge-gold">Berbasis Periode</span><a class="more" href="master-dapil.html" style="margin-left:8px;">Lihat semua &rsaquo;</a></div>
+            <div class="hint" style="font-size:10px;margin-bottom:8px;">Dapil tanpa anggota tetap tampil 0 (BR-08).</div>
+            <div id="widgetDapil"></div>
           </div>
         </div>
+      </div>
 
-        <div>
-          <div class="card">
-            <div class="section-title">Status Tindak Lanjut</div>
-            <div class="donut-wrap">
-              <div class="donut" style="background:conic-gradient(var(--success) 0 35%, var(--warn) 35% 83%, var(--danger) 83% 100%);">
-                <div class="donut-inner"><div class="n">96</div><div class="l">Total</div></div>
-              </div>
-              <div class="legend">
-                <div class="li"><span class="dot" style="background:var(--success);"></span> Diterima &middot; 34 (35%)</div>
-                <div class="li"><span class="dot" style="background:var(--warn);"></span> Dalam Proses &middot; 46 (48%)</div>
-                <div class="li"><span class="dot" style="background:var(--danger);"></span> Ditolak &middot; 16 (17%)</div>
-              </div>
-            </div>
-          </div>
-          <div class="hint">Data diperbarui terakhir 2 September 2026, 08.10 WIB &middot; Sumber: Sekretariat DPRD Kota Magelang</div>
+      <div class="card" data-widget-gate="web-surat-masuk">
+        <div class="section-title">Ringkasan Surat Masuk <span class="badge badge-gold">Berbasis Periode</span><a class="more" href="surat-masuk.html">Lihat semua &rsaquo;</a></div>
+        <div class="stats-grid" id="widgetSuratMasuk"></div>
+      </div>
+
+      <div class="card" data-widget-gate="web-surat-keluar">
+        <div class="section-title">Ringkasan Surat Keluar <span class="badge badge-gold">Berbasis Periode</span><a class="more" href="surat-keluar.html">Lihat semua &rsaquo;</a></div>
+        <div id="widgetSuratKeluar"></div>
+      </div>
+
+      <div class="card" data-widget-gate="web-penugasan-dapil-reses">
+        <div class="section-title">Ringkasan Penugasan <span class="badge badge-gold">Berbasis Periode</span><a class="more" href="penugasan-dapil-reses.html">Lihat semua &rsaquo;</a></div>
+        <div class="hint" style="margin-bottom:8px;font-weight:800;color:var(--ink);">Jumlah per Status</div>
+        <div id="widgetPenugasanStatus"></div>
+        <div class="stats-grid" style="margin-top:14px;">
+          <div class="stat-card"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/></svg></div><div><div class="num" id="pgsUpcoming">0</div><div class="lbl">Akan Datang</div></div></div>
+          <div class="stat-card info"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div><div><div class="num" id="pgsOngoing">0</div><div class="lbl">Berlangsung</div></div></div>
+          <div class="stat-card success"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5.5-6"/></svg></div><div><div class="num" id="pgsFinished">0</div><div class="lbl">Selesai</div></div></div>
+          <a class="stat-card warn" href="approval-penugasan.html" style="text-decoration:none;"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg></div><div><div class="num" id="pgsApprovalPending">0</div><div class="lbl">Persetujuan Menunggu</div></div></a>
         </div>
       </div>
 
-      <div class="section-title" style="margin-top:6px;">Usulan Prioritas</div>
-      <div class="table-wrap" style="margin-bottom:22px;">
-        <table>
-          <thead><tr><th>Judul Usulan</th><th>Diusulkan Oleh</th><th>Dapil</th><th>Kategori</th><th>Tanggal</th><th>Status</th></tr></thead>
-          <tbody id="tbodyPrioritas">
-            <tr data-dapil="Dapil 1" data-status="Diterima">
-              <td><div class="namecell"><div class="n">Pembangunan Jalan Lingkungan</div></div></td>
-              <td>Ir. Budi Santoso, M.T.</td><td>Dapil 1</td><td>Infrastruktur</td><td>10 Jan 2026</td>
-              <td><div class="tag-row"><span class="badge badge-gold">Prioritas</span><span class="badge badge-success">Diterima</span></div></td>
-            </tr>
-            <tr data-dapil="Dapil 3" data-status="Diterima">
-              <td><div class="namecell"><div class="n">Bantuan Alat Pertanian Kelompok Tani</div></div></td>
-              <td>Drs. Ahmad Fauzi, M.Si.</td><td>Dapil 3</td><td>Ekonomi &amp; UMKM</td><td>2 Mar 2026</td>
-              <td><div class="tag-row"><span class="badge badge-gold">Prioritas</span><span class="badge badge-success">Diterima</span></div></td>
-            </tr>
-            <tr data-dapil="Dapil 1" data-status="Dalam Proses">
-              <td><div class="namecell"><div class="n">Rehabilitasi Ruang Kelas SDN 2 Rejowinangun</div></div></td>
-              <td>M. Yusuf Ridwan</td><td>Dapil 1</td><td>Pendidikan</td><td>22 Mar 2026</td>
-              <td><div class="tag-row"><span class="badge badge-gold">Prioritas</span><span class="badge badge-warn">Dalam Proses</span></div></td>
-            </tr>
-            <tr data-dapil="Dapil 2" data-status="Dalam Proses">
-              <td><div class="namecell"><div class="n">Pembangunan Talud Penahan Longsor</div></div></td>
-              <td>Rina Kartika, S.E.</td><td>Dapil 2</td><td>Infrastruktur</td><td>5 Apr 2026</td>
-              <td><div class="tag-row"><span class="badge badge-gold">Prioritas</span><span class="badge badge-warn">Dalam Proses</span></div></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card" data-widget-gate="web-jadwal-rapat">
+        <div class="section-title">Ringkasan Rapat <span class="badge badge-neutral">Tanpa Filter Periode</span><a class="more" href="jadwal-rapat.html">Lihat semua &rsaquo;</a></div>
+        <div class="hint" style="margin-bottom:8px;font-weight:800;color:var(--ink);">Jumlah per Status</div>
+        <div id="widgetRapatStatus"></div>
+        <div class="stats-grid" style="margin-top:14px;">
+          <div class="stat-card"><div class="ic"><svg class="ic-svg" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4"/><path d="M16 3v4"/></svg></div><div><div class="num" id="rapatUpcoming30">0</div><div class="lbl">Akan Datang (30 Hari)</div></div></div>
+        </div>
       </div>
 
-      <div class="section-title">Usulan Pokir Terbaru</div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Judul Usulan</th><th>Diusulkan Oleh</th><th>Dapil</th><th>Kategori</th><th>Tanggal</th><th>Status</th></tr></thead>
-          <tbody id="tbodyTerbaru">
-            <tr data-dapil="Dapil 2" data-status="Dalam Proses">
-              <td><div class="namecell"><div class="n">Perbaikan Jembatan Kali Bening</div></div></td>
-              <td>Hj. Siti Nurhaliza, S.H.</td><td>Dapil 2</td><td>Infrastruktur</td><td>30 Agu 2026</td>
-              <td><span class="badge badge-warn">Dalam Proses</span></td>
-            </tr>
-            <tr data-dapil="Dapil 3" data-status="Dalam Proses">
-              <td><div class="namecell"><div class="n">Renovasi Posyandu Melati</div></div></td>
-              <td>Rina Kartika, S.E.</td><td>Dapil 3</td><td>Kesehatan</td><td>28 Agu 2026</td>
-              <td><span class="badge badge-warn">Dalam Proses</span></td>
-            </tr>
-            <tr data-dapil="Dapil 2" data-status="Ditolak">
-              <td><div class="namecell"><div class="n">Pembangunan Lapangan Olahraga</div></div></td>
-              <td>R. Hendra Wijaya, S.H.</td><td>Dapil 2</td><td>Olahraga</td><td>25 Agu 2026</td>
-              <td><span class="badge badge-danger">Ditolak</span></td>
-            </tr>
-            <tr data-dapil="Dapil 3" data-status="Dalam Proses">
-              <td><div class="namecell"><div class="n">Normalisasi Saluran Drainase</div></div></td>
-              <td>Hj. Siti Rahmawati</td><td>Dapil 3</td><td>Infrastruktur</td><td>20 Agu 2026</td>
-              <td><span class="badge badge-warn">Dalam Proses</span></td>
-            </tr>
-            <tr data-dapil="Dapil 1" data-status="Diterima">
-              <td><div class="namecell"><div class="n">Pemasangan Lampu Jalan</div></div></td>
-              <td>Ir. Budi Santoso, M.T.</td><td>Dapil 1</td><td>Infrastruktur</td><td>15 Agu 2026</td>
-              <td><span class="badge badge-success">Diterima</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="card">
+        <div class="section-title">Aktivitas Terbaru</div>
+        <div class="hint" style="margin-bottom:14px;">5 item teranyar per modul &mdash; bukan ringkasan agregat, hanya pintasan cepat ke detail. Widget ini tetap menyaring per permission seperti ringkasan di atas (§2.9).</div>
+        <div class="quad-grid">
+          <div class="quad-col" data-widget-gate="web-surat-masuk">
+            <div class="quad-title">Surat Masuk Terbaru<a class="more" href="surat-masuk.html">Lihat semua &rsaquo;</a></div>
+            <div id="recentSuratMasuk"></div>
+          </div>
+          <div class="quad-col" data-widget-gate="web-surat-keluar">
+            <div class="quad-title">Surat Keluar Terbaru<a class="more" href="surat-keluar.html">Lihat semua &rsaquo;</a></div>
+            <div id="recentSuratKeluar"></div>
+          </div>
+          <div class="quad-col" data-widget-gate="web-penugasan-dapil-reses">
+            <div class="quad-title">Penugasan Terbaru<a class="more" href="penugasan-dapil-reses.html">Lihat semua &rsaquo;</a></div>
+            <div id="recentPenugasan"></div>
+          </div>
+          <div class="quad-col" data-widget-gate="web-jadwal-rapat">
+            <div class="quad-title">Jadwal Rapat Terbaru<a class="more" href="jadwal-rapat.html">Lihat semua &rsaquo;</a></div>
+            <div id="recentRapat"></div>
+          </div>
+        </div>
       </div>
-      <div id="emptyState" class="hint" style="display:none;text-align:center;padding:18px;">Tidak ada data yang sesuai dengan filter.</div>
 
     </div>
   </div>
 </div>
 <div class="toast" id="toast" style="display:none;position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--green-dark);color:#fff;padding:12px 20px;border-radius:30px;font-size:12.5px;font-weight:700;box-shadow:0 8px 20px rgba(0,0,0,.3);z-index:90;white-space:nowrap;"></div>
+<script src="pegawai-data.js"></script>
+<script src="dapil-data.js"></script>
+<script src="periode-data.js"></script>
+<script src="surat-masuk-data.js"></script>
+<script src="surat-keluar-data.js"></script>
+<script src="penugasan-dapil-reses-data.js"></script>
 <script src="rbac-data.js"></script>
 <script src="session-data.js"></script>
 <script>
@@ -558,26 +398,368 @@ function toast(msg){
   el.textContent = msg; el.style.display = 'block';
   setTimeout(function(){ el.style.display = 'none'; }, 2400);
 }
-function applyFilter(){
-  var dapil = document.getElementById('filterDapil').value;
-  var status = document.getElementById('filterStatus').value;
-  var visibleCount = 0;
 
-  ['tbodyPrioritas','tbodyTerbaru'].forEach(function(id){
-    document.querySelectorAll('#' + id + ' tr').forEach(function(r){
-      var show = (!dapil || r.dataset.dapil === dapil) && (!status || r.dataset.status === status);
-      r.style.display = show ? '' : 'none';
-      if(show) visibleCount++;
-    });
-  });
+// ---------- Dashboard (docs/dashboard.md) ----------
+// Satu-satunya periode yang punya data Surat Masuk/Surat Keluar/Penugasan/Representasi Dapil di
+// prototipe ini adalah 'prd-2024' (lihat surat-masuk-data.js/surat-keluar-data.js: seluruh baris
+// contoh memakai periodId itu). Memilih periode lain pada filter Periode (BR-02) akan menampilkan
+// angka 0 pada widget berbasis periode - bukan galat, cuma demonstrasi bahwa filter itu benar2
+// menyaring per period_id (§9.2-§9.4, §9.6 docs/dashboard.md).
+var DASHBOARD_DATA_PERIOD_ID = 'prd-2024';
 
-  document.getElementById('emptyState').style.display = visibleCount === 0 ? 'block' : 'none';
-  toast('Filter diterapkan');
+// Kamus label Indonesia - memakai ulang kamus modul sumber (§3.1 docs/dashboard.md), BUKAN kamus baru:
+var USER_STATUS_LABEL = { PENDING_VERIFICATION: 'Menunggu Verifikasi', ACTIVE: 'Aktif', DEACTIVATED: 'Nonaktif' }; // lihat pengguna.html STATUS_LABEL
+var SM_STATUS_LABEL = { DRAFT: 'Draf', SUBMIT: 'Dikirim', SELESAI: 'Selesai' }; // §3.2 docs/dashboard.md
+var SK_STATUS_LABEL = { DRAFT: 'Draf', SUBMIT: 'Dikirim ke Sekretariat', IN_PROGRESS: 'Sedang Diproses', COMPLETED: 'Selesai (Permintaan)', DONE: 'Selesai (Langsung)' }; // lihat surat-keluar.html SK_STATUS_LABEL
+var SK_ORIGIN_LABEL = { REQUEST: 'Permintaan Anggota', DIRECT: 'Dibuat Langsung Sekretariat' }; // lihat surat-keluar.html SK_ORIGIN_LABEL
+// Status mentah penugasan-dapil-reses-data.js (literal Indonesia) dipetakan ke kamus
+// AssignmentStatusType TRD (§3.2 docs/dashboard.md) supaya tampilan konsisten dgn dokumen.
+var PGS_STATUS_LABEL = { Draft: 'Draf', 'Menunggu Approval': 'Menunggu Persetujuan', Approve: 'Disetujui', Reject: 'Ditolak', Selesai: 'Selesai', Cancel: 'Dibatalkan Admin', 'Cancel by Anggota': 'Dibatalkan Sistem' };
+// Widget Rapat (§2.5): belum ada data.js khusus meetings di prototipe ini - nilai berikut adalah
+// temuan data riil `e_parlemen_develop` per 26 Nov 2026 (§7.4.a/c docs/dashboard.md), dipakai
+// sebagai contoh sampai modul Jadwal Rapat punya data layer terstruktur seperti modul lain.
+var RAPAT_STATIC = { by_status: { DRAFT: 1, SCHEDULED: 9, COMPLETED: 2, CANCELLED: 4 }, upcoming_30_days: 4 };
+var RAPAT_STATUS_LABEL = { DRAFT: 'Draft', SCHEDULED: 'Dijadwalkan', ONGOING: 'Sedang Berlangsung', COMPLETED: 'Selesai', CANCELLED: 'Dibatalkan' };
+// Badge per status - dipakai utk tiap BARIS pada list "...Terbaru" (bukan warna chart), beda
+// konteks dgn LIFECYCLE_RAMP di bawah yg khusus utk stacked-bar agregat.
+var SM_STATUS_BADGE = { DRAFT: 'badge-neutral', SUBMIT: 'badge-warn', SELESAI: 'badge-success' };
+var SK_STATUS_BADGE = { DRAFT: 'badge-neutral', SUBMIT: 'badge-warn', IN_PROGRESS: 'badge-info', COMPLETED: 'badge-success', DONE: 'badge-neutral' }; // selaras badge surat-keluar.html
+var PGS_STATUS_BADGE = { Draft: 'badge-neutral', 'Menunggu Approval': 'badge-warn', Approve: 'badge-success', Reject: 'badge-danger', Selesai: 'badge-info', Cancel: 'badge-neutral', 'Cancel by Anggota': 'badge-neutral' };
+var RAPAT_STATUS_BADGE = { DRAFT: 'badge-neutral', SCHEDULED: 'badge-warn', ONGOING: 'badge-info', COMPLETED: 'badge-success', CANCELLED: 'badge-danger' };
+// Jadwal Rapat Terbaru (§2.5): memakai static yg sama alasannya dgn RAPAT_STATIC di atas - belum
+// ada data.js meetings di prototipe ini. Tanggal ditulis relatif terhadap "hari ini" (dihitung di
+// renderRapatRecent()) supaya daftar ini selalu terasa "terbaru" kapan pun dashboard dibuka.
+var RAPAT_RECENT_STATIC = [
+  { title: 'Rapat Badan Anggaran', room: 'Ruang Rapat Banggar', offsetDays: 0, status: 'SCHEDULED' },
+  { title: 'Rapat Komisi I', room: 'Ruang Rapat Komisi I', offsetDays: 2, status: 'SCHEDULED' },
+  { title: 'Rapat Paripurna Pembahasan APBD', room: 'Ruang Paripurna DPRD', offsetDays: 5, status: 'SCHEDULED' },
+  { title: 'Rapat Komisi III', room: 'Ruang Rapat Komisi III', offsetDays: -3, status: 'COMPLETED' },
+  { title: 'Rapat Fraksi Golkar', room: 'Sekretariat Fraksi', offsetDays: -6, status: 'CANCELLED' }
+];
+function statCardHtml(kind, num, lbl){
+  return '<div class="stat-card' + (kind ? ' ' + kind : '') + '"><div><div class="num">' + num + '</div><div class="lbl">' + lbl + '</div></div></div>';
 }
-function resetFilter(){
-  document.getElementById('filterDapil').selectedIndex = 0;
-  document.getElementById('filterStatus').selectedIndex = 0;
-  applyFilter();
+
+// Daftar "...Terbaru" (top 5) - bukan agregat, cuma pintasan ke detail per baris (tetap baca-saja,
+// sesuai sifat Dashboard §1.1 docs/dashboard.md - angka/daftar di sini menaut ke halaman modul).
+// colLabel = judul kolom pertama (mis. "Perihal", "Kegiatan", "Rapat").
+function recentTableHtml(colLabel, items){
+  if(!items.length) return '<div class="table-wrap"><div class="hint" style="padding:16px;">Tidak ada data.</div></div>';
+  var rows = items.map(function(it){
+    return '<tr><td><div class="namecell"><a class="n" href="' + it.href + '" style="text-decoration:none;color:inherit;">' + it.title + '</a><div class="s">' + it.subtitle + '</div></div></td>'
+      + '<td>' + it.tanggal + '</td>'
+      + '<td><span class="badge ' + it.badgeClass + '">' + it.badgeLabel + '</span></td></tr>';
+  }).join('');
+  return '<div class="table-wrap"><table class="table-compact"><thead><tr><th>' + colLabel + '</th><th>Tanggal</th><th>Status</th></tr></thead><tbody>' + rows + '</tbody></table></div>';
+}
+
+// Ranking magnitude (job "Compare magnitude, low->high" - skill dataviz §choosing-a-form): satu
+// hue sequential, gelap = terbanyak, memakai ulang ramp hijau yg sudah ada di :root (bukan warna
+// kategorikal baru - urutan antar kategori di sini tidak membawa makna identitas, cuma rank).
+var RANK_RAMP = ['var(--green-light)', 'var(--green-mid)', 'var(--green)', 'var(--green-dark)'];
+// Dense rank - nilai yg sama (mis. 2 dapil sama-sama 8 anggota) dapat SHADE yg sama, bukan
+// shade berbeda hanya karena urutan sort/index berbeda.
+function denseRankColor(sortedCounts, count){
+  var distinct = sortedCounts.filter(function(v, i, arr){ return i === 0 || v !== arr[i - 1]; });
+  var rank = distinct.indexOf(count);
+  return RANK_RAMP[Math.max(RANK_RAMP.length - 1 - rank, 0)];
+}
+function rankList(items){
+  var max = Math.max.apply(null, items.map(function(i){ return i.count; }).concat([1]));
+  var sorted = items.slice().sort(function(a, b){ return b.count - a.count; });
+  var counts = sorted.map(function(it){ return it.count; });
+  return '<div class="rank-list">' + sorted.map(function(it){
+    var pct = it.count > 0 ? Math.max(Math.round((it.count / max) * 100), 3) : 0;
+    var color = denseRankColor(counts, it.count);
+    return '<div class="rank-row" title="' + it.label + ': ' + it.count + '">'
+      + '<div class="rank-lbl">' + it.label + '</div>'
+      + '<div class="rank-track"><div class="rank-fill" style="width:' + pct + '%;background:' + color + ';"></div></div>'
+      + '<div class="rank-val">' + it.count + '</div></div>';
+  }).join('') + '</div>';
+}
+
+// Part-to-whole (job "Part-to-whole" - skill dataviz): satu bar, beberapa segmen, gap 2px antar
+// segmen. `steps` HARUS subset dari ramp lifecycle tervalidasi CVD (good->neutral->pending->bad,
+// §validate_palette.js) dalam urutan TETAP itu - jangan diputar per widget.
+var LIFECYCLE_RAMP = [
+  { key: 'good', color: 'var(--chart-good)' },
+  { key: 'neutral', color: 'var(--chart-neutral)' },
+  { key: 'pending', color: 'var(--chart-pending)' },
+  { key: 'bad', color: 'var(--chart-bad)' }
+];
+function stackedBar(items){
+  // items: [{key:'good'|'neutral'|'pending'|'bad', label, count}], urutan output ikut LIFECYCLE_RAMP tetap.
+  var total = items.reduce(function(s, it){ return s + it.count; }, 0);
+  var ordered = LIFECYCLE_RAMP.map(function(step){ return items.find(function(it){ return it.key === step.key; }); }).filter(Boolean);
+  var segs = ordered.map(function(it){
+    var pct = total > 0 ? Math.round((it.count / total) * 100) : 0;
+    var color = LIFECYCLE_RAMP.find(function(s){ return s.key === it.key; }).color;
+    var showInline = pct >= 12;
+    return { it: it, pct: pct, color: color, showInline: showInline };
+  });
+  var bar = '<div class="stacked-bar">' + segs.map(function(s){
+    return '<div class="seg" style="width:' + s.pct + '%;background:' + s.color + ';" title="' + s.it.label + ': ' + s.it.count + ' (' + s.pct + '%)">' + (s.showInline ? '<span class="sv">' + s.pct + '%</span>' : '') + '</div>';
+  }).join('') + '</div>';
+  var legend = '<div class="chip-legend">' + segs.map(function(s){
+    return '<div class="chip"><span class="sw" style="background:' + s.color + ';"></span>' + s.it.label + ' <span class="cv">' + s.it.count + ' (' + s.pct + '%)</span></div>';
+  }).join('') + '</div>';
+  return bar + legend;
+}
+
+// Meter - job "A single ratio against a limit": fill carries the value, track = tint lebih
+// terang dari hue yang sama (bukan abu generik) sesuai marks-and-anatomy.md.
+// Donut (job "Part-to-whole, 2 kategori identitas" - DEWAN vs SEKWAN bukan status/lifecycle,
+// jadi TIDAK memakai LIFECYCLE_RAMP, cukup 2 warna identitas yg sudah tervalidasi terpisah jauh
+// (lihat skill dataviz validate_palette.js: info-blue vs chart-pending-gold, ΔE 22-24, PASS).
+// items: [{label, count, color}]
+function donutChart(items, centerLabel){
+  var total = items.reduce(function(s, it){ return s + it.count; }, 0);
+  var cum = 0;
+  var stops = items.map(function(it){
+    var pct = total > 0 ? (it.count / total * 100) : 0;
+    var seg = it.color + ' ' + cum.toFixed(2) + '% ' + (cum + pct).toFixed(2) + '%';
+    cum += pct;
+    return seg;
+  }).join(', ');
+  var legend = items.map(function(it){
+    var pct = total > 0 ? Math.round((it.count / total) * 100) : 0;
+    return '<div class="li"><span class="dot" style="background:' + it.color + ';"></span>' + it.label + ' <span style="color:var(--muted);">&middot; ' + it.count + ' (' + pct + '%)</span></div>';
+  }).join('');
+  var tip = items.map(function(it){ return it.label + ': ' + it.count; }).join(', ');
+  return '<div class="donut-wrap"><div class="donut" style="background:conic-gradient(' + stops + ');" title="' + tip + '"><div class="donut-inner"><div class="n">' + total + '</div><div class="l">' + (centerLabel || 'Total') + '</div></div></div><div class="legend">' + legend + '</div></div>';
+}
+
+function renderPeriodeOptions(){
+  var list = periodeLoadList();
+  var sel = document.getElementById('filterPeriode');
+  sel.innerHTML = list.map(function(p){ return '<option value="' + p.id + '">' + p.nama + (p.status === 'Aktif' ? ' (Aktif)' : '') + '</option>'; }).join('');
+  sel.value = periodeActiveId();
+}
+
+function renderPeriodeAktif(){
+  var list = periodeLoadList();
+  var active = list.find(function(p){ return p.status === 'Aktif'; }) || list[0];
+  var el = document.getElementById('widgetPeriodeAktif');
+  if(!active){ el.innerHTML = '<div class="hint">Belum ada periode aktif.</div>'; return; }
+  el.innerHTML = '<div style="font-weight:800;font-size:15px;color:var(--ink);margin-bottom:4px;">' + active.nama + '</div>'
+    + '<div class="hint">' + fmtTglID(active.mulai) + ' &ndash; ' + fmtTglID(active.selesai) + '</div>';
+}
+function fmtTglID(iso){
+  var d = new Date(iso + 'T00:00:00');
+  return d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+function selectedPeriodMatchesData(){
+  return document.getElementById('filterPeriode').value === DASHBOARD_DATA_PERIOD_ID;
+}
+
+// Pemetaan status akun ke posisi ramp lifecycle TETAP (good->neutral->pending->bad): Aktif=good,
+// Nonaktif=neutral (bukan status buruk, cuma "tidak dipakai saat ini"), Menunggu Verifikasi=pending.
+// Tidak ada status akun yang masuk kategori "bad" di sini.
+var USER_STATUS_KEY = { ACTIVE: 'good', DEACTIVATED: 'neutral', PENDING_VERIFICATION: 'pending' };
+
+function renderUsers(){
+  var list = (typeof pegawaiLoadList === 'function') ? pegawaiLoadList() : [];
+  var byStatus = {}, byType = { DEWAN: 0, SEKWAN: 0 };
+  list.forEach(function(p){
+    byStatus[p.loginStatus] = (byStatus[p.loginStatus] || 0) + 1;
+    byType[p.tipePegawai === 'Politisi' ? 'DEWAN' : 'SEKWAN']++;
+  });
+  document.getElementById('userTotal').textContent = list.length;
+  document.getElementById('userByStatus').innerHTML = stackedBar(Object.keys(USER_STATUS_LABEL).map(function(k){
+    return { key: USER_STATUS_KEY[k], label: USER_STATUS_LABEL[k], count: byStatus[k] || 0 };
+  }));
+  document.getElementById('userByType').innerHTML = donutChart([
+    { label: 'DEWAN (Anggota)', count: byType.DEWAN, color: 'var(--info)' },
+    { label: 'SEKWAN (Staf)', count: byType.SEKWAN, color: 'var(--chart-pending)' }
+  ], 'Pengguna');
+}
+
+function renderSuratMasuk(){
+  var inPeriod = selectedPeriodMatchesData();
+  var rows = inPeriod ? Object.keys(SURAT_MASUK_DATA).map(function(k){ return SURAT_MASUK_DATA[k]; }) : [];
+  var byStatus = { DRAFT: 0, SUBMIT: 0, SELESAI: 0 };
+  var dispositionPending = 0;
+  rows.forEach(function(r){
+    byStatus[r.status] = (byStatus[r.status] || 0) + 1;
+    (r.dispositions || []).forEach(function(d){ if(d.status === 'PENDING') dispositionPending++; });
+  });
+  var html = Object.keys(SM_STATUS_LABEL).map(function(k){
+    return statCardHtml(k === 'SUBMIT' ? 'warn' : (k === 'SELESAI' ? 'success' : ''), byStatus[k] || 0, SM_STATUS_LABEL[k]);
+  }).join('');
+  html += '<a class="stat-card danger" href="surat-masuk.html" style="text-decoration:none;"><div><div class="num">' + dispositionPending + '</div><div class="lbl">Disposisi Menunggu</div></div></a>';
+  document.getElementById('widgetSuratMasuk').innerHTML = html;
+}
+
+function renderSuratMasukRecent(){
+  var inPeriod = selectedPeriodMatchesData();
+  var rows = inPeriod ? Object.keys(SURAT_MASUK_DATA).map(function(k){ return Object.assign({ key: k }, SURAT_MASUK_DATA[k]); }) : [];
+  rows.sort(function(a, b){ return (b.submittedAtISO || '').localeCompare(a.submittedAtISO || ''); });
+  document.getElementById('recentSuratMasuk').innerHTML = recentTableHtml('Perihal', rows.slice(0, 5).map(function(r){
+    return {
+      href: 'surat-masuk-detail.html?id=' + r.key,
+      title: r.title,
+      subtitle: r.letterNumber,
+      tanggal: fmtTglID((r.submittedAtISO || '').slice(0, 10)),
+      badgeClass: SM_STATUS_BADGE[r.status] || 'badge-neutral', badgeLabel: SM_STATUS_LABEL[r.status] || r.status
+    };
+  }));
+}
+
+function renderSuratKeluar(){
+  var inPeriod = selectedPeriodMatchesData();
+  var rows = inPeriod ? Object.keys(SURAT_KELUAR_DATA).map(function(k){ return SURAT_KELUAR_DATA[k]; }) : [];
+  var groups = {};
+  rows.forEach(function(r){
+    var key = r.status + '|' + r.origin;
+    groups[key] = (groups[key] || 0) + 1;
+  });
+  var keys = Object.keys(groups);
+  if(!keys.length){
+    document.getElementById('widgetSuratKeluar').innerHTML = '<div class="hint">Tidak ada data surat keluar pada periode ini.</div>';
+    return;
+  }
+  document.getElementById('widgetSuratKeluar').innerHTML = rankList(keys.map(function(key){
+    var parts = key.split('|');
+    var label = (SK_STATUS_LABEL[parts[0]] || parts[0]) + ' &middot; ' + (SK_ORIGIN_LABEL[parts[1]] || parts[1]);
+    return { label: label, count: groups[key] };
+  }));
+}
+
+function renderSuratKeluarRecent(){
+  var inPeriod = selectedPeriodMatchesData();
+  var rows = inPeriod ? Object.keys(SURAT_KELUAR_DATA).map(function(k){ return Object.assign({ key: k }, SURAT_KELUAR_DATA[k]); }) : [];
+  rows.sort(function(a, b){ return (b.submittedAtISO || '').localeCompare(a.submittedAtISO || ''); });
+  document.getElementById('recentSuratKeluar').innerHTML = recentTableHtml('Perihal', rows.slice(0, 5).map(function(r){
+    return {
+      href: 'surat-keluar-proses.html?id=' + r.key.replace('SK-', ''),
+      title: r.title,
+      subtitle: r.createdBy,
+      tanggal: fmtTglID((r.submittedAtISO || '').slice(0, 10)),
+      badgeClass: SK_STATUS_BADGE[r.status] || 'badge-neutral', badgeLabel: SK_STATUS_LABEL[r.status] || r.status
+    };
+  }));
+}
+
+function renderPenugasan(){
+  var inPeriod = selectedPeriodMatchesData();
+  var list = inPeriod && typeof jadwalResesLoadList === 'function' ? jadwalResesLoadList() : [];
+  var byStatus = {};
+  list.forEach(function(j){ byStatus[j.status] = (byStatus[j.status] || 0) + 1; });
+  document.getElementById('widgetPenugasanStatus').innerHTML = rankList(Object.keys(PGS_STATUS_LABEL).map(function(k){
+    return { label: PGS_STATUS_LABEL[k], count: byStatus[k] || 0 };
+  }));
+
+  // BR-05: akan datang/berlangsung/selesai dari tanggal, bukan status mentah; status
+  // Cancel/"Cancel by Anggota" dikecualikan (lihat §9.4 catatan BR-05 docs/dashboard.md).
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var upcoming = 0, ongoing = 0, finished = 0;
+  list.forEach(function(j){
+    if(j.status === 'Cancel' || j.status === 'Cancel by Anggota') return;
+    var start = new Date(j.tanggalRencana + 'T00:00:00');
+    var end = new Date((j.tanggalSelesai || j.tanggalRencana) + 'T00:00:00');
+    if(start >= today) upcoming++;
+    else if(start < today && end >= today) ongoing++;
+    else finished++;
+  });
+  document.getElementById('pgsUpcoming').textContent = upcoming;
+  document.getElementById('pgsOngoing').textContent = ongoing;
+  document.getElementById('pgsFinished').textContent = finished;
+  document.getElementById('pgsApprovalPending').textContent = byStatus['Menunggu Approval'] || 0;
+}
+
+function renderPenugasanRecent(){
+  var inPeriod = selectedPeriodMatchesData();
+  var list = inPeriod && typeof jadwalResesLoadList === 'function' ? jadwalResesLoadList() : [];
+  // 1 penugasan bisa beranggotakan >1 orang - setiap orang punya barisnya sendiri dgn batchId &
+  // noPenugasan yg sama (lihat catatan batchId di penugasan-dapil-reses-data.js). Dedupe per
+  // batchId dulu supaya satu penugasan tidak muncul berkali-kali di daftar "Terbaru".
+  var byBatch = {};
+  list.forEach(function(j){
+    if(!byBatch[j.batchId]) byBatch[j.batchId] = { rows: [], first: j };
+    byBatch[j.batchId].rows.push(j);
+  });
+  var batches = Object.keys(byBatch).map(function(bid){ return byBatch[bid]; });
+  batches.sort(function(a, b){ return (b.first.createdAt || '').localeCompare(a.first.createdAt || ''); });
+  document.getElementById('recentPenugasan').innerHTML = recentTableHtml('Kegiatan', batches.slice(0, 5).map(function(b){
+    var j = b.first;
+    return {
+      href: 'penugasan-dapil-reses.html',
+      title: j.kegiatan,
+      subtitle: j.noPenugasan + ' &middot; ' + b.rows.length + ' anggota',
+      tanggal: fmtTglID(j.tanggalRencana),
+      badgeClass: PGS_STATUS_BADGE[j.status] || 'badge-neutral', badgeLabel: PGS_STATUS_LABEL[j.status] || j.status
+    };
+  }));
+}
+
+// Pemetaan status rapat ke posisi ramp lifecycle TETAP: Selesai=good, Draft=neutral (belum
+// berjalan), Dijadwalkan=pending (menunggu), Dibatalkan=bad.
+var RAPAT_STATUS_KEY = { COMPLETED: 'good', DRAFT: 'neutral', SCHEDULED: 'pending', CANCELLED: 'bad' };
+
+function renderRapat(){
+  document.getElementById('widgetRapatStatus').innerHTML = stackedBar(Object.keys(RAPAT_STATUS_LABEL).filter(function(k){ return k !== 'ONGOING'; }).map(function(k){
+    return { key: RAPAT_STATUS_KEY[k], label: RAPAT_STATUS_LABEL[k], count: RAPAT_STATIC.by_status[k] || 0 };
+  }));
+  document.getElementById('rapatUpcoming30').textContent = RAPAT_STATIC.upcoming_30_days;
+}
+
+function renderRapatRecent(){
+  var today = new Date(); today.setHours(0, 0, 0, 0);
+  var items = RAPAT_RECENT_STATIC.slice().sort(function(a, b){ return Math.abs(a.offsetDays) - Math.abs(b.offsetDays); });
+  document.getElementById('recentRapat').innerHTML = recentTableHtml('Rapat', items.slice(0, 5).map(function(r){
+    var d = new Date(today.getTime() + r.offsetDays * 86400000);
+    return {
+      href: 'jadwal-rapat.html',
+      title: r.title,
+      subtitle: r.room,
+      tanggal: fmtTglID(d.toISOString().slice(0, 10)),
+      badgeClass: RAPAT_STATUS_BADGE[r.status] || 'badge-neutral', badgeLabel: RAPAT_STATUS_LABEL[r.status] || r.status
+    };
+  }));
+}
+
+// Representasi Dapil tinggal 3 kategori identitas (bukan status) - donut lebih cocok drpd bar
+// krn kardinalitasnya kecil (job "part-to-whole, at a glance" - skill dataviz, soft cap <=6).
+// Warna dipakai ulang dari ramp lifecycle yg sudah tervalidasi CVD-safe (fixed order: hijau tidak
+// pernah bersebelahan dgn emas+merah sekaligus) - di sini dipakai sbg identitas murni, bukan status.
+var DAPIL_CATEGORICAL_RAMP = ['var(--chart-good)', 'var(--chart-neutral)', 'var(--chart-pending)', 'var(--chart-bad)'];
+function renderDapil(){
+  var inPeriod = selectedPeriodMatchesData();
+  var dapils = (typeof dapilLoadList === 'function') ? dapilLoadList() : [];
+  var pegawai = inPeriod && typeof pegawaiLoadList === 'function' ? pegawaiLoadList() : [];
+  var counts = {};
+  pegawai.forEach(function(p){
+    if(p.tipePegawai !== 'Politisi' || !p.dapilId) return;
+    counts[p.dapilId] = (counts[p.dapilId] || 0) + 1;
+  });
+  document.getElementById('widgetDapil').innerHTML = donutChart(dapils.map(function(d, i){
+    return { label: d.nama, count: counts[d.kode] || 0, color: DAPIL_CATEGORICAL_RAMP[i % DAPIL_CATEGORICAL_RAMP.length] };
+  }), 'Anggota');
+}
+
+function renderPeriodScopedWidgets(){
+  renderSuratMasuk();
+  renderSuratMasukRecent();
+  renderSuratKeluar();
+  renderSuratKeluarRecent();
+  renderPenugasan();
+  renderPenugasanRecent();
+  renderDapil();
+}
+
+function onPeriodeChange(){
+  renderPeriodScopedWidgets();
+  toast('Filter periode diterapkan');
+}
+
+function renderDashboard(){
+  renderPeriodeOptions();
+  renderPeriodeAktif();
+  renderUsers();
+  renderRapat();
+  renderRapatRecent();
+  renderPeriodScopedWidgets();
 }
 
 // ---------- Role switcher (pojok kanan atas) ----------
@@ -643,6 +825,16 @@ function applyActiveRole(){
       a.title = 'Tidak tersedia untuk Role "' + role.nama + '"';
     }
   });
+
+  // §2.9 docs/dashboard.md - penyaringan widget per permission domain (OR antar id yg dipisah
+  // koma, lihat data-widget-gate="web-akun-pengguna-mobile,web-penugasan-dapil-reses" pada
+  // Representasi Dapil). Widget tanpa atribut ini (Notifikasi, Info Periode Aktif) selalu
+  // tampil selama role punya akses Web (gerbang `dashboard` sudah cukup, sama seperti §2.7/§2.8).
+  document.querySelectorAll('[data-widget-gate]').forEach(function(card){
+    var ids = card.dataset.widgetGate.split(',');
+    var allowed = hasWebAccess && ids.some(function(id){ return !!permSet[id]; });
+    card.style.display = allowed ? '' : 'none';
+  });
 }
 
 function switchRole(roleId){
@@ -665,6 +857,7 @@ function closeRoleDropdown(){
 }
 document.addEventListener('click', function(){ closeRoleDropdown(); });
 
+renderDashboard();
 renderRoleOptions();
 applyActiveRole();
 </script>

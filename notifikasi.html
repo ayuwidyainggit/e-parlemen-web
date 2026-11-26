@@ -310,7 +310,7 @@ a{color:inherit;}
       </div>
 
       <div id="nt-export" data-panel-group="nt" style="display:none;">
-        <div class="hint" style="margin-bottom:14px;">Notifikasi Export Laporan (Penugasan maupun Surat Masuk) muncul begitu job export selesai (berhasil/gagal) &mdash; tidak ada halaman redirect, unduh langsung lewat tombol di bawah (BR-16/§2.7).</div>
+        <div class="hint" style="margin-bottom:14px;">Notifikasi Export Laporan (Penugasan, Surat Masuk, maupun Surat Keluar) muncul begitu job export selesai (berhasil/gagal) &mdash; tidak ada halaman redirect, unduh langsung lewat tombol di bawah (BR-16/§2.7).</div>
         <div id="nt-export-list"></div>
         <div class="hint" id="nt-export-empty" style="display:none;">Belum ada export laporan untuk user ini.</div>
       </div>
@@ -377,9 +377,9 @@ function exportNotifItemHtml(n){
 }
 // Notifikasi export digabung dari DUA aktor berbeda (BR-16/17 scoped per pengekspor): Penugasan
 // dipicu oleh Anggota/Pimpinan yang sedang "login" (notifCurrentUserId, simulasi politisi -
-// penugasan-dapil-reses.html), Surat Masuk dipicu oleh identitas Admin tetap (NOTIF_ADMIN_USER_ID -
-// surat-masuk.html tidak punya switcher login). Digabung & diurutkan supaya tab "Semua"/"Export
-// Laporan" tetap satu linimasa, bukan dua daftar terpisah.
+// penugasan-dapil-reses.html), Surat Masuk & Surat Keluar dipicu oleh identitas Admin tetap
+// (NOTIF_ADMIN_USER_ID - halaman tersebut tidak punya switcher login). Digabung & diurutkan
+// supaya tab "Semua"/"Export Laporan" tetap satu linimasa, bukan tiga daftar terpisah.
 function renderExportNotifications(){
   var politisiUserId = typeof notifCurrentUserId === 'function' ? notifCurrentUserId() : null;
   var list = [];
@@ -388,6 +388,7 @@ function renderExportNotifications(){
   }
   if(typeof notifListFor === 'function' && typeof NOTIF_ADMIN_USER_ID !== 'undefined'){
     list = list.concat(notifListFor(NOTIF_ADMIN_USER_ID, 'SURAT_MASUK_EXPORT'));
+    list = list.concat(notifListFor(NOTIF_ADMIN_USER_ID, 'SURAT_KELUAR_EXPORT'));
   }
   list.sort(function(a, b){ return b.createdAtMs - a.createdAtMs; });
   if(list.length){
